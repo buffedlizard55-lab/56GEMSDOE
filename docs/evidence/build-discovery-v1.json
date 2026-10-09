@@ -1,0 +1,96 @@
+{
+ "name": "h56-disc-multi-b25000-20261009-20261009T165646Z",
+ "note": "h56 discovery multi k=25000: step-lineament dots >200 m off catalogue; NEGATIVE holdout, research only, do not slot",
+ "note_chars": 115,
+ "verdict": "negative",
+ "arm": "multi",
+ "budget": 25000,
+ "dots": 25000,
+ "holdout_dti": 0.012423943839880595,
+ "holdout_ci95": [
+  0.007866270816658994,
+  0.01717588186522323
+ ],
+ "chance_dti": 0.034989005691207845,
+ "receipt": {
+  "file": "h56-disc-multi-b25000-20261009-20261009T165646Z.tif",
+  "sha256": "dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296",
+  "bytes": 68005,
+  "submission_name": "h56-disc-multi-b25000-20261009-20261009T165646Z",
+  "note": "h56 discovery multi k=25000: step-lineament dots >200 m off catalogue; NEGATIVE holdout, research only, do not slot",
+  "note_chars": 115,
+  "validator": {
+   "path": "/home/user/56GEMSDOE/docs/downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif",
+   "bytes": 68005,
+   "sha256": "dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296",
+   "bands": 1,
+   "dtype": "float32",
+   "crs": "EPSG:32611",
+   "width": 3292,
+   "height": 3730,
+   "bounds": [
+    243350.0,
+    4135550.0,
+    572550.0,
+    4508550.0
+   ],
+   "ref_bounds": [
+    243350.0,
+    4135550.0,
+    572550.0,
+    4508550.0
+   ],
+   "transform": [
+    100.0,
+    0.0,
+    243350.0,
+    0.0,
+    -100.0,
+    4508550.0
+   ],
+   "nodata": null,
+   "blocksize": [
+    256,
+    256
+   ],
+   "fixture_grid": false,
+   "has_validity_mask": false,
+   "nan_pixels": 0,
+   "infinity_pixels": 0,
+   "n_nan": 0,
+   "min": 0.0,
+   "max": 1.0,
+   "mean": 0.0020359698683023453,
+   "n_nonzero": 25000,
+   "mass": 25000.0,
+   "mass_outside_footprint": 0,
+   "problems": [],
+   "ok": true,
+   "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+  },
+  "zip_file": "h56-disc-multi-b25000-20261009-20261009T165646Z.zip",
+  "zip_sha256": "0c27c4a53a048e51ec70bc61ccd6563feafa15cef5a2fb694463d51aabda7d54",
+  "approved_for_weekly_slot": false,
+  "promoted": false,
+  "submission_slots_used": 0,
+  "status": "research-only; local format validation is not organizer acceptance",
+  "metadata": {
+   "lane": "discovery (round 2, corrections-lane repo)",
+   "evidence_class": "MODEL output; local validation only; no ORGANIZER-CONFIRMED score",
+   "holdout_evidence": "evidence/holdout_discovery_v1.json",
+   "holdout_candidate": "multi@25000",
+   "holdout_dti": 0.012423943839880595,
+   "holdout_ci95": [
+    0.007866270816658994,
+    0.01717588186522323
+   ],
+   "verdict_pass": false,
+   "verdict": "negative",
+   "emission": "top-25000 of rank01 field multi in footprint & ~dilate(catalogue,2px)",
+   "dots": 25000,
+   "budget_used": "E1 holdout + E2 build (2 of 3)",
+   "cleared_for_weekly_slot": false
+  }
+ },
+ "elapsed_s": 73.1
+}

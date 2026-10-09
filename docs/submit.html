@@ -1,67 +1,36 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>How to submit — DOE GEMS Prize (56GEMSDOE)</title>
-<link rel="stylesheet" href="assets/site.css">
-</head>
-<body>
-<header class="nav">
-  <a class="brand" href="index.html">56GEMSDOE</a>
-  <a href="index.html">Summary</a>
-  <a href="submit.html">How to submit</a>
-  <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/evidence.md">Evidence</a>
-  <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/irregularities.md">Irregularities</a>
-</header>
-<main>
-
-<h1>How to submit (step by step)</h1>
-
-<div class="banner bad" style="margin-top:6px">
-  <h2>Status: no file is ready to download</h2>
-  <p style="margin:0;color:var(--ink)">This page explains the procedure. When a validated file exists it will be linked from <a href="index.html#submission-file">the summary</a> at the top.</p>
-</div>
-
-<h2>The procedure</h2>
-<ol>
-  <li><b>Register and accept the rules</b> on the <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">competition page</a>. Accepting the rules creates a binding agreement with DOE (rules, "Accept" on the DrivenData platform).</li>
-  <li><b>Check the data terms</b> before you download the training files. The <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/data/">data page</a> requires login; its terms are not covered by the official rules.</li>
-  <li><b>Generate the GeoTIFF</b> from your own model, on the grid of <code>training_features.tif</code> (EPSG:32611, 100 m). Write NaN outside the footprint and probabilities in [0, 1] inside it.</li>
-  <li><b>Validate</b> the file. The validator in this repository rejects NaN outside a footprint, values outside [0, 1], a sentinel nodata value, a wrong CRS or grid, and multi-band files:
-<pre><code>/home/user/.venv-gems/bin/python -c "import sys; sys.path.insert(0,'src'); from gems.submission import validate_submission; print(validate_submission('path/to/file.tif'))"</code></pre>
-  </li>
-  <li><b>Name and comment.</b> Give the file a unique name and a one-line comment, for example <code>clustering with k=25</code>. Do not reuse another team's name or file.</li>
-  <li><b>Upload</b> on the DrivenData submission page. Record the returned receipt; a score shown there is an ORGANIZER-CONFIRMED value.</li>
-  <li><b>Disclose generative-AI use</b> in the narrative (rules §3.2). Keep public elements free of trade secrets (rules A.4).</li>
-</ol>
-
-<h2 id="limits">Limits you must respect</h2>
-<table>
-  <tr><th>Rule</th><th>What it means</th><th>Source</th></tr>
-  <tr><td>3 submissions per week</td><td>Plan your slots. Do not spend one on an untested candidate.</td><td>Rules §3.4</td></tr>
-  <tr><td>One final submission</td><td>Chosen before the deadline by a separate selection.</td><td>Rules §3.4, §3.6.2</td></tr>
-  <tr><td>Originality</td><td>No third-party content unless disclosed and licensed.</td><td>Rules A.5(1)</td></tr>
-  <tr><td>Public elements</td><td>Designated public elements are posted and licensed to DOE. No confidential material in them.</td><td>Rules A.4</td></tr>
-  <tr><td>Generative AI</td><td>Must be disclosed in the narrative.</td><td>Rules §3.2</td></tr>
-</table>
-
-<h2 id="error">"Predicted values must be in range [0, 1]"</h2>
-<p>The portal rejects the file when any finite cell is outside [0, 1]. Causes, in order of likelihood:</p>
-<ol>
-  <li><b>Unclipped model output</b> (negatives or values above 1). Fix: clip, or apply a sigmoid.</li>
-  <li><b>A nodata sentinel</b> inside the footprint, for example <code>-3.4028234663852886e+38</code>. The owner's site attributes the error to this (CLAIM, not verified here: IR-06). Fix: replace it with NaN, and check the nodata tag.</li>
-  <li><b>NaN or wrong grid</b>, for example a different transform, size or CRS. Fix: write on the reference grid.</li>
-</ol>
-<p class="small">Run the validator above before every upload.</p>
-
-<h2>Sources</h2>
-<ul>
-  <li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Problem description (metric and format)</a></li>
-  <li><a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf">Official rules (PDF, all 7 chunks read)</a></li>
-  <li><a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/evidence.md">Evidence table with labels</a></li>
-</ul>
-</main>
-<footer>Not affiliated with DrivenData or DOE. Last checked 2026-10-09 (UTC).</footer>
-</body>
-</html>
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Submit, step by step (with the rules quoted)</title><style>
+:root{--bg:#0d1117;--panel:#161b22;--ink:#e6edf3;--mut:#9198a1;--line:#262c36;--ok:#2ea043;--warn:#d29922;--bad:#f85149;--acc:#58a6ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:1120px;margin:0 auto;padding:26px 20px 90px}h1{font-size:26px;margin:0 0 4px}h2{font-size:20px;margin:34px 0 10px;padding-top:14px;border-top:1px solid var(--line)}h3{font-size:16px;margin:18px 0 6px}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}.sub{color:var(--mut);margin:0 0 16px}
+.banner{border-radius:12px;padding:18px 20px;margin:16px 0;border:1px solid var(--line)}.banner.bad{background:rgba(248,81,73,.10);border-color:rgba(248,81,73,.45)}.banner.ok{background:rgba(46,160,67,.10);border-color:rgba(46,160,67,.45)}.banner.warn{background:rgba(210,153,34,.10);border-color:rgba(210,153,34,.45)}
+.banner .big{font-size:19px;font-weight:700}.banner p{margin:8px 0 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
+.btn{display:inline-block;background:var(--ok);color:#04140a;font-weight:700;padding:11px 16px;border-radius:9px;margin:4px 8px 4px 0}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--acc);font-weight:600}
+.badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.02em;padding:3px 9px;border-radius:999px;margin-left:8px}
+.badge.ok{background:rgba(46,160,67,.18);color:#3fb950;border:1px solid rgba(46,160,67,.5)}
+.badge.warn{background:rgba(210,153,34,.16);color:#e3b341;border:1px solid rgba(210,153,34,.5)}
+.badge.bad{background:rgba(248,81,73,.14);color:#ff7b72;border:1px solid rgba(248,81,73,.5)}
+table.data{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px}table.data th,table.data td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+table.data th{background:#11161d;font-weight:700}code{background:#11161d;padding:1px 5px;border-radius:5px;font-size:13px}
+pre{background:#11161d;border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;font-size:12.5px}
+ul{margin:8px 0 8px 18px}li{margin:4px 0}.muted{color:var(--mut)}
+.kpi{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}.kpi div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:150px}
+.verdict{border-left:4px solid var(--warn);padding:9px 13px;margin:12px 0;background:rgba(210,153,34,.07);border-radius:0 8px 8px 0;font-size:14px}
+.kpi b{display:block;font-size:19px}.kpi span{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.03em}
+</style></head><body><main><h1>Submit, step by step (with the rules quoted)</h1><p class='sub'><a href='index.html'>&#8592; evidence page</a> · <a href='executive-summary.html'>executive summary</a></p><h3>What the portal accepts</h3>
+<p class="muted">Quoted from the competition's submission form, and consistent with the format section on the
+problem page: "You can submit a single-band GeoTIFF (.tif) file, or a .zip file containing a single GeoTIFF,
+with your predictions. It must match the submission format's CRS, shape, and geotransform." plus an optional
+note "A short comment to help you or your team tell submissions apart later".</p>
+<h3>Checks this repository runs on every raster before it is offered</h3>
+<pre>$ .venv/bin/python -c "from gems56 import gates; print(gates.format_report('docs/downloads/h56-magpack-37k-20261009.tif','data/grid/sample_submission.tif'))"</pre>
+<p>and again from disk at build time (<a href="downloads/checks-h56-magpack-37k-20261009.json">this file's receipt</a>,
+<a href="downloads/checks-h56-quota-37k-20261009.json">the secondary's</a>). The checks are: single band; float32;
+shape 3730&nbsp;&times;&nbsp;3292; CRS EPSG:32611; geotransform identical to the sample submission; min/max inside
+[0,1]; zero NaN inside the footprint; no nodata tag; and the dot count and the minimum distance to the catalogue.</p>
+<h3>After uploading</h3>
+<ul><li>Record the score against the sha256 on the card - that pairing is what turns a submission into data.</li>
+<li>Nothing in this repository is an organizer-confirmed score; label any number you copy onward as
+USER-REPORTED until the receipt page says otherwise.</li></ul><p class='muted'>Rendered by <code>scripts/build_round2.py</code> from the JSON receipts in <code>evidence/</code>. Every figure on this page is read from a receipt at build time: a required receipt that is missing fails the build; the two optional ones (the uniqueness screen, the round-1 card) print an explicit “still running - see this path” line instead of a fake number.</p></main></body></html>

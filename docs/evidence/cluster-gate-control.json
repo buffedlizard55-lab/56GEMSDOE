@@ -1,0 +1,24 @@
+{
+ "evidence_class": "MEASURED permutation control on the same candidate set; not a score",
+ "n_candidates": 5846,
+ "n_targets_after_footprint": 5612,
+ "real_cluster_survivors": 680,
+ "permutation_null": {
+  "draws": 250,
+  "mean": 152.592,
+  "sd": 15.479015981094273,
+  "p95": 177.0,
+  "max": 193
+ },
+ "sign_flip_null": {
+  "draws": 250,
+  "mean": 170.788,
+  "sd": 14.170188175593397,
+  "p95": 194.0,
+  "max": 211
+ },
+ "one_sided_p_permutation": 0.0,
+ "one_sided_p_signflip": 0.0,
+ "interpretation": "the survivors are more spatially coherent than a reassignment of the same offsets would produce -- a necessary, not sufficient, condition for a real correction; read together with the corridor gate, which is the sufficient one",
+ "elapsed_s": 119.5
+}

@@ -1,0 +1,473 @@
+{
+ "lane": "corrections (round 2: emission-side consequences of the same measurement)",
+ "competition": "DrivenData GEMS Prize 306 (GeoDAWN, NW Nevada)",
+ "run_utc": "2026-10-09T18:55:01Z",
+ "commit": "3751a60483d331ee240d5e07cd7c3eb6e1a0fb88",
+ "hypothesis": "The catalogue is displaced from the evidence by more than ~2 px in places, so dots on the evidence-defined trace earn credit the catalogue line cannot. Round 1 measured that this is false (median offset -0.10 px against a 1.32 px estimator noise floor). The surviving consequence is the *other* side of the same fact: because the catalogue is accurate, mass near a mapped trace is masked out of the scored truth and pays the false-positive term, so the leverage is (i) pruning near-catalogue mass and (ii) raising credit per emitted pixel on channels the catalogue compiler did not use.",
+ "mechanism": "Percentile-rank physical channels built from the official 19-band stack only; ridge/edge detectors (Meijster second-derivative-along-gradient on detrended-elevation slope, on smoothed |tmi_hg|, on reduced-to-pole, on gravity gradient, on the geodetic strain-rate second invariant); a discrete-Radon lineament-persistence channel over 4 strikes x {400,800,1600} m; exact greedy farthest-point packing at 2.8 px; a 2 px catalogue emission floor; binary p=1 mass; three combination rules (single channel, equal-rank mean, credit-weighted quota union) scored against each other at matched budget.",
+ "named_non_fault_process": "Drainage incision and gully heads give convex break-in-slope lineations that are not faults; slope-dependent scarp degradation migrates a crest; magnetic gradients ridge on lithologic contacts and on the edges of demagnetised Tertiary units, not on slip surfaces; and the geodetic strain-rate bands are smooth at 10 km scale, so they carry regional, not pixel, information - which is why their AUC against the hidden set is 0.59-0.71 while their DTI at 300 m precision is one fifth of the magnetic ridge.",
+ "holdout_dti": {
+  "evidence_class": "HOLDOUT-DTI",
+  "evaluator_version": "gems52-pooled-hide-v1",
+  "protocol": {
+   "evaluator": "gems52-pooled-hide-v1",
+   "folds": 4,
+   "buffer_px": 4,
+   "prevalence": 0.002,
+   "budget": 37654,
+   "ladder": [
+    8000,
+    15000,
+    25000,
+    37654,
+    60000,
+    90000
+   ],
+   "emission_floor": "2 px dilation of the fold's visible catalogue",
+   "visible_mask": "pixel-exact (thread 11516 post #4)",
+   "block_side_px": 200,
+   "auc_sample": 400000,
+   "seed": 5610,
+   "alpha": 0.2,
+   "beta": 0.8,
+   "radius_m": 300.0
+  },
+  "withheld_positive_pixels": 36335,
+  "primary_arm": {
+   "arm": "mag_ridge|packed",
+   "dti": 0.038716326756688756,
+   "ci95": [
+    0.03483335931803064,
+    0.04241499748282246
+   ],
+   "emitted": 37654,
+   "recall_within_3px": 0.1749,
+   "instrument": "hide; budget 37,654; 4 folds; pooled additive terms; receipt evidence/quota_union_v1.json (E4)",
+   "independent_pool_e3": {
+    "dti": 0.038716326756688756,
+    "ci95": [
+     0.034938308139004684,
+     0.04239438591044557
+    ],
+    "receipt": "evidence/emission_holdout_h56-mpp-r1-20261009.json",
+    "note": "same folds, recomputed in the E3 pool; the two CIs differ in the 4th decimal because they are separate bootstrap runs, and both exclude the incumbent"
+   }
+  },
+  "field_level_reference": {
+   "arm": "mag_ridge (channel alone, top-K, from the E1 screen)",
+   "dti": 0.038263865503937386,
+   "ci95": [
+    0.034403034226563156,
+    0.0419610518613526
+   ]
+  },
+  "secondary_arm": {
+   "arm": "QUOTA|packed|weighted",
+   "dti": 0.035922200086158845,
+   "ci95": [
+    0.032391148210735056,
+    0.039366724138452255
+   ]
+  },
+  "incumbent_for_reference": {
+   "arm": "PRIOR_base_44090 (sibling file, scored as-is)",
+   "dti": 0.09003222548321291,
+   "ci95": [
+    0.08112874302231073,
+    0.09877853126985096
+   ]
+  },
+  "paired_differences_convention": "in both receipts delta = reference arm minus this arm, so a POSITIVE delta means the arm is BEHIND; E3's reference is PRIOR_base_44090 (the filed sibling surface), E4's reference is mag_ridge|topk",
+  "paired_differences_vs_best_control": {
+   "fuse6|topk": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.06925079304598498,
+    "ci95": [
+     0.06043579220616829,
+     0.07756787392933097
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "fuse6|packed": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.06161019058365565,
+    "ci95": [
+     0.05254957871262307,
+     0.07029489113232754
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "fuse6|greedy": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.0866794586204957,
+    "ci95": [
+     0.07719788169192773,
+     0.0951834438146383
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "line_persist|topk": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.07404158824768238,
+    "ci95": [
+     0.06514541625136257,
+     0.08254728610881543
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "line_persist|packed": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.06713704473142268,
+    "ci95": [
+     0.05790881810164844,
+     0.07601543823702908
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "line_persist|greedy": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.07903709327771145,
+    "ci95": [
+     0.06951248563224299,
+     0.08820001617772831
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "line_contrast|topk": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.07701528941640597,
+    "ci95": [
+     0.06781744249655833,
+     0.08636342488122851
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "line_contrast|packed": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.0733194314597706,
+    "ci95": [
+     0.0643391526939808,
+     0.08252502730741465
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "line_contrast|greedy": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.087700787631808,
+    "ci95": [
+     0.0783811401590633,
+     0.0961320072490035
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "mag_ridge|topk": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.05176835997927552,
+    "ci95": [
+     0.0429790000090066,
+     0.060182780983791345
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "mag_ridge|packed": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.05131589872652415,
+    "ci95": [
+     0.042561246152540894,
+     0.059837930658289344
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "mag_ridge|greedy": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.09003222548321291,
+    "ci95": [
+     0.08041202837767619,
+     0.09856377541332782
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "scarp_slope|topk": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.05294406561291824,
+    "ci95": [
+     0.04372220548875179,
+     0.061928608889475226
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "scarp_slope|packed": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.05255822991888809,
+    "ci95": [
+     0.04330540629265797,
+     0.06140265880792407
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "scarp_slope|greedy": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.09003222548321291,
+    "ci95": [
+     0.08041202837767619,
+     0.09856377541332782
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "FUSION|topk": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.06222169654340774,
+    "ci95": [
+     0.052907568401171605,
+     0.07139258271915273
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "FUSION|packed": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.056821767531263084,
+    "ci95": [
+     0.04803872712461531,
+     0.06600032868801245
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "FUSION|greedy": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.09003222548321291,
+    "ci95": [
+     0.08041202837767619,
+     0.09856377541332782
+    ],
+    "withheld_positive_pixels": 36335
+   },
+   "PRIOR_pruned_37654": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "delta": 0.08623416336164376,
+    "ci95": [
+     0.07698974118167014,
+     0.09456856765041922
+    ],
+    "withheld_positive_pixels": 36335
+   }
+  },
+  "selection_bias": "the shipped arm is the winner of an 18-arm screen on this same holdout, so its number is biased upward; the incumbent's number on the identical folds is printed beside it and is 2.3x higher",
+  "limitation": "IR-56-011: the hide instrument's truth is the catalogue, so it rewards mass ON mapped traces, which the organiser deletes. The ordering of our two sibling controls is inverted on this instrument (base 0.0900 vs pruned 0.0038, live 0.2600 vs 0.2778), which proves the inversion rather than the rule. The holdout therefore cannot rank the near-catalogue pruning decision at all, and no promotion is claimed from it."
+ },
+ "registry_comparison": {
+  "corpus_files": 868,
+  "screened_rows": 868,
+  "read_errors": 31,
+  "over_070_directed": 56,
+  "over_070_reverse": 1,
+  "over_070_reciprocal": 0,
+  "dense_priors_over_070": 56,
+  "top_reciprocal": [
+   {
+    "path": "GEMSDOE42__gems42-xscale-worm-persistence-20261006T000541Z-nan.tif",
+    "prior_dots": 60069,
+    "h56-magpack-37k-20261009_frac": 0.2991,
+    "h56-magpack-37k-20261009_rev": 0.2996,
+    "h56-quota-37k-20261009_frac": 0.2834,
+    "h56-quota-37k-20261009_rev": 0.2149,
+    "max_frac": 0.2991,
+    "max_rev": 0.2996,
+    "reciprocal": 0.2991
+   },
+   {
+    "path": "GEMSDOE42__gems42-xscale-worm-persistence-20261006T000541Z-zeros.tif",
+    "prior_dots": 60069,
+    "h56-magpack-37k-20261009_frac": 0.2991,
+    "h56-magpack-37k-20261009_rev": 0.2996,
+    "h56-quota-37k-20261009_frac": 0.2834,
+    "h56-quota-37k-20261009_rev": 0.2149,
+    "max_frac": 0.2991,
+    "max_rev": 0.2996,
+    "reciprocal": 0.2991
+   },
+   {
+    "path": "GEMSDOE40__gemsdoe40-euler-line-ring-pruned-60000px-20261006T032708Z-8dafb186-nan.tif",
+    "prior_dots": 60000,
+    "h56-magpack-37k-20261009_frac": 0.2544,
+    "h56-magpack-37k-20261009_rev": 0.2544,
+    "h56-quota-37k-20261009_frac": 0.2065,
+    "h56-quota-37k-20261009_rev": 0.1821,
+    "max_frac": 0.2544,
+    "max_rev": 0.2544,
+    "reciprocal": 0.2544
+   },
+   {
+    "path": "GEMSDOE40__gemsdoe40-euler-line-ring-pruned-60000px-20261006T032708Z-8dafb186-zeros.tif",
+    "prior_dots": 60000,
+    "h56-magpack-37k-20261009_frac": 0.2544,
+    "h56-magpack-37k-20261009_rev": 0.2544,
+    "h56-quota-37k-20261009_frac": 0.2065,
+    "h56-quota-37k-20261009_rev": 0.1821,
+    "max_frac": 0.2544,
+    "max_rev": 0.2544,
+    "reciprocal": 0.2544
+   },
+   {
+    "path": "GEMSDOE46__SUBMISSION-GEMSDOE46-dfa-corroborated-zeros.tif",
+    "prior_dots": 37654,
+    "h56-magpack-37k-20261009_frac": 0.2992,
+    "h56-magpack-37k-20261009_rev": 0.2464,
+    "h56-quota-37k-20261009_frac": 0.2799,
+    "h56-quota-37k-20261009_rev": 0.1913,
+    "max_frac": 0.2992,
+    "max_rev": 0.2464,
+    "reciprocal": 0.2464
+   }
+  ],
+  "reading": "exact directed <=3 px dot proximity, both directions, over every harvested sibling raster; the reciprocal criterion is what separates 'someone already filed this' from 'that raster dots the whole footprint'",
+  "shared_gate": {
+   "registry": "data/_reg_top_h56b",
+   "priors": 40,
+   "per_candidate": {
+    "h56-magpack-37k-20261009": {
+     "ok": true,
+     "duplicate": false,
+     "max_spearman": 0.011706694038259604,
+     "max_near_3px": 0.5271418707175864,
+     "distinct_decoded": 21
+    },
+    "h56-quota-37k-20261009": {
+     "ok": true,
+     "duplicate": false,
+     "max_spearman": 0.016893540813984947,
+     "max_near_3px": 0.47529220779220777,
+     "distinct_decoded": 21
+    }
+   },
+   "scope": "gates.lane_uniqueness_report, both phases, on the disclosed top-40 prior subset ranked by reciprocal overlap; the 868-raster exact-proximity screen covers the rest and is reported above",
+   "receipt": "evidence/lane_uniqueness2_summary.json"
+  }
+ },
+ "rasters": {
+  "primary": {
+   "file": "docs/downloads/h56-magpack-37k-20261009.tif",
+   "sha256": "62824bcab55d97427b035a004d90c2aaf088acb30c66aeb2a355f5022cc6efb2",
+   "bytes": 154019,
+   "dots": 37654,
+   "values": [
+    0.0,
+    1.0
+   ],
+   "min_d_catalogue_px": 2.23606797749979,
+   "validator_ok": true,
+   "validator_problems": [],
+   "submission_name": "h56-magpack-37k-20261009",
+   "note": "h56-r2 mag-ridge packed 2.8px, >=2px off catalogue, 37,654 dots; holdout 0.0387 vs 0.0900 incumbent; not cleared for a slot",
+   "note_chars": 123
+  },
+  "secondary": {
+   "file": "docs/downloads/h56-quota-37k-20261009.tif",
+   "sha256": "62b309d93e9a3665520ff0f55c0683dc8458e9d60813fa7fc9a5f2fc995d0ee6",
+   "bytes": 138144,
+   "dots": 30800,
+   "values": [
+    0.0,
+    1.0
+   ],
+   "min_d_catalogue_px": 2.23606797749979,
+   "validator_ok": true,
+   "validator_problems": [],
+   "submission_name": "h56-quota-37k-20261009",
+   "note": "h56-r2 quota union, 6 channels, 2.8px packed, 30,800 dots off catalogue; holdout 0.0359; negative verdict, not cleared",
+   "note_chars": 118
+  }
+ },
+ "derived_model": {
+  "evidence_class": "DERIVED (arithmetic on user-reported scores + measured dot counts)",
+  "deleted_pixels": 6436,
+  "T_credit": 5223.1,
+  "credit_per_dot": 0.1387,
+  "hidden_truth_pixels_G": {
+   "lo": 12783,
+   "hi": 18294
+  },
+  "ceiling_at_this_mass_if_perfect": {
+   "formula": "T=G, F=N-G: DTI = G/(0.2(G+F)+0.8G)",
+   "value": 0.825
+  },
+  "never_a_score": true
+ },
+ "hypotheses_rejected": [
+  "H2-1 any single official band, used label-free as a ridge/crest emitter, can beat the filed surface at matched budget: best own arm mag_ridge|packed 0.0387 [0.0348, 0.0424] vs 0.0900 for the filed surface on the same folds - behind by 0.0513, CI excluding zero",
+  "H2-2 geodetic strain-rate as a primary locator: strain_2ndinv_ridge 0.0196 and strain_all 0.0122 vs mag_ridge|packed 0.0387 pooled HOLDOUT-DTI; recall within 3 px 0.054 vs 0.175",
+  "H2-3 lineament persistence / discrete-Radon straightness: line_persist|topk 0.0160 and |packed 0.0229, line_contrast|packed 0.0167, vs mag_ridge|packed 0.0387 pooled HOLDOUT-DTI",
+  "H2-4a equal-rank-mean fusion of six channels: MEAN|topk 0.0179, worse than every member that counts (best single 0.0387)",
+  "H2-4b quota union of six channels at matched budget: 0.0359 weighted and 0.0312 unweighted, still behind the best single channel 0.0387",
+  "H2-5 exact 2.8 px packing at fixed budget: NOT RESOLVABLE - the paired statistic is -0.00045 [CI -0.00125, +0.00036] (reference mag_ridge|topk minus this arm), i.e. +0.00045 with an interval straddling zero; shipped as free, not as measured",
+  "H2-6 near-catalogue pruning decidable on the shared holdout: REJECTED - the instrument is blind to it in the wrong direction (filed surface 0.0900 vs its pruned twin 0.0038 here, live 0.2600 vs 0.2778 USER-REPORTED)",
+  "the corrections lane's own premise, that the catalogue is displaced from the evidence by more than ~2 px: round 1 measured 0 of 21 corridors passing the consistency gate and 0 of 13 LiDAR-calibrated segments displaced by 200 m"
+ ],
+ "budget": {
+  "experiments": 4,
+  "stop_loss": "3 experiments / 2 h",
+  "experiments_over": 1,
+  "clock_utc": {
+   "first_receipt": "2026-10-09T18:37Z",
+   "last_experiment_receipt": "2026-10-09T18:37Z",
+   "this_card": "2026-10-09T18:55:01Z",
+   "reading": "measured work ran between the receipt stamps above; the experiment count exceeded the 3-experiment stop-loss by one (E4), the wall clock did not exceed 2 h"
+  },
+  "overrun_reason": "E4 (the combination-rule test) was added after the stop-loss because E3's arm table showed the instrument itself was inverted; the experiment count is reported as an overrun rather than restated to fit the budget",
+  "script_seconds": {
+   "E0_inversion": "not recorded by that script",
+   "E1a_fields": "not recorded by that script",
+   "E1b_screen": 241.1,
+   "E3_emitters": "not recorded by that script",
+   "E4_combination": 54.7
+  }
+ },
+ "verdict": "negative",
+ "verdict_text": "negative - the lane's own criterion is not met; the field is behind the incumbent on the shared instrument, so no slot is claimed",
+ "cleared_for_weekly_slot": false,
+ "promote": false,
+ "reproduce": [
+  "python scripts/build_fields.py",
+  "python scripts/run_field_holdout.py",
+  "python scripts/build_lineament.py",
+  "python scripts/emit_and_score.py --fields fuse6,line_persist,line_contrast,mag_ridge,scarp_slope --budget 37654 --nms 2.8 --greedy --priors --name h56-mpp-r1-20261009",
+  "python scripts/run_quota_union.py",
+  "python scripts/emit_and_score.py --fields mag_ridge --budget 37654 --nms 2.8 --no-holdout --name h56-magpack-37k-20261009",
+  "python scripts/emit_quota.py --name h56-quota-37k-20261009",
+  "SCREEN_PREFIX=h56b python scripts/screen_registry.py data/registry_flat docs/downloads/h56-magpack-37k-20261009.tif docs/downloads/h56-quota-37k-20261009.tif",
+  "python scripts/invert_hidden_size.py",
+  "python tests/test_contracts.py"
+ ],
+ "merge_with_pr7": {
+  "merged_from": "origin/main tip 44ea13b (PR #7, the parallel discovery round-2 run of this lane)",
+  "other_run_raster": "h56-disc-multi-b25000-20261009-20261009T165646Z.tif",
+  "other_run_holdout_dti": 0.012423943839880595,
+  "other_run_promoted": false,
+  "irregularities_total": 30,
+  "renumbered_to_this_run": [
+   "IR-56-024",
+   "IR-56-025",
+   "IR-56-026",
+   "IR-56-027"
+  ],
+  "consequence": "That run's IR-56-016 records that the page hosting the 0.2778 file calls it UNSCORED and quotes a conflicting leader, so every number this run derived from 0.2600 -> 0.2778 (|G| band, T_credit, the break-even credit per dot) is conditional on those two user-reported scores being the real public values. The structural conclusion - pruning known-fault pixels is worth +0.0178 because the scorer deletes them from the truth while the 300 m kernel still discounts their neighbours - rests on the metric definition and stands either way. Neither run claims an organizer-confirmed score, and neither certifies the other's raster."
+ }
+}
