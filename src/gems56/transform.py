@@ -45,7 +45,7 @@ def rank01(a: np.ndarray, valid: np.ndarray, nbins: int = 4096) -> np.ndarray:
     NaN *inside* the footprint (a transform that legitimately returns NaN, e.g. an unsupported
     edge window) is excluded from the ranking and stays NaN on output.  Before this rule a
     NaN-within-valid cell was pushed into the top histogram bin and came out rank ~1.0, which
-    silently turned every edge-masked cell into a top-ranked emission candidate (IR-56-015).
+    silently turned every edge-masked cell into a top-ranked emission candidate (IR-56-020).
     """
     good = np.asarray(valid, bool) & np.isfinite(a)
     v = a[good]
@@ -69,7 +69,7 @@ def gradient_magnitude(a: np.ndarray, valid: np.ndarray) -> np.ndarray:
     """|grad| in units per metre (central differences, sentinel-safe).
 
     Cells within 2 px of the footprint edge return NaN: the exterior is zero-filled, so a
-    central difference there measures the data edge, not the field (IR-56-015 defect class).
+    central difference there measures the data edge, not the field (IR-56-020 defect class).
     """
     f = fill_outside(a, valid)
     gy, gx = np.gradient(f.astype(np.float32), PIXEL_M, PIXEL_M, edge_order=2)
@@ -144,7 +144,7 @@ def scarp_step(a: np.ndarray, valid: np.ndarray, half_width_m: float,
         # Support mask: the two-sided window must lie *inside* the footprint for every k, and the
         # persistence window only reads supported acc.  Without this the zero-fill outside the data
         # extent is differenced against real data and the footprint rim becomes a fake step ~10x
-        # the interior response (measured IR-56-015: 56 % of an emission's top cells landed on a
+        # the interior response (measured IR-56-020: 56 % of an emission's top cells landed on a
         # 2 px rim band of the competition footprint).
         sup = np.asarray(valid, bool).copy()
         for k in range(1, rv + 1):
@@ -180,7 +180,7 @@ def hessian_line(a: np.ndarray, valid: np.ndarray, sigma_m: float = 300.0) -> np
 
     Cells within ~3 sigma of the footprint edge return NaN: the exterior is zero-filled, so the
     smoothed field (and its second derivatives) are contaminated out to 3 sigma there
-    (IR-56-015 defect class).
+    (IR-56-020 defect class).
     """
     sig = max(0.5, sigma_m / PIXEL_M)
     f = ndimage.gaussian_filter(fill_outside(a, valid).astype(np.float64), sig)

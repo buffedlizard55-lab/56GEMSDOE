@@ -158,7 +158,7 @@ Nothing here is a board score; no ORGANIZER-CONFIRMED number exists for anything
   whose peaks are NOT on known traces (independent maps, heat, seismicity), or from emission
   *along* catalogue extensions, which this instrument is not built to reward.
 
-## R3. Instrument defect found by E1 and fixed once in the template (IR-56-015)
+## R3. Instrument defect found by E1 and fixed once in the template (IR-56-020)
 
 - `transform.scarp_step` zero-fills the exterior before differencing: on the real footprint the
   23,600-cell rim band returned median 5.28 vs 0.47 interior, and **56.5 % of iso_step's
@@ -173,7 +173,7 @@ Nothing here is a board score; no ORGANIZER-CONFIRMED number exists for anything
 - Lesson (generalises): **any transform that touches the zero-filled exterior must publish its
   support mask, and the ranker must not resurrect masked cells.**
 
-## R4. Data placement solved (IR-56-016)
+## R4. Data placement solved (IR-56-021)
 
 - `bash scripts/download_competition_data.sh` (alias `scripts/fetch_inputs.sh`, the name the pins
   document): route A verifies official files dropped in `data/raw/`; route B assembles from the
@@ -200,7 +200,7 @@ Nothing here is a board score; no ORGANIZER-CONFIRMED number exists for anything
   contain ≥70 % of our 25,000 dots within 3 px. The trigger is density-degenerate: for every
   offender `near_frac ≈ its own 3 px halo coverage of the grid` (0.887 vs 0.861, 0.740 vs 0.759,
   0.700 vs 0.735), i.e. any dot set whatsoever would trip it; max Spearman on dots 0.043, identical
-  hashes 0, reciprocal >0.70 = 0. Logged as **IR-56-018** (mirror of IR-56-006). Protocol executed
+  hashes 0, reciprocal >0.70 = 0. Logged as **IR-56-023** (mirror of IR-56-006). Protocol executed
   as written: verdict logged, nothing promoted.
 - Net round-2 verdict: **NEGATIVE twice over** (holdout below chance; gate stop) — the unique TIF
   is published for review with both reasons in its receipt, note and the front-page banner.

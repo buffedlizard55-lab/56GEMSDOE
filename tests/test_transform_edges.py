@@ -1,4 +1,4 @@
-"""Regression tests for the footprint-edge defect class (IR-56-015).
+"""Regression tests for the footprint-edge defect class (IR-56-020).
 
 The transforms zero-fill outside the footprint before differencing/smoothing.  A shared tool
 that does not mask the resulting edge response turns the data rim into a fake feature: on the

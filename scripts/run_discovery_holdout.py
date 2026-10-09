@@ -69,7 +69,7 @@ def read_extra_bands(path: Path) -> dict[str, np.ndarray]:
 def auc(scores: np.ndarray, labels: np.ndarray, valid: np.ndarray) -> float:
     """Mann-Whitney ROC-AUC of a fold-independent field against pooled withheld truth.
 
-    Cells where the field is NaN (edge-masked by the IR-56-015 fix) are excluded -- they are
+    Cells where the field is NaN (edge-masked by the IR-56-020 fix) are excluded -- they are
     neither a positive nor a negative prediction, they are "no opinion".
     """
     ok = np.asarray(valid, bool) & np.isfinite(scores)

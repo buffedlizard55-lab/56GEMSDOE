@@ -85,7 +85,7 @@ and is added in this round (E1).
 
 - **Layer(s):** band 6 `tc` (“Tilt angle or total curvature – magnetic field derivative for edge
   detection”; observed range this session **2.95–88.57, no sign change** — the description is
-  ambiguous and the data are magnitude-like; flagged as an irregularity, IR-56-014), optionally
+  ambiguous and the data are magnitude-like; flagged as an irregularity, IR-56-019), optionally
   gated by band 3 `tmi_hg`.
 - **Physical signature:** proximity to *low* `tc` — the tilt/curvature zero-contour family
   (Miller & Singh 1994 tilt-angle edge rule), i.e. contact edges at any source depth, smoothed

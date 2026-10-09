@@ -58,7 +58,7 @@ def main():
             "that mimics a density step); depositional onlap gradients that step basement depth "
             "without faulting; saline playa-margin conductivity contrasts; intrusive bodies that "
             "step gravity without any fault; lithologic contacts in the tilt/curvature field; and "
-            "on the estimator side, the footprint-rim zero-fill artefact (IR-56-015, fixed and "
+            "on the estimator side, the footprint-rim zero-fill artefact (IR-56-020, fixed and "
             "regression-tested before this run's verdict)."),
         measurements=dict(
             evidence_class="HOLDOUT-DTI (catalogue recovery, hide-and-recover; NOT new-fault discovery)",
@@ -74,7 +74,7 @@ def main():
             canary_rule=hold["canary_rule"],
             canary_max_new_fields=hold["canary_max_new_fields"],
             pre_fix_run=dict(
-                note="superseded by IR-56-015 (footprint-rim artefact); preserved for the record",
+                note="superseded by IR-56-020 (footprint-rim artefact); preserved for the record",
                 candidate_dti=(pre or {}).get("pooled", {}).get("scores", {}).get(cand, {}).get("dti"),
                 receipt="evidence/holdout_discovery_v0_prefx.json" if pre else None,
             ),
@@ -106,7 +106,7 @@ def main():
             zip_file=bld["receipt"]["zip_file"],
         ),
         budget=dict(experiments=3,
-                    used="E1 holdout (incl. one re-run after the IR-56-015 template fix), "
+                    used="E1 holdout (incl. one re-run after the IR-56-020 template fix), "
                          "E2 build+validate, E3 uniqueness screen+gate",
                     slots_used=0,
                     note="promotion to a real weekly slot is a separate selector step; this card "

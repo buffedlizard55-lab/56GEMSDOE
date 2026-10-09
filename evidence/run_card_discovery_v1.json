@@ -1,10 +1,10 @@
 {
- "run_utc": "2026-10-09T17:26:29Z",
+ "run_utc": "2026-10-09T17:44:27Z",
  "lane": "discovery (round 2 of the corrections-lane repository)",
- "commit": "994ff6a644eec8a238e251a84261fbb8db8f2599",
+ "commit": "d3adf9a99021ffa13ab2f616ad5b825048f86a89",
  "hypothesis": "Faults that never reached the USGS/INGENIOUS catalogue are expressed in the GeoDAWN stack as laterally-persistent steps of the isostatic gravity anomaly (H6), of the basement-depth surface concordant with conductivity (H7), and as proximity to the magnetic tilt/curvature low (H8); ranking those signatures and emitting the top-k cells >200 m off known traces recovers structure the catalogue does not contain.",
  "mechanism": "scarp_step (two-sided, >=2 km along-strike persistent step, 150 m half-width) on bands 13/15/17, box-mean low of band 6; per-field rank01; concordance = min of ranks; emission = top-k inside footprint & ~dilate(catalogue, 2 px), value 1.0.",
- "named_non_fault_process": "topographic leakage through the isostatic correction (range-front-correlated error that mimics a density step); depositional onlap gradients that step basement depth without faulting; saline playa-margin conductivity contrasts; intrusive bodies that step gravity without any fault; lithologic contacts in the tilt/curvature field; and on the estimator side, the footprint-rim zero-fill artefact (IR-56-015, fixed and regression-tested before this run's verdict).",
+ "named_non_fault_process": "topographic leakage through the isostatic correction (range-front-correlated error that mimics a density step); depositional onlap gradients that step basement depth without faulting; saline playa-margin conductivity contrasts; intrusive bodies that step gravity without any fault; lithologic contacts in the tilt/curvature field; and on the estimator side, the footprint-rim zero-fill artefact (IR-56-020, fixed and regression-tested before this run's verdict).",
  "measurements": {
   "evidence_class": "HOLDOUT-DTI (catalogue recovery, hide-and-recover; NOT new-fault discovery)",
   "evaluator_version": "gems52-pooled-hide-v1",
@@ -41,7 +41,7 @@
   "canary_rule": "AUC > 0.90 means leakage until proven otherwise",
   "canary_max_new_fields": 0.567,
   "pre_fix_run": {
-   "note": "superseded by IR-56-015 (footprint-rim artefact); preserved for the record",
+   "note": "superseded by IR-56-020 (footprint-rim artefact); preserved for the record",
    "candidate_dti": 0.011562415361321883,
    "receipt": "evidence/holdout_discovery_v0_prefx.json"
   },
@@ -80,7 +80,7 @@
  },
  "budget": {
   "experiments": 3,
-  "used": "E1 holdout (incl. one re-run after the IR-56-015 template fix), E2 build+validate, E3 uniqueness screen+gate",
+  "used": "E1 holdout (incl. one re-run after the IR-56-020 template fix), E2 build+validate, E3 uniqueness screen+gate",
   "slots_used": 0,
   "note": "promotion to a real weekly slot is a separate selector step; this card does not pick one"
  },
