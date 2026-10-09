@@ -1,0 +1,93 @@
+{
+  "generated_utc": "20261009T185857Z",
+  "hypothesis": "Corrections to existing fault traces (confirmed in-scope by forum 11516) lie within the 200-500 m annulus around the catalogue, where DEM-scarp and magnetic/gravity gradient ridges mark the refined trace position.",
+  "mechanism": "Hessian bright-ridge (sigma=300 m) of det_elev_slope, tmi_hg, iso_grav_anom_hg; ECDF rank each to [0,1]; geometric-mean concordance; emission restricted to the annulus 2-5 px (200-500 m) from the USGS/INGENIOUS catalogue; top-k=37654 dots=1.0/0.0; NaN outside footprint.",
+  "named_non_fault_process": "Erosional retreat of range fronts and wind/water gaps can create scarps 200-500 m from the mapped trace without representing a fault correction; the 1 m LiDAR calibration (MAD 0.29 px vs 100 m ridges) reduces but does not eliminate this confound.",
+  "holdout_dti": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "alpha": 0.2,
+    "beta": 0.8,
+    "triangular_radius_m": 300.0,
+    "pooled": true,
+    "scores": {
+      "corridor@37654": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "dti": 0.00046536082625677774,
+        "ci95": [
+          0.00014888844351631025,
+          0.0008851881811816639
+        ],
+        "withheld_positive_pixels": 48124,
+        "tpw": 31.93289993047872,
+        "fpw": 150570.34835568507,
+        "fnw": 48092.06710006952
+      },
+      "random@37654": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "dti": 0.0014286371980166237,
+        "ci95": [
+          0.0007479374902911262,
+          0.002277173648736998
+        ],
+        "withheld_positive_pixels": 48124,
+        "tpw": 98.0435279823428,
+        "fpw": 150542.50687983498,
+        "fnw": 48025.95647201765
+      }
+    },
+    "best_comparable_control": "random@37654",
+    "paired_differences": {
+      "random@37654": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "delta": -0.0009632763717598459,
+        "ci95": [
+          -0.0016803404698375447,
+          -0.000393489576380649
+        ],
+        "withheld_positive_pixels": 48124
+      }
+    },
+    "bootstrap": {
+      "method": "paired physical spatial-cluster percentile",
+      "clusters": 618,
+      "draws": 1000,
+      "seed": 520810,
+      "confidence": 0.95,
+      "caveat": "Conditional on fitted folds, catalogue labels and fixed budgets; not a leaderboard interval."
+    },
+    "implementation_sha256": {
+      "evaluate_holdout.py": "ffb084fdf34bb30438485b89caeb1228a6680abfd9f9f0472f4355845da05cc6",
+      "holdout.py": "f6706d781de72092e59332074af26e1d58cf734f95bf947a0d7c3fea577e6145",
+      "metric.py": "3d454119edfcec3cc2a83278c2015d7e41d39d8c1142fca12311409a18ce7d1a",
+      "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+    }
+  },
+  "raster": {
+    "file": "h56-corridor-b2to5-20261009-20261009T185857Z.tif",
+    "sha256": "984ffa48f4f2519fb5e1eec227234b773c3abb9ff97ffc009844cf478cb1bef7",
+    "bytes": 391433,
+    "dots": 37654,
+    "dots_on_catalogue": 0,
+    "dots_within_200m": 0,
+    "sigma_m": 300.0,
+    "annulus_inner_px": 2,
+    "annulus_outer_px": 5,
+    "k": 37654,
+    "annulus_cells": 342485
+  },
+  "submission_name": "GEMSDOE56-CORRIDOR-CONCORD",
+  "note": "h56 corridor: 37654 dots in 200-500 m annulus around USGS/INGENIOUS catalogue, weighted by Hessian-ridge concordance of det_elev_slope/tmi_h",
+  "zip_file": "h56-corridor-b2to5-20261009-20261009T185857Z.zip",
+  "zip_sha256": "0bdf4e51d6a440e6bb92f52148ce4a97d7579775c31734932a3ed39887600b41",
+  "validator_pass": true,
+  "verdict": {
+    "value": "negative/research",
+    "promote": false,
+    "format_valid": true,
+    "rationale": "promote iff paired 95% CI vs same-annulus random at equal budget is strictly positive AND format-valid"
+  }
+}
