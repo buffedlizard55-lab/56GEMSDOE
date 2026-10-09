@@ -55,7 +55,7 @@ def test_published_downloads_match_receipts_and_sample_mask_but_remain_audit_onl
     status = load_json("evidence/submission_status.json")
     names = [artifact["submission_name"] for artifact in status["artifacts"].values()]
     assert len(names) == len(set(names))  # distinct archived names, not approval to submit
-    with rasterio.open(ROOT / "data/grid/sample_submission.tif") as sample:
+    with rasterio.open(ROOT / "data/sample_submission.tif") as sample:
         template = sample.read(1)
         valid = np.isfinite(template)
         transform, crs, shape = sample.transform, sample.crs, sample.shape
