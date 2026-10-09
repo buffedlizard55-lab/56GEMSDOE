@@ -1,5 +1,11 @@
 # Round-2 hypotheses — 2026-10-09 (corrections-lane repo, discovery sub-lane)
 
+> **Archived discovery-lane record, outside the active corrections-only scope.** Its 25,000-dot
+> GeoTIFF fails strict sample-footprint validation (7,111,787 non-NaN cells outside the pinned
+> sample mask; nodata tag missing), and the registry stop is not waived by its old holdout results.
+> This file is not permission to continue discovery or spend another experiment. The current
+> authoritative decision is `evidence/run_card.json`: NEGATIVE / STOP, no TIFF safe to submit.
+
 Status key: **VALIDATED / NEGATIVE / BLOCKED / UNTESTED**. No number below is a score for a
 submission; expected-DTI ranges are *judgements* informed by receipts named inline. This file
 supersedes nothing: `hypotheses.md` (round 1) stays as the earlier record.

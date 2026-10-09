@@ -1,5 +1,10 @@
 # Candidate hypotheses — ranked, with the data each one needs
 
+> **Historical planning document, not current authorization.** The active corrections lane has a
+> negative stop result and the experiment budget is exhausted. Do not treat the proposed candidates
+> below as instructions to run experiments; the current task is corrections-only. See `README.md`
+> and `evidence/run_card.json` for the authoritative status.
+
 Status key: **VALIDATED** = a holdout DTI with CI exists. **BLOCKED** = cannot be tested here; the blocker is named. **NEGATIVE** = a measured null.
 No expected-DTI number below is a score. The ranking is qualitative and is a judgement, not a projection.
 

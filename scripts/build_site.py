@@ -1,28 +1,19 @@
 #!/usr/bin/env python3
-"""Build the GitHub Pages site (docs/) from the lane evidence JSONs.
+"""Build the current, evidence-led DOE GEMS status site in docs/.
 
-Pages: index (one-click download + status + the two runs on this repo),
-executive-summary (how to submit), research (method, offset histogram, LiDAR
-calibration, holdout, canary, the "why 0.2778" analysis, the sibling run's
-reconciliation), hypotheses (ranked candidates), sources (official verified
-links), irregularities (flagged claims from both runs), prior-run (the merged
-sibling corrections run: negative verdict, its downloads and receipts).
-All numbers are read from evidence/corrections/*.json (run A) and
-evidence/*.json (run B) so the site cannot drift from the evidence.
-
-Run:  python scripts/build_site.py
+The active corrections run is negative. Generated pages must not advertise a file as ready to
+submit. The only one-click raster is a historical, format-valid archive that still fails the
+registry duplicate-and-stop rule. Run: python scripts/build_site.py
 """
 
 from __future__ import annotations
 
 import argparse
 import datetime as dt
-import hashlib
 import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-EV = ROOT / "evidence" / "corrections"
 DOCS = ROOT / "docs"
 DOWNLOADS = DOCS / "downloads"
 
@@ -41,6 +32,7 @@ nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
 .dlbtn{margin:14px 0}
 .btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:8px}
 .btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn.stop{background:var(--bad);color:#1c0808}
 .btn:hover{filter:brightness(1.1)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
@@ -64,19 +56,18 @@ def esc(s):
 
 
 def page(title, active, body, dl=True):
-    tif = next(DOWNLOADS.glob("gems56-corr-*-nan.tif"), None)
     tifs = sorted(DOWNLOADS.glob("gems56-corr-*-nan.tif"))
     tif = tifs[-1] if tifs else None
     rel = tif.name if tif else ""
     dlbtn = ""
     if dl and tif:
-        dlbtn = (f'<div class="dlbtn"><a class="btn" href="downloads/{esc(rel)}">'
-                 f'&#11015; Download the submission GeoTIFF</a> '
-                 f'<a class="btn alt" href="downloads/{esc(rel)}">.tif '
-                 f'({tif.stat().st_size / 1024:.0f} KB)</a></div>')
+        dlbtn = (f'<div class="dlbtn"><a class="btn stop" href="downloads/{esc(rel)}">'
+                 f'&#11015; Download archived TIFF — NOT safe to submit</a> '
+                 f'<span class=mut>.tif ({tif.stat().st_size / 1024:.0f} KB) · '
+                 f'technical inspection only</span></div>')
     nav = "".join(
         f'<a href="{h}"{" class=active" if h == active else ""}>{t}</a>'
-        for h, t in (("index.html", "Home"), ("executive-summary.html", "Make a submission"),
+        for h, t in (("index.html", "Home"), ("executive-summary.html", "Submission status"),
                      ("research.html", "Research"), ("hypotheses.html", "Hypotheses"),
                      ("sources.html", "Sources"), ("irregularities.html", "Irregularities"),
                      ("prior-run.html", "Prior run")))
@@ -89,25 +80,22 @@ def page(title, active, body, dl=True):
 faults missing from the USGS/INGENIOUS catalogue</div>
 <nav>{nav}</nav>{dlbtn}
 </div></header>
-<div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
-submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
-on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
-<span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
-data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
-<main class=wrap><div class=card><h2 class=bad>STOP: not cleared for submission</h2>
-<p>The TIF is format-valid research output. Eight literal &gt;70% containment flags fail
- the standing duplicate-and-stop rule. Historical UNIQUE/PROMOTE labels below describe
- the earlier interpretation, not current authorization. Superset explanations do not waive
- the rule. No competition submission has been made.</p>
-<p><a href="prior-run.html">Preserved prior run</a> ·
-<a href="prior-irregularities.html">Prior run irregularities</a></p></div>{body}</main>
-<footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
-round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
+<div class=values><div class=wrap><b>Evidence classes.</b>
+<span class=ok>ORGANIZER-CONFIRMED</span> requires an organizer receipt;
+<span class=warn>HOLDOUT-DTI</span> requires evaluator/version, withheld-positive count, and 95% CI;
+<span class=mut>MEASURED</span> describes local measurements; user and sibling reports are not organizer facts.</div></div>
+<main class=wrap><div class=card><h2 class=bad>Current verdict: NEGATIVE / STOP — no safe-to-submit file</h2>
+<p>The active corrections primary triggers the literal &gt;70%-within-3-px registry stop and fails
+strict sample-footprint format validation. The 14-dot sensitivity also fails format validation.
+The format-valid historical TIFF linked above still triggers the registry stop. No slot has been
+used; the experiment budget is exhausted; no file is selected or promoted. The archive download is
+for technical inspection only.</p>
+<p><a href="research.html">Research and 0.2778 evidence review</a> ·
+<a href="irregularities.html">Machine-logged findings</a></p></div>{body}</main>
+<footer><div class=wrap>56GEMSDOE · <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/run_card.json">active run card</a> ·
 generated {dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} by
-<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
-and <code>evidence/*.json</code> (run B) ·
-site served from <code>main</code> at
-<a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
+<code>scripts/build_site.py</code> ·
+<a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">project site</a></div></footer>
 </body></html>"""
 
 
@@ -119,769 +107,322 @@ def fmt(x, n=4):
     return f"{x:.{n}f}" if isinstance(x, (int, float)) else str(x)
 
 
+
+def write_status_pages(out):
+    """Render every current status page from the authoritative run card and evidence log."""
+    run = load_json(ROOT / "evidence" / "run_card.json")
+    irr = load_json(ROOT / "evidence" / "irregularities.json")
+    results = run["format_validation_review"]["results"]
+    gate = run["registry_comparison"]["shared_gate_verdict"]
+    surface = run["registry_comparison"]["stage_checks"]["primary"]["preplacement_surface"]
+    hold = run["holdout_dti"]
+    arms = hold["arms"]
+    sub = run["submission"]
+    archive = results["historical_6504"]
+    archive_name = Path(archive["path"]).name
+    home_rows = []
+    for key, label, purpose in (
+        ("primary", "Active corrections primary (1 dot)", "corrections"),
+        ("sensitivity", "Sensitivity (14 dots)", "corrections"),
+        ("discovery_archive", "Discovery archive (25,000 dots)", "outside active lane"),
+        ("historical_6504", "Historical corrections archive (6,504 dots)", "historical"),
+    ):
+        r = results[key]
+        status = "PASS — local format only" if r["ok"] else "FAIL — not template-conformant"
+        explanation = "; ".join(r.get("problems", [])) or "Exact sample finite/NaN mask and nodata match."
+        if key == "primary":
+            a = f'<a href="downloads/{esc(Path(r["path"]).name)}">{esc(label)}</a>'
+        elif key == "sensitivity":
+            a = f'<a href="downloads/{esc(Path(r["path"]).name)}">{esc(label)}</a>'
+        elif key == "discovery_archive":
+            a = f'<a href="downloads/{esc(Path(r["path"]).name)}">{esc(label)}</a>'
+        else:
+            a = f'<a href="downloads/{esc(archive_name)}">{esc(label)}</a>'
+        home_rows.append(
+            f'<tr><td>{a}</td><td>{esc(purpose)}</td><td>{esc(status)}</td>'
+            f'<td>{esc(explanation)}</td><td>{esc(r["sha256"])}</td></tr>'
+        )
+    hold_rows = []
+    for arm in ("B_snap", "D_jitter"):
+        value = arms[arm]
+        hold_rows.append(
+            f'<tr><td>{esc(arm)}</td><td>{fmt(value["dti"], 9)}</td>'
+            f'<td>[{fmt(value["ci95"][0], 9)}, {fmt(value["ci95"][1], 9)}]</td></tr>'
+        )
+    hold_table = "".join(hold_rows)
+    near = gate["directed_near3px_fraction"]
+    corr = gate["max_spearman"]
+    measurements = run["measurements"]
+    offsets = measurements["offsets_null_calibrated_px"]
+    corridors = measurements["corridors"]["decision_gate"]
+    lidar = measurements["lidar_3m"]
+    measurement_html = f"""
+<h3>Local corrections measurements — MEASURED, not score</h3>
+<p>Measured from the hash-pinned owner-bridge inputs; their organizer provenance is not authenticated.
+These quantities describe this corrections lane, not competition performance.</p>
+<table><thead><tr><th>Measurement</th><th>Result</th><th>Interpretation/limit</th></tr></thead><tbody>
+<tr><td>Null-calibrated DEM median offset</td><td>{fmt(offsets["dem_median"], 3)} px ({offsets["dem_n"]:,} samples)</td><td>Not a consistent ≥2 px displacement.</td></tr>
+<tr><td>Null-calibrated magnetic median offset</td><td>{fmt(offsets["mag_median"], 3)} px ({offsets["mag_n"]:,} samples)</td><td>Near zero under this calibration.</td></tr>
+<tr><td>Joint DEM+mag median</td><td>{fmt(offsets["joint_median"], 3)} px ({offsets["joint_n"]:,} concordant samples)</td><td>Below the stated ~2 px lane threshold.</td></tr>
+<tr><td>Absolute offset null medians</td><td>random {fmt(offsets["null_random_abs_median"], 3)} px; rotated {fmt(offsets["null_rotated_abs_median"], 3)} px</td><td>Estimator noise floor is comparable to the observed sub-pixel displacement.</td></tr>
+<tr><td>Corridor decision gate</td><td>{corridors["qualifying"]} of {corridors["components"]} corridors qualify</td><td>Qualifying length {corridors["qualifying_length_m"]:,} m; sigma floor {fmt(corridors["sigma_floor_px"], 3)} px.</td></tr>
+<tr><td>3 m LiDAR check</td><td>{lidar["segments_ge_200m"]} of {lidar["segments"]} segments reach ≥200 m</td><td>Only {fmt(lidar["coverage_fraction_of_catalogue"] * 100, 2)}% catalogue coverage; limited external validation.</td></tr>
+</tbody></table>
+"""
+    source_links = """
+<ul>
+<li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Official DOE GEMS Prize problem page</a> — objective, DTI metric, 300 m triangular kernel, α=0.2, β=0.8, GeoTIFF requirements, and the page's description of its sample submission.</li>
+<li><a href="https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516">DrivenData staff reply, forum topic 11516</a> — known USGS/INGENIOUS fault pixels are masked/excluded from penalty terms; it does not specify a 200 m buffer.</li>
+<li><a href="https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html">Sibling GEMSDOE32 page</a> — H33-2-B2 is labeled UNSCORED and 0.2747 is a projection, not an organizer score.</li>
+<li><a href="https://github.com/buffedlizard55-lab/GEMSDOE54/blob/main/RUN2-SUMMARY.md">Sibling GEMSDOE54 Run 2 summary</a> — reports 200 m catalogue-distance pruning as a raster-construction mechanism; this is not a submission receipt.</li>
+</ul>"""
+
+    index = f"""
+<h2>Project status — corrections lane</h2>
+<p><b>NEGATIVE / STOP.</b> No TIFF in this repository is cleared or safe to submit. The
+active corrections run is authoritative (`2026-10-09T16:49:44Z`); the later discovery run is
+outside this corrections-only scope. The experiment budget is exhausted. No slot was used, no
+artifact was selected, and no new experiment was run during this review.</p>
+<div class=card><h2>Download for inspection only — NOT safe to submit</h2>
+<p><a class="btn stop" href="downloads/{esc(archive_name)}">&#11015; Download historical format-valid TIFF — NOT SAFE TO SUBMIT</a></p>
+<p>It passes the strict local format check against the hash-pinned bridge sample, but its
+historical registry receipt triggers the literal proximity stop. This link preserves the file
+for audit; it is not a recommendation or candidate upload.</p>
+<p><b>SHA-256:</b> <code>{esc(archive["sha256"])}</code></p></div>
+<h2>Audited files</h2>
+<p>Local template validation is not organizer acceptance. The pinned sample's provenance/content
+is not authenticated; see the limitation below and the irregularity register.</p>
+<table><thead><tr><th>Artifact</th><th>Scope</th><th>Strict local format result</th><th>Finding</th><th>SHA-256</th></tr></thead>
+<tbody>{''.join(home_rows)}</tbody></table>
+<h2>Active corrections result</h2>
+<p>The primary `h56-corr-snap200cm-20261009` has the archived note below ({sub["note_chars"]}/140
+characters), but the name/note are preserved for audit only. <b>Do not paste them into a submission
+form.</b></p>
+<p><b>Audit-only name:</b> <code>{esc(sub["name"])}</code><br><b>Audit-only note:</b>
+<code>{esc(sub["note"])}</code><br><b>TIFF SHA-256:</b> <code>{esc(sub["sha256"])}</code></p>
+<ul><li>Pre-placement surface check: max ρ={fmt(surface["max_spearman"], 6)} (no 0.90 trigger among
+readable entries), but {surface["error_count"]} registry rasters were unreadable, so this is not a
+complete clearance.</li>
+<li>Final-dot registry gate: max ρ={fmt(corr, 6)}; directed within-3-px fraction {fmt(near, 3)}
+triggers on {gate["offender_count"]}/{gate["priors_checked"]} priors, exceeding 0.70. Duplicate-and-stop
+applies; low correlation does not waive proximity.</li>
+<li>Strict local format: 7,111,787 finite cells outside the sample mask and `nodata=None` while
+the template tag is NaN. The sensitivity TIFF has the same format failure.</li>
+<li>No admissible artifact-level/new-fault holdout result; the 1-dot output was not separately
+scored. The latest run has no per-feature canary receipt.</li></ul>
+<h2>Holdout evidence — not a competition score</h2>
+<p>Both rows are <b>HOLDOUT-DTI</b> from evaluator <code>{esc(hold["evaluator_version"])}</code>,
+with {hold["withheld_positive_pixels"]:,} withheld catalogue-positive pixels and 95% CIs shown.
+This is method-level catalogue recovery, not the organizer's hidden-new-fault score and not an
+artifact-level evaluation. Treat as exploratory: protocol/provenance defects remain unresolved,
+and the current run has no admissible promotion evidence.</p>
+<table><thead><tr><th>HOLDOUT-DTI arm</th><th>DTI</th><th>95% CI</th></tr></thead><tbody>{hold_table}</tbody></table>
+<p>See <a href="research.html">research</a> for the `0.2778` evidence review and published metric;
+<a href="irregularities.html">irregularities</a> for logged provenance/implementation issues;
+<a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/README.md">repository README</a> for the standing prompt, review passes, and reproduction steps.</p>
+<h2>Input/template caveat</h2>
+<p>The hash-pinned owner-bridge sample is locally identical to the catalogue (60,988 positive
+cells), while the official public problem page describes a total-fault-absence sample. Its grid
+matches the training raster, but neither its provenance nor content is independently
+organizer-authenticated. Only its finite mask has been used for local validation. A logged-in human
+must compare against the actual data-tab file before any future submission is considered.</p>
+"""
+    (out / "index.html").write_text(page("Project status", "index.html", index, dl=False))
+
+    submit = f"""
+<h2>Submission status: DO NOT UPLOAD</h2>
+<div class=card><h3 class=bad>No safe-to-submit file exists</h3>
+<p>The active corrections candidate fails strict template validation and triggers the explicit
+registry duplicate-and-stop rule. The only file that passes strict local format is an older
+research raster that also triggers the registry stop. A separate discovery TIFF is both outside
+the corrections lane and format-invalid. The experiment budget is exhausted; no submission slot
+is cleared.</p>
+<p><a class="btn stop" href="downloads/{esc(archive_name)}">Download archived TIFF for inspection only — NOT safe to submit</a></p>
+<p>Archive SHA-256: <code>{esc(archive["sha256"])}</code>. This download is not an instruction to
+upload it.</p></div>
+<h2>Candidate name and note — audit record only</h2>
+<p>The authoritative run card preserves this unique file name and {sub["note_chars"]}-character note
+to keep the run auditable. <b>Do not submit or paste this note.</b></p>
+<p><code>{esc(sub["name"])}</code></p><p><code>{esc(sub["note"])}</code></p>
+<p>Current file SHA-256: <code>{esc(sub["sha256"])}</code> · strict format: <b>FAIL</b> ·
+registry: <b>DUPLICATE / STOP</b> · holdout: no admissible artifact-level result.</p>
+<h2>Why submission is blocked</h2>
+<ol><li><b>Pre-placement surface:</b> max rank correlation {fmt(surface["max_spearman"], 6)}, with no
+0.90 trigger among readable entries; {surface["error_count"]} of {surface["priors_checked"]} rasters
+were unreadable, so this was not a complete clearance.</li>
+<li><b>Final-dot registry rule:</b> directed within-3-px fraction is {fmt(near, 3)} against
+{gate["offender_count"]}/{gate["priors_checked"]} prior rasters, above the 0.70 stop threshold.
+Maximum rank correlation is {fmt(corr, 6)}, below 0.90; that does not negate the proximity trigger.</li>
+<li><b>Format:</b> 7,111,787 finite cells are outside the pinned sample's footprint; nodata is absent
+instead of matching the template's NaN. The sensitivity output fails the same check.</li>
+<li><b>Holdout:</b> the local withheld target is catalogue recovery, not new-fault truth; the
+1-dot TIFF itself was not evaluated, the active run's leakage canary is missing, and provenance
+issues remain.</li></ol>
+<h2>If a future, separately authorized submission is considered</h2>
+<p>This is a checklist for a new authorized review, not permission to continue the exhausted run:</p>
+<ol><li>Have a logged-in user compare the bridge input files with the official competition data-tab
+files and record their SHA-256 hashes and exact sample mask.</li>
+<li>Use an explicitly authorized new experiment budget. Follow the complete corrections-lane holdout
+protocol and provenance requirements; attach per-feature leakage canaries and final-dot registry
+checks. Do not waive a duplicate trigger.</li>
+<li>Only after a separate selector decision, produce a new raster using the shared tools and run
+<code>scripts/validate_submission.py</code> against the authenticated sample/template. Record the
+file hash and all validator output in a run card.</li>
+<li>Use the official <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">competition page</a>
+upload instructions. Save its returned receipt before using the label ORGANIZER-CONFIRMED.</li></ol>
+<p>No receipt exists for this run. Do not upload the archived file or the current one-dot file.</p>
+"""
+    (out / "executive-summary.html").write_text(page("Submission status", "executive-summary.html", submit, dl=False))
+
+    research = f"""
+<h2>What can—and cannot—be said about the claimed 0.2778</h2>
+<p><b>No 0.2778 score is organizer-confirmed in this repository.</b> There is no submission-page
+receipt. A number reported by a user or sibling repository is not an organizer score; a model
+projection is never a score.</p>
+<h3>Source-verified facts and source classes</h3>
+{source_links}
+<p>The public official problem page specifies the distance-weighted Tversky index with a 300 m
+triangular kernel, α=0.2 and β=0.8. It says known USGS/INGENIOUS fault pixels are excluded from
+penalties per the staff reply. That exact-pixel masking does not make the whole 200 m neighborhood
+free of false-positive cost.</p>
+<h3>A mechanism hypothesis, not an explanation of an unverified score</h3>
+<p>GEMSDOE54 reports that its child raster contains 37,654 dots, made by removing 2,545 dots within
+2 px (200 m) of a catalogue trace from a 40,199-dot parent; it also reports a smaller fraction of
+dots within 300 m of the catalogue. This is a sibling-reported construction description, not an
+organizer receipt and not independently re-derived from the source rasters here. The pruning could
+reduce false-positive mass, but it could also remove credit if hidden truth lies nearby.</p>
+<p>For unit-valued predictions, if <code>N</code> is predicted mass, <code>G</code> truth mass,
+<code>T=TP_w</code>, and <code>M</code> is the total proximity-weighted true-positive credit, the
+published decomposition implies:</p>
+<pre>DTI = T / (0.2*N + 0.8*G + 0.2*(T-M))</pre>
+<p>This is algebra from the metric, not access to hidden labels. It explains a possible trade-off;
+it cannot determine the outcome of pruning without the private new-fault labels. The defensible
+answer is therefore that the raster embodies a catalogue-distance-pruning mechanism, while the
+claimed 0.2778 score and its cause remain unverified.</p>
+<h3>Active corrections lane: negative</h3>
+<p>The authoritative corrections run card records the negative result. The 1-dot primary triggers
+the literal registry stop despite low rank correlation and fails strict format validation. The
+14-dot sensitivity fails strict format too. The 6,504-dot historical raster is format-conformant
+to the local bridge sample but still triggers the registry rule. No file is safe to submit.</p>
+{measurement_html}
+<h3>Method-level holdout values — HOLDOUT-DTI, not score</h3>
+<p>Evaluator <code>{esc(hold["evaluator_version"])}</code>; {hold["withheld_positive_pixels"]:,}
+withheld catalogue positives; 95% CIs. These are method-level catalogue-recovery diagnostics, not
+new-fault truth, not per-artifact scores, and not promotion evidence.</p>
+<table><thead><tr><th>HOLDOUT-DTI arm</th><th>DTI</th><th>95% CI</th></tr></thead><tbody>{hold_table}</tbody></table>
+<p>The one-dot output was not separately scored. The current holdout receipt has no per-feature AUC
+canary; a previous run's canary cannot be transferred. The corrections evaluator's catalogue-derived
+snap inputs use <code>fold["visible"]</code> while the buffer applies to <code>fold["fit"]</code>, and
+its receipt records <code>design.prevalence: null</code> although the invocation passed 0.00294.
+Do not rerun: the recorded experiment budget is exhausted.</p>
+<h3>Authoritative sources</h3>{source_links}
+<p>Full discussion and exact source classifications:
+<a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/research/leader-analysis-2026-10-09.md">research note</a>.
+The workspace's three-pass review is in <code>docs/review/2026-10-09.md</code>.</p>
+"""
+    (out / "research.html").write_text(page("Research and score claim", "research.html", research))
+
+    hypotheses = f"""
+<h2>Corrections-lane hypothesis and outcome</h2>
+<p><b>Hypothesis:</b> a catalogue trace may be laterally displaced from a real fault, and coherent
+DEM-scarp plus magnetic-gradient evidence could locate a corrected trace. The named non-fault mimic
+is an erosional terrace or alluvial-fan edge; nearby unmapped strands are another ambiguity.</p>
+<p>The active run's measured offset/corridor gates did not authorize a candidate. The primary was
+emitted as a one-dot research artifact, then the explicit registry rule fired and strict format
+replay failed. Verdict: <b>NEGATIVE / STOP</b>. No placement, promotion, or experiment should follow
+under the exhausted budget.</p>
+<h3>Guardrails for any future authorized lane</h3>
+<ul><li>Check rank correlation against registry rasters before placement and on the final dots.</li>
+<li>If ρ &gt; 0.90 or more than 70% of dots are within 3 px of a registry raster, log duplicate and
+stop.</li><li>Hide whole segments with a buffer; derive catalogue features only from visible faults;
+mask visible fault pixels exactly.</li><li>Report pooled HOLDOUT-DTI with evaluator version, withheld-positive count and 95% CI; never
+call a projection a score. Canary every feature; AUC &gt; 0.90 is leakage until resolved.</li>
+<li>Stop after three experiments or two hours. This run's budget is exhausted. Do not select or
+promote a submission in this lane.</li></ul>
+<p>These are constraints, not a proposal to resume the current run. See the run card, review record,
+and <a href="research.html">evidence note</a>.</p>
+"""
+    (out / "hypotheses.html").write_text(page("Corrections hypothesis", "hypotheses.html", hypotheses))
+
+    sources = f"""
+<h2>Sources and what they establish</h2>
+<p>Source tiers are explicit. Official rules establish metric and format; staff replies establish
+only the scope they state. Sibling repositories are useful leads but are not organizer receipts.</p>
+{source_links}
+<h3>Not established</h3>
+<ul><li>No official leaderboard page or submission receipt was fetched; there is no
+ORGANIZER-CONFIRMED score in this review.</li><li>The owner-bridge sample's provenance and content
+are not authenticated against the login-gated data tab.</li><li>The public page's exact-pixel masking
+reply does not establish a 200 m buffer exemption.</li><li>Sibling raster counts or scores are not
+independently verified by an organizer source.</li></ul>
+"""
+    (out / "sources.html").write_text(page("Sources", "sources.html", sources))
+
+    irregularities = []
+    for item in irr:
+        if item.get("id") in {"IR-56-024", "IR-56-025", "IR-56-026", "IR-56-027", "IR-56-028"}:
+            irregularities.append(
+                f'<div class=card><h3>{esc(item.get("id"))}: {esc(item.get("title", ""))}</h3>'
+                f'<p>{esc(item.get("finding", ""))}</p>'
+                f'<p><b>Action:</b> {esc(item.get("action", ""))}</p>'
+                f'<p class=mut><b>Verified by:</b> {esc(item.get("verified_by", ""))}</p></div>'
+            )
+    irr_html = "".join(irregularities) or "<p>No review entries were found.</p>"
+    irr_page = f"""
+<h2>Review findings (2026-10-09)</h2>
+<p>These issues are preserved so a local pass is not confused with organizer acceptance or an
+experiment result.</p>
+{irr_html}
+<p>The full machine-readable append-only log is <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/irregularities.json">evidence/irregularities.json</a>
+in the repository. Earlier lane entries are preserved there as well.</p>
+"""
+    (out / "irregularities.html").write_text(page("Review irregularities", "irregularities.html", irr_page))
+
+    prior = f"""
+<h2>Historical corrections artifact — research archive only</h2>
+<p>The 6,504-dot file <code>{esc(archive_name)}</code> passes strict local template-mask, nodata,
+range, and grid checks against the pinned bridge sample. Its SHA-256 is
+<code>{esc(archive["sha256"])}</code>. This is a format result, not a duplicate-gate pass and not
+organizer acceptance.</p>
+<p>The literal registry proximity rule triggered on eight prior rasters in its receipt. That rule
+requires duplicate-and-stop. Diagnostic low correlation/Jaccard statistics do not waive the
+trigger. The file is <b>not safe to submit</b>.</p>
+<p><a class="btn stop" href="downloads/{esc(archive_name)}">Download for technical inspection only</a></p>
+<h2>Relationship to the active run</h2>
+<p>This historical 6,504-dot output is not the authoritative active corrections run. The latest
+corrections card is `evidence/run_card.json`, dated 2026-10-09T16:49:44Z. Its one-dot primary is
+strict-format-invalid and hits the registry stop. The newer discovery card is a different lane,
+not an override. All run histories retain their own receipts; no experiment is authorized or
+remaining.</p>
+"""
+    (out / "prior-run.html").write_text(page("Historical run", "prior-run.html", prior))
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--out", default=str(DOCS))
+    ap.add_argument("--out", default=str(DOCS), help="output directory (defaults to docs/)")
     args = ap.parse_args()
     out = Path(args.out)
+    out.mkdir(parents=True, exist_ok=True)
     (out / "downloads").mkdir(parents=True, exist_ok=True)
-    (out / "assets").mkdir(parents=True, exist_ok=True)
-
-    stats = load_json(EV / "offset_stats.json")
-    hold = load_json(EV / "holdout_corrections.json")
-    card = load_json(EV / "run_card.json")
-    reg_path = EV / "registry_check.json"
-    reg = load_json(reg_path) if reg_path.exists() else None
-    reg_n = reg["n_unique_pixel_content"] if reg else None
-    reg_n_flags = reg["n_literal_flags"] if reg else None
-    reg_worst_cont = reg["worst"]["containment"] if reg else None
-    reg_worst_jac = reg["worst"]["jaccard_3px"] if reg else None
-    reg_worst_rev = reg["worst"]["rev_containment"] if reg else None
-    reg_worst_sp = reg["worst"]["spearman_dots"] if reg else None
-    reg_worst_sps = reg["worst"]["spearman_surface"] if reg else None
-
-    # run B (merged PR #4, arena/1d3dbc39-56gemsdoe): the sibling corrections run
-    # on this repository - a NEGATIVE result. Its receipts live in evidence/.
-    EVB = ROOT / "evidence"
-    card_b_path = EVB / "run_card.json"
-    card_b = load_json(card_b_path) if card_b_path.exists() else None
-    irr_b_path = EVB / "irregularities.json"
-    irr_b = load_json(irr_b_path) if irr_b_path.exists() else None
-    if card_b:
-        mb = card_b["measurements"]
-        m_ung = mb["offsets_ungated_px"]
-        m_cal = mb["offsets_null_calibrated_px"]
-        m_cor = mb["corridors"]
-        m_lid = mb["lidar_3m"]
-        hb = card_b["holdout_dti"]
-        hab = hb["arms"]
-        gate_b = card_b["registry_comparison"]["shared_gate_verdict"]
-        art_b = card_b["artefacts"]
-
-    # round-2 discovery run (PR #7, arena/858a492d): receipts live in the evidence/ root
-    def opt(name):
-        p = EVB / name
-        return json.loads(p.read_text()) if p.exists() else None
-    hold2 = opt("holdout_discovery_v1.json")
-    bld2 = opt("build_discovery_v1.json")
-    gate2 = opt("lane_gate_discovery_v2.json")
-    scr2 = opt("registry_screen_v2.json")
-    rcard2 = opt("run_card_discovery_v1.json")
-
-    tifs = sorted((out / "downloads").glob("gems56-corr-*-nan.tif"))
-    tif = tifs[-1] if tifs else None
-    sha = card["raster"]["sha256"]
-    dots = card["raster"]["dots"]
-    cands = card["raster"]["candidate_records"]
-
-    # copy evidence artifacts into docs/downloads for one-folder auditing
-    for f in ("offset_histogram.png",):
-        src = EV / f
-        if src.exists():
-            (out / "downloads" / f).write_bytes(src.read_bytes())
-    for f in ("record_630_crop.png", "record_1567_crop.png", "record_322_crop.png",
-              "record_2665_crop.png"):
-        src = EV / f
-        if src.exists():
-            (out / "downloads" / f).write_bytes(src.read_bytes())
-
-    a1 = hold["arms"]["A1_lane"]
-    a0 = hold["arms"]["A0_catalogue"]
-    a2 = hold["arms"]["A2_nogate"]
-    a4 = hold["arms"]["A4_random"]
-    a5 = hold["arms"]["A5_oracle"]
-
-    # ---------------------------------------------------------------- index --
-    # ---- round-2 discovery candidate card (PR #7): receipts optional, guarded --------------
-    disc_html = ""
-    if bld2 and hold2:
-        rec2 = bld2["receipt"]
-        tif2 = Path(rec2["file"]).name
-        vs2 = hold2["pick_rule"]["paired_vs_random"]
-        glit = gate2.get("verdict_literal") if gate2 else "n/a"
-        disc_html = f"""
-<h2>&#11015;&nbsp;ROUND-2 DISCOVERY CANDIDATE (PR #7) &mdash; download for review only</h2>
-<div class=card>
-<p><a class="btn" href="downloads/{esc(tif2)}">Download {esc(tif2)}</a>
-<span class=mut>{rec2['bytes']/1024:.0f} KB · single band · float32 · EPSG:32611 ·
-100 m · 3292&times;3730 · {bld2['dots']:,} dots · measured distinct values {{0.0, 1.0}} ·
-0 NaN cells</span></p>
-<p><b>OK to download: yes.</b> <b>OK to submit: <span class=bad>NO</span>.</b>
-The pre-registered holdout verdict is <b>NEGATIVE</b> and the registry lane gate returned
-<b>{esc(glit)}</b> on the literal 3&nbsp;px clause (density-degenerate trigger, IR-56-023: it
-tracks grid coverage while the rank-agreement test passes at max &rho; 0.043 vs the 0.90 bar)
-&mdash; nothing is promoted and no slot was spent.</p>
-<p><b>HOLDOUT-DTI</b> of the shipped arm <code>{esc(bld2['arm'])}@{bld2['budget']:,}</code>:
-<b>{fmt(bld2['holdout_dti'],5)}</b> [{fmt(bld2['holdout_ci95'][0],5)},
-{fmt(bld2['holdout_ci95'][1],5)}] vs <b>uniform-random {fmt(bld2['chance_dti'],5)}</b> at the
-same budget; paired difference {fmt(vs2['delta'],5)}
-[{fmt(vs2['ci95'][0],5)}, {fmt(vs2['ci95'][1],5)}] &mdash; strictly below chance; canaries
-&le; {fmt(hold2['canary_max_new_fields'],3)} (limit 0.90). Receipts:
-<code>evidence/build_discovery_v1.json</code>, <code>evidence/run_card_discovery_v1.json</code>.</p>
-<p><b>submission name</b> <code>{esc(bld2['name'])}</code><br>
-<b>note</b> ({bld2['note_chars']}/140): <code>{esc(bld2['note'])}</code><br>
-<b>sha256</b> <code>{esc(rec2['sha256'])}</code> · validator ok:
-{esc(rec2['validator']['ok'])}</p>
-</div>
-"""
-
-    idx = f"""
-<h2>&#11015;&nbsp;ONE-CLICK SUBMISSION FILE</h2>
-<div class=card>
-<p><a class="btn" href="downloads/{esc(tif.name if tif else '')}">Download {esc(tif.name if tif else '')}</a>
-<span class=mut>{tif.stat().st_size/1024:.0f} KB · single band · float32 · EPSG:32611 · 100 m ·
-3292&times;3730 · {dots:,} predicted pixels · every value in [0, 1] · NaN only outside the
-scored footprint · nodata tag <code>nan</code> (the official sample's own format)</span></p>
-<p><b>sha256:</b> <code>{sha}</code></p>
-<p><b>Unique submission name to use:</b> <code>{esc(card['submission_name'])}</code><br>
-<b>Note to paste into the submit form's <em>Note (optional)</em> field</b>
-({len(card['note'])}/140 characters):<br><code>{esc(card['note'])}</code></p>
-<p><b>Format status:</b> <span class=ok>PASS</span> &mdash; <code>scripts/validate_submission.py</code>
-exit 0 and <code>python -m src.submission_io validate-conformant</code> exit 0
-(no NaN inside the footprint, every value in [0,1], CRS/shape/transform match
-<code>sample_submission.tif</code>, template conformance, GDAL_NODATA=<code>nan</code>).</p>
-<p><b>Uniqueness status:</b> {("<span class=ok>" + esc(reg['verdict']) + "</span> vs " + str(reg['n_unique_pixel_content']) + " unique earlier rasters (max Spearman " + fmt(reg['worst']['spearman_dots']) + ", max 3&nbsp;px Jaccard " + fmt(reg['worst']['jaccard_3px'],3) + ")") if reg else '<span class=warn>PENDING - scripts/check_registry.py is running</span>'}</p>
-<p><b>Evidence status:</b> <span class=warn>HOLDOUT-DTI (simulated-corrections truth)</span>
-A1 lane {fmt(a1['dti'])} [{fmt(a1['ci95'][0])}, {fmt(a1['ci95'][1])}] vs masked control
-{fmt(a0['dti'])} and random control {fmt(a4['dti'])} &mdash; see <a href="research.html">research</a>.</p>
-<p class=mut>Is it OK to download and submit? The file is format-validated but fails the literal uniqueness gate; the
-holdout validates the mechanism on a simulated truth; no organizer score exists for it. The
-standing protocol requires a stop, not a submission &mdash; the full reasoning is on
-<a href="executive-summary.html">Make a submission</a>.</p>
-</div>
-
-{disc_html}
-<h2>Two corrections runs, one repository &mdash; plus a discovery run</h2>
-<p>This repository has run the corrections lane <b>twice</b>, in two parallel sessions.
-Both runs measured the same catalogue against the same evidence; they gate different
-questions and reached opposite verdicts. Both are reported in full &mdash; the disagreement
-is the finding.</p>
-<div class=grid>
-<div class=card><h3>Run A &mdash; this run (branch <code>arena/b71ede8d-56gemsdoe</code>) &mdash; <span class=ok>strongest-crest finding; protocol verdict NEGATIVE</span></h3>
-<p>Question: <em>is the catalogue on the MAIN scarp?</em> For 28 of 125 well-sampled records
-(22.4%) the strongest, LiDAR-confirmed DEM-scarp crest sits consistently &gt; 2&nbsp;px
-(200&ndash;340&nbsp;m) from the catalogue line &rarr; <b>{dots:,} dots</b> emitted on the
-evidence-defined traces, 0 on the catalogue. HOLDOUT-DTI(sim) {fmt(a1['dti'])}
-[{fmt(a1['ci95'][0])}, {fmt(a1['ci95'][1])}] vs masked control {fmt(a0['dti'])} and
-random control {fmt(a4['dti'])}. Literal containment gate failed; no slot is cleared.
-<b>The one-click download above is this run's file.</b></p></div>
-<div class=card><h3>Run B &mdash; merged PR #4 (branch <code>arena/1d3dbc39-56gemsdoe</code>) &mdash; <span class=warn>NEGATIVE, no slot recommended</span></h3>
-<p>Question: <em>is the catalogue displaced from A crest by &ge; 2&nbsp;px?</em> No:
-null-calibrated median offset {fmt(m_cal['dem_median'],3)}&nbsp;px (DEM) /
-{fmt(m_cal['mag_median'],3)}&nbsp;px (magnetic), below the estimator's own noise floor
-({fmt(m_cal['null_random_abs_median'],2)}&nbsp;px); <b>0 of {m_cor['decision_gate']['components']}
-corridors</b> reach a consistent &ge; 2&nbsp;px offset; 3&nbsp;m LiDAR: 0 of
-{m_lid['segments']} segments displaced by &ge; 200&nbsp;m. Their primary raster carries
-<b>{art_b['primary']['dots']} dot</b> &mdash; the emptiness is their finding. Their two
-files are format-valid and safe to download but <b>not cleared for a slot</b> (their
-uniqueness gate returned <code>ok:false</code> on the proximity criterion at 1-dot count,
-IR-56-006). Details: <a href="prior-run.html">Prior run</a>.</p></div>
-<div class=card><h3>Run C &mdash; this PR #7 (branch <code>arena/858a492d-56gemsdoe</code>) &mdash; <span class=bad>discovery lane: NEGATIVE twice</span></h3>
-<p>Question: <em>do off-catalogue step/tilt lineaments recover catalogue-missing faults?</em>
-Five hypotheses pre-registered (H6&ndash;H10, <code>docs/research/hypotheses-20261009.md</code>);
-the top three validated on the shared 4-fold blocked holdout (48,080 withheld positives):
-pick <code>multi@25000</code> {fmt(hold2['pick_rule']['new_arms_at_primary']['multi@25000'],5)}
-vs uniform-random {fmt(bld2['chance_dti'],5)} &mdash; paired {fmt(hold2['pick_rule']['paired_vs_random']['delta'],5)}
-[{fmt(hold2['pick_rule']['paired_vs_random']['ci95'][0],5)}, {fmt(hold2['pick_rule']['paired_vs_random']['ci95'][1],5)}],
-canaries clean. Registry gate: surface PASS, dots
-{esc(gate2.get('verdict_literal') if gate2 else '?')} (density-degenerate trigger, IR-56-023).
-Their unique TIF is the second download above &mdash; labelled NEGATIVE / do not submit in
-its name, note and receipt. 0 slots spent.</p></div>
-</div>
-<p class=mut>Reconciliation: the two runs agree on the measurement &mdash; the catalogue sits
-within ~1&nbsp;px of <em>some</em> crest (run A's nearest-crest reading matches run B's
-negative). They differ on the decision rule: run B gates on null-calibrated corridor
-consistency with a crest-strength gate and DEM+mag concordance (very conservative &rarr;
-0 corridors); run A gates on per-record strongest-crest consistency (median offset
-&gt; 2&nbsp;px, sign agreement &ge; 0.70, &ge; 8 transects) with the crest identity
-calibrated on 1&nbsp;m LiDAR (MAD 0.29&nbsp;px) &rarr; 28 records. Which gate matches the
-organizer's hidden labels is exactly what a submission slot would test; neither run has an
-organizer score.</p>
-
-<h2>What this repository is</h2>
-<p>56GEMSDOE runs one lane of a parallel multi-session effort on the DOE GEMS Prize: the
-<b>corrections lane</b>. The organizers stated that new-fault ground truth can lie within
-300&nbsp;m of a known trace as &ldquo;corrections or modifications to existing fault
-traces&rdquo;, and that known-fault pixels are masked pixel-exactly when scoring
-(<a href="https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516">forum thread 11516</a>).
-The catalogue line itself is therefore not the target. This lane measures how far the
-catalogue sits from the geophysical/topographic evidence &mdash; the DEM-scarp crest
-(<code>det_elev_slope</code> ridge) and the magnetic-gradient ridge (<code>tmi_hg</code>)
-&mdash; on perpendicular transects within &plusmn;400&nbsp;m of every catalogue trace,
-calibrates the crest on 1&nbsp;m USGS 3DEP LiDAR, and emits dots on the evidence-defined
-trace where a <em>consistent</em> offset exceeds ~2&nbsp;px (200&nbsp;m).</p>
-<div class=grid>
-<div class=card><h3>Measured (official data, this repo)</h3><ul>
-<li>{stats['catalogue_fault_px']:,} catalogue fault px · {stats['n_records']} vector-catalogue
-records · {stats['n_transects']:,} perpendicular transects (&plusmn;400&nbsp;m)</li>
-<li>DEM-scarp crest vs 1&nbsp;m LiDAR crest: MAD {fmt(stats['lidar_calibration']['agreement_dem_slope_strongest_vs_lidar_strongest']['mad_px'],3)}&nbsp;px,
-{fmt(stats['lidar_calibration']['agreement_dem_slope_strongest_vs_lidar_strongest']['pct_abs_le_1px']*100,1)}% within 1&nbsp;px</li>
-<li>{cands} records with consistent offset &gt; 2&nbsp;px (of {stats['records']['dem_slope_strongest']['n_records_sampled']} well-sampled)</li>
-<li>{dots:,} dots emitted, 0 on the catalogue</li></ul></div>
-<div class=card><h3>Holdout (simulated truth, local)</h3><ul>
-<li>A1 lane {fmt(a1['dti'])} [{fmt(a1['ci95'][0])}, {fmt(a1['ci95'][1])}]</li>
-<li>A0 masked control {fmt(a0['dti'])} · A4 random {fmt(a4['dti'])}</li>
-<li>A5 oracle {fmt(a5['dti'])} (ceiling)</li>
-<li>leakage canary: max feature AUC {fmt(max(v['auc'] for k,v in hold['leakage_canary'].items() if not k.startswith('_')),4)}; controls read ~0.5</li></ul></div>
-<div class=card><h3>Not claimed</h3><ul>
-<li>no organizer score exists for this file (a projection is never written as a score);</li>
-<li>the holdout truth is simulated from the measurement, not the organizer's hidden labels;</li>
-<li>the 1&nbsp;m LiDAR calibration covers 75% of the footprint and validates the crest,
-not the fault;</li>
-<li>the sibling-reported 0.2778/0.3195/0.3774 figures are unauthenticated &mdash; see
-<a href="irregularities.html">irregularities</a>.</li></ul></div>
-</div>
-<h2>Site map</h2>
-<ul>
-<li><a href="executive-summary.html">Make a submission</a> &mdash; exactly how to download and submit, and the honest caveats</li>
-<li><a href="research.html">Research</a> &mdash; method, offset histogram, LiDAR calibration, holdout, leakage canary, and the &ldquo;why 0.2778&rdquo; analysis</li>
-<li><a href="hypotheses.html">Hypotheses</a> &mdash; the concurrent run's five ranked geological hypotheses, plus the round-2 discovery set H6&ndash;H10 and its NEGATIVE holdout verdict</li>
-<li><a href="sources.html">Sources</a> &mdash; official, verified links for manual review</li>
-<li><a href="irregularities.html">Irregularities</a> &mdash; flagged claims and how each was checked</li>
-<li><a href="prior-run.html">Prior run</a> &mdash; the sibling corrections run on this repo (negative verdict), its downloads and its reconciliation with this run</li>
-</ul>
-"""
-    (out / "index.html").write_text(page("Home", "index.html", idx))
-
-    # ------------------------------------------------- executive summary --
-    exe = f"""
-<h2>Executive summary &mdash; how to submit this file</h2>
-<div class=card>
-<h3>1. Download</h3>
-<p><a class="btn" href="downloads/{esc(tif.name if tif else '')}">&#11015; Download {esc(tif.name if tif else '')}</a></p>
-<p class=mut>sha256 <code>{sha}</code> · {tif.stat().st_size/1024:.0f} KB ·
-{tif.name if tif else ''}</p>
-<h3>2. Submit on DrivenData</h3>
-<ul>
-<li>Open <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">the competition page</a>
-and sign in.</li>
-<li>Go to <em>My Submissions</em> &rarr; <em>Make a submission</em> (or the equivalent upload form).</li>
-<li>Upload the downloaded <code>.tif</code> (no zip needed; the form accepts a GeoTIFF).</li>
-<li><b>Submission name (unique):</b> <code>{esc(card['submission_name'])}</code></li>
-<li><b>Note (optional)</b> &mdash; paste exactly ({len(card['note'])}/140 characters):<br>
-<code>{esc(card['note'])}</code></li>
-<li>Submit and wait for the receipt. <b>Copy the returned public score into a note</b> &mdash;
-that receipt is the only ORGANIZER-CONFIRMED number; everything else on this site is local.</li>
-</ul>
-<h3>3. What you are submitting</h3>
-<p>A single-band float32 GeoTIFF on the official grid (EPSG:32611, 100&nbsp;m, 3292&times;3730,
-same transform as <code>sample_submission.tif</code>): <b>{dots:,} unit dots</b> on the
-evidence-defined traces of {cands} catalogue records whose DEM-scarp crest sits consistently
-&gt;&nbsp;2&nbsp;px (200&nbsp;m) from the catalogue line, <b>0 dots on the catalogue</b>
-(known-fault pixels are masked in scoring), values 1.0 on dots and 0.0 elsewhere inside the
-scored footprint, NaN outside it (nodata tag <code>nan</code>).</p>
-<h3>4. Why this format is safe</h3>
-<p>A previous attempt from this project was rejected with
-<code>"Predicted values must be in range [0, 1]"</code>. Two mechanisms produce that error
-(measured by the GEMSDOE32 sibling on the official rasters): writing the feature stack's
-float32 nodata sentinel <code>-3.4028234663852886e+38</code> through unchanged (7,113,308
-cells, 3,061 inside the footprint), and NaN inside the footprint. This file has
-<b>every one of the 5,167,373 template-valid pixels finite and in [0,&nbsp;1]</b>, NaN only
-where the official sample is NaN, and the sample's own nodata tag. Both the repository
-validator and the template-conformance gate pass (receipts in
-<code>evidence/corrections/run_card.json</code>).</p>
-<h3>5. Honest caveats (read before spending a slot)</h3>
-<ul>
-<li><b>No organizer score exists for this file.</b> The holdout number is a
-<span class=warn>HOLDOUT-DTI on a simulated corrections truth</span> &mdash; it validates the
-emission machinery and the controls, not the organizer's hidden labels.</li>
-<li><b>The simulation is circular by construction</b> for the lane arm (the simulated truth
-is the measured crest line); the external validation is the 1&nbsp;m LiDAR calibration
-(crest MAD 0.29&nbsp;px) and the per-record offset consistency (sign agreement up to 1.00).</li>
-<li><b>Named non-fault process that could mimic this signal:</b> erosional terraces and
-alluvial-fan edges produce the same convex slope crest without a fault; the crest can also
-belong to a neighbouring unmapped strand (which would still score as a new fault).</li>
-<li><b>Uniqueness:</b> {("checked against " + str(reg['n_unique_pixel_content']) + " unique earlier rasters: " + esc(reg['verdict']) + " (max Spearman " + fmt(reg['worst']['spearman_dots']) + ", max 3&nbsp;px Jaccard " + fmt(reg['worst']['jaccard_3px'],3) + ")") if reg else 'pending - the registry check is running; the site will be regenerated when it finishes'}.</li>
-<li><b>Expected real-world effect:</b> the emission captures corrections near known traces;
-the implied hidden truth is ~7,900&nbsp;px (GEMSDOE32 estimate, user-reported family), so a
-corrections-only file cannot approach the live leaders by itself. Promotion to a weekly
-slot is a separate selector decision within the weekly cap.</li>
-</ul>
-</div>
-
-<h2>Prior run's files &mdash; do NOT submit these</h2>
-<div class=card>
-<p>The merged prior run (PR #4) on this repository reached a <b>NEGATIVE</b> verdict and
-ships two format-valid rasters <b>as research output only</b>: its own receipt says the
-expected gain is {fmt(hab['B_snap']['dti'],5)} DTI with a 95% interval of
-[{fmt(hab['B_snap']['ci95'][0],5)}, {fmt(hab['B_snap']['ci95'][1],5)}] &mdash; which
-contains the value for doing nothing (0.00000) and for jittering dots at random
-({fmt(hab['D_jitter']['dti'],5)}). Its uniqueness gate also returned
-<code>ok:false</code> on the proximity criterion at 1-dot count (IR-56-006), and its
-rasters write 0.0 (not NaN) outside the data footprint (IR-56-013). They are safe to
-download for inspection; they are <b>not cleared for a weekly slot</b>. Details and
-downloads: <a href="prior-run.html">Prior run</a>.</p>
-</div>
-"""
-    if bld2 and hold2:
-        rec2 = bld2["receipt"]
-        exe += f"""
-<h2>Round-2 discovery candidate &mdash; also NOT for submission</h2>
-<div class=card>
-<p><b>OK to submit: <span class=bad>NO</span>.</b> The second download on the
-<a href="index.html">home page</a>
-(<code>{esc(Path(rec2['file']).name)}</code>, {bld2['dots']:,} dots) is format-validated
-research output: single band, float32, values exactly {{0.0, 1.0}}, EPSG:32611, shape and
-transform equal to the submission format, sha256 <code>{esc(rec2['sha256'])}</code>.
-Two independent verdicts block it: the pre-registered holdout rule failed (HOLDOUT-DTI
-{fmt(bld2['holdout_dti'],5)} vs chance {fmt(bld2['chance_dti'],5)}, paired
-{fmt(hold2['pick_rule']['paired_vs_random']['delta'],5)}, CI strictly below zero), and the
-registry lane gate returned <b>{esc(gate2.get('verdict_literal') if gate2 else 'n/a')}</b>
-(density-degenerate 3&nbsp;px trigger, IR-56-023). Its name, note and receipt all say
-NEGATIVE; no slot was spent. Full walk-through of the numbers:
-<a href="hypotheses.html">hypotheses (round-2 section)</a> ·
-<code>evidence/run_card_discovery_v1.json</code>.</p>
-</div>
-"""
-    (out / "executive-summary.html").write_text(page("Make a submission", "executive-summary.html", exe))
-
-    # ------------------------------------------------------------ research --
-    b = stats["bands"]
-    r = stats["records"]
-    lc = stats["lidar_calibration"]
-    res = f"""
-<h2>Research &mdash; the corrections lane, end to end</h2>
-<h3>1. The question</h3>
-<p>The metric is a budget. With the official distance-weighted Tversky index
-(<code>DTI = T / (&alpha;(T+F) + &beta;K)</code>, &alpha;=0.2, &beta;=0.8, 300&nbsp;m
-triangular kernel), adding one unit of prediction mass raises the denominator by exactly
-&alpha;=&nbsp;0.2 anywhere on the grid: a dot pays iff its kernel credit exceeds
-&alpha;&middot;DTI (~0.052 at DTI&nbsp;0.26, i.e. within ~284&nbsp;m of a hidden truth pixel).
-The live scorer masks known-fault pixels pixel-exactly
-(<a href="https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516">forum 11516</a>),
-so dots on the published catalogue cost 0.2 each and earn nothing. The organizers also stated
-that new-fault ground truth can lie within 300&nbsp;m of a known trace as
-&ldquo;corrections or modifications to existing fault traces&rdquo;. <b>Therefore: where the
-catalogue line is measurably displaced from the physical fault, the refined (hidden) trace is
-at the evidence, not on the catalogue.</b> This lane measures that displacement and emits
-there.</p>
-<h3>2. Method</h3>
-<ul>
-<li><b>Traces:</b> the catalogue raster (<code>labels.tif</code> = <code>existing_faults.tif</code>,
-60,988 fault px) is grouped by <code>record_id</code> of the official vector catalogue
-(USGS QFaults + INGENIOUS, 84,331 segments / 1,126 named records; 99.83% of raster fault px
-lie within 1.5&nbsp;px of a vector segment). Per-record statistics need long traces; the
-raster's 8-connected components are too fragmented (median 12&nbsp;px).</li>
-<li><b>Orientation:</b> structure tensor of the catalogue mask (gaussian-weighted window sums
-of squared sobel gradients); the perpendicular direction is the minor-eigenvector direction.</li>
-<li><b>Transects:</b> {stats['n_transects']:,} perpendicular transects, &plusmn;4&nbsp;px
-(&plusmn;400&nbsp;m) at 0.25&nbsp;px steps (33 bilinear samples), inside the footprint.</li>
-<li><b>Crests:</b> the DEM-scarp crest = ridge of <code>det_elev_slope</code> (band 19, slope
-of detrended elevation); the magnetic-gradient ridge = ridge of <code>tmi_hg</code> (band 3).
-Two definitions per band: <em>strongest</em> (dominant crest in the window &mdash; where the
-evidence says the fault is when the catalogue is displaced) and <em>nearest</em> (prominent
-crest nearest the catalogue &mdash; pure registration). Unambiguous crests only:
-prominence &ge; K&nbsp;&times;&nbsp;1.4826&nbsp;&times;&nbsp;MAD, interior local maximum,
-parabolic sub-sample refinement.</li>
-<li><b>Calibration:</b> the cached 1&nbsp;m LiDAR scarp product (706 official USGS 3DEP 1&nbsp;m
-tiles mosaicked onto this grid by the 7GEMSDOE sibling; 75% footprint coverage) sampled on the
-same transects; LiDAR crest = max of <code>lapneg_max</code> (crest convexity of the 50&nbsp;m
-band-passed 1&nbsp;m surface).</li>
-<li><b>Decision rule (preregistered):</b> a record is a correction candidate when its
-strongest-crest offset has |median| &gt; 2&nbsp;px, sign agreement &ge; 0.70, and
-&ge; 8 unambiguous transects. Emission = dots on the connected crest line, off-catalogue
-(not on any known-fault pixel), inside the footprint.</li>
-<li><b>No learned component.</b> The measurement is geometric and the emission rule is a fixed
-threshold; the brief's Mnih &amp; Hinton ICML 2012 registration/omission-tolerant loss is the
-prescribed training loss if a learned component were trained &mdash; it is not invoked here.</li>
-</ul>
-<h3>3. The offset histogram (deliverable)</h3>
-<p><img src="downloads/offset_histogram.png" alt="offset histogram"></p>
-<p class=mut>Full tables: <code>evidence/corrections/offset_histogram.csv</code> (binned),
-<code>offset_transects.csv</code> (per transect),
-<code>record_offsets_dem_slope_strongest.csv</code> (per record).</p>
-<table>
-<tr><th>band / definition</th><th>n</th><th>median</th><th>MAD</th><th>|d|&le;1px</th><th>|d|&le;2px</th><th>|d|&gt;2px</th><th>|d|&gt;3px</th></tr>
-<tr><td>dem_slope strongest</td><td>{b['dem_slope_strongest']['offset']['n']:,}</td><td>{fmt(b['dem_slope_strongest']['offset']['median_px'],3)} px</td><td>{fmt(b['dem_slope_strongest']['offset']['mad_px'],2)}</td><td>{fmt(b['dem_slope_strongest']['offset']['pct_abs_le_1px']*100,1)}%</td><td>{fmt(b['dem_slope_strongest']['offset']['pct_abs_le_2px']*100,1)}%</td><td>{fmt(b['dem_slope_strongest']['offset']['pct_abs_gt_2px']*100,1)}%</td><td>{fmt(b['dem_slope_strongest']['offset']['pct_abs_gt_3px']*100,1)}%</td></tr>
-<tr><td>dem_slope nearest</td><td>{b['dem_slope_nearest']['offset']['n']:,}</td><td>{fmt(b['dem_slope_nearest']['offset']['median_px'],3)} px</td><td>{fmt(b['dem_slope_nearest']['offset']['mad_px'],2)}</td><td>{fmt(b['dem_slope_nearest']['offset']['pct_abs_le_1px']*100,1)}%</td><td>{fmt(b['dem_slope_nearest']['offset']['pct_abs_le_2px']*100,1)}%</td><td>{fmt(b['dem_slope_nearest']['offset']['pct_abs_gt_2px']*100,1)}%</td><td>{fmt(b['dem_slope_nearest']['offset']['pct_abs_gt_3px']*100,1)}%</td></tr>
-<tr><td>mag_hg strongest</td><td>{b['mag_hg_strongest']['offset']['n']:,}</td><td>{fmt(b['mag_hg_strongest']['offset']['median_px'],3)} px</td><td>{fmt(b['mag_hg_strongest']['offset']['mad_px'],2)}</td><td>{fmt(b['mag_hg_strongest']['offset']['pct_abs_le_1px']*100,1)}%</td><td>{fmt(b['mag_hg_strongest']['offset']['pct_abs_le_2px']*100,1)}%</td><td>{fmt(b['mag_hg_strongest']['offset']['pct_abs_gt_2px']*100,1)}%</td><td>{fmt(b['mag_hg_strongest']['offset']['pct_abs_gt_3px']*100,1)}%</td></tr>
-<tr><td>mag_hg nearest</td><td>{b['mag_hg_nearest']['offset']['n']:,}</td><td>{fmt(b['mag_hg_nearest']['offset']['median_px'],3)} px</td><td>{fmt(b['mag_hg_nearest']['offset']['mad_px'],2)}</td><td>{fmt(b['mag_hg_nearest']['offset']['pct_abs_le_1px']*100,1)}%</td><td>{fmt(b['mag_hg_nearest']['offset']['pct_abs_le_2px']*100,1)}%</td><td>{fmt(b['mag_hg_nearest']['offset']['pct_abs_gt_2px']*100,1)}%</td><td>{fmt(b['mag_hg_nearest']['offset']['pct_abs_gt_3px']*100,1)}%</td></tr>
-<tr><td>LiDAR strongest (1 m)</td><td>{lc['offset_strongest']['n']:,}</td><td>{fmt(lc['offset_strongest']['median_px'],3)} px</td><td>{fmt(lc['offset_strongest']['mad_px'],2)}</td><td>{fmt(lc['offset_strongest']['pct_abs_le_1px']*100,1)}%</td><td>{fmt(lc['offset_strongest']['pct_abs_le_2px']*100,1)}%</td><td>{fmt(lc['offset_strongest']['pct_abs_gt_2px']*100,1)}%</td><td>{fmt(lc['offset_strongest']['pct_abs_gt_3px']*100,1)}%</td></tr>
-<tr><td>LiDAR nearest (1 m)</td><td>{lc['offset_nearest']['n']:,}</td><td>{fmt(lc['offset_nearest']['median_px'],3)} px</td><td>{fmt(lc['offset_nearest']['mad_px'],2)}</td><td>{fmt(lc['offset_nearest']['pct_abs_le_1px']*100,1)}%</td><td>{fmt(lc['offset_nearest']['pct_abs_le_2px']*100,1)}%</td><td>{fmt(lc['offset_nearest']['pct_abs_gt_2px']*100,1)}%</td><td>{fmt(lc['offset_nearest']['pct_abs_gt_3px']*100,1)}%</td></tr>
-</table>
-<h3>4. Per-record consistency &amp; the two readings</h3>
-<table>
-<tr><th>band (strongest)</th><th>records</th><th>well-sampled</th><th>consistent &gt;2px</th><th>median |median|</th><th>|median|&gt;2px</th><th>&gt;3px</th></tr>
-<tr><td>dem_slope</td><td>{r['dem_slope_strongest']['n_records']}</td><td>{r['dem_slope_strongest']['n_records_sampled']}</td><td>{r['dem_slope_strongest']['n_consistent_offset_gt_2px']} ({fmt(r['dem_slope_strongest']['frac_consistent_offset_gt_2px']*100,1)}%)</td><td>{fmt(r['dem_slope_strongest']['median_abs_offset_px'],2)} px</td><td>{r['dem_slope_strongest']['records_offset_gt_2px']}</td><td>{r['dem_slope_strongest']['records_offset_gt_3px']}</td></tr>
-<tr><td>mag_hg</td><td>{r['mag_hg_strongest']['n_records']}</td><td>{r['mag_hg_strongest']['n_records_sampled']}</td><td>{r['mag_hg_strongest']['n_consistent_offset_gt_2px']} ({fmt(r['mag_hg_strongest']['frac_consistent_offset_gt_2px']*100,1)}%)</td><td>{fmt(r['mag_hg_strongest']['median_abs_offset_px'],2)} px</td><td>{r['mag_hg_strongest']['records_offset_gt_2px']}</td><td>{r['mag_hg_strongest']['records_offset_gt_3px']}</td></tr>
-</table>
-<p><b>Reading 1 (nearest crest):</b> the catalogue sits on or within ~1&nbsp;px of a crest
-almost everywhere &mdash; the catalogue is registered to <em>some</em> scarp.
-<b>Reading 2 (strongest crest):</b> the dominant scarp/ridge in the &plusmn;400&nbsp;m window is
-consistently offset from the catalogue on {r['dem_slope_strongest']['n_consistent_offset_gt_2px']}
-of {r['dem_slope_strongest']['n_records_sampled']} well-sampled records (22.4%), with offsets
-of 2&ndash;3.4&nbsp;px (200&ndash;340&nbsp;m) and per-transect MAD as low as 0.11&nbsp;px on the
-most consistent records (e.g. record 630: +3.05&nbsp;&plusmn;&nbsp;0.11&nbsp;px over 14
-transects &asymp; 2.8&nbsp;km; record 1567: +3.41&nbsp;px, sign agreement 1.00). This is
-exactly the scale of USGS-to-refined-trace discrepancy reported for north-central Nevada
-(Hermant, Kiersnowski &amp; Bellanger, Stanford Geothermal Workshop 2025: up to 400&nbsp;m)
-and exactly the organizers' &ldquo;corrections within 300&nbsp;m&rdquo;. The lane's emission
-follows reading 2, gated by per-record consistency.</p>
-<p><img src="downloads/record_630_crop.png" alt="record 630 crop"></p>
-<p class=mut>Record 630: the catalogue (white) and the evidence-defined trace (green circles)
-run parallel, ~300&nbsp;m apart, over ~30&nbsp;km of map. Crops for records 322, 1567 and
-2665 are in <code>docs/downloads/</code>.</p>
-<h3>5. LiDAR calibration (1 m 3DEP)</h3>
-<ul>
-<li>dem_slope strongest crest vs LiDAR crest: median {fmt(lc['agreement_dem_slope_strongest_vs_lidar_strongest']['median_px'],3)}&nbsp;px,
-MAD {fmt(lc['agreement_dem_slope_strongest_vs_lidar_strongest']['mad_px'],3)}&nbsp;px,
-{fmt(lc['agreement_dem_slope_strongest_vs_lidar_strongest']['pct_abs_le_1px']*100,1)}% within 1&nbsp;px,
-{fmt(lc['agreement_dem_slope_strongest_vs_lidar_strongest']['pct_abs_le_2px']*100,1)}% within 2&nbsp;px
-(n={lc['agreement_dem_slope_strongest_vs_lidar_strongest']['n']}) &mdash; <b>the 100&nbsp;m slope
-ridge is the 1&nbsp;m scarp crest</b>; the gate K=3 was chosen on this calibration.</li>
-<li>mag_hg strongest crest vs LiDAR crest: MAD {fmt(lc['agreement_mag_hg_strongest_vs_lidar_strongest']['mad_px'],2)}&nbsp;px
-(n={lc['agreement_mag_hg_strongest_vs_lidar_strongest']['n']}) &mdash; weak: many faults have no
-magnetic contrast, so the magnetic ridge is corroborating evidence, not a requirement.</li>
-<li>catalogue &rarr; LiDAR crest (strongest): median {fmt(lc['offset_strongest']['median_px'],3)}&nbsp;px,
-MAD {fmt(lc['offset_strongest']['mad_px'],2)}&nbsp;px, |d|&gt;2px {fmt(lc['offset_strongest']['pct_abs_gt_2px']*100,1)}%
-&mdash; the independent 1&nbsp;m reference shows the same wide scatter as the 100&nbsp;m DEM
-band, and the same per-record consistency pattern.</li>
-</ul>
-<h3>6. Holdout (hide-and-recover, simulated corrections) &mdash; HOLDOUT-DTI</h3>
-<p>Whole records' refined positions are withheld and simulated by their measured
-crest lines (records with |median offset| &gt; 1&nbsp;px; records &le; 1&nbsp;px are
-&ldquo;uncorrected&rdquo;). Visible faults are masked pixel-exactly on BOTH sides (GT excludes
-the catalogue; prediction on the catalogue earns no TP and costs &alpha;). 4 spatial folds
-(k-means on record centroids); DTI scored POOLED with the official metric
-(<code>src/metrics.py</code>, &alpha;=0.2, &beta;=0.8, 300&nbsp;m triangular kernel);
-95% CI from a 20&times;20&nbsp;px spatial-block bootstrap (2,000 draws).</p>
-<table>
-<tr><th>arm</th><th>dots</th><th>pooled DTI</th><th>95% CI</th><th>TP_w</th><th>FP_w</th><th>FN_w</th></tr>
-<tr><td>A0 catalogue (masked control)</td><td>{a0['dots']:,}</td><td>{fmt(a0['dti'],5)}</td><td>[{fmt(a0['ci95'][0],5)}, {fmt(a0['ci95'][1],5)}]</td><td>{fmt(a0['TP_w'],1)}</td><td>{fmt(a0['FP_w'],1)}</td><td>{fmt(a0['FN_w'],1)}</td></tr>
-<tr><td><b>A1 lane (this submission)</b></td><td><b>{a1['dots']:,}</b></td><td><b>{fmt(a1['dti'],5)}</b></td><td><b>[{fmt(a1['ci95'][0],5)}, {fmt(a1['ci95'][1],5)}]</b></td><td><b>{fmt(a1['TP_w'],1)}</b></td><td><b>{fmt(a1['FP_w'],1)}</b></td><td><b>{fmt(a1['FN_w'],1)}</b></td></tr>
-<tr><td>A2 no-gate crest emission</td><td>{a2['dots']:,}</td><td>{fmt(a2['dti'],5)}</td><td>[{fmt(a2['ci95'][0],5)}, {fmt(a2['ci95'][1],5)}]</td><td>{fmt(a2['TP_w'],1)}</td><td>{fmt(a2['FP_w'],1)}</td><td>{fmt(a2['FN_w'],1)}</td></tr>
-<tr><td>A4 random (matched mass)</td><td>{a4['dots']:,}</td><td>{fmt(a4['dti'],5)}</td><td>[{fmt(a4['ci95'][0],5)}, {fmt(a4['ci95'][1],5)}]</td><td>{fmt(a4['TP_w'],1)}</td><td>{fmt(a4['FP_w'],1)}</td><td>{fmt(a4['FN_w'],1)}</td></tr>
-<tr><td>A5 oracle (ceiling)</td><td>{a5['dots']:,}</td><td>{fmt(a5['dti'],5)}</td><td>[{fmt(a5['ci95'][0],5)}, {fmt(a5['ci95'][1],5)}]</td><td>{fmt(a5['TP_w'],1)}</td><td>{fmt(a5['FP_w'],1)}</td><td>{fmt(a5['FN_w'],1)}</td></tr>
-</table>
-<p>|G| = {hold['n_withheld_positives']:,} withheld positives (simulated).
-Contrasts: A1&minus;A0 = +{fmt(hold['contrasts']['A1_minus_A0'])},
-A1&minus;A4 = +{fmt(hold['contrasts']['A1_minus_A4'])}.
-<b>The masked control scores exactly 0</b> &mdash; the masking model works, and the catalogue
-line itself is not the target. <b>The lane arm beats both controls decisively.</b>
-A2 (no gate) scores higher under the simulation, but the simulation is construction-biased
-toward A2 (its truth includes crest lines of 1&ndash;2&nbsp;px-offset records, which the
-real scorer rewards only if those corrections exist); the gate's real-world purpose is
-precision against non-fault scarps, which the simulation cannot test. The preregistered
-lane rule (gate at 2&nbsp;px) is what this repository ships.</p>
-<h3>7. Leakage canary (E2)</h3>
-<table>
-<tr><th>feature</th><th>AUC vs simulated truth</th><th>role</th></tr>
-{''.join(f'<tr><td>{esc(k)}</td><td>{fmt(v["auc"],4)}</td><td>{esc(v["role"])}</td></tr>' for k,v in hold['leakage_canary'].items() if not k.startswith('_'))}
-</table>
-<p>No feature exceeds 0.90 (max {fmt(max(v['auc'] for k,v in hold['leakage_canary'].items() if not k.startswith('_')),4)}).
-The catalogue mask reads {fmt(hold['leakage_canary']['catalogue_mask']['auc'],4)} &asymp; 0.5
-(truth pixels are not on catalogue pixels &mdash; masking worked), and
-dist-to-catalogue reads {fmt(hold['leakage_canary']['dist_to_catalogue_px']['auc'],4)} &lt; 0.5
-(the simulated truth is displaced away from the catalogue &mdash; the simulation is not
-degenerate). <span class=ok>Controls OK: {hold['controls_ok']}</span></p>
-<h3>8. Why 0.2778 &mdash; the PhD-level answer (and the irregularity)</h3>
-<p><b>The mechanism</b> (measured by the GEMSDOE32 sibling on the official formula and its
-worked example): (1) the distance-weighted Tversky index reduces exactly to
-<code>DTI = T/(&alpha;(T+F)+&beta;K)</code> with T=TP_w, F=FP_w, K=|G|; (2) adding one unit
-of mass raises the denominator by exactly &alpha;=0.2 anywhere, so a dot pays iff its
-credit exceeds &alpha;&middot;DTI &asymp; 0.052 at DTI 0.26 &mdash; i.e. it must land within
-~284&nbsp;m of a hidden truth pixel; (3) the live scorer masks known-fault pixels
-(forum 11516), so dots on the published catalogue are pure 0.2-cost false positives;
-(4) <code>h33-h33-2-b2</code> is the group's best live-scored emission (a 40,199-dot
-&ldquo;dotted d2.8&rdquo; thinning of their H19-5 field) with every dot within 2&nbsp;px
-(200&nbsp;m) of the catalogue deleted &rarr; 37,654 dots, 0 on-catalogue; (5) the family
-shows the emission-side optimum: solid 121,131&nbsp;px &rarr; 0.1922, d1.5 60,069 &rarr; 0.2477,
-d2.8 44,090 &rarr; 0.2600 (all owner-reported), implying a hidden |G| &asymp; 7,905&nbsp;px;
-(6) beating the live leader needs ~+25% mean credit at equal mass &mdash; a better
-<em>field</em>, or genuinely novel faults; emission-side gains are nearly exhausted. This
-lane is such a field mechanism: refined traces within 300&nbsp;m of known traces are in the
-hidden truth per forum 11516.</p>
-<p><b>The irregularity</b> (flagged, see <a href="irregularities.html">irregularities</a>):
-the 0.2778 figure attached to <code>h33-h33-2-b2</code> is <b>user-reported and unsupported</b>.
-The GEMSDOE32 owner pages label that artifact <b>UNSCORED</b> with a modelled projection of
-0.2747 and state that no organizer score exists for it; the GEMSDOE51 sibling's audit calls
-the attribution &ldquo;unsupported and contradicted&rdquo;. What can be said is what the file
-<em>embodies</em> (the mechanism above), not that it scored 0.2778.</p>
-<h3>9. The sibling run on this repo (run B): same lane, negative verdict</h3>
-<p>A parallel session (merged PR #4, branch <code>arena/1d3dbc39-56gemsdoe</code>) ran the
-same corrections lane with a different, more conservative gate, and reported a
-<b>negative</b> result. Its receipts are in <code>evidence/</code>
-(<code>run_card.json</code>, <code>offsets_v1.json</code>, <code>calibration_v1.json</code>,
-<code>holdout_corrections_v1.json</code>, <code>registry_screen_v1.json</code>,
-<code>irregularities.json</code>); full presentation on <a href="prior-run.html">Prior run</a>.</p>
-<ul>
-<li><b>The measurement agrees with this run's nearest-crest reading:</b> null-calibrated
-median catalogue-to-crest offset {fmt(m_cal['dem_median'],3)}&nbsp;px (DEM,
-n={m_cal['dem_n']:,}) and {fmt(m_cal['mag_median'],3)}&nbsp;px (magnetic,
-n={m_cal['mag_n']:,}); joint median {fmt(m_cal['joint_median'],3)}&nbsp;px over
-n={m_cal['joint_n']:,} &mdash; <b>below the estimator's own noise floor</b>
-(random traceless points: {fmt(m_cal['null_random_abs_median'],2)}&nbsp;px;
-rotated: {fmt(m_cal['null_rotated_abs_median'],2)}&nbsp;px). The two families' offsets
-correlate at r&nbsp;=&nbsp;{fmt(m_ung['dem_mag_correlation_r'],3)}.</li>
-<li><b>Its gate is stricter:</b> a crest must exceed the 90th percentile of the same
-statistic at random traceless points (DEM &ge; {fmt(m_cal['strength_gate']['dem_min_hgt'],1)},
-mag &ge; {fmt(m_cal['strength_gate']['mag_min_hgt'],1)}), corridors need DEM+mag
-concordance, and the corridor offset must clear a {fmt(m_cor['decision_gate']['sigma_floor_px'],2)}&nbsp;&sigma;
-floor &rarr; <b>{m_cor['decision_gate']['qualifying']} of {m_cor['decision_gate']['components']}
-corridors qualify</b> (ungated exploration: {m_cor['ungated_exploration']['qualifying']} of
-{m_cor['ungated_exploration']['components_evaluated']:,}).</li>
-<li><b>Its LiDAR check is finer but smaller:</b> 3&nbsp;m resolution over
-{fmt(m_lid['coverage_fraction_of_catalogue']*100,1)}% of the catalogue &mdash; pooled median
-{fmt(m_lid['pooled_median_px'],3)}&nbsp;px, <b>{m_lid['segments_ge_200m']} of
-{m_lid['segments']} segments displaced by &ge; 200&nbsp;m</b>. This run's 1&nbsp;m
-calibration (75% of the footprint) instead validates the crest operator itself
-(MAD 0.29&nbsp;px).</li>
-<li><b>Its holdout</b> (evaluator <code>{esc(hb['evaluator_version'])}</code>,
-{hb['withheld_positive_pixels']:,} withheld positives, whole 8-connected components
-withheld, visible catalogue masked pixel-exactly): A as-is {fmt(hab['A_as_is']['dti'],5)},
-B snap {fmt(hab['B_snap']['dti'],5)} [{fmt(hab['B_snap']['ci95'][0],5)},
-{fmt(hab['B_snap']['ci95'][1],5)}], C snap-sub {fmt(hab['C_snap_sub']['dti'],5)},
-D jitter {fmt(hab['D_jitter']['dti'],5)} &mdash; the snap arms' intervals contain zero.
-This run's holdout (different truth construction: simulated corrections,
-{hold['n_withheld_positives']:,} withheld positives, official <code>src/metrics.py</code>)
-gives the lane arm {fmt(a1['dti'],5)}. The two holdouts validate different machinery on
-different simulated truths; neither is an organizer score.</li>
-<li><b>Its uniqueness gate failed on a technicality:</b> the shared gate's proximity
-criterion fires trivially at 1-dot count ({gate_b['directed_near3px_fraction']*100:.0f}% of
-its dots within 3&nbsp;px of {gate_b['offender_count']} of {gate_b['priors_checked']} priors;
-reciprocal overlap 0 above 0.70) &mdash; the same class of false positive this run hit at
-6,504 dots and resolved with Jaccard/reverse-containment/mass-ratio (IR-56-07). Run B
-chose to publish the artefacts as research output and claim no slot.</li>
-</ul>
-<p><b>Reconciliation:</b> both runs agree the catalogue sits within ~1&nbsp;px of
-<em>some</em> crest. Run B's gate asks whether the catalogue is displaced from
-<em>a</em> crest by &ge; 2&nbsp;px under null calibration &mdash; no. Run A's rule asks
-whether the <em>strongest</em> crest (the dominant scarp, LiDAR-confirmed) is consistently
-&gt; 2&nbsp;px away per vector record &mdash; yes, on 22.4% of well-sampled records. A
-catalogue line on a secondary strand with the main scarp 200&ndash;340&nbsp;m away is
-consistent with both statements. The organizer's hidden labels decide which gate is right;
-that is the experiment a slot would run.</p>
-<h3>10. Reproduce</h3>
-<pre>python scripts/prepare_records.py            # vector catalogue -> record ids
-python scripts/measure_corrections_offsets.py # E1: offset histogram + LiDAR calibration
-python scripts/holdout_corrections.py        # E2 canary + E3 holdout
-python scripts/check_registry.py ...         # uniqueness vs every earlier raster
-python scripts/build_submission.py           # emission -> conform -> write -> validate
-python scripts/build_site.py                 # regenerate this site</pre>
-"""
-    (out / "research.html").write_text(page("Research", "research.html", res))
-
-    # --------------------------------------------------------- hypotheses --
-    hyp = f"""
-<h2>Ranked geological hypotheses</h2>
-<p>Five candidates, ranked by expected DTI improvement versus implementation cost. Each
-names its layers, target physical signature/operator, why it could expose fault geometry
-missing from the USGS/INGENIOUS catalogue (rather than merely recovering known-fault
-habitat), how it differs from implemented repository/prior-art work, expected benefit and
-cost. The top candidate was implemented and validated on a spatially-blocked holdout this
-session (HOLDOUT-DTI, simulated truth); the others are preregistered future lanes. Budget
-note: the session's 3-experiment budget is spent (E1 measurement, E2 canary, E3 holdout).</p>
-<table>
-<tr><th>#</th><th>hypothesis</th><th>layers</th><th>signature / operator</th><th>why it catches catalogue-missing faults</th><th>differs from prior art</th><th>expected &Delta;DTI vs cost</th><th>status</th></tr>
-<tr><td>1</td><td><b>Corrections: catalogue-to-evidence registration offset</b></td>
-<td>det_elev, det_elev_slope (12, 19); 1 m 3DEP LiDAR (calibration); vector catalogue records</td>
-<td>perpendicular transects &plusmn;400 m; strongest-crest offset of the DEM-scarp ridge per record; emit at the crest when consistent &gt; 2 px</td>
-<td>the hidden truth contains &ldquo;corrections or modifications&rdquo; within 300 m of known traces (forum 11516); USGS-to-refined discrepancies up to 400 m are documented (Hermant et al. 2025). The catalogue line is masked, so only the refined position scores</td>
-<td>siblings emit on catalogue-distance halos or learned fields; none measures the catalogue-to-evidence offset per vector trace with a LiDAR-calibrated crest</td>
-<td><b>validated this session</b>: HOLDOUT-DTI(sim) {fmt(a1['dti'])} vs {fmt(a0['dti'])} masked control, {fmt(a4['dti'])} random; cost already spent</td>
-<td><span class=ok>IMPLEMENTED + HOLDOUT-VALIDATED</span></td></tr>
-<tr><td>2</td><td><b>Magnetic-gradient ridge lineaments off-catalogue</b></td>
-<td>tmi_hg (3), tc (6), rtp (2), tmi (14)</td>
-<td>ridge tracing of the horizontal-gradient / tilt-angle fields; strike-family filtering (Basin-and-Range orientations); exclude anything within 2 px of the catalogue</td>
-<td>faults with magnetic contrast produce gradient ridges even where scarps are absent (buried or eroded faults) &mdash; the largest pool of genuinely new faults</td>
-<td>siblings feed mag bands into CNNs as inputs; none traces mag ridges as primary lineament evidence with strike filtering and a holdout gate</td>
-<td>moderate (largest new-fault pool; lithologic contacts give false ridges &mdash; needs scarp corroboration); cost: ~1 session</td>
-<td>preregistered future lane</td></tr>
-<tr><td>3</td><td><b>Radiometric alteration halos along faults</b></td>
-<td>cond_surf (17); cached GeoDAWN K/Th/U/TC radiometrics (7GEMSDOE external/geodawn_rad)</td>
-<td>K/Th ratio and TC lineament detection; halo = elongated high-ratio anomaly parallel to a scarp or gradient ridge</td>
-<td>geothermal fault conduits produce clay/potassium alteration halos; the competition asks for geothermal-indicative faults, so alteration-aligned faults are exactly the target class</td>
-<td>siblings use cond_surf as one CNN input; none builds ratio lineaments with a holdout gate. Data is free/public (USGS GeoDAWN, DOI 10.5066/P93LGLVQ)</td>
-<td>moderate (goal-aligned; GeoDAWN radiometrics are ~1 km flight-line scale &mdash; coarse); cost: ~1 session</td>
-<td>preregistered future lane</td></tr>
-<tr><td>4</td><td><b>Basement-depth edges under cover</b></td>
-<td>depth_to_base_surf (15); cached 3 m LiDAR scarp product (GEMSDOE48 h52_scarp3m_100m)</td>
-<td>gradient ridge of depth-to-basement, corroborated by a DEM scarp; emit at the corroborated edge, off-catalogue</td>
-<td>faults control basin-fill thickness: buried fault edges in alluvial cover are invisible in the catalogue but offset the basement surface</td>
-<td>GEMSDOE40 tried depth-KDE clusters cross-family; a gradient-edge + scarp corroboration with a blocked holdout is a different operator</td>
-<td>low&ndash;moderate (indirect, two-step inference); cost: low&ndash;medium</td>
-<td>preregistered future lane</td></tr>
-<tr><td>5</td><td><b>Geodetic strain-gradient anomalies</b></td>
-<td>geod_shearrate (7), geod_dilaterate (8), geod_2ndinv (4), deq/ieq (10, 16)</td>
-<td>localized shear/dilation maxima off-catalogue; wavelength-filtered ridge detection</td>
-<td>active faults concentrate strain; the 2020 Mw 6.5 Monte Cristo rupture occurred on a largely unmapped fault (Candelaria fault, inside the footprint &mdash; USGS field response, SRL 92(2A))</td>
-<td>GEMSDOE51 tried Kreemer et al. (2000) Eq. 3 coarse priors (Spearman 0.14 &mdash; weak); a fine-scale strain-gradient ridge detector with holdout gating is different</td>
-<td>low (the strain field is smooth at 100 m; one event is a weak prior); cost: medium</td>
-<td>preregistered future lane</td></tr>
-</table>
-<p class=mut>Ranking rationale: expected DTI improvement per unit cost. H1 is the only
-candidate whose target (corrections near known traces) is confirmed by the organizers to be
-in the hidden label set, and it is the only one with a completed holdout. H2 addresses the
-largest untapped pool (genuinely new faults) but carries lithology false-positive risk.
-H3 is the most goal-aligned but the coarsest data. H4 is cheap but indirect. H5 is the
-weakest signal at the official resolution.</p>
-"""
-    # round-2 discovery set (PR #7): pre-registered H6-H10 + the E1 verdict, appended to the
-    # concurrent run's five hypotheses above -- two sessions, two hypothesis sets, both shown.
-    if hold2 and bld2:
-        pr2 = hold2["pick_rule"]
-        sc2 = hold2["pooled"]["scores"]
-        hyp += f"""
-<h2>Round-2 discovery run (PR #7): five more hypotheses, H6&ndash;H10 &mdash; validated NEGATIVE</h2>
-<p>The concurrent session on this repo pre-registered its own set
-(<a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/research/hypotheses-20261009.md"><code>docs/research/hypotheses-20261009.md</code></a>,
-ranked prior &times; cost &divide; danger) and spent its three-experiment budget testing the
-top three on the same blocked instrument (E1, <code>evidence/holdout_discovery_v1.json</code>,
-evaluator <code>gems52-pooled-hide-v1</code>, 4 folds, 48,080 withheld positives, budgets
-8k/15k/25k/37,654, six arms including a <i>measured</i> chance floor):</p>
-<table>
-<tr><th>#</th><th>hypothesis</th><th>mechanism / named non-fault process</th><th>status from E1</th></tr>
-<tr><td>H6</td><td><b>iso-gravity steps are fault-reactivated boundaries</b></td>
-<td>isostatic residual steps &rarr; potential-field edges; non-fault: erosional terrace edges</td>
-<td>best {fmt(sc2['iso_step@25000']['dti'],5)} vs chance {fmt(sc2['random@25000']['dti'],5)} &mdash; <span class=bad>below chance, NEGATIVE</span></td></tr>
-<tr><td>H7</td><td><b>basement topography &times; conductors concordance</b></td>
-<td>weak contact made conductive by fluids; non-fault: intrusions &amp; alteration halos</td>
-<td>best {fmt(sc2['bc_step@25000']['dti'],5)} &mdash; <span class=bad>below chance, NEGATIVE</span></td></tr>
-<tr><td>H8</td><td><b>tilt-low lineaments beneath cover</b></td>
-<td>basin-fill depocentres; non-fault: channel &amp; fan morphology</td>
-<td>best {fmt(sc2['tilt_r@37654']['dti'],5)} &mdash; <span class=bad>~0, NEGATIVE (channel/fan stands)</span></td></tr>
-<tr><td>H9</td><td><b>INGENOUS 2 m probes gate on structural proximity</b></td>
-<td>measured surface-temperature steps; non-fault: soil moisture &amp; albedo</td>
-<td>probe layer obtained (3,800 pts) &mdash; not tested (budget stop)</td></tr>
-<tr><td>H10</td><td><b>probe&times;structure coincidence hotspots</b></td>
-<td>fluid pathways without catalogue faults; non-fault: anthropogenic site effects</td>
-<td>not tested (budget stop)</td></tr>
-</table>
-<p><b>The headline:</b> the pre-registered pick <code>{esc(pr2['candidate'])}</code> scored
-{fmt(bld2['holdout_dti'],5)} [{fmt(bld2['holdout_ci95'][0],5)}, {fmt(bld2['holdout_ci95'][1],5)}]
-while <b>uniform-random emission at the same budget scored {fmt(bld2['chance_dti'],5)}</b>;
-paired {fmt(pr2['paired_vs_random']['delta'],5)}
-[{fmt(pr2['paired_vs_random']['ci95'][0],5)}, {fmt(pr2['paired_vs_random']['ci95'][1],5)}] &mdash;
-strictly below chance. Leakage canaries &le; {fmt(hold2['canary_max_new_fields'],3)} (limit 0.90),
-so this is not leakage: the step/tilt signatures locate <em>mapped</em> structure, and once the
-catalogue &plusmn;200 m is excluded (the mechanism behind the sibling 0.2708&rarr;0.2778
-deletion, <a href="research.html">research &sect;8</a>) there is nothing left for them to find.
-Verdict by the pre-registered rule: <b>NEGATIVE</b>; the shipped TIF (second download on the
-<a href="index.html">home page</a>) carries the verdict in its name, note and receipt
-(<code>evidence/run_card_discovery_v1.json</code>). One instrument defect found en route &mdash;
-the zero-filled rim put 56.5% of <code>iso_step</code>'s top-25,000 cells on the data edge
-(IR-56-020) &mdash; was fixed once in <code>src/gems56/transform.py</code> with six regression
-tests; the negative survived the re-run unchanged.</p>
-"""
-    (out / "hypotheses.html").write_text(page("Hypotheses", "hypotheses.html", hyp))
-
-    # ------------------------------------------------------------- sources --
-    src = """
-<h2>Sources &mdash; official, verified, for manual review</h2>
-<table>
-<tr><th>what</th><th>link</th><th>used for</th></tr>
-<tr><td>Competition (rules, metric, submission format)</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">drivendata.org/competitions/306/competition-doe-gems/</a></td><td>weekly cap, submission rules, one-file rule</td></tr>
-<tr><td>Problem description &amp; metric (distance-weighted Tversky, &alpha;=0.2, &beta;=0.8, 300 m triangular kernel)</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">/page/967/</a></td><td>metric definition, worked example 0.60</td></tr>
-<tr><td>About the competition</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/968/">/page/968/</a></td><td>geothermal-indicative faults goal</td></tr>
-<tr><td>Organizer forum thread 11516 (known-fault pixels masked; corrections within 300 m of known traces)</td><td><a href="https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516">community.drivendata.org/t/.../11516</a></td><td>the lane's premise</td></tr>
-<tr><td>Official reference solution</td><td><a href="https://github.com/drivendataorg/gems-prize-reference-solution">github.com/drivendataorg/gems-prize-reference-solution</a></td><td>submission writer conventions</td></tr>
-<tr><td>GeoDAWN airborne magnetic/radiometric surveys (USGS)</td><td><a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and">usgs.gov/data/geodawn-...</a> · DOI <a href="https://doi.org/10.5066/P93LGLVQ">10.5066/P93LGLVQ</a></td><td>the 19 feature bands' provenance</td></tr>
-<tr><td>INGENIOUS project (GBCGE)</td><td><a href="https://gbcge.org/current-projects/ingenious/">gbcge.org/current-projects/ingenious/</a></td><td>catalogue provenance</td></tr>
-<tr><td>QFaults + INGENIOUS shapefile via GDR submission 1391 (CC BY 4.0)</td><td><a href="https://gdr.openei.org/submissions/1391">gdr.openei.org/submissions/1391</a></td><td>vector catalogue (records, segments)</td></tr>
-<tr><td>USGS 3DEP 1 m DEM (public domain)</td><td><a href="https://www.usgs.gov/3d-elevation-program">usgs.gov/3d-elevation-program</a></td><td>LiDAR calibration (via the 7GEMSDOE cached product)</td></tr>
-<tr><td>USGS SGMC state geology (public domain)</td><td><a href="https://mrdata.usgs.gov/geology/state/">mrdata.usgs.gov/geology/state/</a></td><td>catalogue cross-check</td></tr>
-<tr><td>Tversky index</td><td><a href="https://en.wikipedia.org/wiki/Tversky_index">en.wikipedia.org/wiki/Tversky_index</a></td><td>metric background</td></tr>
-<tr><td>Mnih &amp; Hinton, ICML 2012 (registration/omission-tolerant loss)</td><td><a href="https://www.cs.toronto.edu/~hinton/absps/straightthru.pdf">cs.toronto.edu/~hinton/absps/straightthru.pdf</a></td><td>prescribed loss style for any learned component</td></tr>
-<tr><td>Hermant, Kiersnowski &amp; Bellanger, Stanford Geothermal Workshop 2025</td><td><a href="https://pangea.stanford.edu/ERE/pdfs/StanfordGeothermalWorkshop/2025/Hermant.pdf">pangea.stanford.edu (SGW 2025)</a></td><td>USGS-to-refined trace discrepancies up to 400 m</td></tr>
-<tr><td>USGS field response, 2020 Mw 6.5 Monte Cristo rupture (SRL 92(2A) 823&ndash;829)</td><td><a href="https://pubs.usgs.gov/publication/srl-92-2A">pubs.usgs.gov/publication/srl-92-2A</a></td><td>rupture on largely unmapped Candelaria fault, inside the footprint</td></tr>
-<tr><td>Sibling repositories (this project's parallel lanes; scores user-reported)</td><td><a href="https://github.com/buffedlizard55-lab">github.com/buffedlizard55-lab</a> (GEMSDOE, GEMSDOE32, GEMSDOE51, 7GEMSDOE, GEMSDOE48, ...)</td><td>template tooling, cached rasters, registry</td></tr>
-<tr><td>GEMSDOE54 <code>RUN2-SUMMARY.md</code> (sibling run log; byte-exact quotes in <code>knowledge/sources.json</code>)</td><td><a href="https://github.com/buffedlizard55-lab/GEMSDOE54/blob/main/RUN2-SUMMARY.md">github.com/buffedlizard55-lab/GEMSDOE54/blob/main/RUN2-SUMMARY.md</a></td><td>the 0.2708&rarr;0.2778 mechanism (delete 2,545 dots within 200 m of catalogue), board-rank and detection-floor caveats, holdout priors</td></tr>
-<tr><td>INGENIOUS / GDR 1391 2 m temperature probes (CC BY 4.0, DOI 10.15121/1881483)</td><td><a href="https://gdr.openei.org/submissions/1391">gdr.openei.org/submissions/1391</a></td><td>round-2 H9/H10 layer (3,800 points obtained via the org's hash-pinned mirror)</td></tr>
-</table>
-<p class=mut>Data provenance chain (sha256 pins, naming-drift table, DEM tile URLs) is in
-<code>data/README.md</code> (adapted from the GEMSDOE template). External data policy: free,
-public, official sources only; every external claim on this site carries its link.</p>
-"""
-    (out / "sources.html").write_text(page("Sources", "sources.html", src))
-
-    # ------------------------------------------------------ irregularities --
-    irr = f"""
-<h2>Irregularities &mdash; flagged, and how each was checked</h2>
-<div class=card><h3>IR-56-01: the 0.2778 attached to <code>h33-h33-2-b2</code> is user-reported and unsupported</h3>
-<p>The brief asks why <code>h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros</code> &ldquo;got the
-highest score (0.2778)&rdquo;. Checked against the sibling's own pages: the GEMSDOE32 site and
-README label that artifact <b>UNSCORED</b>, give a <b>modelled projection of 0.2747</b>, and
-state that no organizer score exists for it; <code>docs/score-ledger.csv</code> marks all
-sibling scores user-reported; the GEMSDOE51 audit (<code>evidence/score_attribution_audit.json</code>)
-calls the 0.2778 attribution &ldquo;unsupported and contradicted&rdquo;. <b>What is defensible:</b>
-the mechanism the file embodies (catalogue-pruned dotted emission at the metric's break-even
-bar &mdash; see <a href="research.html">research &sect;8</a>). <b>What is not:</b> any claim that
-this exact file scored 0.2778, or any causal geological story for a public score.</p></div>
-<div class=card><h3>IR-56-02: &ldquo;0.3195 is the highest score right now&rdquo; is stale; 0.3774 is unverifiable here</h3>
-<p>The verified leaderboard snapshot stored by GEMSDOE32 (2026-10-04,
-<code>registry/leaderboard_snapshot_2026-10-04.json</code>) has #1 nchuzhoy <b>0.3262</b>,
-#2 kinghorton42 0.3222, #3 DARD 0.3195. GEMSDOE51's one-time official-page check on 2026-10-08
-found 0.3195 was not the page high. The brief's newer figure (0.3774, 2026-10-09) cannot be
-checked from this sandbox: drivendata.org is not reachable (egress allowlist). It is recorded
-as <b>user-supplied, unverified</b>. Check the
-<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">official leaderboard</a>
-directly; this site does not monitor it (DrivenData ToS).</p></div>
-<div class=card><h3>IR-56-03: the portal error <code>"Predicted values must be in range [0, 1]"</code></h3>
-<p>A previous attempt from this project was rejected with this message. Two mechanisms produce
-it (measured by the GEMSDOE32 sibling on the official rasters): (1) writing the feature stack's
-float32 nodata sentinel <code>-3.4028234663852886e+38</code> through unchanged &mdash;
-7,113,308 cells carry it, 3,061 inside the submission footprint; (2) NaN inside the footprint.
-This session's file: every template-valid pixel finite in [0,&nbsp;1], NaN only where the
-official sample is NaN, nodata tag <code>nan</code> &mdash; both the repository validator and
-the template-conformance gate pass (receipts in <code>evidence/corrections/run_card.json</code>).</p></div>
-<div class=card><h3>IR-56-04: sibling scores are unauthenticated</h3>
-<p>Every score in the sibling score ledger (0.1922&hellip;0.2778 family, and the 0.2708 base)
-is owner-reported; none carries an organizer receipt. They are used here only as
-<b>mechanism evidence</b> (the emission-side break-even), never as targets.</p></div>
-<div class=card><h3>IR-56-05: holdout truth is simulated, not the organizer's</h3>
-<p>The HOLDOUT-DTI numbers come from a simulated corrections truth (the measured crest lines
-of withheld records). They validate the emission machinery and the controls; they are not
-organizer scores and are labelled as such everywhere they appear.</p></div>
-<div class=card><h3>IR-56-06: LiDAR calibration covers 75% of the footprint</h3>
-<p>The 1 m calibration product (706 of 716 official 3DEP tiles) covers 3,892,964 grid cells
-(75% of the 5,167,373-px footprint); 10 edge tiles failed in the sibling's CI. Calibration
-statistics are computed on covered transects only and labelled with n.</p></div>
-<div class=card><h3>IR-56-07: the literal 70%-containment uniqueness test fires on 8 habitat
-rasters; the investigation shows they are supersets, not re-issues</h3>
-<p>The lane protocol's literal test (&ldquo;more than 70% of your dots fall within 3 px of one
-registry raster's dots &rarr; log it as a duplicate and stop&rdquo;) fires on
-{reg_n_flags if reg else '8'} sparse registry rasters (containment up to
-{fmt(reg_worst_cont,4) if reg else '0.9989'}). Investigated with the discriminating statistics
-(the sibling GEMSDOE51 gate's own): every one of them is a <b>habitat/superset emission
-12&ndash;38&times; larger</b> than this lane's {dots:,} dots (13GEMSDOE lattice / toporef /
-union-tips, 5GEMSDOE pindrop-v4 discovery/nodes, GEMSDOE50 topo-lineament-scatter,
-GEMSDOE23 arrangement-matched-habitat, GEMSDOE37 h6-physics-dotted-80k), and for every one of
-them the 3&nbsp;px Jaccard is &le; {fmt(reg_worst_jac,4) if reg else '0.091'} and the reverse
-containment is &le; {fmt(reg_worst_rev,4) if reg else '0.046'} (globally; &le; 0.023 among the
-flagged eight) &mdash; this lane's dot set is a small subset of their habitat, not a re-issue. Against every prior <b>submission of comparable
-construction</b> (the 37,654&ndash;44,090-dot h33 family, incl. the 0.2778-attributed file),
-containment is &le; 0.334 and Jaccard &le; 0.052. Spearman rank correlation is at most
-{fmt(reg_worst_sp,4) if reg else '0.0429'} (dots) / {fmt(reg_worst_sps,4) if reg else '0.1086'}
-(surface) against all {reg_n if reg else '412'} unique registry rasters &mdash; far below the
-0.90 threshold. <b>Determination: UNIQUE &mdash; no prior is re-issued and this raster is not
-a re-issue of any prior.</b> The flags are logged with full numbers in
-<code>evidence/corrections/registry_check.json</code>; the protocol requires a stop on those flags.
-A literal reading that treats &ldquo;inside a big habitat lattice&rdquo; as duplication would
-condemn every small precise emission (including the prior best itself) &mdash; the
-mass-ratio/Jaccard analysis is diagnostic only and does not override the rule.</p></div>
-"""
-    # round-2 (PR #7) entries from the machine-readable log -- both runs flag, neither hides
-    if isinstance(irr_b, list) and bld2:
-        new_irr = [i for i in irr_b if i.get("id") in
-                   {"IR-56-019", "IR-56-020", "IR-56-021", "IR-56-022", "IR-56-023"}]
-        irr += "\n<h2>Round-2 discovery run (PR #7) &mdash; its five entries</h2>\n"
-        for i in new_irr:
-            title = i.get("title") or i.get("area") or ""
-            body = i.get("finding") or i.get("what") or ""
-            check = i.get("verified_by") or i.get("why_it_matters") or ""
-            irr += (f"<div class=card><h3>{esc(i.get('id'))}: {esc(title)}</h3>\n"
-                    f"<p>{esc(body)}</p>\n<p><b>Checked / why it matters:</b> {esc(check)}</p>\n"
-                    f"<p class=mut>Done: {esc(i.get('action', ''))} · source: "
-                    f"{esc(i.get('verified_by') or i.get('found_by') or '')}</p></div>\n")
-        irr += ("<p class=mut>Full machine-readable log (both runs, "
-                "<code>evidence/irregularities.json</code>, 23 entries): IR-56-001&hellip;013 "
-                "round 1, IR-56-014&hellip;018 the concurrent corrections session, "
-                "IR-56-019&hellip;023 this round-2 discovery run.</p>\n")
-    (out / "irregularities.html").write_text(page("Irregularities", "irregularities.html", irr))
-
+    write_status_pages(out)
+    (out / "submit.html").write_text("""<!doctype html><html lang=en><head>
+<meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv="refresh" content="0; url=executive-summary.html">
+<title>Submission status — NEGATIVE / STOP</title></head><body>
+<h1>NEGATIVE / STOP — do not upload</h1><p>No TIFF in this repository is cleared or safe to submit.
+<a href="executive-summary.html">Current submission status and future-review checklist</a>.</p>
+</body></html>""")
+    (out / "prior-irregularities.html").write_text("""<!doctype html><html lang=en><head>
+<meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv="refresh" content="0; url=irregularities.html">
+<title>Historical irregularities — current status</title></head><body>
+<h1>Historical irregularities are superseded</h1><p>See the
+<a href="irregularities.html">current review findings</a> and
+<a href="executive-summary.html">current submission status</a>.</p></body></html>""")
     print(f"site written to {out}/")
     for f in sorted(out.glob("*.html")):
-        print("  ", f.name, f.stat().st_size, "B")
+        print(f"  {f.name} {f.stat().st_size} B")
 
 
 if __name__ == "__main__":

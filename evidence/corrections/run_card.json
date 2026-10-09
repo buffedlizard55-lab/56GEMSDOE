@@ -1,260 +1,357 @@
 {
- "session": "56GEMSDOE corrections lane (arena/b71ede8d-56gemsdoe)",
- "generated_utc": "20261009T051209Z",
- "hypothesis": "New-fault ground truth lies within 300 m of known traces as 'corrections or modifications to existing fault traces' (organizers, forum thread 11516). Where the DEM-scarp crest (det_elev_slope ridge, calibrated on 1 m USGS 3DEP LiDAR) sits consistently > 2 px (200 m) from the catalogue trace, the refined fault is at the crest, not on the catalogue line.",
- "mechanism": "Perpendicular transects (+/-400 m) on every catalogue trace; strongest-crest offset of the det_elev_slope ridge per vector-catalogue record; consistent offset = |median| > 2 px, sign agreement >= 0.70, >= 8 transects; emit dots on the connected crest line, off-catalogue, inside the footprint. No learned component (Mnih & Hinton 2012 loss not invoked).",
- "named_non_fault_process": "Erosional/terrace scarps and alluvial-fan edges produce the same convex slope crest without a fault; a crest can also belong to a NEIGHBOURING fault (the off-catalogue restriction removes known-fault pixels, but an unmapped neighbour strand would score as a new fault, not a correction). LiDAR calibration shows the crest is a real sharp scarp; it cannot prove it is a fault.",
- "holdout_dti": {
-  "label": "HOLDOUT-DTI (simulated-corrections truth, evaluator src/metrics.py, alpha 0.2, beta 0.8, 300 m triangular kernel, known-fault masking model)",
-  "n_withheld_positives": 26813,
-  "A1_lane": {
-   "dti": 0.3104862039086027,
-   "ci95": [
-    0.282121,
-    0.337809
-   ],
-   "dots": 6504,
-   "TP_w": 7101.006157507356,
-   "FP_w": 0.0,
-   "FN_w": 19711.993842492644
+  "session": "56GEMSDOE corrections lane (arena/b71ede8d-56gemsdoe)",
+  "generated_utc": "20261009T051209Z",
+  "hypothesis": "New-fault ground truth lies within 300 m of known traces as 'corrections or modifications to existing fault traces' (organizers, forum thread 11516). Where the DEM-scarp crest (det_elev_slope ridge, calibrated on 1 m USGS 3DEP LiDAR) sits consistently > 2 px (200 m) from the catalogue trace, the refined fault is at the crest, not on the catalogue line.",
+  "mechanism": "Perpendicular transects (+/-400 m) on every catalogue trace; strongest-crest offset of the det_elev_slope ridge per vector-catalogue record; consistent offset = |median| > 2 px, sign agreement >= 0.70, >= 8 transects; emit dots on the connected crest line, off-catalogue, inside the footprint. No learned component (Mnih & Hinton 2012 loss not invoked).",
+  "named_non_fault_process": "Erosional/terrace scarps and alluvial-fan edges produce the same convex slope crest without a fault; a crest can also belong to a NEIGHBOURING fault (the off-catalogue restriction removes known-fault pixels, but an unmapped neighbour strand would score as a new fault, not a correction). LiDAR calibration shows the crest is a real sharp scarp; it cannot prove it is a fault.",
+  "holdout_dti": {
+    "label": "HOLDOUT-DTI (simulated-corrections truth, evaluator src/metrics.py, alpha 0.2, beta 0.8, 300 m triangular kernel, known-fault masking model)",
+    "n_withheld_positives": 26813,
+    "A1_lane": {
+      "dti": 0.3104862039086027,
+      "ci95": [
+        0.282121,
+        0.337809
+      ],
+      "dots": 6504,
+      "TP_w": 7101.006157507356,
+      "FP_w": 0.0,
+      "FN_w": 19711.993842492644
+    },
+    "A0_masked_control": {
+      "dti": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "dots": 60988,
+      "TP_w": 0.0,
+      "FP_w": 55255.06925116223,
+      "FN_w": 26813.0
+    },
+    "A4_random_control": {
+      "dti": 0.011742973567132674,
+      "ci95": [
+        0.010007,
+        0.013591
+      ],
+      "dots": 6504,
+      "TP_w": 267.55357481290343,
+      "FP_w": 6401.1553845357375,
+      "FN_w": 26545.446425187096
+    },
+    "source": "evidence/corrections/holdout_corrections.json",
+    "n_correction_candidates": 28,
+    "A2_nogate": {
+      "dti": 0.6617232877826275,
+      "ci95": [
+        0.645969,
+        0.67612
+      ],
+      "dots": 57904,
+      "TP_w": 22047.50750653008,
+      "FP_w": 37292.08684662493,
+      "FN_w": 4765.492493469919
+    },
+    "A5_oracle": {
+      "dti": 0.9999999999962704,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "dots": 26813,
+      "TP_w": 26813.0,
+      "FP_w": 0.0,
+      "FN_w": 0.0
+    },
+    "contrasts": {
+      "A1_minus_A0": 0.3104862039086027,
+      "A1_minus_A2": -0.35123708387402475,
+      "A1_minus_A4": 0.29874323034147005,
+      "A5_minus_A1": 0.6895137960876677
+    },
+    "contrast_ci95": {
+      "A1_minus_A0": [
+        0.282121,
+        0.337809
+      ]
+    },
+    "leakage_canary": {
+      "max_evidence_auc": 0.578457164863611,
+      "catalogue_mask_auc": 0.494168749256218,
+      "dist_to_catalogue_auc": 0.1508828110597688,
+      "controls_ok": true
+    },
+    "evidence_class": "HOLDOUT-DTI (historical simulated-corrections truth; 26,813 withheld positives; 95% CIs shown; evaluator version missing from source receipt)",
+    "evaluator_version": null,
+    "evaluator_version_status": "The earlier source receipt identifies only evaluator source src/metrics.py, not a version/hash. Do not cite this historical value as versioned holdout evidence; the latest active card has a separately versioned receipt.",
+    "admissibility": "Historical method-level comparison only; not the active run, not organizer new-fault truth, and not admissible for promotion."
   },
-  "A0_masked_control": {
-   "dti": 0.0,
-   "ci95": [
-    0.0,
-    0.0
-   ],
-   "dots": 60988,
-   "TP_w": 0.0,
-   "FP_w": 55255.06925116223,
-   "FN_w": 26813.0
+  "registry_check": {
+    "status": "DUPLICATE/STOP under the literal >70%-within-3px rule; descriptive Jaccard/correlation statistics do not waive the stop.",
+    "n_registry_rasters": 976,
+    "n_unique_pixel_content": 412,
+    "thresholds": {
+      "spearman_max": 0.9,
+      "containment_max": 0.7,
+      "jaccard_3px_max": 0.5,
+      "mutual_containment_max": 0.5,
+      "kernel_px": 3,
+      "sparse_support_fraction": 0.05
+    },
+    "worst": {
+      "spearman_dots": 0.0429,
+      "spearman_surface": 0.1086,
+      "jaccard_3px": 0.0908,
+      "containment": 0.9989,
+      "rev_containment": 0.0462
+    },
+    "n_duplicates": 0,
+    "n_literal_containment_flags": 8,
+    "literal_flag_note": "the protocol's literal >70%-dot-containment test fires on sparse habitat supersets; investigated with 3-px Jaccard, reverse containment and mass ratio (IR-56-07) and not byte-identical reissues, but the literal protocol gate still fails",
+    "top10_by_correlation": [
+      {
+        "path": "7GEMSDOE/downloads/gems7-halo15-gbt-v1-90fb7dc0fc1f.tif",
+        "sha256": "90fb7dc0fc1f6e7d3dbb20927417c6af7d110ca41167329d792c75c145f75b6a",
+        "spearman_dots": 0.0429,
+        "spearman_surface": 0.1086,
+        "kind": "dense",
+        "n_reg": 1828699
+      },
+      {
+        "path": "GEMSDOE2/data/evidence/runs/turbo-simple-20260925T041759Z/submission.tif",
+        "sha256": "5fb100d14c20fe925fda8af8acf77df933bf9df3b5a03c039fed6d28d0953db9",
+        "spearman_dots": 0.0347,
+        "spearman_surface": 0.0903,
+        "kind": "dense",
+        "n_reg": 5167373
+      },
+      {
+        "path": "17GEMSDOE/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+        "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+        "spearman_dots": 0.0341,
+        "spearman_surface": 0.0878,
+        "kind": "dense",
+        "n_reg": 5167373
+      },
+      {
+        "path": "7GEMSDOE/downloads/gems7-strike30x3-v2-2b06d45c5b57.tif",
+        "sha256": "2b06d45c5b5726be60ed7f953accda58919999a99b442bb87410377e0c4c034a",
+        "spearman_dots": 0.0281,
+        "spearman_surface": 0.0578,
+        "kind": "dense",
+        "n_reg": 575055
+      },
+      {
+        "path": "GEMSDOE53/docs/submissions/gems53-s3-bands-top_q0p02-20261009-e67cda00.tif",
+        "sha256": "e746ae6f8028f619bc7ab2a3f848afaf12953a2fa37fe09cb9b1f38060fdb79c",
+        "spearman_dots": 0.0049,
+        "spearman_surface": 0.0485,
+        "kind": "sparse",
+        "n_reg": 103348,
+        "containment": 0.1779,
+        "rev_containment": 0.024,
+        "jaccard_3px": 0.0106,
+        "surface_containment": 0.1995,
+        "mass_ratio": 15.9
+      },
+      {
+        "path": "17GEMSDOE/docs/downloads/17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.tif",
+        "sha256": "8612586354611df8602a2b0bad8a7916946d1bc0bc32f63e39f1fffbcccced8d",
+        "spearman_dots": 0.0105,
+        "spearman_surface": 0.0461,
+        "kind": "sparse",
+        "n_reg": 170401,
+        "containment": 0.2641,
+        "rev_containment": 0.0299,
+        "jaccard_3px": 0.0098,
+        "surface_containment": 0.2565,
+        "mass_ratio": 26.2
+      },
+      {
+        "path": "12GEMSDOE/docs/downloads/12GEMSDOE_multiphysics_submission_06ca61e5.tif",
+        "sha256": "06ca61e5c6a3e55eaf40228d97054a35af1187be9c98e0ef95d996f9919efc6b",
+        "spearman_dots": 0.0065,
+        "spearman_surface": 0.0452,
+        "kind": "sparse",
+        "n_reg": 224173,
+        "containment": 0.4697,
+        "rev_containment": 0.0306,
+        "jaccard_3px": 0.0134,
+        "surface_containment": 0.4075,
+        "mass_ratio": 34.5
+      },
+      {
+        "path": "GEMSDOE52/docs/downloads/gems52-r4-B_only-37654px-b-only-research.tif",
+        "sha256": "c6b9351fe45dde5559d3b7ee09c7e8f28d137fa03f7dde95ef3b8fbdf71245e0",
+        "spearman_dots": 0.0201,
+        "spearman_surface": 0.0449,
+        "kind": "sparse",
+        "n_reg": 37654,
+        "containment": 0.1691,
+        "rev_containment": 0.0448,
+        "jaccard_3px": 0.0255,
+        "surface_containment": 0.1314,
+        "mass_ratio": 5.8
+      },
+      {
+        "path": "8GEMSDOE/docs/downloads/submission.tif",
+        "sha256": "b83ea0e7074882ceee31de89695281c00ade51f26a0a7048f628f60058755356",
+        "spearman_dots": 0.0156,
+        "spearman_surface": 0.0443,
+        "kind": "dense",
+        "n_reg": 427862
+      },
+      {
+        "path": "GEMSDOE2/data/evidence/seghold/eval_labels.tif",
+        "sha256": "1729f3571ebf25668e84c08cb5e8c4fed375ae0910e5037e95bddcca7f0253a2",
+        "spearman_dots": 0.0235,
+        "spearman_surface": 0.0439,
+        "kind": "dense",
+        "n_reg": 324488
+      }
+    ],
+    "source": "evidence/corrections/registry_check.json",
+    "gate_pass": false,
+    "duplicate_stop": true,
+    "verdict": "DUPLICATE/STOP under the literal >70%-within-3px rule"
   },
-  "A4_random_control": {
-   "dti": 0.011742973567132674,
-   "ci95": [
-    0.010007,
-    0.013591
-   ],
-   "dots": 6504,
-   "TP_w": 267.55357481290343,
-   "FP_w": 6401.1553845357375,
-   "FN_w": 26545.446425187096
+  "raster": {
+    "primary": "docs/downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif",
+    "sha256": "08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7",
+    "pixel_sha256": "78fc86ad",
+    "dots": 6504,
+    "candidate_records": 28,
+    "on_catalogue_dots": 0,
+    "legacy_validator_history": {
+      "conformance": {
+        "primary": {
+          "returncode": 0,
+          "output": "{\n \"pixels\": 12279160,\n \"template_valid_px\": 5167373,\n \"nan_inside_px\": 0,\n \"finite_outside_px\": 0,\n \"out_of_range_px\": 0,\n \"conformant\": true,\n \"nodata\": \"nan\",\n \"nodata_ok\": true,\n \"path\": \"docs/downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif\"\n}\n"
+        }
+      },
+      "validation": {
+        "primary": {
+          "returncode": 0,
+          "output": "Validating docs/downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif\n  Width: 3292, Height: 3730, Count: 1, Dtype: ('float32',), CRS: EPSG:32611, Res: (100.0, 100.0), Nodata: nan\n  Data min: 0.0000, max: 1.0000, mean: 0.0013, nan%: 57.92%\n  \u2713 CRS EPSG:32611\n  \u2713 Resolution 100m\n  \u2713 Single band\n  \u2713 Dtype float32\n  \u2713 Values in [0,1] (min 0.0000 max 1.0000)\n  \u2713 Size matches sample 3292x3730\n  \u2713 Transform matches sample\n  \u2713 All 5,167,373 template-valid px are finite in [0,1]\n  \u2713 NaN exactly outside the template's valid region\n  \u2713 GDAL_NODATA matches the template ('nan')\n  \u2713 Size matches training_features\n  i NaN fraction 57.92% (NaN is expected outside the GeoDAWN footprint)\n\n\u2705 Validation PASSED - Ready for submission!\nNext: Upload to https://www.drivendata.org/competitions/306/competition-doe-gems/ via 'Submit' button\n"
+        }
+      }
+    },
+    "strict_revalidation": {
+      "path": "docs/downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif",
+      "bytes": 351093,
+      "sha256": "08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7",
+      "bands": 1,
+      "dtype": "float32",
+      "crs": "EPSG:32611",
+      "width": 3292,
+      "height": 3730,
+      "bounds": [
+        243350.0,
+        4135550.0,
+        572550.0,
+        4508550.0
+      ],
+      "ref_bounds": [
+        243350.0,
+        4135550.0,
+        572550.0,
+        4508550.0
+      ],
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "nodata": "nan",
+      "ref_nodata": "nan",
+      "blocksize": [
+        256,
+        256
+      ],
+      "fixture_grid": false,
+      "has_validity_mask": true,
+      "nan_pixels": 7111787,
+      "infinity_pixels": 0,
+      "n_nan": 7111787,
+      "template_valid_px": 5167373,
+      "nan_inside_px": 0,
+      "non_nan_outside_px": 0,
+      "mask_matches_template": true,
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.0012586666271090508,
+      "n_nonzero": 6504,
+      "mass": 6504.0,
+      "nodata_matches_template": true,
+      "problems": [],
+      "ok": true,
+      "validation_class": "strict local template-mask/metadata/range check; not organizer acceptance",
+      "training_grid_matches": true,
+      "source_template": "data/sample_submission.tif (hash-pinned owner bridge copy; organizer authenticity not independently verified)"
+    },
+    "strict_revalidation_class": "strict local template-mask/metadata/range check; not organizer acceptance"
   },
-  "source": "evidence/corrections/holdout_corrections.json",
-  "n_correction_candidates": 28,
-  "A2_nogate": {
-   "dti": 0.6617232877826275,
-   "ci95": [
-    0.645969,
-    0.67612
-   ],
-   "dots": 57904,
-   "TP_w": 22047.50750653008,
-   "FP_w": 37292.08684662493,
-   "FN_w": 4765.492493469919
+  "submission_name": "GEMSDOE56-CORR-CRESTGT2PX",
+  "note": "Historical 6,504-dot corrections raster; DUPLICATE/STOP; research archive only; NOT SAFE TO SUBMIT",
+  "verdict": {
+    "value": "negative",
+    "rationale": "literal registry proximity rule failed; strict format pass does not waive duplicate-and-stop",
+    "unique_vs_registry": false,
+    "format_valid": true,
+    "note": "Research archive only: registry DUPLICATE/STOP; no organizer receipt; no slot cleared.",
+    "legacy_beats_holdout_controls": true,
+    "beats_holdout_controls": false,
+    "format_validation_scope": "strict local pass against the pinned bridge sample only; not organizer acceptance",
+    "duplicate_stop": true,
+    "holdout_admissible_for_promotion": false
   },
-  "A5_oracle": {
-   "dti": 0.9999999999962704,
-   "ci95": [
-    1.0,
-    1.0
-   ],
-   "dots": 26813,
-   "TP_w": 26813.0,
-   "FP_w": 0.0,
-   "FN_w": 0.0
+  "readback_receipt": {
+    "validation_class": "strict local format validation against the hash-pinned owner-bridge sample; not organizer acceptance",
+    "format_valid_local_only": true,
+    "sha256": "08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7",
+    "mask_matches_template": true,
+    "nodata_matches_template": true,
+    "strict_problems": [],
+    "registry_stop": true,
+    "safe_to_submit": false
   },
-  "contrasts": {
-   "A1_minus_A0": 0.3104862039086027,
-   "A1_minus_A2": -0.35123708387402475,
-   "A1_minus_A4": 0.29874323034147005,
-   "A5_minus_A1": 0.6895137960876677
+  "record_status": "HISTORICAL; earlier corrections run, superseded as active-lane authority by evidence/run_card.json.",
+  "authoritative_for_active_lane": false,
+  "superseded_by": "evidence/run_card.json (2026-10-09T16:49:44Z)",
+  "safe_to_submit": false,
+  "cleared_for_weekly_slot": false,
+  "promote": false,
+  "legacy_submission_note": "GEMSDOE56 corrections: 6504 dots on LiDAR-calibrated DEM-scarp crest where catalogue offset >2px; 0 on-catalogue; HOLDOUT-DTI(sim) 0.3105",
+  "note_chars": 98,
+  "legacy_readback_receipt": {
+    "dtype_float32": true,
+    "single_band": true,
+    "crs_matches_sample": true,
+    "shape_matches_sample": true,
+    "transform_matches_sample": true,
+    "nodata_tag_is_nan": true,
+    "nan_mask_matches_sample": true,
+    "all_finite_inside_footprint": true,
+    "values_in_0_1": true,
+    "no_nan_inside_footprint": true,
+    "dots": 6504,
+    "dots_on_catalogue": 0,
+    "prob_mass": 6504.0,
+    "min": 0.0,
+    "max": 1.0,
+    "all_pass": true
   },
-  "contrast_ci95": {
-   "A1_minus_A0": [
-    0.282121,
-    0.337809
-   ]
+  "holdout_admissibility": {
+    "status": "historical method-level catalogue-recovery result; not admissible for active-lane promotion",
+    "reasons": [
+      "this card is not the authoritative latest corrections run",
+      "the active run card is negative and the experiment budget is exhausted",
+      "no organizer score receipt is present"
+    ]
   },
-  "leakage_canary": {
-   "max_evidence_auc": 0.578457164863611,
-   "catalogue_mask_auc": 0.494168749256218,
-   "dist_to_catalogue_auc": 0.1508828110597688,
-   "controls_ok": true
-  }
- },
- "registry_check": {
-  "status": "UNIQUE - no prior re-issued (literal containment flags logged and investigated below)",
-  "n_registry_rasters": 976,
-  "n_unique_pixel_content": 412,
-  "thresholds": {
-   "spearman_max": 0.9,
-   "containment_max": 0.7,
-   "jaccard_3px_max": 0.5,
-   "mutual_containment_max": 0.5,
-   "kernel_px": 3,
-   "sparse_support_fraction": 0.05
-  },
-  "worst": {
-   "spearman_dots": 0.0429,
-   "spearman_surface": 0.1086,
-   "jaccard_3px": 0.0908,
-   "containment": 0.9989,
-   "rev_containment": 0.0462
-  },
-  "n_duplicates": 0,
-  "n_literal_containment_flags": 8,
-  "literal_flag_note": "the protocol's literal >70%-dot-containment test fires on sparse habitat supersets; investigated with 3-px Jaccard, reverse containment and mass ratio (IR-56-07) and not byte-identical reissues, but the literal protocol gate still fails",
-  "top10_by_correlation": [
-   {
-    "path": "7GEMSDOE/downloads/gems7-halo15-gbt-v1-90fb7dc0fc1f.tif",
-    "sha256": "90fb7dc0fc1f6e7d3dbb20927417c6af7d110ca41167329d792c75c145f75b6a",
-    "spearman_dots": 0.0429,
-    "spearman_surface": 0.1086,
-    "kind": "dense",
-    "n_reg": 1828699
-   },
-   {
-    "path": "GEMSDOE2/data/evidence/runs/turbo-simple-20260925T041759Z/submission.tif",
-    "sha256": "5fb100d14c20fe925fda8af8acf77df933bf9df3b5a03c039fed6d28d0953db9",
-    "spearman_dots": 0.0347,
-    "spearman_surface": 0.0903,
-    "kind": "dense",
-    "n_reg": 5167373
-   },
-   {
-    "path": "17GEMSDOE/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
-    "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
-    "spearman_dots": 0.0341,
-    "spearman_surface": 0.0878,
-    "kind": "dense",
-    "n_reg": 5167373
-   },
-   {
-    "path": "7GEMSDOE/downloads/gems7-strike30x3-v2-2b06d45c5b57.tif",
-    "sha256": "2b06d45c5b5726be60ed7f953accda58919999a99b442bb87410377e0c4c034a",
-    "spearman_dots": 0.0281,
-    "spearman_surface": 0.0578,
-    "kind": "dense",
-    "n_reg": 575055
-   },
-   {
-    "path": "GEMSDOE53/docs/submissions/gems53-s3-bands-top_q0p02-20261009-e67cda00.tif",
-    "sha256": "e746ae6f8028f619bc7ab2a3f848afaf12953a2fa37fe09cb9b1f38060fdb79c",
-    "spearman_dots": 0.0049,
-    "spearman_surface": 0.0485,
-    "kind": "sparse",
-    "n_reg": 103348,
-    "containment": 0.1779,
-    "rev_containment": 0.024,
-    "jaccard_3px": 0.0106,
-    "surface_containment": 0.1995,
-    "mass_ratio": 15.9
-   },
-   {
-    "path": "17GEMSDOE/docs/downloads/17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.tif",
-    "sha256": "8612586354611df8602a2b0bad8a7916946d1bc0bc32f63e39f1fffbcccced8d",
-    "spearman_dots": 0.0105,
-    "spearman_surface": 0.0461,
-    "kind": "sparse",
-    "n_reg": 170401,
-    "containment": 0.2641,
-    "rev_containment": 0.0299,
-    "jaccard_3px": 0.0098,
-    "surface_containment": 0.2565,
-    "mass_ratio": 26.2
-   },
-   {
-    "path": "12GEMSDOE/docs/downloads/12GEMSDOE_multiphysics_submission_06ca61e5.tif",
-    "sha256": "06ca61e5c6a3e55eaf40228d97054a35af1187be9c98e0ef95d996f9919efc6b",
-    "spearman_dots": 0.0065,
-    "spearman_surface": 0.0452,
-    "kind": "sparse",
-    "n_reg": 224173,
-    "containment": 0.4697,
-    "rev_containment": 0.0306,
-    "jaccard_3px": 0.0134,
-    "surface_containment": 0.4075,
-    "mass_ratio": 34.5
-   },
-   {
-    "path": "GEMSDOE52/docs/downloads/gems52-r4-B_only-37654px-b-only-research.tif",
-    "sha256": "c6b9351fe45dde5559d3b7ee09c7e8f28d137fa03f7dde95ef3b8fbdf71245e0",
-    "spearman_dots": 0.0201,
-    "spearman_surface": 0.0449,
-    "kind": "sparse",
-    "n_reg": 37654,
-    "containment": 0.1691,
-    "rev_containment": 0.0448,
-    "jaccard_3px": 0.0255,
-    "surface_containment": 0.1314,
-    "mass_ratio": 5.8
-   },
-   {
-    "path": "8GEMSDOE/docs/downloads/submission.tif",
-    "sha256": "b83ea0e7074882ceee31de89695281c00ade51f26a0a7048f628f60058755356",
-    "spearman_dots": 0.0156,
-    "spearman_surface": 0.0443,
-    "kind": "dense",
-    "n_reg": 427862
-   },
-   {
-    "path": "GEMSDOE2/data/evidence/seghold/eval_labels.tif",
-    "sha256": "1729f3571ebf25668e84c08cb5e8c4fed375ae0910e5037e95bddcca7f0253a2",
-    "spearman_dots": 0.0235,
-    "spearman_surface": 0.0439,
-    "kind": "dense",
-    "n_reg": 324488
-   }
-  ],
-  "source": "evidence/corrections/registry_check.json"
- },
- "raster": {
-  "primary": "docs/downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif",
-  "sha256": "08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7",
-  "pixel_sha256": "78fc86ad",
-  "dots": 6504,
-  "candidate_records": 28,
-  "on_catalogue_dots": 0,
-  "conformance": {
-   "primary": {
-    "returncode": 0,
-    "output": "{\n \"pixels\": 12279160,\n \"template_valid_px\": 5167373,\n \"nan_inside_px\": 0,\n \"finite_outside_px\": 0,\n \"out_of_range_px\": 0,\n \"conformant\": true,\n \"nodata\": \"nan\",\n \"nodata_ok\": true,\n \"path\": \"docs/downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif\"\n}\n"
-   }
-  },
-  "validation": {
-   "primary": {
-    "returncode": 0,
-    "output": "Validating docs/downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif\n  Width: 3292, Height: 3730, Count: 1, Dtype: ('float32',), CRS: EPSG:32611, Res: (100.0, 100.0), Nodata: nan\n  Data min: 0.0000, max: 1.0000, mean: 0.0013, nan%: 57.92%\n  \u2713 CRS EPSG:32611\n  \u2713 Resolution 100m\n  \u2713 Single band\n  \u2713 Dtype float32\n  \u2713 Values in [0,1] (min 0.0000 max 1.0000)\n  \u2713 Size matches sample 3292x3730\n  \u2713 Transform matches sample\n  \u2713 All 5,167,373 template-valid px are finite in [0,1]\n  \u2713 NaN exactly outside the template's valid region\n  \u2713 GDAL_NODATA matches the template ('nan')\n  \u2713 Size matches training_features\n  i NaN fraction 57.92% (NaN is expected outside the GeoDAWN footprint)\n\n\u2705 Validation PASSED - Ready for submission!\nNext: Upload to https://www.drivendata.org/competitions/306/competition-doe-gems/ via 'Submit' button\n"
-   }
-  }
- },
- "submission_name": "GEMSDOE56-CORR-CRESTGT2PX",
- "note": "GEMSDOE56 corrections: 6504 dots on LiDAR-calibrated DEM-scarp crest where catalogue offset >2px; 0 on-catalogue; HOLDOUT-DTI(sim) 0.3105",
- "verdict": {
-  "value": "negative",
-  "rationale": "one or more gates failed - see registry_check / validation",
-  "unique_vs_registry": false,
-  "beats_holdout_controls": true,
-  "format_valid": true,
-  "note": "PROMOTE is a lane verdict, not a slot decision: no organizer score exists for this file; spending a weekly submission slot is the separate selector step within the weekly cap."
- },
- "readback_receipt": {
-  "dtype_float32": true,
-  "single_band": true,
-  "crs_matches_sample": true,
-  "shape_matches_sample": true,
-  "transform_matches_sample": true,
-  "nodata_tag_is_nan": true,
-  "nan_mask_matches_sample": true,
-  "all_finite_inside_footprint": true,
-  "values_in_0_1": true,
-  "no_nan_inside_footprint": true,
-  "dots": 6504,
-  "dots_on_catalogue": 0,
-  "prob_mass": 6504.0,
-  "min": 0.0,
-  "max": 1.0,
-  "all_pass": true
- }
+  "legacy_submission_note_status": "Preserved verbatim for audit only. Its abbreviated HOLDOUT-DTI note lacks the required evaluator version, withheld-positive count, and CI; do not use as a submission note or score claim."
 }
