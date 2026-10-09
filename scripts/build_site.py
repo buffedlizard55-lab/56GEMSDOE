@@ -123,7 +123,7 @@ def arm_card(a, arm, gate_label):
     return f"""
 <div class="card">
   <h3>{esc(arm)} arm &mdash; {esc(gate_label)}</h3>
-  <p><span class="pill ok">OK to download</span><span class="pill bad">NOT cleared for a slot</span>
+  <p><span class="pill ok">OK to download (format-valid)</span><span class="pill bad">DO NOT submit: lane stopped as duplicate</span>
      <span class="pill warn">{esc(dots)} dots</span></p>
   <div class="kv"><b>file</b><span class="mono">{esc(tif)}</span></div>
   <div class="kv"><b>validator</b><span>{vtxt}</span></div>
@@ -468,7 +468,7 @@ def main():
     harder guarantee is structural anyway: a dot is never placed on a catalogue pixel, which is the one thing
     every earlier submission in this competition is made of.</p>
     <p class="small muted">Full receipts: <code>evidence/lane_uniqueness_{esc(prim['name'])}.json</code> and
-    <code>&hellip;{esc(sens['name'])}.json</code> (per-prior detail, 485 rows each) and the one-pass corpus scan
+    <code>&hellip;{esc(sens['name'])}.json</code> (per-prior detail, one row per registry raster) and the one-pass corpus scan
     <code>evidence/registry_screen_v1_rows.jsonl</code>.</p>""")
 
     b.append("<h2>7 &middot; Hypotheses, ranked by expected gain per cost</h2>")
@@ -548,13 +548,8 @@ python scripts/build_site.py                       #      this page, from the re
 
     # ------------------------------------------------------------------ exec summary
     e = [f"""<div class="banner {'bad' if not any_dots else 'warn'}"><div class="big">
-{'This lane has nothing to submit: the primary file is empty by design' if not any_dots else 'Downloadable, format-valid, and not cleared for a slot by this run'}</div>
-    <p class="why">Downloading is safe: both rasters are in the submission format, values in [0, 1], null
-    outside the footprint, validated after writing. Submitting spends one of the three weekly slots and buys an
-    expected {num(scores['B_snap']['dti'], 5)} DTI (95% CI [{num(scores['B_snap']['ci95'][0], 5)},
-    {num(scores['B_snap']['ci95'][1], 5)}]) against {num(scores['A_as_is']['dti'], 5)} for submitting nothing at
-    all. Filing it once is a legitimate way to record a negative on the scoreboard &mdash; it is not a way to
-    beat 0.3195, and this run does not recommend it as one.</p></div>""",
+{'DOWNLOAD: yes (format-valid). SUBMIT: no. This lane has nothing to submit: the primary file is empty by design' if not any_dots else 'DOWNLOAD: yes (format-valid, values in [0,1]). SUBMIT: no, not recommended. The lane stopped as a duplicate under its own parallel-run rule, and its measurement is negative.'}</div>
+    <p class="why">Download means the file is format-valid: float32, one band, EPSG:32611, the organizer grid, values in [0, 1], validated after writing. It does <b>not</b> mean it should be submitted. Under the parallel-run protocol the shared gate reports the primary as a <b>duplicate</b> (proximity criterion met against {esc(prim['lane'].get('offender_count'))} of {esc(prim['lane'].get('priors_checked'))} registry rasters; {esc(prim['lane'].get('error_count'))} could not be read). Those matches come from dense layers, not from a like-for-like copy, but the rule as written fires and we report it rather than argue around it (IR-56-006, IR-56-015). Separately, the measurement is negative: no corridor reaches a consistent 2 px offset, and a 14-dot file is capped below 0.2777 under the official metric unless the hidden positive set has fewer than about 558 pixels (IR-56-018). A slot spent on it buys an expected {num(scores['B_snap']['dti'], 5)} HOLDOUT-DTI (95% CI [{num(scores['B_snap']['ci95'][0], 5)}, {num(scores['B_snap']['ci95'][1], 5)}]), against {num(scores['A_as_is']['dti'], 5)} for submitting nothing. Not recommended.</p></div>""",
         "<h2>How to submit, exactly</h2><ol style='line-height:1.9'>",
         "<li>Download <a href='downloads/" + Path(prim['file']).name + "' download>the primary .tif</a> ("
         + esc(n_dots_prim) + " dots) or <a href='downloads/" + Path(sens['file']).name + "' download>the 1 px sensitivity .tif</a> ("
