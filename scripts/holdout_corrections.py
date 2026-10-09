@@ -241,8 +241,12 @@ def main():
 
     print("[3/6] building arms")
     cands = C.correction_candidates(res)
+    twin = C.mag_corroborated_candidates(res)          # round 3: two-family gate
     print(f"      correction-candidate records (consistent |offset|>2px): {len(cands)}")
+    print(f"      twin-family records (mag-corroborated, round 3): {len(twin)}")
     a1, a1_n, a1_per_rec = C.build_emission(res, fault, footprint, candidates=cands)
+    a1b, a1b_n, a1b_per_rec = C.build_emission(res, fault, footprint,
+                                               candidates=set(twin.keys()))
     a2, a2_n, _ = C.build_emission(res, fault, footprint, candidates=None)
     a0 = np.where(fault, 1.0, np.nan).astype(np.float32)
     rng = np.random.default_rng(7)
@@ -251,13 +255,17 @@ def main():
     a4 = np.full(fault.shape, np.nan, np.float32)
     a4[fp_r[sel], fp_c[sel]] = 1.0
     a4_n = a1_n
+    sel_b = rng.choice(len(fp_r), size=a1b_n, replace=False)   # chance control at A1b mass
+    a4b = np.full(fault.shape, np.nan, np.float32)
+    a4b[fp_r[sel_b], fp_c[sel_b]] = 1.0
     a5 = np.where(gt, 1.0, np.nan).astype(np.float32)
     print(f"      A0 catalogue px: {int(fault.sum()):,}   A1 lane dots: {a1_n:,}   "
-          f"A2 no-gate dots: {a2_n:,}   A4 random dots: {a4_n:,}   A5 oracle px: {n_gt:,}")
+          f"A1b twin dots: {a1b_n:,}   A2 no-gate dots: {a2_n:,}   "
+          f"A4 random dots: {a4_n:,}   A4b random@A1b: {a1b_n:,}   A5 oracle px: {n_gt:,}")
 
     print("[4/6] scoring pooled DTI (official metric + known-fault masking model)")
-    arms = [("A0_catalogue", a0), ("A1_lane", a1), ("A2_nogate", a2),
-            ("A4_random", a4), ("A5_oracle", a5)]
+    arms = [("A0_catalogue", a0), ("A1_lane", a1), ("A1b_twin", a1b), ("A2_nogate", a2),
+            ("A4_random", a4), ("A4b_random_a1b", a4b), ("A5_oracle", a5)]
     ctx = M.GtContext(gt.astype(np.float64))
     scores, rows = {}, []
     for name, arr in arms:
@@ -312,10 +320,12 @@ def main():
         n_withheld_positives=n_gt,
         n_correction_candidates=len(cands),
         candidate_records=sorted(cands),
+        twin_family_candidates={k: v for k, v in twin.items()},
         arms={r["name"]: dict(dti=r["dti"], TP_w=r["TP_w"], FP_w=r["FP_w"],
                               FN_w=r["FN_w"],
                               dots={"A0_catalogue": int(fault.sum()), "A1_lane": a1_n,
-                                    "A2_nogate": a2_n, "A4_random": a4_n,
+                                    "A1b_twin": a1b_n, "A2_nogate": a2_n,
+                                    "A4_random": a4_n, "A4b_random_a1b": a1b_n,
                                     "A5_oracle": n_gt}[r["name"]],
                               ci95=boot.get(r["name"], {}).get("dti_ci95"))
               for r in rows},
@@ -323,16 +333,22 @@ def main():
             "A1_minus_A0": scores["A1_lane"] - scores["A0_catalogue"],
             "A1_minus_A2": scores["A1_lane"] - scores["A2_nogate"],
             "A1_minus_A4": scores["A1_lane"] - scores["A4_random"],
+            "A1b_minus_A0": scores["A1b_twin"] - scores["A0_catalogue"],
+            "A1b_minus_A4b": scores["A1b_twin"] - scores["A4b_random_a1b"],
+            "A1_minus_A1b": scores["A1_lane"] - scores["A1b_twin"],
             "A5_minus_A1": scores["A5_oracle"] - scores["A1_lane"],
+            "A5_minus_A1b": scores["A5_oracle"] - scores["A1b_twin"],
         },
         contrast_ci95={
             "A1_minus_A0": boot.get("A1_lane", {}).get("contrast_vs_reference_ci95"),
+            "A1b_minus_A4b": boot.get("A1b_twin", {}).get("contrast_vs_reference_ci95"),
         },
         leakage_canary=canary,
         controls_ok=bool(controls_ok),
         folds={rid: int(f) for rid, f in folds.items()},
         per_record_truth_px=per_record,
         per_record_emission_px=a1_per_rec,
+        per_record_emission_a1b_px=a1b_per_rec,
     )
     (out / "holdout_corrections.json").write_text(json.dumps(result, indent=1))
     pd.DataFrame([dict(record=k, simulated_truth_px=v) for k, v in per_record.items()

@@ -500,6 +500,76 @@ def correction_candidates(res: TransectResult, band="dem_slope",
             and v["n_transects"] >= MIN_TRANSECTS_PER_RECORD}
 
 
+# ------------------------------------------------- round 3: twin-family gate --
+MAG_CORROBORATE_MIN_PX = 1.0     # |median mag offset| floor for corroboration
+MAG_CORROBORATE_MIN_N = 3        # qualified mag transects needed per record
+
+
+def mag_corroborated_candidates(res: TransectResult, band="dem_slope",
+                                 definition="strongest",
+                                 mag_band="mag_hg",
+                                 mag_definition="strongest"):
+    """Round-3 tightening of the emission set: the lane paragraph's TWO-family rule.
+
+    Keeps the round-1 candidates (consistent DEM-scarp offset > 2 px, sign
+    agreement >= 0.70, >= 8 transects) that the magnetic-gradient ridge
+    CORROBORATES: the record's median mag offset (qualified crests only) has
+    |median| >= 1 px and the same sign as the DEM offset.
+
+    Sign convention (the trap this function exists to avoid): per-transect
+    perpendiculars are defined modulo 180 deg, so the DEM subset and the mag
+    subset of the same record could otherwise pick anti-parallel references and
+    flip one family's signs.  Both families are therefore realigned to ONE
+    shared reference perpendicular - the record's most axis-aligned transect
+    among ALL its transects (dem and mag alike) - before any median is taken.
+
+    Pre-registered in docs/research/hypotheses-20261009-round3.md (fallback arm
+    of the emission decision rule); used by scripts/holdout_corrections.py
+    (arm A1b) and scripts/build_round3_submission.py (the shipped raster) so
+    the holdout and the file can never drift apart.
+    """
+    base = correction_candidates(res, band, definition)
+    okd = res.ok(band, definition)
+    okm = res.ok(mag_band, mag_definition)
+    td = res.t(band, definition)
+    tm = res.t(mag_band, mag_definition)
+    out = {}
+    for sid in sorted(base):
+        alld = res.record_ids == sid
+        if not alld.any():
+            continue
+        pr_all, pc_all = res.perp_r[alld], res.perp_c[alld]
+        ref = int(np.argmax(np.abs(pr_all) + np.abs(pc_all)))   # shared reference
+        pr0, pc0 = pr_all[ref], pc_all[ref]
+
+        def aligned(sub_ok, t):
+            s = alld & sub_ok
+            if not s.any():
+                return np.zeros(0, float)
+            d = t[s].astype(np.float64).copy()
+            dot = res.perp_r[s] * pr0 + res.perp_c[s] * pc0
+            d[dot < 0] *= -1.0
+            return d
+
+        dv = aligned(okd, td)
+        mv = aligned(okm, tm)
+        if dv.size < MIN_TRANSECTS_PER_RECORD or mv.size < MAG_CORROBORATE_MIN_N:
+            continue
+        dm, mm = float(np.median(dv)), float(np.median(mv))
+        if (abs(mm) >= MAG_CORROBORATE_MIN_PX
+                and np.sign(mm) == np.sign(dm)
+                and abs(dm) > OFFSET_EMIT_PX):
+            out[sid] = dict(
+                dem_median_px=dm, mag_median_px=mm,
+                dem_n=int(dv.size), mag_n=int(mv.size),
+                dem_sign_agreement=max(float((dv > 0).mean()),
+                                       1.0 - float((dv > 0).mean())),
+                mag_sign_agreement=max(float((mv > 0).mean()),
+                                       1.0 - float((mv > 0).mean())),
+            )
+    return out
+
+
 def record_crest_line(res: TransectResult, record_id, band="dem_slope",
                       definition="strongest"):
     """Connected evidence-defined trace (crest line) of one record, in px coords.

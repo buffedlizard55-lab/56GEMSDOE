@@ -94,15 +94,19 @@ submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; 
 on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
 <span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
 data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
-<main class=wrap><div class=card><h2 class=bad>STOP: not cleared for submission</h2>
-<p>The TIF is format-valid research output. Eight literal &gt;70% containment flags fail
- the standing duplicate-and-stop rule. Historical UNIQUE/PROMOTE labels below describe
- the earlier interpretation, not current authorization. Superset explanations do not waive
- the rule. No competition submission has been made.</p>
+<main class=wrap><div class=card><h2 class=bad>STOP: not cleared for submission (round 3, twin-family)</h2>
+<p>The one-click TIF is format-valid research output. This round's pre-registered
+geological test (H-C1) returned NEGATIVE; the holdout number is machinery-only (simulated
+truth); and the literal &gt;70%-containment duplicate-and-stop rule fires (12 flags,
+including this lane's own round-1 raster, of which the round-3 dots are a strict subset).
+Historical UNIQUE/PROMOTE labels below describe earlier interpretations, not current
+authorization. Superset explanations do not waive the rule. No competition submission has
+been made; no weekly slot has been spent.</p>
 <p><a href="prior-run.html">Preserved prior run</a> ·
 <a href="prior-irregularities.html">Prior run irregularities</a></p></div>{body}</main>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
 round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
+round-3 twin-family branch <code>arena/e86c5610-56gemsdoe</code> ·
 generated {dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} by
 <code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
 and <code>evidence/*.json</code> (run B) ·
@@ -168,11 +172,46 @@ def main():
     scr2 = opt("registry_screen_v2.json")
     rcard2 = opt("run_card_discovery_v1.json")
 
+    # round-3 twin-family run (this PR, arena/e86c5610-56gemsdoe): receipts in
+    # evidence/corrections/ (H-C1 stratification, twin build, registry screen, run card)
+    e1r = load_json(EV / "map_quality_stratification.json") \
+        if (EV / "map_quality_stratification.json").exists() else None
+    bld3 = load_json(EV / "build_round3.json") if (EV / "build_round3.json").exists() else None
+    reg3 = load_json(EV / "registry_check_round3.json") \
+        if (EV / "registry_check_round3.json").exists() else None
+    card3 = load_json(EV / "run_card_round3.json") \
+        if (EV / "run_card_round3.json").exists() else None
+
     tifs = sorted((out / "downloads").glob("gems56-corr-*-nan.tif"))
     tif = tifs[-1] if tifs else None
     sha = card["raster"]["sha256"]
     dots = card["raster"]["dots"]
     cands = card["raster"]["candidate_records"]
+
+    # round 3 (this PR): the twin-family raster is the current one-click file
+    cur_card = card3 if card3 else card
+    cur_sha = cur_card["raster"]["sha256"]
+    cur_dots = cur_card["raster"]["dots"]
+    cur_reg = reg3 if reg3 else reg
+    a1b = hold["arms"].get("A1b_twin")
+    a4b = hold["arms"].get("A4b_random_a1b")
+    bld3_n_twin = bld3["n_twin_records"] if bld3 else 0
+    bld3_dots = bld3["dots"] if bld3 else 0
+    if e1r:
+        _p = e1r["tables"]["primary"]
+        e1r_rho = _p["spearman_MAPSCALE_A"]["rho"]
+        e1r_p1 = _p["spearman_MAPSCALE_A"]["p_one_sided"]
+        e1r_mn = _p["mw_notwell_vs_well"]["median_notwell"]
+        e1r_mw = _p["mw_notwell_vs_well"]["median_well"]
+        e1r_p2 = _p["mw_notwell_vs_well"]["p_one_sided"]
+        e1r_fcode_rho = _p["spearman_FCODE_A"]["rho"]
+        e1r_fcode_p = _p["spearman_FCODE_A"]["p_one_sided"]
+        e1r_kw = _p["kruskal_FTYPE"]["p"]
+        e1r_lidar_p = e1r["controls"]["lidar_covered_records"]["mw_notwell_vs_well"]["p_one_sided"]
+        e1r_prom_p = e1r["controls"]["top_prominence_quartile"]["mw_notwell_vs_well"]["p_one_sided"]
+    else:
+        e1r_rho = e1r_p1 = e1r_mn = e1r_mw = e1r_p2 = 0
+        e1r_fcode_rho = e1r_fcode_p = e1r_kw = e1r_lidar_p = e1r_prom_p = 0
 
     # copy evidence artifacts into docs/downloads for one-folder auditing
     for f in ("offset_histogram.png",):
@@ -225,37 +264,112 @@ same budget; paired difference {fmt(vs2['delta'],5)}
 </div>
 """
 
+    # ---- round-3 twin-family candidate card (this PR): receipts guarded --------------------
+    round3_html = ""
+    if bld3 and e1r and card3:
+        hc1 = card3["h_c1"]
+        p1 = hc1["primary"]
+        tw = bld3["twin_records"]
+        names = {r["record"]: r["name"] for r in bld3["z_map_sensitivity"]}
+        twin_rows = "".join(
+            f"<tr><td><code>{esc(k)}</code></td><td>{esc(names.get(k, '?'))}</td>"
+            f"<td>{fmt(tw[k]['dem_median_px'], 2)}</td><td>{fmt(tw[k]['mag_median_px'], 2)}</td>"
+            f"<td>{tw[k]['dem_n']}</td><td>{tw[k]['mag_n']}</td></tr>"
+            for k in sorted(tw, key=lambda x: int(x))
+        )
+        round3_html = f"""
+<h2>&#11015;&nbsp;ROUND-3 TWIN-FAMILY CANDIDATE (this PR) &mdash; download for review only</h2>
+<div class=card>
+<p><a class="btn" href="downloads/{esc(bld3['artefact']['file'])}">Download {esc(bld3['artefact']['file'])}</a>
+<span class=mut>{bld3['artefact']['bytes']/1024:.0f} KB · {bld3['dots']:,} dots on the
+DEM-scarp crest lines of the {bld3['n_twin_records']} records whose displacement is
+corroborated by BOTH evidence families (DEM + magnetic, sign-concordant medians &ge; 1&nbsp;px
+on one shared perpendicular reference) · values {{0.0, 1.0}}</span></p>
+<p><b>OK to download: yes.</b> <b>OK to submit: <span class=bad>NO</span>.</b>
+Round verdict <b>NEGATIVE</b> ({esc(card3['verdict']['value'])}): H-C1 failed its
+pre-registered conjunction; the holdout is construction-biased by design; the literal
+containment clause fires (own round-1 superset). Receipts:
+<code>evidence/corrections/run_card_round3.json</code>.</p>
+<h3>The round's scientific test &mdash; H-C1: does the offset respect the catalogue's own map quality?</h3>
+<p>Joining the official QFaults/INGENIOUS attribute table (GDR 1391; positional join verified
+1,126/1,126 on SLIPSENSE) to the round-1 per-record offsets &mdash; never done in any sibling
+(&ldquo;FCODE&rdquo;/&ldquo;MAPSCALE&rdquo;/&ldquo;FTYPE_&rdquo;: 0 registry hits) &mdash; tests
+whether map-position error (the corrections mechanism) or mimic terrain produces the offsets:</p>
+<table>
+<tr><th>pre-registered arm</th><th>statistic</th><th>result</th></tr>
+<tr><td>(1) Spearman(MAPSCALE, |median offset|)</td><td>&rho; = {fmt(p1['spearman_MAPSCALE_vs_absmedian']['rho'],3)}, one-sided p = {fmt(p1['spearman_MAPSCALE_vs_absmedian']['p_one_sided'],3)}, n = {p1['spearman_MAPSCALE_vs_absmedian']['n']}</td><td class=bad>FAIL (also: 120/125 records are 1:250k &mdash; no scale variance to detect)</td></tr>
+<tr><td>(2) Mann&ndash;Whitney (not-Well &gt; Well Constrained)</td><td>medians {fmt(p1['mannwhitney_notwell_vs_well']['median_notwell'],2)} vs {fmt(p1['mannwhitney_notwell_vs_well']['median_well'],2)} px, p = {fmt(p1['mannwhitney_notwell_vs_well']['p_one_sided'],3)}</td><td class=ok>PASS</td></tr>
+<tr><td>conjunction (both arms)</td><td>&mdash;</td><td class=bad><b>FAIL &rarr; H-C1 NEGATIVE</b></td></tr>
+</table>
+<p class=mut>Secondaries (reported, never gating): FCODE2023 &rho; = {fmt(hc1['secondaries']['spearman_FCODE']['rho'],3)}
+(p = {fmt(hc1['secondaries']['spearman_FCODE']['p_one_sided'],3)}), Kruskal&ndash;Wallis over
+FTYPE_ p = {fmt(hc1['secondaries']['kruskal_FTYPE']['p'],3)} with monotone medians
+Well 1.05 &lt; Moderately 1.50 &lt; Inferred 3.15 px; the stratification holds in the
+LiDAR-covered subset but <b>vanishes among sharp crests</b> (top-prominence quartile MW
+p = {fmt(hc1['controls']['top_prominence_quartile']['mw']['p_one_sided'],2)}) &mdash; the
+pre-registered terrain confound. Suggestive, not confirmed; no goalposts were moved.</p>
+<h3>The 9 twin-family records</h3>
+<table>
+<tr><th>record</th><th>name (official)</th><th>DEM med (px)</th><th>mag med (px)</th><th>DEM n</th><th>mag n</th></tr>
+{twin_rows}
+</table>
+<p class=mut>Emission on the DEM crest (LiDAR-calibrated, MAD 0.29&nbsp;px); the magnetic family
+is the corroboration gate, not the emitter. HOLDOUT-DTI (simulated truth, machinery only):
+A1b {fmt(a1b['dti'],5)} [{fmt(a1b['ci95'][0],5)}, {fmt(a1b['ci95'][1],5)}] vs matched-mass
+chance {fmt(a4b['dti'],5)} &mdash; 26&times; chance with CI excluding 0; leakage canary
+&le; 0.58 (bar 0.90). Registry: documented UNIQUE (max Spearman 0.573, max Jaccard 0.329, no
+mutual containment) over 1,026 rasters; literal clause fires on 12 degenerate supersets +
+the own round-1 superset (this file's dots are a strict subset of round-1's &mdash;
+pre-registered before the screen ran).</p>
+<p><b>submission name</b> <code>{esc(bld3['artefact']['name'])}</code><br>
+<b>note</b> ({bld3['artefact']['note_chars']}/140): <code>{esc(bld3['artefact']['note'])}</code><br>
+<b>sha256</b> <code>{esc(bld3['artefact']['sha256'])}</code> · validator exit
+{bld3['artefact']['validator']['returncode']}</p>
+</div>
+"""
+
     idx = f"""
-<h2>&#11015;&nbsp;ONE-CLICK SUBMISSION FILE</h2>
+<h2>&#11015;&nbsp;ONE-CLICK SUBMISSION FILE (round 3, twin-family corrections)</h2>
 <div class=card>
 <p><a class="btn" href="downloads/{esc(tif.name if tif else '')}">Download {esc(tif.name if tif else '')}</a>
 <span class=mut>{tif.stat().st_size/1024:.0f} KB · single band · float32 · EPSG:32611 · 100 m ·
-3292&times;3730 · {dots:,} predicted pixels · every value in [0, 1] · NaN only outside the
+3292&times;3730 · {cur_dots:,} predicted pixels · every value in [0, 1] · NaN only outside the
 scored footprint · nodata tag <code>nan</code> (the official sample's own format)</span></p>
-<p><b>sha256:</b> <code>{sha}</code></p>
-<p><b>Unique submission name to use:</b> <code>{esc(card['submission_name'])}</code><br>
+<p><b>sha256:</b> <code>{cur_sha}</code></p>
+<p><b>Unique submission name to use:</b> <code>{esc(cur_card['submission_name'])}</code><br>
 <b>Note to paste into the submit form's <em>Note (optional)</em> field</b>
-({len(card['note'])}/140 characters):<br><code>{esc(card['note'])}</code></p>
+({len(cur_card['note'])}/140 characters):<br><code>{esc(cur_card['note'])}</code></p>
 <p><b>Format status:</b> <span class=ok>PASS</span> &mdash; <code>scripts/validate_submission.py</code>
-exit 0 and <code>python -m src.submission_io validate-conformant</code> exit 0
+exit 0 and template conformance verified at build time
 (no NaN inside the footprint, every value in [0,1], CRS/shape/transform match
-<code>sample_submission.tif</code>, template conformance, GDAL_NODATA=<code>nan</code>).</p>
-<p><b>Uniqueness status:</b> {("<span class=ok>" + esc(reg['verdict']) + "</span> vs " + str(reg['n_unique_pixel_content']) + " unique earlier rasters (max Spearman " + fmt(reg['worst']['spearman_dots']) + ", max 3&nbsp;px Jaccard " + fmt(reg['worst']['jaccard_3px'],3) + ")") if reg else '<span class=warn>PENDING - scripts/check_registry.py is running</span>'}</p>
-<p><b>Evidence status:</b> <span class=warn>HOLDOUT-DTI (simulated-corrections truth)</span>
-A1 lane {fmt(a1['dti'])} [{fmt(a1['ci95'][0])}, {fmt(a1['ci95'][1])}] vs masked control
-{fmt(a0['dti'])} and random control {fmt(a4['dti'])} &mdash; see <a href="research.html">research</a>.</p>
-<p class=mut>Is it OK to download and submit? The file is format-validated but fails the literal uniqueness gate; the
-holdout validates the mechanism on a simulated truth; no organizer score exists for it. The
-standing protocol requires a stop, not a submission &mdash; the full reasoning is on
-<a href="executive-summary.html">Make a submission</a>.</p>
+<code>sample_submission.tif</code>, GDAL_NODATA=<code>nan</code>).</p>
+<p><b>Verdict &mdash; is it OK to download and submit?</b>
+<b>OK to download: yes.</b> <b>OK to submit: <span class=bad>NO</span>.</b>
+This round's pre-registered geological test (H-C1, map-quality stratification of the
+catalogue-to-crest offsets) returned <b>NEGATIVE</b> on its pre-registered conjunction; the
+holdout number below is machinery-only (simulated truth = the measured crests); and the literal
+registry containment clause fires on 12 supersets (including this lane's own round-1 raster,
+of which this file is a strict subset). Nothing is promoted; no weekly slot is spent.</p>
+<p><b>Uniqueness status:</b> {(("<span class=ok>" + esc(cur_reg['verdict']) + "</span> vs " + str(cur_reg['n_registry_rasters']) + " earlier rasters (" + str(cur_reg['n_unique_pixel_content']) + " unique pixel contents): max Spearman " + fmt(cur_reg['worst']['spearman_dots']) + ", max 3&nbsp;px Jaccard " + fmt(cur_reg['worst']['jaccard_3px'],3) + "; literal &gt;70% containment flags " + str(cur_reg['n_literal_flags']) + " (degenerate supersets + own round-1 superset), logged and investigated") if cur_reg else '<span class=warn>PENDING - scripts/check_registry.py is running</span>')}</p>
+<p><b>Evidence status:</b> <span class=warn>HOLDOUT-DTI (simulated-corrections truth, machinery only)</span>
+A1b twin {fmt(a1b['dti'],5)} [{fmt(a1b['ci95'][0],5)}, {fmt(a1b['ci95'][1],5)}] vs
+matched-mass random {fmt(a4b['dti'],5)} and masked control {fmt(a0['dti'],5)} &mdash; see
+<a href="research.html">research</a>. The round-1 reference arm reproduces
+{fmt(a1['dti'],5)} exactly (deterministic pipeline, re-run this session).</p>
+<p class=mut>The previous one-click files (round-1 crest&gt;2px 6,504-dot raster, the 1-dot and
+6-dot sensitivity arms, the round-2 discovery raster) remain in
+<code>downloads/</code> with their own verdict cards below and on
+<a href="prior-run.html">prior run</a>.</p>
 </div>
 
 {disc_html}
-<h2>Two corrections runs, one repository &mdash; plus a discovery run</h2>
-<p>This repository has run the corrections lane <b>twice</b>, in two parallel sessions.
-Both runs measured the same catalogue against the same evidence; they gate different
-questions and reached opposite verdicts. Both are reported in full &mdash; the disagreement
-is the finding.</p>
+{round3_html}
+<h2>Three corrections runs, one repository &mdash; plus a discovery run</h2>
+<p>This repository has run the corrections lane <b>three times</b>, in parallel sessions.
+All runs measured the same catalogue against the same evidence; they gate different
+questions (strongest-crest displacement? null-calibrated corridor consistency?
+two-family corroboration + map-quality stratification?) and are reported in full &mdash;
+the disagreements are the findings.</p>
 <div class=grid>
 <div class=card><h3>Run A &mdash; this run (branch <code>arena/b71ede8d-56gemsdoe</code>) &mdash; <span class=ok>strongest-crest finding; protocol verdict NEGATIVE</span></h3>
 <p>Question: <em>is the catalogue on the MAIN scarp?</em> For 28 of 125 well-sampled records
@@ -287,6 +401,17 @@ canaries clean. Registry gate: surface PASS, dots
 {esc(gate2.get('verdict_literal') if gate2 else '?')} (density-degenerate trigger, IR-56-023).
 Their unique TIF is the second download above &mdash; labelled NEGATIVE / do not submit in
 its name, note and receipt. 0 slots spent.</p></div>
+<div class=card><h3>Run D &mdash; this PR (branch <code>arena/e86c5610-56gemsdoe</code>) &mdash; <span class=warn>twin-family tightening; round verdict NEGATIVE</span></h3>
+<p>Question: <em>does the catalogue's own map-quality metadata explain the measured offsets, and
+which corrections survive two-family corroboration?</em> H-C1 (map-quality stratification, the
+first independent test of the corrections mechanism, using the official attribute table)
+returned NEGATIVE on the pre-registered conjunction (suggestive secondaries; the sharp-crest
+control vanishes &mdash; the terrain confound). The fallback emission keeps the
+{bld3_n_twin} records whose displacement both the DEM-scarp crest and the magnetic ridge
+corroborate &rarr; <b>{bld3_dots:,} dots</b>, HOLDOUT-DTI(sim, machinery-only)
+{fmt(a1b['dti'],5)} vs matched-mass chance {fmt(a4b['dti'],5)}. Registry: documented UNIQUE
+over 1,026 rasters; literal clause fires (own round-1 superset). <b>The one-click download
+above is this run's file.</b> 0 slots spent.</p></div>
 </div>
 <p class=mut>Reconciliation: the two runs agree on the measurement &mdash; the catalogue sits
 within ~1&nbsp;px of <em>some</em> crest (run A's nearest-crest reading matches run B's
@@ -651,8 +776,56 @@ whether the <em>strongest</em> crest (the dominant scarp, LiDAR-confirmed) is co
 catalogue line on a secondary strand with the main scarp 200&ndash;340&nbsp;m away is
 consistent with both statements. The organizer's hidden labels decide which gate is right;
 that is the experiment a slot would run.</p>
+<h3>9b. Round 3 (this PR): the map-quality test and the twin-family tightening</h3>
+<p>Round 3 asked the first <b>independent</b> question about the round-1 offsets: does the
+catalogue's own location-quality metadata (the official QFaults/INGENIOUS attribute table:
+<code>FTYPE_</code>, <code>MAPSCALE</code>, <code>FCODE2023</code>; GDR 1391, joined
+positionally &mdash; verified 1,126/1,126 on <code>SLIPSENSE</code>) explain them? If the
+offsets are map-position errors (the corrections mechanism), worse-rated records must show
+larger offsets; erosional terraces have no reason to respect mapping metadata.</p>
+<p><b>H-C1 verdict: NEGATIVE on the pre-registered conjunction.</b> Arm (1)
+Spearman(MAPSCALE, |median offset|) could not fire (120/125 records are 1:250k &mdash;
+no scale variance; &rho; = {fmt(e1r_rho,3)}, p = {fmt(e1r_p1,3)}); arm (2) Mann&ndash;Whitney
+(not-Well &gt; Well Constrained) passed (medians {fmt(e1r_mn,2)} vs {fmt(e1r_mw,2)} px,
+p = {fmt(e1r_p2,3)}). Secondaries lean supportive (FCODE2023 &rho; = {fmt(e1r_fcode_rho,3)},
+p = {fmt(e1r_fcode_p,3)}; Kruskal&ndash;Wallis p = {fmt(e1r_kw,3)}; monotone FTYPE medians
+1.05 &lt; 1.50 &lt; 3.15 px) and the stratification holds in the LiDAR-covered subset
+(p = {fmt(e1r_lidar_p,3)}) but <b>vanishes among sharp crests</b> (top-prominence quartile
+p = {fmt(e1r_prom_p,2)}) &mdash; the pre-registered terrain confound (low-relief terrain
+hosts both inferred mapping and terrace-dominated crests). Suggestive, not confirmed; no
+goalposts were moved. Receipt: <code>evidence/corrections/map_quality_stratification.json</code>.</p>
+<p><b>Fallback emission (pre-registered): the twin-family gate.</b> The lane paragraph names
+TWO evidence families; the tightening keeps the round-1 candidates whose displacement BOTH
+corroborate: sign-concordant medians, |mag| &ge; 1&nbsp;px, &ge; 3 qualified mag transects,
+one shared perpendicular reference per record (the sign-convention trap that a raw-median
+comparison misses &mdash; two records flip). Result: <b>9 of 28 records</b>
+({bld3_dots:,} dots on their DEM crest lines; the magnetic family is the corroboration gate,
+not the emitter, because the 1&nbsp;m LiDAR calibrated the DEM crest operator at
+MAD 0.29&nbsp;px). The map-tolerance sensitivity (z = |offset| / 0.5&nbsp;mm-at-scale for
+Well-Constrained records, 400&nbsp;m otherwise) keeps all 28 at z*&nbsp;&le;&nbsp;3
+(max z 2.44) and 6 at z*&nbsp;&le;&nbsp;1.5 &mdash; published in
+<code>evidence/corrections/build_round3.json</code>.</p>
+<p><b>Holdout (machinery check only, simulated truth):</b> A1b twin
+{fmt(a1b['dti'],5)} [{fmt(a1b['ci95'][0],5)}, {fmt(a1b['ci95'][1],5)}] vs matched-mass
+random {fmt(a4b['dti'],5)} [{fmt(a4b['ci95'][0],5)}, {fmt(a4b['ci95'][1],5)}] and masked
+control {fmt(a0['dti'],5)} &mdash; 26&times; chance, CI excluding 0; canaries
+&le; 0.58 (bar 0.90); the round-1 arm reproduces {fmt(a1['dti'],5)} exactly. The truth is
+the measured crests themselves, so this validates placement machinery, not geology &mdash;
+the geological test this round was H-C1, and it failed.</p>
+<p><b>Registry (1,026 rasters incl. 17 unzipped submission zips; 477 unique pixel
+contents):</b> documented verdict UNIQUE (max Spearman 0.573 vs this lane's own round-1
+raster; max 3&nbsp;px Jaccard 0.329; no mutual containment; 0 duplicates). The literal
+&gt;70%-containment clause fires on 12 rasters: 11 degenerate supersets
+(reverse containment &le; 0.011) plus <b>this lane's own round-1 raster</b> &mdash; the
+twin dots are a strict subset of it by construction, which was pre-registered before the
+screen ran. Logged as STOP on the literal clause; the round verdict was already NEGATIVE
+from H-C1. Receipt: <code>evidence/corrections/registry_check_round3.json</code>.</p>
 <h3>10. Reproduce</h3>
-<pre>python scripts/prepare_records.py            # vector catalogue -> record ids
+<pre>python scripts/test_map_quality_stratification.py   # round 3 E1: H-C1 join + tests
+python scripts/holdout_corrections.py       # round 3 E2: arms incl. A1b twin + A4b chance
+python scripts/build_round3_submission.py   # round 3 E3: the twin-family GeoTIFF + receipt
+python scripts/run_card_round3.py           # round 3: the one JSON run card
+python scripts/prepare_records.py            # vector catalogue -> record ids
 python scripts/measure_corrections_offsets.py # E1: offset histogram + LiDAR calibration
 python scripts/holdout_corrections.py        # E2 canary + E3 holdout
 python scripts/check_registry.py ...         # uniqueness vs every earlier raster
@@ -877,6 +1050,32 @@ mass-ratio/Jaccard analysis is diagnostic only and does not override the rule.</
                 "<code>evidence/irregularities.json</code>, 23 entries): IR-56-001&hellip;013 "
                 "round 1, IR-56-014&hellip;018 the concurrent corrections session, "
                 "IR-56-019&hellip;023 this round-2 discovery run.</p>\n")
+    irr3 = """
+<h2>Round-3 entries (this PR, arena/e86c5610-56gemsdoe)</h2>
+<div class=card><h3>IR-56-030: the 0.5&nbsp;mm-at-map-scale tolerance convention is cited, not fetched</h3>
+<p>The z_map sensitivity uses the cartographic convention that horizontal accuracy is
+~0.5&nbsp;mm at publication scale (12&nbsp;m at 1:24k &hellip; 250&nbsp;m at 1:500k). The
+USGS pages stating it are not reachable from this sandbox (egress allowlist), so the
+convention is <b>cited, not re-verified online</b>. It gates nothing: H-C1 failed, so the
+z_map rule ships only as a reported sensitivity table.</p></div>
+<div class=card><h3>IR-56-031: the first draft of the H-C1 join was WRONG (caught before any decision)</h3>
+<p><code>record_id</code> in <code>trace_segments_utm11.csv</code> is the shapefile
+<b>feature index</b> (GEMSDOE51 <code>extract_official_segments.py</code>:
+<code>enumerate(iterShapeRecords())</code>), not the <code>NUM</code> field. The first
+draft joined on <code>NUM</code> and matched 46/125 records spuriously; its output was
+never used for a decision and was overwritten. The corrected join is positional
+(22,956 attribute rows = the dbf record count; <code>SLIPSENSE</code> agrees
+1,126/1,126 once NaN spellings are normalised). Both drafts' logic is documented in
+<code>scripts/test_map_quality_stratification.py</code>.</p></div>
+<div class=card><h3>IR-56-032: PR #8 (a parallel session) is open and CONFLICTING on main</h3>
+<p><code>arena/17f46fe0-56gemsdoe</code> (&ldquo;Round 2: shipped GeoTIFFs&rdquo;, the
+magpack/quota rasters) was opened 2026-10-09 18:40 UTC and reports
+<code>mergeable: CONFLICTING</code> &mdash; it predates this session and edits the same
+files (README, index, executive summary). This session did not merge or build on it; its
+rasters ARE in the uniqueness registry via the sibling mirror. The owner should rebase or
+close it deliberately.</p></div>
+"""
+    irr += irr3
     (out / "irregularities.html").write_text(page("Irregularities", "irregularities.html", irr))
 
     print(f"site written to {out}/")

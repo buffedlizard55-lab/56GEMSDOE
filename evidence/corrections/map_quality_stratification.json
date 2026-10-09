@@ -1,0 +1,403 @@
+{
+ "pre_registered_in": "docs/research/hypotheses-20261009-round3.md",
+ "min_transects": 8,
+ "tables": {
+  "primary": {
+   "table": "primary",
+   "records_total": 125,
+   "records_joined": 125,
+   "records_n_ge_8": 125,
+   "spearman_MAPSCALE_A": {
+    "n": 125,
+    "rho": 0.05883316688618465,
+    "p_one_sided": 0.2572872102353787
+   },
+   "mw_notwell_vs_well": {
+    "n_well": 99,
+    "n_notwell": 26,
+    "median_well": 1.0483530350029469,
+    "median_notwell": 1.519307417795062,
+    "p_one_sided": 0.03912253313576571
+   },
+   "spearman_MAPSCALE_fracgt2": {
+    "n": 125,
+    "rho": 0.1573828758754843,
+    "p_one_sided": 0.039813219139000364
+   },
+   "kruskal_FTYPE": {
+    "groups": [
+     "Well Constrained",
+     "Moderately Constrained",
+     "Inferred"
+    ],
+    "medians": {
+     "Well Constrained": 1.0483530350029469,
+     "Moderately Constrained": 1.5014443304389715,
+     "Inferred": 3.1537295726593584
+    },
+    "p": 0.0344848158803416
+   },
+   "spearman_FCODE_A": {
+    "n": 125,
+    "rho": 0.16873042960078502,
+    "p_one_sided": 0.029984487577068706
+   },
+   "mapscale_counts": {
+    "100": 5,
+    "250": 120
+   },
+   "ftype_counts": {
+    "Well Constrained": 99,
+    "Moderately Constrained": 24,
+    "Inferred": 2
+   },
+   "A_by_ftype": {
+    "Inferred": {
+     "n": 2,
+     "median_A_px": 3.1537295726593584
+    },
+    "Moderately Constrained": {
+     "n": 24,
+     "median_A_px": 1.5014443304389715
+    },
+    "Well Constrained": {
+     "n": 99,
+     "median_A_px": 1.0483530350029469
+    }
+   },
+   "A_by_mapscale": {
+    "100": {
+     "n": 5,
+     "median_A_px": 0.9877342712134124
+    },
+    "250": {
+     "n": 120,
+     "median_A_px": 1.0779268159531057
+    }
+   }
+  },
+  "secondary_mag_hg_strongest": {
+   "table": "secondary_mag_hg_strongest",
+   "records_total": 42,
+   "records_joined": 42,
+   "records_n_ge_8": 42,
+   "spearman_MAPSCALE_A": {
+    "n": 42,
+    "rho": NaN,
+    "p_one_sided": NaN
+   },
+   "mw_notwell_vs_well": {
+    "n_well": 36,
+    "n_notwell": 6,
+    "median_well": 1.3033894468098879,
+    "median_notwell": 1.0069678110303357,
+    "p_one_sided": 0.6036338501036832
+   },
+   "spearman_MAPSCALE_fracgt2": {
+    "n": 42,
+    "rho": NaN,
+    "p_one_sided": NaN
+   },
+   "spearman_FCODE_A": {
+    "n": 42,
+    "rho": -0.03929484964081099,
+    "p_one_sided": 0.5975729003821436
+   },
+   "mapscale_counts": {
+    "250": 42
+   },
+   "ftype_counts": {
+    "Well Constrained": 36,
+    "Moderately Constrained": 6
+   },
+   "A_by_ftype": {
+    "Moderately Constrained": {
+     "n": 6,
+     "median_A_px": 1.0069678110303357
+    },
+    "Well Constrained": {
+     "n": 36,
+     "median_A_px": 1.3033894468098879
+    }
+   },
+   "A_by_mapscale": {
+    "250": {
+     "n": 42,
+     "median_A_px": 1.2880090242251754
+    }
+   }
+  },
+  "secondary_dem_slope_nearest": {
+   "table": "secondary_dem_slope_nearest",
+   "records_total": 47,
+   "records_joined": 47,
+   "records_n_ge_8": 47,
+   "spearman_MAPSCALE_A": {
+    "n": 47,
+    "rho": -0.2085764626863479,
+    "p_one_sided": 0.9202792328364444
+   },
+   "mw_notwell_vs_well": {
+    "n_well": 40,
+    "n_notwell": 7,
+    "median_well": 0.10565518215298644,
+    "median_notwell": 0.9813682734966278,
+    "p_one_sided": 0.020938505536336475
+   },
+   "spearman_MAPSCALE_fracgt2": {
+    "n": 47,
+    "rho": 0.19870092065807055,
+    "p_one_sided": 0.0902953006435705
+   },
+   "kruskal_FTYPE": {
+    "groups": [
+     "Well Constrained",
+     "Moderately Constrained",
+     "Inferred"
+    ],
+    "medians": {
+     "Well Constrained": 0.10565518215298644,
+     "Moderately Constrained": 0.9583256766200066,
+     "Inferred": 2.106053166091442
+    },
+    "p": 0.07338996384213434
+   },
+   "spearman_FCODE_A": {
+    "n": 47,
+    "rho": 0.3078124409064408,
+    "p_one_sided": 0.0176528176051407
+   },
+   "mapscale_counts": {
+    "100": 5,
+    "250": 42
+   },
+   "ftype_counts": {
+    "Well Constrained": 40,
+    "Moderately Constrained": 6,
+    "Inferred": 1
+   },
+   "A_by_ftype": {
+    "Inferred": {
+     "n": 1,
+     "median_A_px": 2.106053166091442
+    },
+    "Moderately Constrained": {
+     "n": 6,
+     "median_A_px": 0.9583256766200066
+    },
+    "Well Constrained": {
+     "n": 40,
+     "median_A_px": 0.10565518215298644
+    }
+   },
+   "A_by_mapscale": {
+    "100": {
+     "n": 5,
+     "median_A_px": 0.9958276655524968
+    },
+    "250": {
+     "n": 42,
+     "median_A_px": 0.14031210541725156
+    }
+   }
+  }
+ },
+ "controls": {
+  "top_prominence_quartile": {
+   "table": "primary/top_prominence_quartile",
+   "records_total": 32,
+   "records_joined": 32,
+   "records_n_ge_8": 32,
+   "spearman_MAPSCALE_A": {
+    "n": 32,
+    "rho": NaN,
+    "p_one_sided": NaN
+   },
+   "mw_notwell_vs_well": {
+    "n_well": 27,
+    "n_notwell": 5,
+    "median_well": 1.9600314386188984,
+    "median_notwell": 1.378984309732914,
+    "p_one_sided": 0.6186089702844431
+   },
+   "spearman_MAPSCALE_fracgt2": {
+    "n": 32,
+    "rho": NaN,
+    "p_one_sided": NaN
+   },
+   "kruskal_FTYPE": {
+    "groups": [
+     "Well Constrained",
+     "Moderately Constrained",
+     "Inferred"
+    ],
+    "medians": {
+     "Well Constrained": 1.9600314386188984,
+     "Moderately Constrained": 1.1729003693908453,
+     "Inferred": 2.894946873188019
+    },
+    "p": 0.21126094672175522
+   },
+   "spearman_FCODE_A": {
+    "n": 32,
+    "rho": -0.029934373760529858,
+    "p_one_sided": 0.5645964873901038
+   },
+   "mapscale_counts": {
+    "250": 32
+   },
+   "ftype_counts": {
+    "Well Constrained": 27,
+    "Moderately Constrained": 4,
+    "Inferred": 1
+   },
+   "A_by_ftype": {
+    "Inferred": {
+     "n": 1,
+     "median_A_px": 2.894946873188019
+    },
+    "Moderately Constrained": {
+     "n": 4,
+     "median_A_px": 1.1729003693908453
+    },
+    "Well Constrained": {
+     "n": 27,
+     "median_A_px": 1.9600314386188984
+    }
+   },
+   "A_by_mapscale": {
+    "250": {
+     "n": 32,
+     "median_A_px": 1.9224553629755976
+    }
+   }
+  },
+  "lidar_covered_records": {
+   "table": "primary/lidar_covered_records",
+   "records_total": 110,
+   "records_joined": 110,
+   "records_n_ge_8": 110,
+   "spearman_MAPSCALE_A": {
+    "n": 110,
+    "rho": 0.06803641662192499,
+    "p_one_sided": 0.24001962848744401
+   },
+   "mw_notwell_vs_well": {
+    "n_well": 87,
+    "n_notwell": 23,
+    "median_well": 1.0503723323345184,
+    "median_notwell": 1.5233865678310394,
+    "p_one_sided": 0.04476130357429805
+   },
+   "spearman_MAPSCALE_fracgt2": {
+    "n": 110,
+    "rho": 0.16093746497433523,
+    "p_one_sided": 0.04651643193334817
+   },
+   "kruskal_FTYPE": {
+    "groups": [
+     "Well Constrained",
+     "Moderately Constrained",
+     "Inferred"
+    ],
+    "medians": {
+     "Well Constrained": 1.0503723323345184,
+     "Moderately Constrained": 1.5055234804749489,
+     "Inferred": 3.412512272130698
+    },
+    "p": 0.08525887518497821
+   },
+   "spearman_FCODE_A": {
+    "n": 110,
+    "rho": 0.16932996186407456,
+    "p_one_sided": 0.03849251495608228
+   },
+   "mapscale_counts": {
+    "100": 5,
+    "250": 105
+   },
+   "ftype_counts": {
+    "Well Constrained": 87,
+    "Moderately Constrained": 22,
+    "Inferred": 1
+   },
+   "A_by_ftype": {
+    "Inferred": {
+     "n": 1,
+     "median_A_px": 3.412512272130698
+    },
+    "Moderately Constrained": {
+     "n": 22,
+     "median_A_px": 1.5055234804749489
+    },
+    "Well Constrained": {
+     "n": 87,
+     "median_A_px": 1.0503723323345184
+    }
+   },
+   "A_by_mapscale": {
+    "100": {
+     "n": 5,
+     "median_A_px": 0.9877342712134124
+    },
+    "250": {
+     "n": 105,
+     "median_A_px": 1.0818486837670207
+    }
+   }
+  },
+  "lidar_and_top_prom": {
+   "table": "primary/lidar_and_top_prom",
+   "records_total": 29,
+   "records_joined": 29,
+   "records_n_ge_8": 29,
+   "spearman_MAPSCALE_A": {
+    "n": 29,
+    "rho": NaN,
+    "p_one_sided": NaN
+   },
+   "mw_notwell_vs_well": {
+    "n_well": 25,
+    "n_notwell": 4,
+    "median_well": 1.9600314386188984,
+    "median_notwell": 1.1729003693908453,
+    "p_one_sided": 0.8451012588943623
+   },
+   "spearman_MAPSCALE_fracgt2": {
+    "n": 29,
+    "rho": NaN,
+    "p_one_sided": NaN
+   },
+   "spearman_FCODE_A": {
+    "n": 29,
+    "rho": -0.19123657749350292,
+    "p_one_sided": 0.8398280625312439
+   },
+   "mapscale_counts": {
+    "250": 29
+   },
+   "ftype_counts": {
+    "Well Constrained": 25,
+    "Moderately Constrained": 4
+   },
+   "A_by_ftype": {
+    "Moderately Constrained": {
+     "n": 4,
+     "median_A_px": 1.1729003693908453
+    },
+    "Well Constrained": {
+     "n": 25,
+     "median_A_px": 1.9600314386188984
+    }
+   },
+   "A_by_mapscale": {
+    "250": {
+     "n": 29,
+     "median_A_px": 1.908996053040028
+    }
+   }
+  }
+ },
+ "h_c1_verdict": "NEGATIVE",
+ "h_c1_rule": "Spearman(MAPSCALE, |median_offset_px|) > 0 with one-sided p<0.05 AND MW(not-Well > Well) one-sided p<0.05, records n>=8, dem_slope_strongest"
+}

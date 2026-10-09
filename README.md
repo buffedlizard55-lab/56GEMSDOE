@@ -7,6 +7,30 @@ Site: **https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html**
 
 > **Arena Core Values (quoted in the brief):** Maximize P(Win). Own the Outcome.
 
+> **Bottom line of the round-3 (twin-family) run (2026-10-09, branch `arena/e86c5610-56gemsdoe,
+> this PR):** the round asked the first *independent* question about this lane's offsets — does
+> the catalogue's own location-quality metadata (`FTYPE_`/`MAPSCALE`/`FCODE2023` from the
+> official QFaults/INGENIOUS attribute table, GDR 1391; positional join verified 1,126/1,126 on
+> `SLIPSENSE`) explain them? **H-C1 verdict: NEGATIVE on the pre-registered conjunction** — the
+> MAPSCALE arm could not fire (120/125 records are 1:250k, no scale variance; ρ=0.059, p=0.257)
+> even though the FTYPE arm passed (MW p=0.039) and secondaries lean supportive (FCODE
+> ρ=0.169 p=0.030; monotone FTYPE medians 1.05 < 1.50 < 3.15 px) while vanishing among sharp
+> crests (the pre-registered terrain confound). Per the pre-registered fallback, the shipped
+> raster is the **twin-family tightening**: the 9 of 28 round-1 records whose displacement is
+> corroborated by BOTH evidence families of the lane paragraph (DEM-scarp crest + magnetic
+> ridge, sign-concordant medians ≥ 1 px on one shared perpendicular reference) →
+> **`gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif`, 2,139 dots, 0 on catalogue**,
+> validators ok, sha256 `a614a594e179fa2af24a3d9c311bbab45f3c39ca868023da23b43ece16a32b75`.
+> HOLDOUT-DTI (simulated truth, **machinery only**): A1b 0.10788 [0.0898, 0.1268] vs
+> matched-mass chance 0.00414 — 26× chance, canaries ≤ 0.58, round-1 arm reproduces 0.31049
+> exactly. Registry (1,026 rasters incl. unzipped zips): documented **UNIQUE** (max Spearman
+> 0.573, max 3 px Jaccard 0.329, no mutual containment), literal clause FIRES on 12 flags
+> (degenerate supersets + this lane's own round-1 raster — the dots are its strict subset,
+> pre-registered before the screen). **Verdict: NEGATIVE — research raster, NOT cleared for a
+> weekly slot**; the name, note, site banner and run card all say do-not-submit; 0 slots spent.
+> One instrument bug was caught before any decision used it (the first H-C1 draft joined
+> `record_id` to `NUM` — wrong key space; corrected to the positional join, IR-56-031).
+
 > **Bottom line of the round-2 (discovery) run (2026-10-09):** five new hypotheses were
 > pre-registered (`docs/research/hypotheses-20261009.md`), the missing probe layer was obtained
 > (3,800 INGENOUS points), `scripts/download_competition_data.sh` now rebuilds every input from
@@ -94,6 +118,21 @@ Site: **https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html**
 > contrarian but grounded.
 
 ---
+
+### Round-3 session brief (2026-10-09, branch `arena/e86c5610-56gemsdoe`, this PR)
+
+The standing prompt, re-read as the starting point. Executed this run, in order:
+pre-registered `docs/research/hypotheses-20261009-round3.md` (H-C1 map-quality
+stratification + H-C2 dip-facing secondary + the emission decision rule) **before** any
+join was inspected; rebuilt every input from the hash-pinned bridge
+(`scripts/download_competition_data.sh`, all pins OK); ran E1 (H-C1: NEGATIVE on the
+pre-registered conjunction, IR-56-031 join bug caught and fixed before any decision), E2
+(twin-family tightening as the pre-registered fallback; holdout machinery re-check with a
+matched-mass chance control; canaries clean), E3 (unique 2,139-dot GeoTIFF, validators ok,
+registry screen over 1,026 rasters: documented UNIQUE, literal clause fires — logged,
+STOP); one JSON run card (`evidence/corrections/run_card_round3.json`, verdict NEGATIVE,
+0 slots spent); site regenerated from receipts with the one-click TIF + obvious
+OK-to-download / NOT-OK-to-submit verdict; 72 tests pass; PR + merge to `main`.
 
 ### Round-2 session brief (2026-10-09, also active)
 
@@ -194,7 +233,8 @@ reachable). Full analysis: `docs/research.html` §8 and `docs/irregularities.htm
 ## Repository map
 
 ```
-src/corrections.py       lane module: transects, crests, records, emission
+src/corrections.py       lane module: transects, crests, records, emission,
+                         round-3 twin-family gate (mag_corroborated_candidates)
 src/metrics.py           official metric (vendored from the GEMSDOE template, unchanged)
 src/submission_io.py     fail-loud submission writer + template conformance (vendored)
 scripts/prepare_records.py         vector catalogue -> record ids (USGS QFaults+INGENIOUS)
@@ -230,6 +270,10 @@ bash scripts/download_competition_data.sh              # place + hash-verify ALL
 .venv/bin/python scripts/build_corrections_submission.py    # E3  the rasters + receipts
 .venv/bin/python scripts/run_discovery_holdout.py           # R2  E1 hypotheses H6-H8 on the holdout
 .venv/bin/python scripts/build_discovery_submission.py      # R2  E2 the candidate .tif + receipt
+.venv/bin/python scripts/test_map_quality_stratification.py # R3  E1 H-C1: map-quality join + tests
+.venv/bin/python scripts/holdout_corrections.py             # R3  E2 arms incl. A1b twin + A4b chance
+.venv/bin/python scripts/build_round3_submission.py         # R3  E3 the twin-family .tif + receipt
+.venv/bin/python scripts/run_card_round3.py                 # R3     the one JSON run card
 bash scripts/mirror_registry.sh /home/user/_reg             # R2  E3 harvest sibling rasters (once)
 .venv/bin/python scripts/screen_registry.py --tag v2 /home/user/_reg <candidate.tif>
 .venv/bin/python scripts/lane_gate_discovery.py             # R2  E3 surface + dots lane gates
@@ -262,6 +306,15 @@ The registry check needs the harvested sibling rasters (outside this repo; see
 1. **No organizer score exists for this file.** Every number here is MEASURED (official data),
    HOLDOUT-DTI (simulated truth), or USER-REPORTED (siblings). The only ORGANIZER-CONFIRMED
    number will be the receipt after you submit.
+1b. **Round 3's independent test failed to confirm.** H-C1 (map-quality stratification) is the
+   only non-simulated test of the corrections mechanism run so far, and its pre-registered
+   conjunction returned NEGATIVE (suggestive secondaries; the sharp-crest control vanishes —
+   the terrain confound). Until an independent test passes, the lane's emissions stay
+   research-only. The next testable candidates, in cost order: (a) the dip-direction vs
+   scarp-facing consistency check (H-C2, data in hand, confounded by basinward-facing
+   geomorphology — supportive only); (b) the INGENIOUS 2 m probe warm-lineament gate (3,439
+   in-grid points, power-limited); (c) a second mapping epoch (e.g. differencing the merged
+   catalogue against a future USGS QFaults release — not obtainable in this sandbox).
 2. **The holdout truth is simulated** (the measured crest lines of withheld records). It
    validates the machinery and the controls, not the organizer's hidden labels; the
    A1-vs-A2 (gate vs no-gate) contrast is construction-biased toward A2 and is reported as

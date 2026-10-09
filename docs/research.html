@@ -35,18 +35,21 @@ ul{margin:6px 0 6px 20px}li{margin:3px 0}
 <h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
 <div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
 faults missing from the USGS/INGENIOUS catalogue</div>
-<nav><a href="index.html">Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html" class=active>Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download the submission GeoTIFF</a> <a class="btn alt" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">.tif (343 KB)</a></div>
+<nav><a href="index.html">Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html" class=active>Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif">&#11015; Download the submission GeoTIFF</a> <a class="btn alt" href="downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif">.tif (333 KB)</a></div>
 </div></header>
 <div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
 submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
 on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
 <span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
 data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
-<main class=wrap><div class=card><h2 class=bad>STOP: not cleared for submission</h2>
-<p>The TIF is format-valid research output. Eight literal &gt;70% containment flags fail
- the standing duplicate-and-stop rule. Historical UNIQUE/PROMOTE labels below describe
- the earlier interpretation, not current authorization. Superset explanations do not waive
- the rule. No competition submission has been made.</p>
+<main class=wrap><div class=card><h2 class=bad>STOP: not cleared for submission (round 3, twin-family)</h2>
+<p>The one-click TIF is format-valid research output. This round's pre-registered
+geological test (H-C1) returned NEGATIVE; the holdout number is machinery-only (simulated
+truth); and the literal &gt;70%-containment duplicate-and-stop rule fires (12 flags,
+including this lane's own round-1 raster, of which the round-3 dots are a strict subset).
+Historical UNIQUE/PROMOTE labels below describe earlier interpretations, not current
+authorization. Superset explanations do not waive the rule. No competition submission has
+been made; no weekly slot has been spent.</p>
 <p><a href="prior-run.html">Preserved prior run</a> ·
 <a href="prior-irregularities.html">Prior run irregularities</a></p></div>
 <h2>Research &mdash; the corrections lane, end to end</h2>
@@ -260,8 +263,56 @@ whether the <em>strongest</em> crest (the dominant scarp, LiDAR-confirmed) is co
 catalogue line on a secondary strand with the main scarp 200&ndash;340&nbsp;m away is
 consistent with both statements. The organizer's hidden labels decide which gate is right;
 that is the experiment a slot would run.</p>
+<h3>9b. Round 3 (this PR): the map-quality test and the twin-family tightening</h3>
+<p>Round 3 asked the first <b>independent</b> question about the round-1 offsets: does the
+catalogue's own location-quality metadata (the official QFaults/INGENIOUS attribute table:
+<code>FTYPE_</code>, <code>MAPSCALE</code>, <code>FCODE2023</code>; GDR 1391, joined
+positionally &mdash; verified 1,126/1,126 on <code>SLIPSENSE</code>) explain them? If the
+offsets are map-position errors (the corrections mechanism), worse-rated records must show
+larger offsets; erosional terraces have no reason to respect mapping metadata.</p>
+<p><b>H-C1 verdict: NEGATIVE on the pre-registered conjunction.</b> Arm (1)
+Spearman(MAPSCALE, |median offset|) could not fire (120/125 records are 1:250k &mdash;
+no scale variance; &rho; = 0.059, p = 0.257); arm (2) Mann&ndash;Whitney
+(not-Well &gt; Well Constrained) passed (medians 1.52 vs 1.05 px,
+p = 0.039). Secondaries lean supportive (FCODE2023 &rho; = 0.169,
+p = 0.030; Kruskal&ndash;Wallis p = 0.034; monotone FTYPE medians
+1.05 &lt; 1.50 &lt; 3.15 px) and the stratification holds in the LiDAR-covered subset
+(p = 0.045) but <b>vanishes among sharp crests</b> (top-prominence quartile
+p = 0.62) &mdash; the pre-registered terrain confound (low-relief terrain
+hosts both inferred mapping and terrace-dominated crests). Suggestive, not confirmed; no
+goalposts were moved. Receipt: <code>evidence/corrections/map_quality_stratification.json</code>.</p>
+<p><b>Fallback emission (pre-registered): the twin-family gate.</b> The lane paragraph names
+TWO evidence families; the tightening keeps the round-1 candidates whose displacement BOTH
+corroborate: sign-concordant medians, |mag| &ge; 1&nbsp;px, &ge; 3 qualified mag transects,
+one shared perpendicular reference per record (the sign-convention trap that a raw-median
+comparison misses &mdash; two records flip). Result: <b>9 of 28 records</b>
+(2,139 dots on their DEM crest lines; the magnetic family is the corroboration gate,
+not the emitter, because the 1&nbsp;m LiDAR calibrated the DEM crest operator at
+MAD 0.29&nbsp;px). The map-tolerance sensitivity (z = |offset| / 0.5&nbsp;mm-at-scale for
+Well-Constrained records, 400&nbsp;m otherwise) keeps all 28 at z*&nbsp;&le;&nbsp;3
+(max z 2.44) and 6 at z*&nbsp;&le;&nbsp;1.5 &mdash; published in
+<code>evidence/corrections/build_round3.json</code>.</p>
+<p><b>Holdout (machinery check only, simulated truth):</b> A1b twin
+0.10788 [0.08976, 0.12681] vs matched-mass
+random 0.00414 [0.00294, 0.00541] and masked
+control 0.00000 &mdash; 26&times; chance, CI excluding 0; canaries
+&le; 0.58 (bar 0.90); the round-1 arm reproduces 0.31049 exactly. The truth is
+the measured crests themselves, so this validates placement machinery, not geology &mdash;
+the geological test this round was H-C1, and it failed.</p>
+<p><b>Registry (1,026 rasters incl. 17 unzipped submission zips; 477 unique pixel
+contents):</b> documented verdict UNIQUE (max Spearman 0.573 vs this lane's own round-1
+raster; max 3&nbsp;px Jaccard 0.329; no mutual containment; 0 duplicates). The literal
+&gt;70%-containment clause fires on 12 rasters: 11 degenerate supersets
+(reverse containment &le; 0.011) plus <b>this lane's own round-1 raster</b> &mdash; the
+twin dots are a strict subset of it by construction, which was pre-registered before the
+screen ran. Logged as STOP on the literal clause; the round verdict was already NEGATIVE
+from H-C1. Receipt: <code>evidence/corrections/registry_check_round3.json</code>.</p>
 <h3>10. Reproduce</h3>
-<pre>python scripts/prepare_records.py            # vector catalogue -> record ids
+<pre>python scripts/test_map_quality_stratification.py   # round 3 E1: H-C1 join + tests
+python scripts/holdout_corrections.py       # round 3 E2: arms incl. A1b twin + A4b chance
+python scripts/build_round3_submission.py   # round 3 E3: the twin-family GeoTIFF + receipt
+python scripts/run_card_round3.py           # round 3: the one JSON run card
+python scripts/prepare_records.py            # vector catalogue -> record ids
 python scripts/measure_corrections_offsets.py # E1: offset histogram + LiDAR calibration
 python scripts/holdout_corrections.py        # E2 canary + E3 holdout
 python scripts/check_registry.py ...         # uniqueness vs every earlier raster
@@ -270,7 +321,8 @@ python scripts/build_site.py                 # regenerate this site</pre>
 </main>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
 round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
-generated 2026-10-09 17:46 UTC by
+round-3 twin-family branch <code>arena/e86c5610-56gemsdoe</code> ·
+generated 2026-10-09 19:27 UTC by
 <code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
 and <code>evidence/*.json</code> (run B) ·
 site served from <code>main</code> at
