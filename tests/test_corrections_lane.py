@@ -101,7 +101,8 @@ def test_record_consistency_requires_min_transects():
 class _FakeRes:
     """Minimal TransectResult stand-in for build_emission / crest_line."""
 
-    def __init__(self, record_ids, t, perp_r, perp_c, centers_r, centers_c, ok=None):
+    def __init__(self, record_ids, t, perp_r, perp_c, centers_r, centers_c, ok=None,
+                 mag_t=None, mag_ok=None):
         n = len(record_ids)
         self.record_ids = np.array(record_ids)
         self.perp_r = np.asarray(perp_r, float)
@@ -110,6 +111,10 @@ class _FakeRes:
         self.centers_c = np.asarray(centers_c, float)
         self.crest = {("dem_slope", "strongest"): (np.asarray(t, float),
                                                    np.ones(n), np.asarray(ok, bool))}
+        if mag_t is not None:
+            self.crest[("mag_hg", "strongest")] = (np.asarray(mag_t, float),
+                                                   np.ones(n),
+                                                   np.asarray(mag_ok, bool))
 
     def ok(self, band, definition):
         return self.crest[(band, definition)][2]
@@ -191,3 +196,71 @@ def test_select_transect_centers_min_distance():
     d = np.sqrt((r[:, None] - r[None, :]) ** 2 + (c[:, None] - c[None, :]) ** 2)
     d[d == 0] = np.inf
     assert d.min() >= 2
+
+
+# ---------------------------------------------------- round 3: twin-family gate
+def _twin_res(dem_t, mag_t, mag_ok=None, perp_c=None):
+    """One record 'R1' with n transects; dem all ok; mag offsets/ok as given."""
+    n = len(dem_t)
+    perp_c = np.ones(n) if perp_c is None else np.asarray(perp_c, float)
+    if mag_ok is None:
+        mag_ok = np.ones(n, bool)
+    return _FakeRes(["R1"] * n, np.asarray(dem_t, float), np.zeros(n), perp_c,
+                    np.arange(n) * 2.0 + 500, np.full(n, 100.0), np.ones(n, bool),
+                    mag_t=np.asarray(mag_t, float), mag_ok=np.asarray(mag_ok, bool))
+
+
+def test_twin_family_sign_concordance():
+    # dem +3 px, mag +1.5 px -> corroborated
+    r = _twin_res([3.0] * 12, [1.5] * 12)
+    assert set(C.mag_corroborated_candidates(r)) == {"R1"}
+    # mag opposite sign -> dropped
+    r = _twin_res([3.0] * 12, [-1.5] * 12)
+    assert C.mag_corroborated_candidates(r) == {}
+    # |mag| below the 1 px floor -> dropped
+    r = _twin_res([3.0] * 12, [0.5] * 12)
+    assert C.mag_corroborated_candidates(r) == {}
+    # too few qualified mag transects -> dropped
+    ok = np.zeros(12, bool)
+    ok[:2] = True
+    r = _twin_res([3.0] * 12, [1.5] * 12, mag_ok=ok)
+    assert C.mag_corroborated_candidates(r) == {}
+
+
+def test_twin_family_is_subset_of_round1_gate():
+    # a record failing the round-1 gate cannot enter the twin set even if mag agrees
+    r = _twin_res([1.0] * 12, [1.5] * 12)
+    assert C.correction_candidates(r) == set()
+    assert C.mag_corroborated_candidates(r) == {}
+
+
+def test_twin_family_shared_perpendicular_reference():
+    """The sign-convention trap (round 3, record 1514 class).
+
+    One record, 12 transects sharing ONE perpendicular table (the real
+    TransectResult layout): transects 0..8 point +col, transects 9..11 point
+    -col (a local flip of the orientation, defined modulo 180 deg).  Both
+    families see the SAME physical displacement (east): along a +col perp the
+    signed offset reads +3, along a -col perp it reads -3.
+
+    The mag family is only qualified (ok) on transects 8..11 - a subset
+    dominated by flipped perpendiculars.  The RAW mag median over [-3, -3, -3,
+    +3] is -3 (would wrongly DISAGREE with the dem median +3); after realignment
+    to the shared reference the mag median is +3 and the record is
+    corroborated.
+    """
+    n = 12
+    perp_c = np.array([1.0] * 9 + [-1.0] * 3)
+    dem_t = [3.0] * 9 + [-3.0] * 3          # east everywhere in world coords
+    mag_t = [-3.0] * 12                     # east everywhere in world coords
+    mag_t[8] = 3.0
+    mag_ok = np.zeros(n, bool)
+    mag_ok[8:] = True
+    r = _FakeRes(["R1"] * n, np.asarray(dem_t, float), np.zeros(n), perp_c,
+                 np.arange(n) * 2.0 + 500, np.full(n, 100.0), np.ones(n, bool),
+                 mag_t=np.asarray(mag_t, float), mag_ok=mag_ok)
+    # sanity: the raw (unaligned) mag median over the ok subset is negative
+    assert np.median(np.asarray(mag_t)[mag_ok]) < 0
+    out = C.mag_corroborated_candidates(r)
+    assert set(out) == {"R1"}
+    assert out["R1"]["dem_median_px"] > 0 and out["R1"]["mag_median_px"] > 0

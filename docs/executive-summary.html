@@ -6,151 +6,162 @@
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 .wrap{max-width:1080px;margin:0 auto;padding:0 18px}
 header.top{background:linear-gradient(180deg,#131a2c,#0f1420);border-bottom:1px solid var(--line);padding:22px 0 18px}
-h1{font-size:24px;margin:0 0 4px} h2{font-size:19px;margin:28px 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px} h3{font-size:16px;margin:20px 0 6px}
+h1{font-size:24px;margin:0 0 4px}
+h2{font-size:19px;margin:28px 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px}
+h3{font-size:16px;margin:20px 0 6px}
 nav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
 nav a{color:var(--mut);text-decoration:none;padding:5px 10px;border:1px solid var(--line);border-radius:16px;font-size:13px}
 nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
-.banner{background:#0c2d1f;border:1px solid #1d6043;border-radius:10px;padding:14px 18px;margin:14px 0}
-.banner.bad{background:#2d0c0c;border-color:#601d1d}
-.banner.warn{background:#2d250c;border-color:#604d1d}
-.btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:700;text-decoration:none;padding:12px 20px;border-radius:8px;font-size:16px;margin:6px 8px 6px 0}
-.btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line);font-weight:500}
+.dlbtn{margin:14px 0}
+.btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:8px}
+.btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
 .btn:hover{filter:brightness(1.1)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
-.mut{color:var(--mut)} .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)}
-code{background:#0a0e18;border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:13px;word-break:break-all}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.mut{color:var(--mut)}
+.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+code{background:#0a0e18;border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:13px}
 pre{background:#0a0e18;border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;font-size:12.5px}
 table{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
 th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
 th{background:#131a2c}
+img{max-width:100%;border:1px solid var(--line);border-radius:8px}
+.values{background:#10182b;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;font-size:13.5px;color:var(--mut)}
 footer{border-top:1px solid var(--line);margin-top:34px;padding:18px 0 30px;color:var(--mut);font-size:13px}
-ul{margin:6px 0 6px 20px} li{margin:3px 0}
-.bigok{font-size:20px;font-weight:700;color:var(--ok)}
+.tag{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:10px;padding:1px 8px;color:var(--mut);margin-right:5px}
+ul{margin:6px 0 6px 20px}li{margin:3px 0}
 </style></head><body>
 <header class=top><div class=wrap>
-<h1>56GEMSDOE &mdash; DOE GEMS Prize submission</h1>
+<h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
 <div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
 faults missing from the USGS/INGENIOUS catalogue</div>
-<nav><a href="index.html">Home</a><a href="executive-summary.html" class=active>Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="prior-run.html">Prior run</a></nav>
-</div></header><main class=wrap>
-<!-- H57-CARD:BEGIN -->
-<div class=card style="border-color:#3fd68f">
-<h2>&#11015; H57 corrections-band GeoTIFF &mdash; download and submit</h2>
-<p><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">Download h57-corr-band2px-cover-20261009T191337Z.tif (150 KB)</a>
-<a class="btn alt" href="downloads/h57-corr-band2px-cover-20261009T191337Z.zip">.zip</a>
-<a class="btn alt" href="h57.html">What it is &amp; the holdout &rarr;</a></p>
-<p><b>OK to download: YES. OK to submit (the form will accept it): YES.</b>
-Measured on this file: 0 NaN cells, 0 infinite cells, min 0.0,
-max 1.0, 1 band, float32, EPSG:32611, shape [3730, 3292],
-transform [100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0] &mdash; identical to <code>sample_submission.tif</code>;
-validator problems: <code>[]</code>. 54,914 dots.</p>
-<p><b>Submission name</b> <code>h57-corr-band2px-cover-20261009T191337Z</code><br>
-<b>Note</b> (122/140): <code>corrections-band cover: dots 2px either side of every catalogue trace, 2px along strike; crest steering refuted on holdout</code><br>
-<b>sha256</b> <code>fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced</code></p>
-<p><b>Honest verdict:</b> the lane's crest-steering hypothesis is <b>REFUTED</b> by its own
-holdout &mdash; offsets cluster under two pixels (median 1.48 px,
-signed median -0.11 px, 0.326 beyond 2 px vs
-0.273 for the random null), and crest-steered dots scored
-0.00087 against 0.00177 for the same dots
-placed without looking at the evidence (41,742 withheld positives, paired
-contrast [-0.001378, -0.000476]). So this file emits
-the <b>unsteered</b> cover of the band the organizers describe as containing corrections
-(forum 11516): dots 200 m either side of every catalogue trace, 0 on the masked catalogue.
-It is a <b>bet on an organizer statement, not a validated discovery</b>, and no holdout can
-score that family because no corrections labels exist for us.</p>
-<p>Uniqueness: max Spearman 0.286 (bar 0.90) and max exact-pixel Jaccard
-0.152 against the worst-overlapping earlier submissions;
-the literal 3 px containment clause fires and is logged as IR-57-003.
-Run card: <code>evidence/h57_run_card.json</code>.</p>
-</div>
-<!-- H57-CARD:END -->
-
-
-
-<h2>How to submit this file &mdash; step by step</h2>
-
+<nav><a href="index.html">Home</a><a href="executive-summary.html" class=active>Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="h57.html">H57 run (current)</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">&#11015; Download the submission GeoTIFF (150 KB)</a> <a class="btn alt" href="executive-summary.html">How to submit it &rarr;</a></div>
+</div></header>
+<div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
+submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
+on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
+<span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
+data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
+<main class=wrap><div class=card><h2 class=ok>Current file: OK to download and OK to submit</h2>
+<p>The download button above gives you <code>h57-corr-band2px-cover-20261009T191337Z.tif</code>. It is
+<b>format-valid for the DrivenData form</b>: single band, float32, every value in [0,&nbsp;1],
+<b>zero NaN cells anywhere</b> (the earlier "Predicted values must be in range [0, 1]" rejection
+was caused by NaN padding, which this file does not contain), EPSG:32611, 3292&times;3730, and a
+geotransform identical to <code>sample_submission.tif</code>. Paste the submission name and note
+printed on the home page into the form.</p>
+<p><b>What it is not:</b> it is not a validated discovery. This run's crest-steering hypothesis is
+<b>REFUTED</b> by its own holdout (see <a href="h57.html">H57 run</a>); what ships is the
+unsteered, kernel-optimal cover of the 100&ndash;400&nbsp;m band the organizers describe as
+containing "corrections or modifications to existing fault traces". Spending one of your weekly
+slots on it is a judgement call that stays with you &mdash; the full evidence is one click away.</p>
+<p><a href="h57.html">H57 run card and holdout</a> ·
+<a href="executive-summary.html">Step-by-step submission guide</a> ·
+<a href="prior-run.html">Preserved prior runs</a> ·
+<a href="prior-irregularities.html">Prior run irregularities</a></p></div>
+<h2>Executive summary &mdash; how to submit, in five steps</h2>
 <div class=card>
-<h3>1. Download</h3>
-<p><a class=btn href="downloads/h56-final-dotted-ridge-d2p8-20261009T190421Z.tif">&#11015; Download h56-final-dotted-ridge-d2p8-20261009T190421Z.tif</a>
-<a class="btn alt" href="downloads/h56-final-dotted-ridge-d2p8-20261009T190421Z.zip">Download .zip</a></p>
-<p class=mut>sha256 <code>88495c1c3dc535f85f9c15a03c4e1bcd2eb0123bc3bfec249b159f034f4f809b</code> · 401 KB · 37,654 predicted pixels.</p>
-</div>
-
-<div class=card>
-<h3>2. Sign in to DrivenData</h3>
-<p>Open <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">the competition page</a>
-and sign into your account. Navigate to <b>My Submissions</b> &rarr; <b>Make a submission</b>
-(or the <b>Submit entry</b> button on the competition sidebar).</p>
-</div>
-
-<div class=card>
-<h3>3. Upload the file</h3>
-<p>Click <b>Choose file</b> and pick the downloaded <code>h56-final-dotted-ridge-d2p8-20261009T190421Z.tif</code>. The form accepts a
-single-band GeoTIFF (.tif) directly; you don't need to zip it.</p>
-</div>
-
-<div class=card>
-<h3>4. Fill the metadata fields exactly</h3>
-<p><b>Submission name</b> (unique, distinguishes this run on your team's submission list):</p>
-<pre>GEMSDOE56-dotted-ridge-d2p8</pre>
-<p><b>Note (optional)</b> (140/140 characters — paste exactly):</p>
-<pre>h56 final: 37654 unit dots on 3-band mean-rank Hessian ridge (det_elev_slope/tmi_hg/iso_grav_anom_hg, sigma=300 m, 280 m NMS, 200 m catalogu</pre>
-</div>
-
-<div class=card>
-<h3>5. Submit and record the receipt</h3>
-<p>Click <b>Submit</b>. Wait for the validator to finish. When the submission appears on your
-submissions page, <b>copy the public score and the receipt id into this repo's ledger</b>.
-That receipt is the only <b>ORGANIZER-CONFIRMED</b> number; every number on this site is
-either MEASURED (official data) or HOLDOUT-DTI (local, simulated truth).</p>
-</div>
-
-<h2>What you are submitting</h2>
-<div class=card>
+<h3>1. Download the file</h3>
+<p><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">&#11015; Download h57-corr-band2px-cover-20261009T191337Z.tif</a></p>
+<p class=mut>sha256 <code>fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced</code> ·
+150 KB · a
+<code>.zip</code> containing only this GeoTIFF is published next to it if you prefer to upload
+a zip.</p>
+<h3>2. Open the submission form</h3>
 <ul>
-<li>Single-band GeoTIFF, EPSG:32611 (UTM zone 11N), 100&nbsp;m pixels, 3292 columns &times; 3730 rows</li>
-<li>Transform matches <code>sample_submission.tif</code>: (100, 0, 243350, 0, -100, 4508550)</li>
-<li>Float32; finite values in {0.0, 1.0} exactly · NaN strictly outside the scored footprint</li>
-<li>GDAL_NODATA tag <code>nan</code>, matching the sample's own tag (fixes the earlier
-"Predicted values must be in range [0, 1]" rejection, which was caused by NaN inside the scored
-region)</li>
-<li>37,654 unit dots at local maxima of a 3-band (DEM-slope, magnetic HG, isostatic-gravity HG)
-mean-rank Hessian ridge at sigma = 300&nbsp;m, with a 280&nbsp;m NMS radius and a 200&nbsp;m
-catalogue-exclusion mask (0 dots within 200&nbsp;m of any known-fault pixel)</li>
+<li>Open <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">the competition page</a>
+and sign in (the data and submission pages are login-gated; this project cannot submit for you).</li>
+<li><em>My Submissions</em> &rarr; <em>New submission</em> &rarr; <em>File to submit</em>.</li>
+<li>Upload the <code>.tif</code> directly &mdash; the form accepts a single-band GeoTIFF or a
+<code>.zip</code> containing exactly one GeoTIFF.</li>
+</ul>
+<h3>3. Paste these two strings</h3>
+<ul>
+<li><b>Submission name (unique):</b> <code>h57-corr-band2px-cover-20261009T191337Z</code></li>
+<li><b>Note</b> (122/140 characters, the form's
+&ldquo;short comment to help you tell submissions apart&rdquo;):<br>
+<code>corrections-band cover: dots 2px either side of every catalogue trace, 2px along strike; crest steering refuted on holdout</code></li>
+<li>Submit, then <b>copy the returned public score</b> into the repo &mdash; that receipt is the
+only ORGANIZER-CONFIRMED number this project will ever have.</li>
+</ul>
+<h3>4. Why this file will not be rejected</h3>
+<p>The earlier rejection message <code>"Predicted values must be in range [0, 1]"</code> is
+produced by non-finite or out-of-range cells. Measured on <i>this</i> file by
+<code>gems56.gates.format_report</code> (receipt
+<code>docs/downloads/h57-corr-band2px-cover-20261009T191337Z.json</code>):
+NaN cells <b>0</b>, infinite cells <b>0</b>, min
+<b>0.0</b>, max <b>1.0</b>,
+bands 1, dtype float32, CRS <code>EPSG:32611</code>, shape
+[3730, 3292], transform
+<code>[100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0]</code> &mdash; identical to
+<code>sample_submission.tif</code>. Problems list: <code>[]</code>.
+Unlike earlier files on this site, this one is <b>all-finite</b>: zeros, not NaN, outside the
+emission, so no reader can interpret a pad value as out of range.</p>
+<h3>5. What you are submitting, and what it is worth</h3>
+<p><b>54,914 unit dots</b> ([2.0, -2.0] px perpendicular
+offsets, every 2 px along strike) placed 200 m either side of
+every catalogue trace &mdash; with the 300 m triangular kernel that credits a refined trace
+anywhere from the catalogue line out to about 500 m, strongest at 200 m &mdash; 0 dots on the catalogue itself (those pixels are masked by the
+scorer, so mass there is pure cost).</p>
+<ul>
+<li><b>This is a coverage bet, not a validated discovery.</b> The lane's crest-steering
+hypothesis was <span class=bad>refuted</span> by this run's own holdout: crest-steered dots
+scored 0.00087 vs
+0.00177 for identical dots placed without looking
+at the evidence (paired contrast
+[-0.001378, -0.000476]).</li>
+<li><b>No holdout can score the thing this file bets on.</b> The bet is the organizers'
+statement that part of the hidden truth is corrections within 300 m of known traces; we have no
+corrections labels, so that family cannot be scored locally. Stated plainly rather than papered
+over with a proxy number.</li>
+<li><b>Named non-fault process that could mimic it:</b> map generalisation and 100 m
+rasterisation displace a trace by 1&ndash;3 px with no fault involved; erosional terraces give
+the same break-in-slope. Both are why the crest arm was tested against nulls and lost.</li>
+<li><b>Uniqueness:</b> max Spearman 0.286 and max
+exact Jaccard 0.152 against the
+worst-overlapping earlier submissions; the literal 3 px containment clause fires and is logged
+as IR-57-003.</li>
+<li><b>Weekly cap:</b> promotion to a real slot is a separate selector decision. Nothing here
+has been submitted on your behalf.</li>
 </ul>
 </div>
 
-<h2>Why this should not hit the earlier &ldquo;Predicted values must be in range [0, 1]&rdquo; error</h2>
+<h2>Prior run's files &mdash; do NOT submit these</h2>
 <div class=card>
-<p>The validator in <code>scripts/validate_submission.py</code> checks exactly the conditions
-that trigger that portal error:</p>
-<ul>
-<li>All values are in [0,&nbsp;1] (here they are exactly {0.0, 1.0})</li>
-<li>Every pixel the template marks as valid is finite (no NaN inside the scored region)</li>
-<li>Every pixel outside the template's valid region is NaN (no finite bleed past the footprint)</li>
-<li>GDAL_NODATA matches the sample (<code>nan</code>)</li>
-<li>CRS, shape, resolution, geotransform match the sample exactly</li>
-</ul>
-<p>The validator exits 0 for this TIF.</p>
+<p>The merged prior run (PR #4) on this repository reached a <b>NEGATIVE</b> verdict and
+ships two format-valid rasters <b>as research output only</b>: its own receipt says the
+expected gain is 0.00016 DTI with a 95% interval of
+[0.00000, 0.00045] &mdash; which
+contains the value for doing nothing (0.00000) and for jittering dots at random
+(0.00021). Its uniqueness gate also returned
+<code>ok:false</code> on the proximity criterion at 1-dot count (IR-56-006), and its
+rasters write 0.0 (not NaN) outside the data footprint (IR-56-013). They are safe to
+download for inspection; they are <b>not cleared for a weekly slot</b>. Details and
+downloads: <a href="prior-run.html">Prior run</a>.</p>
 </div>
 
-<h2>Honest caveats</h2>
+<h2>Round-2 discovery candidate &mdash; also NOT for submission</h2>
 <div class=card>
-<ul>
-<li>No organizer score exists for this file. The +0.0065 [+0.0018,
-+0.0109] improvement over random is HOLDOUT-DTI on a local hide-and-recover
-instrument with simulated truth (withheld catalogue segments), not an organizer confirmation.</li>
-<li>The detector is physics-only (no learned model). A 3-band ridge at the scoring-kernel scale
-is the geometric foundation of the highest-scoring public family (the 0.2708/0.2778 siblings),
-re-implemented here with a distinct pipeline and a third (gravity) band; pixel set is unique
-(no >0.70 containment against this repo's other TIFs except the parent 40,199-dot dotted ridge
-that it is a pruned-top-up of).</li>
-<li>Range-front escarpments, volcanic flow edges and lithologic contacts remain the named
-non-fault confound — three-band concordance reduces but does not eliminate them.</li>
-</ul>
+<p><b>OK to submit: <span class=bad>NO</span>.</b> The second download on the
+<a href="index.html">home page</a>
+(<code>h56-disc-multi-b25000-20261009-20261009T165646Z.tif</code>, 25,000 dots) is format-validated
+research output: single band, float32, values exactly {0.0, 1.0}, EPSG:32611, shape and
+transform equal to the submission format, sha256 <code>dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296</code>.
+Two independent verdicts block it: the pre-registered holdout rule failed (HOLDOUT-DTI
+0.01242 vs chance 0.03499, paired
+-0.02257, CI strictly below zero), and the
+registry lane gate returned <b>DUPLICATE/STOP</b>
+(density-degenerate 3&nbsp;px trigger, IR-56-023). Its name, note and receipt all say
+NEGATIVE; no slot was spent. Full walk-through of the numbers:
+<a href="hypotheses.html">hypotheses (round-2 section)</a> ·
+<code>evidence/run_card_discovery_v1.json</code>.</p>
 </div>
 </main>
-<footer><div class=wrap>56GEMSDOE · generated from <code>docs/downloads/h56-final-*-20261009T190421Z.json</code> ·
-site served at <a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
+<footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
+round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
+round-3 twin-family branch <code>arena/e86c5610-56gemsdoe</code> ·
+generated 2026-10-09 19:50 UTC by
+<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
+and <code>evidence/*.json</code> (run B) ·
+site served from <code>main</code> at
+<a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
 </body></html>

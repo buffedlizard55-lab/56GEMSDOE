@@ -204,3 +204,37 @@ Nothing here is a board score; no ORGANIZER-CONFIRMED number exists for anything
   as written: verdict logged, nothing promoted.
 - Net round-2 verdict: **NEGATIVE twice over** (holdout below chance; gate stop) — the unique TIF
   is published for review with both reasons in its receipt, note and the front-page banner.
+
+## R7. Round 3 — the map-quality test and the twin-family tightening
+(receipts: `evidence/corrections/map_quality_stratification.json`, `build_round3.json`,
+`registry_check_round3.json`, `run_card_round3.json`; pre-reg:
+`docs/research/hypotheses-20261009-round3.md`)
+
+- **Join semantics (IR-56-031, load-bearing):** `record_id` in `trace_segments_utm11.csv` is the
+  shapefile FEATURE INDEX (`enumerate(iterShapeRecords())` in GEMSDOE51's
+  `extract_official_segments.py`), not `NUM`. The attribute table (22,956 rows = dbf record
+  count) joins POSITIONALLY; verified `SLIPSENSE` 1,126/1,126 after NaN normalisation. The first
+  draft joined on `NUM` (46/125 spurious matches) and was discarded before any decision.
+- **H-C1 (does the offset respect the catalogue's own map quality?): NEGATIVE on the
+  pre-registered conjunction.** MAPSCALE arm starved (120/125 records at 1:250k; ρ=0.059,
+  p=0.257); FTYPE arm passed (not-Well vs Well medians 1.52 vs 1.05 px, MW p=0.039). Secondaries
+  supportive: FCODE2023 ρ=0.169 (p=0.030), Kruskal p=0.034, monotone FTYPE medians
+  1.05 < 1.50 < 3.15 px; holds in the LiDAR-covered subset (p=0.045) but **vanishes among sharp
+  crests** (top-prominence quartile p=0.62) — the pre-registered terrain confound (low-relief
+  terrain hosts both inferred mapping and terrace-dominated crests). Suggestive, not confirmed.
+- **Twin-family gate (pre-registered fallback):** 9 of 28 round-1 records corroborated by BOTH
+  families (sign-concordant medians, |mag| ≥ 1 px, ≥ 3 qualified mag transects, ONE shared
+  perpendicular reference — the sign-convention trap; a raw-median comparison flips 2 records:
+  1514, 2665). 2,139 dots on their DEM crest lines (LiDAR-calibrated operator; mag is the gate,
+  not the emitter). HOLDOUT-DTI (simulated, machinery only): 0.10788 [0.0898, 0.1268] vs
+  matched-mass chance 0.00414 [0.0029, 0.0054]; canaries ≤ 0.58; A1 reproduced 0.31049 exactly.
+- **Registry (1,026 rasters incl. 17 unzipped zips, 477 unique pixel contents):** documented
+  UNIQUE (max Spearman 0.573, max 3 px Jaccard 0.329, no mutual containment, 0 duplicates);
+  literal clause fires on 12 (11 degenerate supersets with rev ≤ 0.011 + this lane's own round-1
+  raster — the twin dots are its strict subset, declared before the screen). STOP logged; verdict
+  NEGATIVE; 0 slots spent.
+- **Strategic read (for the selector):** the corrections lane's product is an additive component
+  (2,139 two-family dots at the metric's free-TP geometry: dots exactly on truth cost nothing),
+  not a standalone winner; the literal containment gate blocks composing it with a family
+  emission inside this lane, so composition is the selector's step. The lane's emissions stay
+  research-only until an independent (non-simulated) test passes — H-C1 was the first and failed.

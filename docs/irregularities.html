@@ -171,10 +171,34 @@ mass-ratio/Jaccard analysis is diagnostic only and does not override the rule.</
 <p><b>Checked / why it matters:</b> Read literally, a raster whose 3 px halo covers &gt;=70% of the grid makes the '&gt;70% of my dots near it' clause unfailable for ANY candidate, so a STOP verdict carries no information about lane drift at that density; the mirror-image defect (IR-56-006) makes the same clause unfailable in the other direction at tiny dot counts.</p>
 <p class=mut>Done: Protocol executed as written: the verdict DUPLICATE/STOP is logged, nothing is promoted, and the candidate was already NEGATIVE on the holdout. The defect is reported rather than argued around; both directions are shown side by side in the receipt (surface PASS, dots STOP). No gate code was modified to change the outcome. · source: scripts/lane_gate_discovery.py (E3), first full 960-prior run</p></div>
 <p class=mut>Full machine-readable log (both runs, <code>evidence/irregularities.json</code>, 23 entries): IR-56-001&hellip;013 round 1, IR-56-014&hellip;018 the concurrent corrections session, IR-56-019&hellip;023 this round-2 discovery run.</p>
+
+<h2>Round-3 entries (this PR, arena/e86c5610-56gemsdoe)</h2>
+<div class=card><h3>IR-56-030: the 0.5&nbsp;mm-at-map-scale tolerance convention is cited, not fetched</h3>
+<p>The z_map sensitivity uses the cartographic convention that horizontal accuracy is
+~0.5&nbsp;mm at publication scale (12&nbsp;m at 1:24k &hellip; 250&nbsp;m at 1:500k). The
+USGS pages stating it are not reachable from this sandbox (egress allowlist), so the
+convention is <b>cited, not re-verified online</b>. It gates nothing: H-C1 failed, so the
+z_map rule ships only as a reported sensitivity table.</p></div>
+<div class=card><h3>IR-56-031: the first draft of the H-C1 join was WRONG (caught before any decision)</h3>
+<p><code>record_id</code> in <code>trace_segments_utm11.csv</code> is the shapefile
+<b>feature index</b> (GEMSDOE51 <code>extract_official_segments.py</code>:
+<code>enumerate(iterShapeRecords())</code>), not the <code>NUM</code> field. The first
+draft joined on <code>NUM</code> and matched 46/125 records spuriously; its output was
+never used for a decision and was overwritten. The corrected join is positional
+(22,956 attribute rows = the dbf record count; <code>SLIPSENSE</code> agrees
+1,126/1,126 once NaN spellings are normalised). Both drafts' logic is documented in
+<code>scripts/test_map_quality_stratification.py</code>.</p></div>
+<div class=card><h3>IR-56-032: PR #8 (a parallel session) was open and CONFLICTING; superseded by the PR #13 merge</h3>
+<p><code>arena/17f46fe0-56gemsdoe</code> (&ldquo;Round 2: shipped GeoTIFFs&rdquo;, the
+magpack/quota rasters) was opened 2026-10-09 18:40 UTC and reported
+<code>mergeable: CONFLICTING</code>. Its content reached <code>main</code> through PR
+#13's session instead; this round-3 session neither merged nor built on PR #8, and its
+rasters are in the uniqueness registry via the sibling mirror. The PR can be closed.</p></div>
 </main>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
 round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
-generated 2026-10-09 19:14 UTC by
+round-3 twin-family branch <code>arena/e86c5610-56gemsdoe</code> ·
+generated 2026-10-09 19:50 UTC by
 <code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
 and <code>evidence/*.json</code> (run B) ·
 site served from <code>main</code> at
