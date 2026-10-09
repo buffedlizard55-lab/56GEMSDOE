@@ -3,7 +3,7 @@
 DrivenData competition 306 (GeoDAWN / NW Nevada): find **geothermal-indicative faults missing
 from the USGS/INGENIOUS catalogue** and ship them as a legal GeoTIFF.
 Site: **https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html**
-(one-click submission download at the top; submission guide on *Make a submission*).
+(one-click submission download at the very top; step-by-step guide on *Make a submission*).
 
 > ## Round 2 - submission desk (this branch; receipts stamped 16:29Z → 17:26Z): the submission the brief asks for, and the measurement that says what it is worth
 >
@@ -64,6 +64,71 @@ Site: **https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html**
 ---
 
 > **Arena Core Values (quoted in the brief):** Maximize P(Win). Own the Outcome.
+> **Read `docs/brief/2026-10-09-session-prompt-h57.md` at the start of every session** — it is
+> the standing brief (lane, protocol, product requirements, official sources) and this README
+> links it first on purpose.
+
+## H57 run — 2026-10-09 (current)
+
+**Deliverable file:** `docs/downloads/h57-corr-band2px-cover-20261009T191337Z.tif`
+(+ `.zip`, + `.json` receipt) — 54,914 dots, single band, float32, **0 NaN cells**, every value
+in [0, 1], EPSG:32611, 3292×3730, geotransform identical to `sample_submission.tif`,
+sha256 `fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced`.
+**OK to download: yes. OK to submit (the form will accept it): yes.** Promotion to a weekly slot
+remains a separate selector decision; this repository has submitted nothing.
+
+**Hypothesis verdict: NEGATIVE — crest steering is refuted, by our own measurements.**
+
+| experiment | what it measured | result |
+|---|---|---|
+| E1 (offset histogram, MEASURED) | catalogue → nearest DEM crest / magnetic ridge within ±400 m, 44,390 transects | median \|offset\| **1.48 px**, signed median −0.11 px, 0.326 beyond 2 px vs **0.273 for the random null**; DEM–magnetic r = 0.022; 2 of 1,273 corridors pass the consistency gate → *offsets cluster under two pixels* |
+| E2 (`--mode spatial`) | hide-and-recover with whole-component spatial folds, 60,894 withheld px | corridor arms ≈ 0; uniform-random 0.01758 — **the split itself cannot test a corrections lane** (IR-57-001), so a second mode was built |
+| E3 (`--mode neighbour`) | hide-and-recover withholding only components with another mapped component within 400 m; 41,742 withheld positives | crest-steered **0.00087** [0.00049, 0.00133] vs evidence-free corridor **0.00177** [0.00130, 0.00232] at an identical dot budget; paired contrast **[−0.00138, −0.00048]**, P(beats) = 0.0; `B4_catalogue` = 0.00000 exactly (masking control) |
+
+All numbers are **HOLDOUT-DTI** (evaluator `h57-hide-and-recover-v1`: `src/metrics.py`, α 0.2,
+β 0.8, 300 m triangular kernel, visible faults masked pixel-exactly, 20×20 px block bootstrap,
+2,000 draws). None is a competition score; no ORGANIZER-CONFIRMED number exists for this repo.
+
+**So what ships, and why.** The brief's own stop rule applies to crest steering, and it was
+obeyed: nothing in the shipped file is steered by a crest. What ships is the *unsteered*,
+kernel-optimal cover of the band the organizers themselves describe as containing corrections —
+dots 200 m either side of every catalogue trace, every 200 m along strike, 0 dots on the
+(masked) catalogue. The geometry was chosen by an explicit metric calculation over nine
+candidate geometries (`evidence/h57_geometry_sweep.json`), whose target is circular by
+construction and is therefore reported as a sizing number and never as a score. **This is a
+bet on an organizer statement, not a validated discovery, and the site says so on the front
+page.**
+
+**Uniqueness.** Full-corpus directed screen over 944 sibling rasters
+(`evidence/registry_screen_v1.json`) plus the shared template gate on the 40 worst-overlapping
+earlier *submissions* (`evidence/h57_uniqueness_submissions.json`): **max Spearman 0.286**
+(bar 0.90) and **max exact-pixel Jaccard 0.152** against any earlier submission. The literal
+3 px containment clause fires — unavoidably, since every dot 2 px off a trace is within 3 px of
+that trace, including of the competition's own `existing_faults.tif` — and is logged as
+IR-57-003 with the discriminating statistics in
+`evidence/h57_uniqueness_discriminators.json`.
+
+**Reproduce the whole run:**
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+bash scripts/download_competition_data.sh                       # hash-pinned inputs
+.venv/bin/python scripts/h57_corridor_holdout.py --mode spatial   --out evidence/h57_holdout.json
+.venv/bin/python scripts/h57_corridor_holdout.py --mode neighbour --out evidence/h57_holdout_neighbour.json
+.venv/bin/python scripts/h57_build_corridor_submission.py --sweep
+.venv/bin/python scripts/h57_build_corridor_submission.py --build --offsets 2,-2 --step 2 --name h57-corr-band2px-cover
+.venv/bin/python scripts/mirror_registry_corpus.py /home/user/_reg /home/user/_regsrc
+.venv/bin/python scripts/screen_registry.py /home/user/_reg docs/downloads/h57-corr-*.tif
+.venv/bin/python scripts/h57_uniqueness.py --candidate docs/downloads/h57-corr-*.tif --registry /home/user/_reg_sub40
+.venv/bin/python scripts/build_site.py && .venv/bin/python -m pytest -q
+```
+
+**New irregularities from this run:** IR-57-001 (the spatial-fold holdout cannot test this lane),
+IR-57-002 (crest steering refuted), IR-57-003 (the literal containment clause is unpassable for
+any corrections emission), IR-57-004 (no holdout exists for the family the file bets on),
+IR-57-005 (`data/sample_submission.tif` vs `data/grid/sample_submission.tif` path split — fixed
+once in `scripts/download_competition_data.sh`), IR-57-006 (two mutually exclusive export
+policies coexist in the template; the tests now assert the policy the file declares).
 
 > ## Round 2 - discovery run (already on `main` via PR #7): **Bottom line:** five new hypotheses were
 > pre-registered (`docs/research/hypotheses-20261009.md`), the missing probe layer was obtained

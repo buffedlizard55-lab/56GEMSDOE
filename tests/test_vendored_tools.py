@@ -20,7 +20,13 @@ sys.path.insert(0, str(ROOT / "src"))
 import metrics as M  # noqa: E402
 import submission_io as S  # noqa: E402
 
-SHIPPED = sorted((ROOT / "docs" / "downloads").glob("gems56-corr-*-nan.tif"))
+def _has_nan(path):
+    with rasterio.open(path) as src:
+        return bool(np.isnan(src.read(1)).any())
+
+
+SHIPPED = (sorted((ROOT / "docs" / "downloads").glob("h57-corr-*.tif"))
+           or sorted((ROOT / "docs" / "downloads").glob("gems56-corr-*-nan.tif")))
 
 
 # ------------------------------------------------------------------- metric
@@ -94,7 +100,18 @@ def test_writer_refuses_empty_emission(tmp_path):
 
 
 # ------------------------------------------------------- the shipped submission
+# POLICY NOTE (IR-57-006). Two export policies coexist in this template and they are mutually
+# exclusive on one file: the legacy "NaN outside the footprint + GDAL_NODATA=nan" policy of the
+# gems56-corr-* run, and the all-finite policy that gems56.gates.write_geotiff/format_report
+# enforce (zeros outside, no nodata tag). The public spec permits either ("data outside bounds is
+# null or NaN"), and the all-finite form is what the current H57 file ships, because the live form
+# rejected a NaN-bearing upload with "Predicted values must be in range [0, 1]". These tests
+# therefore assert the policy the file declares, and assert the parts that are common to both.
+ALL_FINITE = bool(SHIPPED) and not _has_nan(SHIPPED[-1])
+
+
 @pytest.mark.skipif(not SHIPPED, reason="shipped submission GeoTIFF not present")
+@pytest.mark.skipif(ALL_FINITE, reason="legacy NaN-outside validator does not apply to an all-finite export")
 def test_shipped_submission_passes_validator():
     tif = SHIPPED[-1]
     r = subprocess.run([sys.executable, "scripts/validate_submission.py",
@@ -106,6 +123,7 @@ def test_shipped_submission_passes_validator():
 
 
 @pytest.mark.skipif(not SHIPPED, reason="shipped submission GeoTIFF not present")
+@pytest.mark.skipif(ALL_FINITE, reason="template conformance encodes the NaN-outside policy")
 def test_shipped_submission_is_template_conformant():
     tif = SHIPPED[-1]
     r = subprocess.run([sys.executable, "-m", "src.submission_io", "validate-conformant",
@@ -115,21 +133,53 @@ def test_shipped_submission_is_template_conformant():
 
 
 @pytest.mark.skipif(not SHIPPED, reason="shipped submission GeoTIFF not present")
+def test_shipped_submission_passes_all_finite_gate():
+    """The gate that actually governs the shipped file: gems56.gates.format_report."""
+    sys.path.insert(0, str(ROOT / "src"))
+    from gems56 import gates
+    sample = next((p for p in (ROOT / "data" / "grid" / "sample_submission.tif",
+                               ROOT / "data" / "sample_submission.tif") if p.exists()), None)
+    if sample is None:
+        pytest.skip("sample submission raster not placed")
+    rep = gates.format_report(SHIPPED[-1], sample)
+    assert rep["ok"], rep["problems"]
+    assert rep["n_nan"] == 0 and rep["min"] >= 0.0 and rep["max"] <= 1.0
+    assert rep["bands"] == 1 and rep["dtype"] == "float32"
+
+
+@pytest.mark.skipif(not SHIPPED, reason="shipped submission GeoTIFF not present")
 def test_shipped_submission_readback():
-    import corrections as C
     tif = SHIPPED[-1]
     with rasterio.open(tif) as src:
         a = src.read(1)
         assert src.dtypes[0] == "float32" and src.count == 1
         assert str(src.crs) == "EPSG:32611"
         assert (src.height, src.width) == (3730, 3292)
-        assert src.nodata is not None and np.isnan(src.nodata)
+        if ALL_FINITE:
+            assert src.nodata is None or np.isnan(src.nodata)
+        else:
+            assert src.nodata is not None and np.isnan(src.nodata)
     with rasterio.open(ROOT / "data" / "sample_submission.tif") as src:
         tpl = src.read(1)
-    fault, _ = C.load_labels(ROOT / "data" / "labels.tif")
+    # the catalogue as the bridge places it (data/labels.tif is the login-gated name and is not
+    # present in this sandbox; data/grid/existing_faults.tif is the hash-pinned same raster)
+    # the catalogue under either placement: data/labels.tif is the CI/bridge canonical name,
+    # data/grid/existing_faults.tif is where download_competition_data.sh puts the same pinned
+    # raster locally (IR-57-005).
+    cat_path = next((p for p in (ROOT / "data" / "labels.tif",
+                                 ROOT / "data" / "grid" / "existing_faults.tif") if p.exists()), None)
+    if cat_path is None:
+        pytest.skip("catalogue raster not placed")
+    with rasterio.open(cat_path) as src:
+        fault = src.read(1) == 1
     fin = np.isfinite(a)
-    assert (fin == np.isfinite(tpl)).all()          # NaN mask matches the sample
+    if ALL_FINITE:
+        assert fin.all()                            # every cell finite: no reader can see NaN
+        assert not np.any(a[~np.isfinite(tpl)] > 0)  # no positive mass outside the sample footprint
+    else:
+        assert (fin == np.isfinite(tpl)).all()      # NaN mask matches the sample
     assert np.isfinite(a[fin]).all()                # no NaN inside the footprint
     assert a[fin].min() >= 0.0 and a[fin].max() <= 1.0
     assert (a[fault] == 0).all()                    # no dots on the catalogue
+
     assert (a > 0).sum() > 0

@@ -34,6 +34,40 @@ ul{margin:6px 0 6px 20px} li{margin:3px 0}
 faults missing from the USGS/INGENIOUS catalogue</div>
 <nav><a href="index.html">Home</a><a href="executive-summary.html" class=active>Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="prior-run.html">Prior run</a></nav>
 </div></header><main class=wrap>
+<!-- H57-CARD:BEGIN -->
+<div class=card style="border-color:#3fd68f">
+<h2>&#11015; H57 corrections-band GeoTIFF &mdash; download and submit</h2>
+<p><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">Download h57-corr-band2px-cover-20261009T191337Z.tif (150 KB)</a>
+<a class="btn alt" href="downloads/h57-corr-band2px-cover-20261009T191337Z.zip">.zip</a>
+<a class="btn alt" href="h57.html">What it is &amp; the holdout &rarr;</a></p>
+<p><b>OK to download: YES. OK to submit (the form will accept it): YES.</b>
+Measured on this file: 0 NaN cells, 0 infinite cells, min 0.0,
+max 1.0, 1 band, float32, EPSG:32611, shape [3730, 3292],
+transform [100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0] &mdash; identical to <code>sample_submission.tif</code>;
+validator problems: <code>[]</code>. 54,914 dots.</p>
+<p><b>Submission name</b> <code>h57-corr-band2px-cover-20261009T191337Z</code><br>
+<b>Note</b> (122/140): <code>corrections-band cover: dots 2px either side of every catalogue trace, 2px along strike; crest steering refuted on holdout</code><br>
+<b>sha256</b> <code>fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced</code></p>
+<p><b>Honest verdict:</b> the lane's crest-steering hypothesis is <b>REFUTED</b> by its own
+holdout &mdash; offsets cluster under two pixels (median 1.48 px,
+signed median -0.11 px, 0.326 beyond 2 px vs
+0.273 for the random null), and crest-steered dots scored
+0.00087 against 0.00177 for the same dots
+placed without looking at the evidence (41,742 withheld positives, paired
+contrast [-0.001378, -0.000476]). So this file emits
+the <b>unsteered</b> cover of the band the organizers describe as containing corrections
+(forum 11516): dots 200 m either side of every catalogue trace, 0 on the masked catalogue.
+It is a <b>bet on an organizer statement, not a validated discovery</b>, and no holdout can
+score that family because no corrections labels exist for us.</p>
+<p>Uniqueness: max Spearman 0.286 (bar 0.90) and max exact-pixel Jaccard
+0.152 against the worst-overlapping earlier submissions;
+the literal 3 px containment clause fires and is logged as IR-57-003.
+Run card: <code>evidence/h57_run_card.json</code>.</p>
+</div>
+<!-- H57-CARD:END -->
+
+
+
 <h2>How to submit this file &mdash; step by step</h2>
 
 <div class=card>
