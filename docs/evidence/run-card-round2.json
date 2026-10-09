@@ -1,8 +1,8 @@
 {
  "lane": "corrections (round 2: emission-side consequences of the same measurement)",
  "competition": "DrivenData GEMS Prize 306 (GeoDAWN, NW Nevada)",
- "run_utc": "2026-10-09T18:49:56Z",
- "commit": "e7cf9270cef4bf50a60a17de1b9bb5a49dcff175",
+ "run_utc": "2026-10-09T18:55:01Z",
+ "commit": "3751a60483d331ee240d5e07cd7c3eb6e1a0fb88",
  "hypothesis": "The catalogue is displaced from the evidence by more than ~2 px in places, so dots on the evidence-defined trace earn credit the catalogue line cannot. Round 1 measured that this is false (median offset -0.10 px against a 1.32 px estimator noise floor). The surviving consequence is the *other* side of the same fact: because the catalogue is accurate, mass near a mapped trace is masked out of the scored truth and pays the false-positive term, so the leverage is (i) pruning near-catalogue mass and (ii) raising credit per emitted pixel on channels the catalogue compiler did not use.",
  "mechanism": "Percentile-rank physical channels built from the official 19-band stack only; ridge/edge detectors (Meijster second-derivative-along-gradient on detrended-elevation slope, on smoothed |tmi_hg|, on reduced-to-pole, on gravity gradient, on the geodetic strain-rate second invariant); a discrete-Radon lineament-persistence channel over 4 strikes x {400,800,1600} m; exact greedy farthest-point packing at 2.8 px; a 2 px catalogue emission floor; binary p=1 mass; three combination rules (single channel, equal-rank mean, credit-weighted quota union) scored against each other at matched budget.",
  "named_non_fault_process": "Drainage incision and gully heads give convex break-in-slope lineations that are not faults; slope-dependent scarp degradation migrates a crest; magnetic gradients ridge on lithologic contacts and on the edges of demagnetised Tertiary units, not on slip surfaces; and the geodetic strain-rate bands are smooth at 10 km scale, so they carry regional, not pixel, information - which is why their AUC against the hidden set is 0.59-0.71 while their DTI at 300 m precision is one fifth of the magnetic ridge.",
@@ -428,7 +428,7 @@
   "clock_utc": {
    "first_receipt": "2026-10-09T18:37Z",
    "last_experiment_receipt": "2026-10-09T18:37Z",
-   "this_card": "2026-10-09T18:49:56Z",
+   "this_card": "2026-10-09T18:55:01Z",
    "reading": "measured work ran between the receipt stamps above; the experiment count exceeded the 3-experiment stop-loss by one (E4), the wall clock did not exceed 2 h"
   },
   "overrun_reason": "E4 (the combination-rule test) was added after the stop-loss because E3's arm table showed the instrument itself was inverted; the experiment count is reported as an overrun rather than restated to fit the budget",
@@ -461,7 +461,7 @@
   "other_run_raster": "h56-disc-multi-b25000-20261009-20261009T165646Z.tif",
   "other_run_holdout_dti": 0.012423943839880595,
   "other_run_promoted": false,
-  "irregularities_total": 28,
+  "irregularities_total": 30,
   "renumbered_to_this_run": [
    "IR-56-024",
    "IR-56-025",
