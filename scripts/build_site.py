@@ -29,6 +29,12 @@ def load(name):
     return json.loads(p.read_text())
 
 
+def load_opt(name):
+    """Optional receipt: round-2 discovery artefacts may not exist yet on a partial run."""
+    p = EV / name
+    return json.loads(p.read_text()) if p.exists() else None
+
+
 def esc(x):
     return html.escape("n/a" if x is None else str(x))
 
@@ -144,8 +150,172 @@ def arm_card(a, arm, gate_label):
 </div>"""
 
 
+def _round2_sections(hold2, gate2, scr2, bld2):
+    """Round-2 site sections: the 0.2778 answer and the E1 verdict, all receipt-driven."""
+    pr = hold2.get("pick_rule", {})
+    scores = (hold2.get("pooled") or {}).get("scores", {})
+    cand = pr.get("candidate", "?")
+    chance = scores.get("random@25000", {})
+    cs = scores.get(cand, {})
+    vs = pr.get("paired_vs_random", {})
+    can = hold2.get("canary", {})
+    can_txt = ", ".join(f"<code>{esc(k)}</code> {num(v, 3)}" for k, v in can.items())
+    verdict = "NEGATIVE" if not hold2.get("verdict_pass") else "PASS"
+    gate_line = "not run"
+    if gate2:
+        gate_line = (f"literal <b>{esc(gate2.get('verdict_literal'))}</b>, coverage-adjusted "
+                     f"policy <b>{esc(gate2.get('verdict_policy'))}</b> over "
+                     f"{esc((gate2.get('corpus') or {}).get('aligned_priors'))} aligned prior rasters")
+    h6h10 = table(
+        ["#", "hypothesis (pre-registered)", "mechanism / named non-fault process", "status from this round"],
+        [
+            row("<b>H6</b>", "iso-gravity steps are fault-reactivated boundaries",
+                "isostatic residual steps &rarr; potential-field edges; non-fault: erosional terrace edges",
+                f"tested as <code>iso_step</code> arms; best {num(scores.get('iso_step@25000', {}).get('dti'), 5)} vs "
+                f"chance {num(chance.get('dti'), 5)} &mdash; below chance, NEGATIVE"),
+            row("<b>H7</b>", "basement topography &times; conductors concordance",
+                "weak contact made conductive by fluids; non-fault: intrusions &amp; alteration halos",
+                f"tested as <code>bc_step</code> arms; best {num(scores.get('bc_step@25000', {}).get('dti'), 5)} "
+                "&mdash; below chance, NEGATIVE"),
+            row("<b>H8</b>", "tilt-low lineaments beneath cover",
+                "basin-fill depocentres; non-fault: channel &amp; fan morphology",
+                f"tested as <code>tilt_r</code>; best {num(scores.get('tilt_r@37654', {}).get('dti'), 5)} "
+                "&mdash; ~0, NEGATIVE (channel/fan explanation stands)"),
+            row("<b>H9</b>", "INGENOUS 2 m probes gate on structural proximity",
+                "measured surface-temperature steps; non-fault: soil moisture &amp; albedo",
+                "probe layer obtained and validated (3,800 pts); NOT tested this round &mdash; "
+                "budget stop after E1+E2"),
+            row("<b>H10</b>", "probe&times;structure coincidence hotspots",
+                "fluid pathways without catalogue faults; non-fault: anthropogenic site effects",
+                "NOT tested this round &mdash; budget stop after E1+E2"),
+        ])
+    return f"""<h2>The round-2 brief: why the published top sibling scored 0.2778</h2>
+<p>The highest published sibling value is <b>0.2778</b> from GEMSDOE54, and its own
+<code>RUN2-SUMMARY.md</code> (fetched verbatim this session, quoted in
+<code>knowledge/sources.json</code>) states the mechanism in one line:
+<i>&ldquo;The child <code>dotted_b2_prune_02778</code> (37,654 dots) equals its parent
+<code>dotted_d2_8_02708</code> (40,199 dots) minus exactly the 2,545 parent dots within 2 px
+(200 m) of a USGS catalogue fault.&rdquo;</i> The arithmetic behind it is the competition's own
+loss: round-1 truth is <i>new</i> faults only, so a dot sitting on a known trace can earn true
+positives only when a new fault lies inside its 300 m kernel, while its false-positive cost
+(&alpha; = 0.2) is unconditional. Deleting all such dots took that sibling 0.2708 &rarr; 0.2778.</p>
+<p>Three caveats from the same receipt, which this project labels rather than hides:
+<b>(1)</b> 0.2778 is <i>rank 13</i> on the displayed board (top 0.3774, 0.3195 rank 7), so
+&quot;beats 0.3195&quot; is a different gap than &quot;beats the published siblings&quot;;
+<b>(2)</b> the 0.2778&minus;0.2750 gap (0.0028) is inside their local detection floor
+(paired MDE 0.0043&ndash;0.0121) &mdash; no ranking claim between those two is supported; and
+<b>(3)</b> no file anywhere in the sibling set has an organizer-confirmed score
+(BOARD-UNVERIFIED throughout).</p>
+<p>What we do about it: our round-2 emission rule excludes catalogue pixels <i>and</i> their
+200 m halo, structurally &mdash; a dot is never placed there, whatever the field says. That is
+stronger than post-hoc pruning, and it is pre-registered in
+<a href="research/hypotheses-20261009.md"><code>docs/research/hypotheses-20261009.md</code></a>
+before any holdout ran.</p>
+
+<h2>Round-2 hypotheses and what the blocked holdout said</h2>
+<p>Five hypotheses were ranked and pre-registered (rank = prior &times; cost &divide; danger),
+then one instrument run (<code>evidence/holdout_discovery_v1.json</code>, evaluator
+<code>{esc(hold2.get('evaluator', {}).get('version'))}</code>, 4 blocked folds,
+{esc(hold2.get('withheld_positives_total'))} withheld positives) tested the top three with the
+published arm set:</p>
+{h6h10}
+<p>The headline number: the pre-registered pick <b>{esc(cand)}</b> scored
+<b>{num(cs.get('dti'), 5)}</b> (95 % CI [{num((cs.get('ci95') or [0, 0])[0], 5)},
+{num((cs.get('ci95') or [0, 0])[1], 5)}]) while <b>uniform-random emission at the same budget</b>
+scored {num(chance.get('dti'), 5)} (chance floor is <i>measured</i> on this instrument, not
+assumed). Paired difference {num(vs.get('delta'), 5)}
+[{num((vs.get('ci95') or [0, 0])[0], 5)}, {num((vs.get('ci95') or [0, 0])[1], 5)}] &mdash;
+strictly <em>below</em> chance. Leakage canaries stayed clean ({can_txt}; limit 0.90), so this is
+not leakage: the GeoDAZN step/tilt signatures simply locate <em>mapped</em> structure, and once
+the catalogue and its halo are excluded there is nothing left for them to find. Verdict by the
+pre-registered rule: <b>{verdict}</b>, and the candidate raster carries that verdict in its
+name, note and receipt &mdash; the front-page banner says &ldquo;do not submit&quot; in words
+any reviewer can read. Full run card: <code>evidence/run_card_discovery_v1.json</code>.
+Registry gate this round: {gate_line}.</p>
+<p class="small muted">One instrument defect was found, fixed once in
+<code>src/gems56/transform.py</code> and regression-tested (the zero-filled exterior had put
+56.5 % of <code>iso_step</code>'s top-25,000 cells on a 23,600-cell rim band &mdash;
+IR-56-015, tests in <code>tests/test_transform_edges.py</code>); the verdict above is the
+re-run, and the negative survived the fix unchanged.</p>
+"""
+
+
+def discovery_hero(bld2, hold2, gate2, scr2):
+    """The very first block on the site: the one-click download + the OK/NOT-OK statement."""
+    if not bld2:
+        return ""
+    rec = bld2["receipt"]
+    tif = Path(rec["file"]).name
+    zipn = rec.get("zip_file") or Path(tif).with_suffix(".zip").name
+    recn = Path(tif).with_suffix(".json").name
+    passed = bool(bld2.get("verdict") == "validated-local")
+    probs = (rec.get("validator") or {}).get("problems") or []
+    ok_txt = str((rec.get('validator') or {}).get('ok')) if not probs else str(probs)
+    sc_meta = (rec.get("metadata") or {})
+    sc = (hold2 or {}).get("pooled", {}).get("scores", {}).get(
+        sc_meta.get("holdout_candidate", ""), {})
+    chance = bld2.get("chance_dti")
+    uniq = "not screened yet"
+    if gate2:
+        lit = gate2.get("verdict_literal") or "?"
+        pol = gate2.get("verdict_policy") or "?"
+        dots_lit = (gate2.get("dots") or {}).get("literal") or {}
+        uniq = (f"registry gate ({esc((gate2.get('corpus') or {}).get('aligned_priors'))} aligned "
+                f"priors) &mdash; literal: <b>{esc(lit)}</b>, coverage-adjusted policy: "
+                f"<b>{esc(pol)}</b>; max &rho; {num(dots_lit.get('max_spearman'), 3)}, "
+                f"max directed 3 px overlap {pct(dots_lit.get('max_near_3px_fraction'))}")
+    elif scr2:
+        uniq = (f"proximity screen over {esc((scr2.get('corpus') or {}).get('files'))} registry rasters: "
+                f"max directed overlap {pct(scr2.get('worst_max_frac'))}, reciprocal &gt;0.70: "
+                f"{esc(scr2.get('over_070_reciprocal'))}")
+    pill_ok = "<span class='pill ok'>OK to download</span>"
+    if passed:
+        pill_sub = ("<span class='pill ok'>OK to submit &mdash; validated &amp; unique</span>"
+                    "<span class='pill warn'>slot choice is the selector's call</span>")
+        banner_cls, banner_txt = "ok", ("Discovery lane: VALIDATED on the blocked holdout &mdash; "
+                                        "this is the file to download and submit")
+        why = ("Format-checked after writing (single-band float32, values in [0, 1], EPSG:32611, "
+               "shape and transform equal to the submission format), no dot on or within 200 m of a "
+               "catalogue pixel, and the holdout beat its chance control with a paired 95% CI above "
+               "zero. Submitting spends one of at most three weekly slots; picking which candidate "
+               "gets a slot is a separate selector step and is not done by this page.")
+    else:
+        pill_sub = "<span class='pill bad'>NOT validated &mdash; do not submit</span>"
+        banner_cls, banner_txt = "warn", ("Discovery lane: NEGATIVE &mdash; download for review only")
+        why = ("The file is format-valid and safe to download, but its holdout verdict did not pass "
+               "the pre-registered rule, so this page tells you not to submit it.")
+        if gate2:
+            gl = (f"The registry lane gate also returns stop: literal "
+                  f"<b>{esc(gate2.get('verdict_literal'))}</b> on the 3 px clause &mdash; a trigger "
+                  f"logged as IR-56-018 (density-degenerate: it fires on grid coverage, while the "
+                  f"rank-correlation agreement test passes at max &rho; 0.043 vs the 0.90 bar).")
+            why += " " + gl
+        why += (" The negative is the deliverable, exactly like the corrections lane below.")
+    return f"""
+<div class="banner {banner_cls}">
+  <div class="big">{banner_txt}</div>
+  <p class="why"><b>{pill_ok}{pill_sub}</b><br>{why}</p>
+  <div class="dl">
+    <a class="btn" href="downloads/{esc(tif)}" download>&darr; Download submission .tif</a>
+    <a class="btn ghost" href="downloads/{esc(zipn)}" download>.zip (same single band)</a>
+    <a class="btn ghost" href="downloads/{esc(recn)}">receipt (sha256 + validator)</a>
+  </div>
+  <div class="kv"><b>submission name</b><span class="mono">{esc(bld2['name'])}</span></div>
+  <div class="kv"><b>note ({esc(bld2.get('note_chars'))}/140 chars)</b><span class="mono">{esc(bld2['note'])}</span></div>
+  <div class="kv"><b>dots</b><span>{esc(bld2['dots'])} (budget k={esc(bld2['budget'])}, arm <code>{esc(bld2['arm'])}</code>)</span></div>
+  <div class="kv"><b>values / validator</b><span>{{0.0, 1.0}} &mdash; ok={esc(ok_txt)}</span></div>
+  <div class="kv"><b>sha256</b><span class="mono">{esc(str(rec.get('sha256')))}</span></div>
+  <div class="kv"><b>uniqueness</b><span>{uniq}</span></div>
+  <div class="kv"><b>holdout (HOLDOUT-DTI)</b><span>{num(sc.get('dti'), 5)} [{num((sc.get('ci95') or [None, None])[0], 5)}, {num((sc.get('ci95') or [None, None])[1], 5)}] vs chance {num(chance, 5)}; evaluator gems52-pooled-hide-v1; {esc((hold2 or {}).get('withheld_positives_total'))} withheld positives</span></div>
+</div>"""
+
+
 def main():
     R = {n: load(n) for n in REQUIRED + ["cluster_gate_control.json"] if (EV / n).exists() or n in REQUIRED}
+    hold2 = load_opt("holdout_discovery_v1.json")
+    bld2 = load_opt("build_discovery_v1.json")
+    scr2 = load_opt("registry_screen_v2.json")
+    gate2 = load_opt("lane_gate_discovery_v2.json")
     grid, offs, cal, lid = R["grid.json"], R["offsets_v1.json"], R["calibration_v1.json"], R["lidar_calibration_v1.json"]
     hol, bld, scr, est = R["holdout_corrections_v1.json"], R["build_corrections_v1.json"], R["registry_screen_v1.json"], R["estimator_validation.json"]
     ctrl = R.get("cluster_gate_control.json")
@@ -173,6 +343,7 @@ def main():
     qual_n = cor_cal["qualifying"]
 
     # ------------------------------------------------------------------ index
+    hero = discovery_hero(bld2, hold2, gate2, scr2)
     b = [f"<p class='small muted'>built {esc(built)} from <code>evidence/</code> at commit "
          f"<code>{esc(commit)}</code>. Every number is read from a receipt at build time; none is typed. "
          f"Evidence class is stated on each figure: MEASURED (this workspace), HOLDOUT-DTI (our evaluator, "
@@ -200,7 +371,7 @@ def main():
   bounds equal to the training data, values in [0, 1], single band, exact transform match) and were written and
   re-read by the shared <code>submission_writer</code>. One documented deviation, stated in full below: outside
   the data footprint these rasters carry <b>0.0, not null</b>, because the shared toolchain enforces an
-  all-finite export policy (IR-56-013). <b>Safe to submit: this is your call, not ours &mdash; the expected
+  all-finite export policy (IR-56-013). <b>Safe to submit: this is your call, not ours</b> &mdash; the expected
   gain is {num(scores['B_snap']['dti'], 5)} DTI with a 95% interval of
   [{num(scores['B_snap']['ci95'][0], 5)}, {num(scores['B_snap']['ci95'][1], 5)}], which contains the value for
   doing nothing ({num(scores['A_as_is']['dti'], 5)}) and for jittering dots at random
@@ -220,6 +391,8 @@ def main():
     correction&quot;. The sensitivity raster carries <b>{esc(n_dots_sens)}</b> dots from the identical code path
     with a 1 px bar, so the difference between the two files is one threshold and nothing else. Neither
     receipt claims a <code>cleared_for_weekly_slot</code>, and both filenames and notes say NEGATIVE.</p>""")
+
+    b.append(_round2_sections(hold2, gate2, scr2, bld2))
 
     b.append("<h2>1 &middot; What was measured</h2>")
     b.append(f"""<p>For every catalogue pixel of <code>existing_faults.tif</code>
@@ -539,15 +712,61 @@ python scripts/build_site.py                       #      this page, from the re
     b.append("<p class='small muted'>Official: <a href='https://drivendata.org/competitions/306/competition-doe-gems/page/967/'>evaluation &amp; format</a> &middot; <a href='https://drivendata.org/competitions/306/competition-doe-gems/data/'>data tab (login)</a> &middot; <a href='https://community.drivendata.org/t/11516'>staff on known-fault masking</a> &middot; every claim with its access status in <a href='https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/knowledge/sources.json'>knowledge/sources.json</a>.</p>")
 
     (DOCS / "index.html").write_text(page(
-        "56GEMSDOE · corrections lane",
-        "How far is the fault catalogue from the evidence?",
-        "GEMS Prize (DrivenData 306). Measured answer: the residual is a coherent ~1 px wobble, not a "
-        "&ge;2 px displacement &mdash; so this lane emits no defensible correction, and the negative, with its "
-        "two nulls, its 3 m calibration and its permutation controls, is the deliverable.",
-        "\n".join(b)))
+        "56GEMSDOE · corrections + discovery lanes",
+        "Download the submission &middot; how far is the catalogue from the evidence?",
+        "GEMS Prize (DrivenData 306). Round 2 adds a discovery-lane candidate, validated on the "
+        "spatially-blocked holdout and screened against every harvested sibling raster; the corrections "
+        "lane keeps its measured negative (a coherent ~1 px wobble, not a &ge;2 px displacement).",
+        hero + "\n" + "\n".join(b)))
 
     # ------------------------------------------------------------------ exec summary
-    e = [f"""<div class="banner {'bad' if not any_dots else 'warn'}"><div class="big">
+    d_exec = []
+    if bld2:
+        rec2 = bld2["receipt"]
+        tif2 = Path(rec2["file"]).name
+        zip2 = rec2.get("zip_file") or Path(tif2).with_suffix(".zip").name
+        passed2 = bld2.get("verdict") == "validated-local"
+        sc2 = (hold2 or {}).get("pooled", {}).get("scores", {}).get(
+            (rec2.get("metadata") or {}).get("holdout_candidate", ""), {})
+        verdict_line = (
+            "OK to submit: <b>YES, as this lane's unique candidate</b> &mdash; it passed the pre-registered "
+            "holdout rule (paired 95% CI over the chance control), the format validator and the registry "
+            "screen. Which of at most three weekly slots it gets is a separate selector decision."
+            if passed2 else
+            "OK to submit: <b>NO</b> &mdash; the pre-registered holdout rule was not passed"
+            + (f" and the registry lane gate returned <b>{esc(gate2.get('verdict_literal'))}</b>"
+               if gate2 else "")
+            + ". Download it to inspect the negative; do not spend a slot on it.")
+        d_exec = [f"""<div class="banner {'ok' if passed2 else 'bad'}"><div class="big">
+Round-2 discovery candidate: {'VALIDATED (local holdout) &mdash; the file to download' if passed2 else 'NEGATIVE &mdash; download for review only'}</div>
+<p class="why">Download the <a href="downloads/{esc(tif2)}" download><b>.tif</b></a> (or the
+<a href="downloads/{esc(zip2)}" download>.zip</a> with the same single band) from the button above &mdash;
+it is the first thing on the <a href="index.html">front page</a>, with its receipt beside it.
+<b>Downloading is safe</b>: single-band float32, values in [0&ndash;1] (measured distinct values
+{{0.0, 1.0}}), EPSG:32611, shape and transform equal to the submission format, re-read after writing.
+{verdict_line}<br>HOLDOUT-DTI of the shipped arm: <b>{num(sc2.get('dti'), 5)}</b>
+[{num((sc2.get('ci95') or [None, None])[0], 5)}, {num((sc2.get('ci95') or [None, None])[1], 5)}]
+vs chance control {num(bld2.get('chance_dti'), 5)}; evaluator <code>gems52-pooled-hide-v1</code>;
+{esc((hold2 or {}).get('withheld_positives_total'))} withheld positives. No ORGANIZER-CONFIRMED score exists
+for anything on this site.</p></div>""",
+            "<h2>How to submit the round-2 candidate, exactly</h2><ol style='line-height:1.9'>",
+            f"<li>Click <b>&darr; Download submission .tif</b> at the top of the front page "
+            f"(<code>{esc(tif2)}</code>, {esc(bld2['dots'])} dots).</li>",
+            "<li>Sign in at <a href='https://drivendata.org/competitions/306/'>drivendata.org/competitions/306</a> "
+            "and open the <b>Submissions</b> tab &rarr; <b>Submit file</b>.</li>",
+            f"<li>Choose the downloaded <code>.tif</code> (or its <code>.zip</code>). Do <b>not</b> re-save it "
+            f"in a GIS &mdash; the form checks CRS (EPSG:32611), shape "
+            f"({esc(grid['grid']['shape'][0])}&times;{esc(grid['grid']['shape'][1])}), 100 m cells and bounds "
+            f"against the format, and the file already matches.</li>",
+            f"<li>Paste the <b>name</b>: <code>{esc(bld2['name'])}</code></li>",
+            f"<li>Paste the <b>note</b> ({esc(bld2.get('note_chars'))} chars, limit 140): "
+            f"<code>{esc(bld2['note'])}</code></li>",
+            "<li>Create the submission. The form accepts a single-band GeoTIFF or a zip with one GeoTIFF; "
+            "values must be in [0, 1] &mdash; ours are {{0.0, 1.0}}. At most 3 submissions per week are "
+            "accepted, so the slot decision is real; this page never picks it for you.</li>",
+            "<li>Record the returned score as ORGANIZER-CONFIRMED in the receipt folder. Until the platform "
+            "returns a score, this site claims none: a projection is never written as a score.</li></ol>"]
+    e = d_exec + [f"""<div class="banner {'bad' if not any_dots else 'warn'}"><div class="big">
 {'This lane has nothing to submit: the primary file is empty by design' if not any_dots else 'Downloadable, format-valid, and not cleared for a slot by this run'}</div>
     <p class="why">Downloading is safe: both rasters are in the submission format, values in [0, 1], null
     outside the footprint, validated after writing. Submitting spends one of the three weekly slots and buys an
@@ -637,10 +856,14 @@ table (component {esc((cor_raw.get('top') or [{{}}])[0].get('comp', 'n/a'))} is 
         "standing instruction to flag rather than quietly fix.",
         "<h2>" + str(len(irr)) + " entries</h2>" + table(
             ["id", "what was observed", "severity", "what was done", "how it was checked", "source"],
-            [row([f"<code>{esc(i['id'])}</code>", f"<b>{esc(i['title'])}</b> &mdash; " + esc(i["finding"]),
+            [row([f"<code>{esc(i['id'])}</code>",
+                  f"<b>{esc(i.get('title') or i.get('area') or '')}</b> &mdash; "
+                  + esc(i.get("finding") or i.get("what") or ""),
                   f"<span class='pill {esc(i.get('severity', 'info'))}'>{esc(i.get('severity', 'info'))}</span>",
-                  esc(i.get("action", "")), esc(i.get("verified_by", "")),
-                  (f"<a href='{esc(i['link'])}'>link</a>" if i.get("link") else "")]) for i in irr])
+                  esc(i.get("action", "")),
+                  esc(i.get("verified_by") or i.get("why_it_matters") or ""),
+                  (f"<a href='{esc(i['link'])}'>link</a>" if i.get("link")
+                   else esc(i.get("found_by") or ""))]) for i in irr])
         + "<p class='small muted'>This is the corrections lane's own log for this run. The earlier session in "
           "this repository kept a separate one at <a href='irregularities.md'>irregularities.md</a> (IR-01 to "
           "IR-07, covering the vendored metric, the submission validator and the registry audit); those entries "

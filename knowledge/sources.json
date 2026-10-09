@@ -29,7 +29,12 @@
         "final_round": "The final round also masks existing faults; for scoring purposes it should not matter whether these known faults are included with predictions or not."
       },
       "used_for": "the whole premise of this lane: a dot sitting on a catalogue pixel earns nothing, so a correction is only worth emitting if the evidence-defined trace is measurably elsewhere; and the emission rule's 'never on a catalogue pixel' constraint",
-      "related_threads": ["https://community.drivendata.org/t/11527", "https://community.drivendata.org/t/11536", "https://community.drivendata.org/t/11550", "https://community.drivendata.org/t/11556"]
+      "related_threads": [
+        "https://community.drivendata.org/t/11527",
+        "https://community.drivendata.org/t/11536",
+        "https://community.drivendata.org/t/11550",
+        "https://community.drivendata.org/t/11556"
+      ]
     },
     {
       "id": "OFFICIAL-DATA-TAB",
@@ -97,6 +102,16 @@
       "access": "public",
       "verified_this_session": false,
       "notes": "The brief requires any learned component to use a max-pooled / weakly-labelled loss of this family. This lane trained nothing: the negative verdict means no learned component was admissible, so the constraint is recorded rather than exercised. The reference is kept here because the emission rule's corridor aggregation is the non-learned analogue of the same idea (a line is judged by its pixels, and pixels are judged by their line)."
+    },
+    {
+      "id": "GDR-INGENIOUS-1391",
+      "title": "INGENIOUS - Great Basin Regional Dataset Compilation (GDR submission 1391)",
+      "url": "https://gdr.openei.org/submissions/1391",
+      "access": "public, CC BY 4.0, DOI 10.15121/1881483",
+      "verified_this_session": true,
+      "how": "fetch_page this session: full resource list read, including '2m Temperature Probes.zip ... Download 1.03 MB'",
+      "notes": "The probe archive we hold (1,080,530 B, sha256 1301f70d...) matches the listed resource size; bytes arrived via the org mirror (GEMSDOE48 -> GEMSDOE24 pinned commit), not from gdr.openei.org directly (bash egress allowlist).",
+      "used_for": "H9/H10 layers; knowledge/findings.md R5"
     }
   ]
 }

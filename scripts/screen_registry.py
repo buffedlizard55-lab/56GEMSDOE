@@ -54,19 +54,19 @@ def screen(candidate_paths, reg_dir, footprint):
                 dil[y[ok], x[ok]] = True
         cand[str(cp)] = dict(prop=prop, dil=dil, yy=yy, xx=xx, n=int(yy.size))
     rows = []
-    files = sorted(Path(reg_dir).glob("*.tif"))
+    files = sorted(Path(reg_dir).rglob("*.tif"))   # nested repo mirrors (flat dirs still work)
     for i, f in enumerate(files):
         try:
             with rasterio.open(f) as ds:
                 if ds.count != 1 or ds.shape != footprint:
-                    rows.append(dict(path=f.name, error="unaligned or multiband"))
+                    rows.append(dict(path=str(f.relative_to(reg_dir)), error="unaligned or multiband"))
                     continue
                 prior = dots_of(ds.read(1))
         except Exception as exc:                       # noqa: BLE001 - a bad mirror must not stop the scan
-            rows.append(dict(path=f.name, error=f"{type(exc).__name__}: {exc}"))
+            rows.append(dict(path=str(f.relative_to(reg_dir)), error=f"{type(exc).__name__}: {exc}"))
             continue
         n_prior = int(prior.sum())
-        row = dict(path=f.name, prior_dots=n_prior)
+        row = dict(path=str(f.relative_to(reg_dir)), prior_dots=n_prior)
         for key, c in cand.items():
             short = Path(key).stem[:24]
             if c["n"] == 0:
@@ -91,6 +91,12 @@ def tag(cp, kind):
 
 
 def main(argv):
+    # --tag v2 writes registry_screen_v2*.json (default v1 keeps the corrections-lane contract)
+    tag = "v1"
+    if "--tag" in argv:
+        i = argv.index("--tag")
+        tag = argv[i + 1]
+        del argv[i:i + 2]
     reg = Path(argv[0]) if argv else Path("/home/user/_reg")
     cands = [Path(p) for p in argv[1:]] or sorted((ROOT / "docs" / "downloads").glob("*.tif"))
     with rasterio.open(ROOT / "data" / "grid" / "sample_submission.tif") as ds:
@@ -110,13 +116,13 @@ def main(argv):
     for r in rows:
         if "error" not in r:
             r["reciprocal"] = round(min(r.get("max_frac") or 0.0, r.get("max_rev") or 0.0), 6)
-    with (ROOT / "evidence" / "registry_screen_v1_rows.jsonl").open("w") as fh:
+    with (ROOT / "evidence" / f"registry_screen_{tag}_rows.jsonl").open("w") as fh:
         for r in rows:
             fh.write(__import__("json").dumps(r) + "\n")
     out = dict(evidence_class="uniqueness diagnostic, not a score",
                rule="directed <=3px dot proximity, exact lattice, over the full harvested corpus; "
                     "no exclusions, no exemptions for dense rasters",
-               corpus=dict(root=str(reg), files=len(list(reg.glob("*.tif"))), rows=len(rows),
+               corpus=dict(root=str(reg), files=len(list(reg.rglob("*.tif"))), rows=len(rows),
                            errors=sum(1 for r in rows if "error" in r)),
                candidates=[str(c) for c in cands],
                top=[{k: (round(v, 4) if isinstance(v, float) else v) for k, v in r.items()} for r in rows[:40]],
@@ -128,22 +134,23 @@ def main(argv):
                                          if (r.get("max_frac") or 0) > 0.70 and (r.get("prior_dots") or 0) > 1e5),
                top_reciprocal=[{k: (round(v, 4) if isinstance(v, float) else v) for k, v in r.items()}
                                for r in sorted(out_rows, key=lambda r: -(r.get("reciprocal") or 0.0))[:12]])
-    (ROOT / "evidence" / "registry_screen_v1.json").write_text(json.dumps(out, indent=1, default=float))
+    (ROOT / "evidence" / f"registry_screen_{tag}.json").write_text(json.dumps(out, indent=1, default=float))
     print(json.dumps(out, indent=1, default=float)[:2600])
 
     # Curated registry for the authoritative shared gate: the 40 largest *reciprocal* overlaps, so that
     # gates.lane_uniqueness_report -- which is the tool the protocol names -- runs on the priors that could
     # actually be duplicates rather than on the dense diagnostic layers that dominate a one-way count.
-    cur = Path("/home/user/_reg_top")
+    cur = Path(f"/home/user/_reg_top_{tag}")
     cur.mkdir(parents=True, exist_ok=True)
-    for old in cur.glob("*.tif"):
+    for old in cur.rglob("*.tif"):
         old.unlink()
     ranked = sorted(out_rows, key=lambda r: (-(r.get("reciprocal") or 0.0), -(r.get("max_frac") or 0.0)))
     kept = []
     for r in ranked[:40]:
         src = reg / r["path"]
         if src.exists():
-            (cur / r["path"]).symlink_to(src)
+            (cur / r["path"]).parent.mkdir(parents=True, exist_ok=True)
+            (cur / r["path"]).symlink_to(src.resolve())
             kept.append(r["path"])
     print(json.dumps(dict(curated_registry=str(cur), n=len(kept)), indent=1))
 

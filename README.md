@@ -17,6 +17,26 @@ Live site: **https://buffedlizard55-lab.github.io/56GEMSDOE/** · downloadable r
 > this dot count — 105 of 485 priors, none reciprocally — and is reported as a failure rather than argued
 > around; IR-56-006). Numbers, links and caveats: [the site](https://buffedlizard55-lab.github.io/56GEMSDOE/).
 
+> **Bottom line of the round-2 (discovery) run (2026-10-09):** five new hypotheses were
+> pre-registered (`docs/research/hypotheses-20261009.md`), the missing probe layer was obtained
+> (3,800 INGENOUS points), `scripts/download_competition_data.sh` now rebuilds every input from
+> the hash-pinned bridge, and the top-three hypotheses were validated on the shared 4-fold blocked
+> holdout (48,080 withheld positives). **Verdict: NEGATIVE, robustly.** The pre-registered pick,
+> `multi@25000`, scored **0.01242 [0.00787, 0.01718]** while *uniform-random emission scored
+> 0.03499 at the same budget* — the paired difference is **−0.02257 [−0.02749, −0.01717]**,
+> strictly below chance; all physics arms sat below the measured chance floor (tilt ≈ 0.0001),
+> with leakage canaries clean (≤ 0.567 vs the 0.90 bar), so this is not leakage — the fields
+> simply locate *mapped* structure, and excluding the catalogue (±200 m, the verified 0.2778
+> mechanism) leaves them nothing to find. An instrument defect found by the first run (the
+> zero-filled rim put 56.5 % of `iso_step`'s top-25,000 cells on the data edge — IR-56-015) was
+> fixed once in the template with six regression tests, and the negative survived re-run
+> unchanged. The registry gate returned literal **DUPLICATE/STOP** on the 3 px clause — logged
+> honestly as density-degenerate (IR-56-018: the trigger tracks grid coverage, while rank
+> agreement passes at max ρ 0.043 vs the 0.90 bar, reciprocal >0.70 = 0). A unique, format-valid
+> 25,000-dot GeoTIFF (`h56-disc-multi-b25000-20261009-…`, values {0.0, 1.0}, both validators ok)
+> is downloadable for review, and its name, note, receipt and the front-page banner all say
+> **NEGATIVE / do not submit** — nothing is promoted to a slot; no slot was spent.
+
 ---
 
 ## Standing project brief (the assignment, verbatim as recorded)
@@ -73,6 +93,29 @@ brief — every requirement below is active, and nothing here is summarised away
 - Core values: *Maximize P(Win)* and *Own the Outcome*.
 
 ---
+
+### Round-2 session brief (2026-10-09, also active)
+
+Recorded from this session's instruction; each item is executed in this run or explicitly deferred:
+
+- **Study the top scores.** Why did `h33-h33-2-b2 … 0.2778` score highest among published sibling
+  artefacts, and can we beat it? Answer, with receipts: GEMSDOE54's raster-level check proves that
+  file = its 40,199-dot parent minus exactly the 2,545 dots within 200 m of a catalogue fault
+  (0.2708 → 0.2778) — the metric masks known-fault pixels, so catalogue-adjacent mass is pure
+  penalty under α = 0.2 while contributing no TP. 0.3195/0.3774 remain BOARD-UNVERIFIED here.
+- **3–5 new geological hypotheses** we have not tried, each with layers/signature/why-missing/
+  difference-from-attempts, ranked by expected DTI ÷ cost, top candidate validated on the
+  spatially-blocked holdout **before** any slot is touched: `docs/research/hypotheses-20261009.md`
+  (H6–H10; external sources named and checked live).
+- **The data blocker**: `bash scripts/download_competition_data.sh` must exist and work end to end
+  (created this run as IR-56-016's fix; route B verified against both hash sets).
+- **One-click TIF with an obvious OK/NOT-OK statement**, at the very top of the site, plus the
+  executive-summary submission walkthrough and a submission name + ≤140-char note.
+- **Core values**: *Maximize P(Win)* and *Own the Outcome* — applied here by killing our own
+  candidate when the pre-registered rule fails rather than shipping a hopeful file, and by fixing
+  the shared instrument defect (IR-56-015) instead of routing around it.
+- **Multi-pass self-review, PR to `main`, and a list of remaining work/limitations** at the end of
+  the session (see the PR description and `evidence/run_card_discovery_v1.json`).
 
 ## What this repository is
 
@@ -139,13 +182,26 @@ template-side change, and both are pinned to the same upstream commit, so they a
 
 ```bash
 python -m venv .venv && .venv/bin/pip install numpy scipy rasterio shapely pyproj pandas
+bash scripts/download_competition_data.sh              # place + hash-verify ALL inputs into data/
+                                                       #   route A: official files dropped in data/raw/
+                                                       #   route B (default): pinned GitHub bridge,
+                                                       #   owner-manifest + our sha256 pins verified
+                                                       #   (alias: scripts/fetch_inputs.sh, the name
+                                                       #    registry/input_pins.json documents)
 .venv/bin/python scripts/prepare_data.py                    # grid, footprint, catalogue stats
 .venv/bin/python scripts/measure_offsets.py                 # E1  offsets + corridor table
 .venv/bin/python scripts/lidar_calibration.py               # E1b/E1c nulls, strength gate, 3 m calibration
 .venv/bin/python scripts/run_corrections_holdout.py         # E2  shared blocked holdout, 4 arms
 .venv/bin/python scripts/cluster_gate_control.py            #     sign-flip permutation control
 .venv/bin/python scripts/build_corrections_submission.py    # E3  the rasters + receipts
-.venv/bin/python scripts/screen_registry.py                 #     uniqueness vs the harvested corpus
+.venv/bin/python scripts/run_discovery_holdout.py           # R2  E1 hypotheses H6-H8 on the holdout
+.venv/bin/python scripts/build_discovery_submission.py      # R2  E2 the candidate .tif + receipt
+bash scripts/mirror_registry.sh /home/user/_reg             # R2  E3 harvest sibling rasters (once)
+.venv/bin/python scripts/screen_registry.py --tag v2 /home/user/_reg <candidate.tif>
+.venv/bin/python scripts/lane_gate_discovery.py             # R2  E3 surface + dots lane gates
+.venv/bin/python scripts/run_card_discovery.py              # R2  the one JSON run card
+.venv/bin/python -m pytest -q                               # 34 tests
+.venv/bin/python scripts/screen_registry.py                #     uniqueness vs the harvested corpus
 .venv/bin/python tests/test_contracts.py                    #     contract tests
 .venv/bin/python scripts/build_site.py                      #     docs/*.html, from the receipts
 ```

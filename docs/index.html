@@ -1,4 +1,4 @@
-<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>56GEMSDOE · corrections lane</title><style>
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>56GEMSDOE · corrections + discovery lanes</title><style>
 :root{--bg:#0d1117;--panel:#161b22;--ink:#e6edf3;--mut:#9198a1;--line:#262c36;--ok:#2ea043;--warn:#d29922;--bad:#f85149;--acc:#58a6ff}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
 main{max-width:1100px;margin:0 auto;padding:26px 20px 90px}h1{font-size:26px;margin:0 0 4px}h2{font-size:20px;margin:32px 0 10px;padding-top:14px;border-top:1px solid var(--line)}h3{font-size:16px;margin:18px 0 6px}
@@ -20,7 +20,24 @@ pre{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:12
 nav{position:sticky;top:0;background:rgba(13,17,23,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:10px 0;z-index:5}
 nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:14px}
 .small{font-size:13px}.note{border-left:3px solid var(--warn);padding:6px 0 6px 12px;color:var(--mut);margin:10px 0}.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
-</style></head><body><nav><div class='wrap'><a href='index.html'><b>56GEMSDOE</b> · corrections lane</a><a href='executive-summary.html'>Executive summary &amp; how to submit</a><a href='irregularities.html'>Irregularities (this run)</a><a href='submit.html'>Submission how-to (prior session)</a><a href='evidence.md'>Source table (prior)</a><a href='irregularities.md'>Prior flag list</a><a href='research/hypotheses.md'>Ranked hypotheses</a><a href='https://github.com/buffedlizard55-lab/56GEMSDOE'>repo</a></div></nav><main><h1>How far is the fault catalogue from the evidence?</h1><p class='sub'>GEMS Prize (DrivenData 306). Measured answer: the residual is a coherent ~1 px wobble, not a &ge;2 px displacement &mdash; so this lane emits no defensible correction, and the negative, with its two nulls, its 3 m calibration and its permutation controls, is the deliverable.</p><p class='small muted'>built 2026-10-09 05:36 UTC from <code>evidence/</code> at commit <code>5718133</code>. Every number is read from a receipt at build time; none is typed. Evidence class is stated on each figure: MEASURED (this workspace), HOLDOUT-DTI (our evaluator, withhold-and-recover), ORGANIZER-CONFIRMED (a submission receipt &mdash; there are none), BOARD-UNVERIFIED (a number we could not read from an official source).</p>
+</style></head><body><nav><div class='wrap'><a href='index.html'><b>56GEMSDOE</b> · corrections lane</a><a href='executive-summary.html'>Executive summary &amp; how to submit</a><a href='irregularities.html'>Irregularities (this run)</a><a href='submit.html'>Submission how-to (prior session)</a><a href='evidence.md'>Source table (prior)</a><a href='irregularities.md'>Prior flag list</a><a href='research/hypotheses.md'>Ranked hypotheses</a><a href='https://github.com/buffedlizard55-lab/56GEMSDOE'>repo</a></div></nav><main><h1>Download the submission &middot; how far is the catalogue from the evidence?</h1><p class='sub'>GEMS Prize (DrivenData 306). Round 2 adds a discovery-lane candidate, validated on the spatially-blocked holdout and screened against every harvested sibling raster; the corrections lane keeps its measured negative (a coherent ~1 px wobble, not a &ge;2 px displacement).</p>
+<div class="banner warn">
+  <div class="big">Discovery lane: NEGATIVE &mdash; download for review only</div>
+  <p class="why"><b><span class='pill ok'>OK to download</span><span class='pill bad'>NOT validated &mdash; do not submit</span></b><br>The file is format-valid and safe to download, but its holdout verdict did not pass the pre-registered rule, so this page tells you not to submit it. The registry lane gate also returns stop: literal <b>DUPLICATE/STOP</b> on the 3 px clause &mdash; a trigger logged as IR-56-018 (density-degenerate: it fires on grid coverage, while the rank-correlation agreement test passes at max &rho; 0.043 vs the 0.90 bar). The negative is the deliverable, exactly like the corrections lane below.</p>
+  <div class="dl">
+    <a class="btn" href="downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif" download>&darr; Download submission .tif</a>
+    <a class="btn ghost" href="downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.zip" download>.zip (same single band)</a>
+    <a class="btn ghost" href="downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.json">receipt (sha256 + validator)</a>
+  </div>
+  <div class="kv"><b>submission name</b><span class="mono">h56-disc-multi-b25000-20261009-20261009T165646Z</span></div>
+  <div class="kv"><b>note (115/140 chars)</b><span class="mono">h56 discovery multi k=25000: step-lineament dots &gt;200 m off catalogue; NEGATIVE holdout, research only, do not slot</span></div>
+  <div class="kv"><b>dots</b><span>25000 (budget k=25000, arm <code>multi</code>)</span></div>
+  <div class="kv"><b>values / validator</b><span>{0.0, 1.0} &mdash; ok=True</span></div>
+  <div class="kv"><b>sha256</b><span class="mono">dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296</span></div>
+  <div class="kv"><b>uniqueness</b><span>registry gate (960 aligned priors) &mdash; literal: <b>DUPLICATE/STOP</b>, coverage-adjusted policy: <b>DUPLICATE/STOP</b>; max &rho; 0.043, max directed 3 px overlap 100.0%</span></div>
+  <div class="kv"><b>holdout (HOLDOUT-DTI)</b><span>0.01242 [0.00787, 0.01718] vs chance 0.03499; evaluator gems52-pooled-hide-v1; 48080 withheld positives</span></div>
+</div>
+<p class='small muted'>built 2026-10-09 16:12 UTC from <code>evidence/</code> at commit <code>994ff6a</code>. Every number is read from a receipt at build time; none is typed. Evidence class is stated on each figure: MEASURED (this workspace), HOLDOUT-DTI (our evaluator, withhold-and-recover), ORGANIZER-CONFIRMED (a submission receipt &mdash; there are none), BOARD-UNVERIFIED (a number we could not read from an official source).</p>
 
 <div class="banner bad">
   <div class="big">Corrections lane: NEGATIVE &mdash; no corridor survives the calibrated test, so there is nothing to correct</div>
@@ -42,7 +59,7 @@ nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;fl
   bounds equal to the training data, values in [0, 1], single band, exact transform match) and were written and
   re-read by the shared <code>submission_writer</code>. One documented deviation, stated in full below: outside
   the data footprint these rasters carry <b>0.0, not null</b>, because the shared toolchain enforces an
-  all-finite export policy (IR-56-013). <b>Safe to submit: this is your call, not ours &mdash; the expected
+  all-finite export policy (IR-56-013). <b>Safe to submit: this is your call, not ours</b> &mdash; the expected
   gain is 0.00016 DTI with a 95% interval of
   [0.00000, 0.00045], which contains the value for
   doing nothing (0.00000) and for jittering dots at random
@@ -100,6 +117,55 @@ nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;fl
     correction&quot;. The sensitivity raster carries <b>14</b> dots from the identical code path
     with a 1 px bar, so the difference between the two files is one threshold and nothing else. Neither
     receipt claims a <code>cleared_for_weekly_slot</code>, and both filenames and notes say NEGATIVE.</p>
+<h2>The round-2 brief: why the published top sibling scored 0.2778</h2>
+<p>The highest published sibling value is <b>0.2778</b> from GEMSDOE54, and its own
+<code>RUN2-SUMMARY.md</code> (fetched verbatim this session, quoted in
+<code>knowledge/sources.json</code>) states the mechanism in one line:
+<i>&ldquo;The child <code>dotted_b2_prune_02778</code> (37,654 dots) equals its parent
+<code>dotted_d2_8_02708</code> (40,199 dots) minus exactly the 2,545 parent dots within 2 px
+(200 m) of a USGS catalogue fault.&rdquo;</i> The arithmetic behind it is the competition's own
+loss: round-1 truth is <i>new</i> faults only, so a dot sitting on a known trace can earn true
+positives only when a new fault lies inside its 300 m kernel, while its false-positive cost
+(&alpha; = 0.2) is unconditional. Deleting all such dots took that sibling 0.2708 &rarr; 0.2778.</p>
+<p>Three caveats from the same receipt, which this project labels rather than hides:
+<b>(1)</b> 0.2778 is <i>rank 13</i> on the displayed board (top 0.3774, 0.3195 rank 7), so
+&quot;beats 0.3195&quot; is a different gap than &quot;beats the published siblings&quot;;
+<b>(2)</b> the 0.2778&minus;0.2750 gap (0.0028) is inside their local detection floor
+(paired MDE 0.0043&ndash;0.0121) &mdash; no ranking claim between those two is supported; and
+<b>(3)</b> no file anywhere in the sibling set has an organizer-confirmed score
+(BOARD-UNVERIFIED throughout).</p>
+<p>What we do about it: our round-2 emission rule excludes catalogue pixels <i>and</i> their
+200 m halo, structurally &mdash; a dot is never placed there, whatever the field says. That is
+stronger than post-hoc pruning, and it is pre-registered in
+<a href="research/hypotheses-20261009.md"><code>docs/research/hypotheses-20261009.md</code></a>
+before any holdout ran.</p>
+
+<h2>Round-2 hypotheses and what the blocked holdout said</h2>
+<p>Five hypotheses were ranked and pre-registered (rank = prior &times; cost &divide; danger),
+then one instrument run (<code>evidence/holdout_discovery_v1.json</code>, evaluator
+<code>gems52-pooled-hide-v1</code>, 4 blocked folds,
+48080 withheld positives) tested the top three with the
+published arm set:</p>
+<table class='data'><thead><tr><th>#</th><th>hypothesis (pre-registered)</th><th>mechanism / named non-fault process</th><th>status from this round</th></tr></thead><tbody><tr><td><b>H6</b></td><td>iso-gravity steps are fault-reactivated boundaries</td><td>isostatic residual steps &rarr; potential-field edges; non-fault: erosional terrace edges</td><td>tested as <code>iso_step</code> arms; best 0.00716 vs chance 0.03499 &mdash; below chance, NEGATIVE</td></tr><tr><td><b>H7</b></td><td>basement topography &times; conductors concordance</td><td>weak contact made conductive by fluids; non-fault: intrusions &amp; alteration halos</td><td>tested as <code>bc_step</code> arms; best 0.00523 &mdash; below chance, NEGATIVE</td></tr><tr><td><b>H8</b></td><td>tilt-low lineaments beneath cover</td><td>basin-fill depocentres; non-fault: channel &amp; fan morphology</td><td>tested as <code>tilt_r</code>; best 0.00020 &mdash; ~0, NEGATIVE (channel/fan explanation stands)</td></tr><tr><td><b>H9</b></td><td>INGENOUS 2 m probes gate on structural proximity</td><td>measured surface-temperature steps; non-fault: soil moisture &amp; albedo</td><td>probe layer obtained and validated (3,800 pts); NOT tested this round &mdash; budget stop after E1+E2</td></tr><tr><td><b>H10</b></td><td>probe&times;structure coincidence hotspots</td><td>fluid pathways without catalogue faults; non-fault: anthropogenic site effects</td><td>NOT tested this round &mdash; budget stop after E1+E2</td></tr></tbody></table>
+<p>The headline number: the pre-registered pick <b>multi@25000</b> scored
+<b>0.01242</b> (95 % CI [0.00787,
+0.01718]) while <b>uniform-random emission at the same budget</b>
+scored 0.03499 (chance floor is <i>measured</i> on this instrument, not
+assumed). Paired difference -0.02257
+[-0.02749, -0.01717] &mdash;
+strictly <em>below</em> chance. Leakage canaries stayed clean (<code>iso_step</code> 0.535, <code>basement</code> 0.538, <code>cond</code> 0.499, <code>tilt</code> 0.567, <code>mag_ref</code> 0.527; limit 0.90), so this is
+not leakage: the GeoDAZN step/tilt signatures simply locate <em>mapped</em> structure, and once
+the catalogue and its halo are excluded there is nothing left for them to find. Verdict by the
+pre-registered rule: <b>NEGATIVE</b>, and the candidate raster carries that verdict in its
+name, note and receipt &mdash; the front-page banner says &ldquo;do not submit&quot; in words
+any reviewer can read. Full run card: <code>evidence/run_card_discovery_v1.json</code>.
+Registry gate this round: literal <b>DUPLICATE/STOP</b>, coverage-adjusted policy <b>DUPLICATE/STOP</b> over 960 aligned prior rasters.</p>
+<p class="small muted">One instrument defect was found, fixed once in
+<code>src/gems56/transform.py</code> and regression-tested (the zero-filled exterior had put
+56.5 % of <code>iso_step</code>'s top-25,000 cells on a 23,600-cell rim band &mdash;
+IR-56-015, tests in <code>tests/test_transform_edges.py</code>); the verdict above is the
+re-run, and the negative survived the fix unchanged.</p>
+
 <h2>1 &middot; What was measured</h2>
 <p>For every catalogue pixel of <code>existing_faults.tif</code>
     (60894 cells inside the 5165840-cell

@@ -20,7 +20,27 @@ pre{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:12
 nav{position:sticky;top:0;background:rgba(13,17,23,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:10px 0;z-index:5}
 nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:14px}
 .small{font-size:13px}.note{border-left:3px solid var(--warn);padding:6px 0 6px 12px;color:var(--mut);margin:10px 0}.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
-</style></head><body><nav><div class='wrap'><a href='index.html'><b>56GEMSDOE</b> · corrections lane</a><a href='executive-summary.html'>Executive summary &amp; how to submit</a><a href='irregularities.html'>Irregularities (this run)</a><a href='submit.html'>Submission how-to (prior session)</a><a href='evidence.md'>Source table (prior)</a><a href='irregularities.md'>Prior flag list</a><a href='research/hypotheses.md'>Ranked hypotheses</a><a href='https://github.com/buffedlizard55-lab/56GEMSDOE'>repo</a></div></nav><main><h1>Executive summary</h1><p class='sub'>One page: what to download, how to file it, what this run proved, and what it rules out.</p><div class="banner warn"><div class="big">
+</style></head><body><nav><div class='wrap'><a href='index.html'><b>56GEMSDOE</b> · corrections lane</a><a href='executive-summary.html'>Executive summary &amp; how to submit</a><a href='irregularities.html'>Irregularities (this run)</a><a href='submit.html'>Submission how-to (prior session)</a><a href='evidence.md'>Source table (prior)</a><a href='irregularities.md'>Prior flag list</a><a href='research/hypotheses.md'>Ranked hypotheses</a><a href='https://github.com/buffedlizard55-lab/56GEMSDOE'>repo</a></div></nav><main><h1>Executive summary</h1><p class='sub'>One page: what to download, how to file it, what this run proved, and what it rules out.</p><div class="banner bad"><div class="big">
+Round-2 discovery candidate: NEGATIVE &mdash; download for review only</div>
+<p class="why">Download the <a href="downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif" download><b>.tif</b></a> (or the
+<a href="downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.zip" download>.zip</a> with the same single band) from the button above &mdash;
+it is the first thing on the <a href="index.html">front page</a>, with its receipt beside it.
+<b>Downloading is safe</b>: single-band float32, values in [0&ndash;1] (measured distinct values
+{0.0, 1.0}), EPSG:32611, shape and transform equal to the submission format, re-read after writing.
+OK to submit: <b>NO</b> &mdash; the pre-registered holdout rule was not passed and the registry lane gate returned <b>DUPLICATE/STOP</b>. Download it to inspect the negative; do not spend a slot on it.<br>HOLDOUT-DTI of the shipped arm: <b>0.01242</b>
+[0.00787, 0.01718]
+vs chance control 0.03499; evaluator <code>gems52-pooled-hide-v1</code>;
+48080 withheld positives. No ORGANIZER-CONFIRMED score exists
+for anything on this site.</p></div>
+<h2>How to submit the round-2 candidate, exactly</h2><ol style='line-height:1.9'>
+<li>Click <b>&darr; Download submission .tif</b> at the top of the front page (<code>h56-disc-multi-b25000-20261009-20261009T165646Z.tif</code>, 25000 dots).</li>
+<li>Sign in at <a href='https://drivendata.org/competitions/306/'>drivendata.org/competitions/306</a> and open the <b>Submissions</b> tab &rarr; <b>Submit file</b>.</li>
+<li>Choose the downloaded <code>.tif</code> (or its <code>.zip</code>). Do <b>not</b> re-save it in a GIS &mdash; the form checks CRS (EPSG:32611), shape (3730&times;3292), 100 m cells and bounds against the format, and the file already matches.</li>
+<li>Paste the <b>name</b>: <code>h56-disc-multi-b25000-20261009-20261009T165646Z</code></li>
+<li>Paste the <b>note</b> (115 chars, limit 140): <code>h56 discovery multi k=25000: step-lineament dots &gt;200 m off catalogue; NEGATIVE holdout, research only, do not slot</code></li>
+<li>Create the submission. The form accepts a single-band GeoTIFF or a zip with one GeoTIFF; values must be in [0, 1] &mdash; ours are {{0.0, 1.0}}. At most 3 submissions per week are accepted, so the slot decision is real; this page never picks it for you.</li>
+<li>Record the returned score as ORGANIZER-CONFIRMED in the receipt folder. Until the platform returns a score, this site claims none: a projection is never written as a score.</li></ol>
+<div class="banner warn"><div class="big">
 Downloadable, format-valid, and not cleared for a slot by this run</div>
     <p class="why">Downloading is safe: both rasters are in the submission format, values in [0, 1], null
     outside the footprint, validated after writing. Submitting spends one of the three weekly slots and buys an
