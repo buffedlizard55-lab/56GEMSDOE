@@ -40,7 +40,6 @@
    "FP_w": 6401.1553845357375,
    "FN_w": 26545.446425187096
   },
-  "ci95": null,
   "source": "evidence/corrections/holdout_corrections.json",
   "n_correction_candidates": 28,
   "A2_nogate": {
@@ -105,7 +104,7 @@
   },
   "n_duplicates": 0,
   "n_literal_containment_flags": 8,
-  "literal_flag_note": "the protocol's literal >70%-dot-containment test fires on sparse habitat supersets; investigated with 3-px Jaccard, reverse containment and mass ratio (IR-56-07) and determined NOT duplicates",
+  "literal_flag_note": "the protocol's literal >70%-dot-containment test fires on sparse habitat supersets; investigated with 3-px Jaccard, reverse containment and mass ratio (IR-56-07) and not byte-identical reissues, but the literal protocol gate still fails",
   "top10_by_correlation": [
    {
     "path": "7GEMSDOE/downloads/gems7-halo15-gbt-v1-90fb7dc0fc1f.tif",
@@ -233,9 +232,9 @@
  "submission_name": "GEMSDOE56-CORR-CRESTGT2PX",
  "note": "GEMSDOE56 corrections: 6504 dots on LiDAR-calibrated DEM-scarp crest where catalogue offset >2px; 0 on-catalogue; HOLDOUT-DTI(sim) 0.3105",
  "verdict": {
-  "value": "promote",
-  "rationale": "lane emission beats masked and random controls on the holdout (0.31049 vs 0.00000 / 0.01174); raster unique vs 412 earlier rasters; format validated (no NaN inside footprint, values in [0,1], CRS/shape/transform match).",
-  "unique_vs_registry": true,
+  "value": "negative",
+  "rationale": "one or more gates failed - see registry_check / validation",
+  "unique_vs_registry": false,
   "beats_holdout_controls": true,
   "format_valid": true,
   "note": "PROMOTE is a lane verdict, not a slot decision: no organizer score exists for this file; spending a weekly submission slot is the separate selector step within the weekly cap."

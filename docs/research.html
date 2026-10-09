@@ -35,14 +35,20 @@ ul{margin:6px 0 6px 20px}li{margin:3px 0}
 <h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
 <div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
 faults missing from the USGS/INGENIOUS catalogue</div>
-<nav><a href="index.html">Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html" class=active>Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download the submission GeoTIFF</a> <a class="btn alt" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">.tif (343 KB)</a></div>
+<nav><a href="index.html">Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html" class=active>Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download the submission GeoTIFF</a> <a class="btn alt" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">.tif (343 KB)</a></div>
 </div></header>
 <div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
 submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
 on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
 <span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
 data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
-<main class=wrap>
+<main class=wrap><div class=card><h2 class=bad>STOP: not cleared for submission</h2>
+<p>The TIF is format-valid research output. Eight literal &gt;70% containment flags fail
+ the standing duplicate-and-stop rule. Historical UNIQUE/PROMOTE labels below describe
+ the earlier interpretation, not current authorization. Superset explanations do not waive
+ the rule. No competition submission has been made.</p>
+<p><a href="prior-run.html">Preserved prior run</a> ·
+<a href="prior-irregularities.html">Prior run irregularities</a></p></div>
 <h2>Research &mdash; the corrections lane, end to end</h2>
 <h3>1. The question</h3>
 <p>The metric is a budget. With the official distance-weighted Tversky index
@@ -200,7 +206,61 @@ The GEMSDOE32 owner pages label that artifact <b>UNSCORED</b> with a modelled pr
 0.2747 and state that no organizer score exists for it; the GEMSDOE51 sibling's audit calls
 the attribution &ldquo;unsupported and contradicted&rdquo;. What can be said is what the file
 <em>embodies</em> (the mechanism above), not that it scored 0.2778.</p>
-<h3>9. Reproduce</h3>
+<h3>9. The sibling run on this repo (run B): same lane, negative verdict</h3>
+<p>A parallel session (merged PR #4, branch <code>arena/1d3dbc39-56gemsdoe</code>) ran the
+same corrections lane with a different, more conservative gate, and reported a
+<b>negative</b> result. Its receipts are in <code>evidence/</code>
+(<code>run_card.json</code>, <code>offsets_v1.json</code>, <code>calibration_v1.json</code>,
+<code>holdout_corrections_v1.json</code>, <code>registry_screen_v1.json</code>,
+<code>irregularities.json</code>); full presentation on <a href="prior-run.html">Prior run</a>.</p>
+<ul>
+<li><b>The measurement agrees with this run's nearest-crest reading:</b> null-calibrated
+median catalogue-to-crest offset -0.103&nbsp;px (DEM,
+n=3,187) and 0.030&nbsp;px (magnetic,
+n=5,297); joint median 0.774&nbsp;px over
+n=156 &mdash; <b>below the estimator's own noise floor</b>
+(random traceless points: 1.32&nbsp;px;
+rotated: 1.39&nbsp;px). The two families' offsets
+correlate at r&nbsp;=&nbsp;0.022.</li>
+<li><b>Its gate is stricter:</b> a crest must exceed the 90th percentile of the same
+statistic at random traceless points (DEM &ge; 17.6,
+mag &ge; 94.1), corridors need DEM+mag
+concordance, and the corridor offset must clear a 1.30&nbsp;&sigma;
+floor &rarr; <b>0 of 21
+corridors qualify</b> (ungated exploration: 2 of
+1,273).</li>
+<li><b>Its LiDAR check is finer but smaller:</b> 3&nbsp;m resolution over
+0.9% of the catalogue &mdash; pooled median
+-0.021&nbsp;px, <b>0 of
+13 segments displaced by &ge; 200&nbsp;m</b>. This run's 1&nbsp;m
+calibration (75% of the footprint) instead validates the crest operator itself
+(MAD 0.29&nbsp;px).</li>
+<li><b>Its holdout</b> (evaluator <code>gems52-pooled-hide-v1</code>,
+48,080 withheld positives, whole 8-connected components
+withheld, visible catalogue masked pixel-exactly): A as-is 0.00000,
+B snap 0.00016 [0.00000,
+0.00045], C snap-sub 0.00005,
+D jitter 0.00021 &mdash; the snap arms' intervals contain zero.
+This run's holdout (different truth construction: simulated corrections,
+26,813 withheld positives, official <code>src/metrics.py</code>)
+gives the lane arm 0.31049. The two holdouts validate different machinery on
+different simulated truths; neither is an organizer score.</li>
+<li><b>Its uniqueness gate failed on a technicality:</b> the shared gate's proximity
+criterion fires trivially at 1-dot count (100% of
+its dots within 3&nbsp;px of 105 of 485 priors;
+reciprocal overlap 0 above 0.70) &mdash; the same class of false positive this run hit at
+6,504 dots and resolved with Jaccard/reverse-containment/mass-ratio (IR-56-07). Run B
+chose to publish the artefacts as research output and claim no slot.</li>
+</ul>
+<p><b>Reconciliation:</b> both runs agree the catalogue sits within ~1&nbsp;px of
+<em>some</em> crest. Run B's gate asks whether the catalogue is displaced from
+<em>a</em> crest by &ge; 2&nbsp;px under null calibration &mdash; no. Run A's rule asks
+whether the <em>strongest</em> crest (the dominant scarp, LiDAR-confirmed) is consistently
+&gt; 2&nbsp;px away per vector record &mdash; yes, on 22.4% of well-sampled records. A
+catalogue line on a secondary strand with the main scarp 200&ndash;340&nbsp;m away is
+consistent with both statements. The organizer's hidden labels decide which gate is right;
+that is the experiment a slot would run.</p>
+<h3>10. Reproduce</h3>
 <pre>python scripts/prepare_records.py            # vector catalogue -> record ids
 python scripts/measure_corrections_offsets.py # E1: offset histogram + LiDAR calibration
 python scripts/holdout_corrections.py        # E2 canary + E3 holdout
@@ -208,9 +268,10 @@ python scripts/check_registry.py ...         # uniqueness vs every earlier raste
 python scripts/build_submission.py           # emission -> conform -> write -> validate
 python scripts/build_site.py                 # regenerate this site</pre>
 </main>
-<footer><div class=wrap>56GEMSDOE · branch <code>arena/b71ede8d-56gemsdoe</code> ·
-generated 2026-10-09 16:20 UTC by
-<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> ·
+<footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
+generated 2026-10-09 16:50 UTC by
+<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
+and <code>evidence/*.json</code> (run B) ·
 site served from <code>main</code> at
 <a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
 </body></html>

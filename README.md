@@ -75,6 +75,21 @@ Site: **https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html**
 
 ---
 
+## Integration with the prior run (PR #4)
+
+Both runs are preserved. The prior run's negative result, code, tests, receipts and
+rasters remain in this repository; its original report is [archived here](knowledge/prior-run-readme.md)
+and its [site is here](docs/prior-run.html). The current site compares their different
+crest definitions and truth constructions; their holdout numbers are not directly comparable.
+The template pre-flight script is now `scripts/preflight_data.py`; the prior run's
+pin verifier remains `scripts/prepare_data.py`.
+
+**Submission gate: STOP / not cleared for a slot.** The historical strongest-crest
+analysis below described the raster as unique and recommended promotion after investigating
+superset overlaps. That investigation does not override the standing rule: eight literal
+>70% containment flags trigger duplicate-and-stop. The final run card records a negative
+protocol verdict. The TIF remains downloadable as format-valid research output only.
+
 ## What this session did (2026-10-09, branch `arena/b71ede8d-56gemsdoe`)
 
 Lane: **corrections** (the brief's single method paragraph above). Three experiments, inside
@@ -106,8 +121,9 @@ submission of comparable construction (the 37,654–44,090-dot h33 family, incl.
 as IR-56-07 (`docs/irregularities.html`); determination: not a re-issue of any prior.
 Run card: `evidence/corrections/run_card.json`.
 
-**Verdict (run card): PROMOTE** — the lane's emission beats its controls on the holdout, the
-crest is LiDAR-calibrated, the format is validated, and the raster is unique. No organizer
+**Historical interpretation (superseded): PROMOTE** — the lane's emission beats its controls on the holdout, the
+crest is LiDAR-calibrated and the format is validated. The final run card instead records
+**NEGATIVE** because the literal containment gate failed. No organizer
 score exists for this file; spending a weekly slot is the separate selector step.
 
 ### Why 0.2778 (and the irregularity around it)
@@ -145,7 +161,7 @@ scripts/check_registry.py                uniqueness vs every earlier raster
 scripts/build_submission.py              emission -> conform -> write -> validate -> card
 scripts/build_site.py                    regenerates docs/ from evidence/*.json
 scripts/validate_submission.py           submission validator (vendored from template)
-scripts/prepare_data.py, assemble_data_bridge.py   data placement (vendored)
+scripts/preflight_data.py, assemble_data_bridge.py   data placement (vendored)
 data/                    official rasters (gitignored; reassembled from data/bridge parts)
 data/cache/              LiDAR product + vector CSV + measurement caches (gitignored)
 docs/                    GitHub Pages site + downloads (the submission TIF)
@@ -157,7 +173,7 @@ knowledge/               PhD-level notes (why 0.2778; ranked hypotheses)
 ## Reproduce (one command per step; CPU only, ~1 min total)
 
 ```bash
-python scripts/assemble_data_bridge.py && python scripts/prepare_data.py   # official rasters
+python scripts/assemble_data_bridge.py && python scripts/preflight_data.py   # official rasters
 python scripts/prepare_records.py                                           # record ids
 python scripts/measure_corrections_offsets.py                               # E1
 python scripts/holdout_corrections.py                                       # E2 + E3
@@ -193,7 +209,7 @@ The registry check needs the harvested sibling rasters (outside this repo; see
    0.3774 unverifiable from this sandbox). See `docs/irregularities.html`.
 7. **Template tools were reused, not forked** (`src/metrics.py`, `src/submission_io.py`,
    `src/dataset.py`, `src/postprocess.py`, `scripts/validate_submission.py`,
-   `scripts/sanitize_submission.py`, `scripts/prepare_data.py`,
+   `scripts/sanitize_submission.py`, `scripts/preflight_data.py`,
    `scripts/assemble_data_bridge.py` vendored unchanged from the GEMSDOE template). One
    template gap found and worked around locally (reported, not patched in the template): the
    official metric has no prediction-side known-fault mask, so the holdout implements the

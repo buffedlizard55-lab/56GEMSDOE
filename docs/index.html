@@ -35,14 +35,20 @@ ul{margin:6px 0 6px 20px}li{margin:3px 0}
 <h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
 <div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
 faults missing from the USGS/INGENIOUS catalogue</div>
-<nav><a href="index.html" class=active>Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download the submission GeoTIFF</a> <a class="btn alt" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">.tif (343 KB)</a></div>
+<nav><a href="index.html" class=active>Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download the submission GeoTIFF</a> <a class="btn alt" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">.tif (343 KB)</a></div>
 </div></header>
 <div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
 submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
 on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
 <span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
 data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
-<main class=wrap>
+<main class=wrap><div class=card><h2 class=bad>STOP: not cleared for submission</h2>
+<p>The TIF is format-valid research output. Eight literal &gt;70% containment flags fail
+ the standing duplicate-and-stop rule. Historical UNIQUE/PROMOTE labels below describe
+ the earlier interpretation, not current authorization. Superset explanations do not waive
+ the rule. No competition submission has been made.</p>
+<p><a href="prior-run.html">Preserved prior run</a> ·
+<a href="prior-irregularities.html">Prior run irregularities</a></p></div>
 <h2>&#11015;&nbsp;ONE-CLICK SUBMISSION FILE</h2>
 <div class=card>
 <p><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">Download gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif</a>
@@ -61,11 +67,47 @@ exit 0 and <code>python -m src.submission_io validate-conformant</code> exit 0
 <p><b>Evidence status:</b> <span class=warn>HOLDOUT-DTI (simulated-corrections truth)</span>
 A1 lane 0.3105 [0.2821, 0.3378] vs masked control
 0.0000 and random control 0.0117 &mdash; see <a href="research.html">research</a>.</p>
-<p class=mut>Is it OK to download and submit? The file is format-validated and unique; the
+<p class=mut>Is it OK to download and submit? The file is format-validated but fails the literal uniqueness gate; the
 holdout validates the mechanism on a simulated truth; no organizer score exists for it. The
-decision to spend a weekly slot is yours &mdash; the full reasoning is on
+standing protocol requires a stop, not a submission &mdash; the full reasoning is on
 <a href="executive-summary.html">Make a submission</a>.</p>
 </div>
+
+<h2>Two runs, one repository</h2>
+<p>This repository has run the corrections lane <b>twice</b>, in two parallel sessions.
+Both runs measured the same catalogue against the same evidence; they gate different
+questions and reached opposite verdicts. Both are reported in full &mdash; the disagreement
+is the finding.</p>
+<div class=grid>
+<div class=card><h3>Run A &mdash; this run (branch <code>arena/b71ede8d-56gemsdoe</code>) &mdash; <span class=ok>strongest-crest finding; protocol verdict NEGATIVE</span></h3>
+<p>Question: <em>is the catalogue on the MAIN scarp?</em> For 28 of 125 well-sampled records
+(22.4%) the strongest, LiDAR-confirmed DEM-scarp crest sits consistently &gt; 2&nbsp;px
+(200&ndash;340&nbsp;m) from the catalogue line &rarr; <b>6,504 dots</b> emitted on the
+evidence-defined traces, 0 on the catalogue. HOLDOUT-DTI(sim) 0.3105
+[0.2821, 0.3378] vs masked control 0.0000 and
+random control 0.0117. Literal containment gate failed; no slot is cleared.
+<b>The one-click download above is this run's file.</b></p></div>
+<div class=card><h3>Run B &mdash; merged PR #4 (branch <code>arena/1d3dbc39-56gemsdoe</code>) &mdash; <span class=warn>NEGATIVE, no slot recommended</span></h3>
+<p>Question: <em>is the catalogue displaced from A crest by &ge; 2&nbsp;px?</em> No:
+null-calibrated median offset -0.103&nbsp;px (DEM) /
+0.030&nbsp;px (magnetic), below the estimator's own noise floor
+(1.32&nbsp;px); <b>0 of 21
+corridors</b> reach a consistent &ge; 2&nbsp;px offset; 3&nbsp;m LiDAR: 0 of
+13 segments displaced by &ge; 200&nbsp;m. Their primary raster carries
+<b>1 dot</b> &mdash; the emptiness is their finding. Their two
+files are format-valid and safe to download but <b>not cleared for a slot</b> (their
+uniqueness gate returned <code>ok:false</code> on the proximity criterion at 1-dot count,
+IR-56-006). Details: <a href="prior-run.html">Prior run</a>.</p></div>
+</div>
+<p class=mut>Reconciliation: the two runs agree on the measurement &mdash; the catalogue sits
+within ~1&nbsp;px of <em>some</em> crest (run A's nearest-crest reading matches run B's
+negative). They differ on the decision rule: run B gates on null-calibrated corridor
+consistency with a crest-strength gate and DEM+mag concordance (very conservative &rarr;
+0 corridors); run A gates on per-record strongest-crest consistency (median offset
+&gt; 2&nbsp;px, sign agreement &ge; 0.70, &ge; 8 transects) with the crest identity
+calibrated on 1&nbsp;m LiDAR (MAD 0.29&nbsp;px) &rarr; 28 records. Which gate matches the
+organizer's hidden labels is exactly what a submission slot would test; neither run has an
+organizer score.</p>
 
 <h2>What this repository is</h2>
 <p>56GEMSDOE runs one lane of a parallel multi-session effort on the DOE GEMS Prize: the
@@ -107,11 +149,13 @@ not the fault;</li>
 <li><a href="hypotheses.html">Hypotheses</a> &mdash; five ranked geological hypotheses (expected DTI vs cost)</li>
 <li><a href="sources.html">Sources</a> &mdash; official, verified links for manual review</li>
 <li><a href="irregularities.html">Irregularities</a> &mdash; flagged claims and how each was checked</li>
+<li><a href="prior-run.html">Prior run</a> &mdash; the sibling corrections run on this repo (negative verdict), its downloads and its reconciliation with this run</li>
 </ul>
 </main>
-<footer><div class=wrap>56GEMSDOE · branch <code>arena/b71ede8d-56gemsdoe</code> ·
-generated 2026-10-09 16:20 UTC by
-<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> ·
+<footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
+generated 2026-10-09 16:50 UTC by
+<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
+and <code>evidence/*.json</code> (run B) ·
 site served from <code>main</code> at
 <a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
 </body></html>

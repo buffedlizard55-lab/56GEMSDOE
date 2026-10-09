@@ -95,6 +95,7 @@ def main():
         catalogue_mask_auc=hold["leakage_canary"]["catalogue_mask"]["auc"],
         dist_to_catalogue_auc=hold["leakage_canary"]["dist_to_catalogue_px"]["auc"],
         controls_ok=hold["controls_ok"])
+    hd.pop("ci95", None)
     hd["source"] = "evidence/corrections/holdout_corrections.json"
     a1 = hd["A1_lane"]
     a0 = hd["A0_masked_control"]
@@ -130,7 +131,7 @@ def main():
         literal_flag_note=("the protocol's literal >70%-dot-containment test fires on "
                            "sparse habitat supersets; investigated with 3-px Jaccard, "
                            "reverse containment and mass ratio (IR-56-07) and "
-                           "determined NOT duplicates"),
+                           "not byte-identical reissues, but the literal protocol gate still fails"),
         top10_by_correlation=reg["top10_by_correlation"],
         source="evidence/corrections/registry_check.json")
     print(f"      {reg['verdict']}  (max Spearman {reg['worst']['spearman_dots']}, "
@@ -139,7 +140,7 @@ def main():
           f"{reg['n_literal_flags']} literal containment flags investigated)")
 
     print("[4/4] verdict")
-    unique = reg["n_duplicates"] == 0
+    unique = reg["n_duplicates"] == 0 and reg["n_literal_flags"] == 0
     beats_controls = a1["dti"] > a0["dti"] and a1["dti"] > a4["dti"]
     valid = checks["all_pass"]
     verdict = "promote" if (unique and beats_controls and valid) else "negative"

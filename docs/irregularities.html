@@ -35,14 +35,20 @@ ul{margin:6px 0 6px 20px}li{margin:3px 0}
 <h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
 <div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
 faults missing from the USGS/INGENIOUS catalogue</div>
-<nav><a href="index.html">Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html" class=active>Irregularities</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download the submission GeoTIFF</a> <a class="btn alt" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">.tif (343 KB)</a></div>
+<nav><a href="index.html">Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html" class=active>Irregularities</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download the submission GeoTIFF</a> <a class="btn alt" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">.tif (343 KB)</a></div>
 </div></header>
 <div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
 submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
 on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
 <span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
 data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
-<main class=wrap>
+<main class=wrap><div class=card><h2 class=bad>STOP: not cleared for submission</h2>
+<p>The TIF is format-valid research output. Eight literal &gt;70% containment flags fail
+ the standing duplicate-and-stop rule. Historical UNIQUE/PROMOTE labels below describe
+ the earlier interpretation, not current authorization. Superset explanations do not waive
+ the rule. No competition submission has been made.</p>
+<p><a href="prior-run.html">Preserved prior run</a> ·
+<a href="prior-irregularities.html">Prior run irregularities</a></p></div>
 <h2>Irregularities &mdash; flagged, and how each was checked</h2>
 <div class=card><h3>IR-56-01: the 0.2778 attached to <code>h33-h33-2-b2</code> is user-reported and unsupported</h3>
 <p>The brief asks why <code>h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros</code> &ldquo;got the
@@ -102,14 +108,15 @@ containment is &le; 0.334 and Jaccard &le; 0.052. Spearman rank correlation is a
 (surface) against all 412 unique registry rasters &mdash; far below the
 0.90 threshold. <b>Determination: UNIQUE &mdash; no prior is re-issued and this raster is not
 a re-issue of any prior.</b> The flags are logged with full numbers in
-<code>evidence/corrections/registry_check.json</code>; the selector can veto with that record.
+<code>evidence/corrections/registry_check.json</code>; the protocol requires a stop on those flags.
 A literal reading that treats &ldquo;inside a big habitat lattice&rdquo; as duplication would
 condemn every small precise emission (including the prior best itself) &mdash; the
-mass-ratio/Jaccard analysis is the discriminator the protocol's intent requires.</p></div>
+mass-ratio/Jaccard analysis is diagnostic only and does not override the rule.</p></div>
 </main>
-<footer><div class=wrap>56GEMSDOE · branch <code>arena/b71ede8d-56gemsdoe</code> ·
-generated 2026-10-09 16:20 UTC by
-<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> ·
+<footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
+generated 2026-10-09 16:50 UTC by
+<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
+and <code>evidence/*.json</code> (run B) ·
 site served from <code>main</code> at
 <a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
 </body></html>

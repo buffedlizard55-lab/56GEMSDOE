@@ -94,7 +94,13 @@ submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; 
 on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
 <span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
 data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
-<main class=wrap>{body}</main>
+<main class=wrap><div class=card><h2 class=bad>STOP: not cleared for submission</h2>
+<p>The TIF is format-valid research output. Eight literal &gt;70% containment flags fail
+ the standing duplicate-and-stop rule. Historical UNIQUE/PROMOTE labels below describe
+ the earlier interpretation, not current authorization. Superset explanations do not waive
+ the rule. No competition submission has been made.</p>
+<p><a href="prior-run.html">Preserved prior run</a> ·
+<a href="prior-irregularities.html">Prior run irregularities</a></p></div>{body}</main>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
 generated {dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} by
 <code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
@@ -194,9 +200,9 @@ exit 0 and <code>python -m src.submission_io validate-conformant</code> exit 0
 <p><b>Evidence status:</b> <span class=warn>HOLDOUT-DTI (simulated-corrections truth)</span>
 A1 lane {fmt(a1['dti'])} [{fmt(a1['ci95'][0])}, {fmt(a1['ci95'][1])}] vs masked control
 {fmt(a0['dti'])} and random control {fmt(a4['dti'])} &mdash; see <a href="research.html">research</a>.</p>
-<p class=mut>Is it OK to download and submit? The file is format-validated and unique; the
+<p class=mut>Is it OK to download and submit? The file is format-validated but fails the literal uniqueness gate; the
 holdout validates the mechanism on a simulated truth; no organizer score exists for it. The
-decision to spend a weekly slot is yours &mdash; the full reasoning is on
+standing protocol requires a stop, not a submission &mdash; the full reasoning is on
 <a href="executive-summary.html">Make a submission</a>.</p>
 </div>
 
@@ -206,13 +212,13 @@ Both runs measured the same catalogue against the same evidence; they gate diffe
 questions and reached opposite verdicts. Both are reported in full &mdash; the disagreement
 is the finding.</p>
 <div class=grid>
-<div class=card><h3>Run A &mdash; this run (branch <code>arena/b71ede8d-56gemsdoe</code>) &mdash; <span class=ok>POSITIVE, verdict PROMOTE</span></h3>
+<div class=card><h3>Run A &mdash; this run (branch <code>arena/b71ede8d-56gemsdoe</code>) &mdash; <span class=ok>strongest-crest finding; protocol verdict NEGATIVE</span></h3>
 <p>Question: <em>is the catalogue on the MAIN scarp?</em> For 28 of 125 well-sampled records
 (22.4%) the strongest, LiDAR-confirmed DEM-scarp crest sits consistently &gt; 2&nbsp;px
 (200&ndash;340&nbsp;m) from the catalogue line &rarr; <b>{dots:,} dots</b> emitted on the
 evidence-defined traces, 0 on the catalogue. HOLDOUT-DTI(sim) {fmt(a1['dti'])}
 [{fmt(a1['ci95'][0])}, {fmt(a1['ci95'][1])}] vs masked control {fmt(a0['dti'])} and
-random control {fmt(a4['dti'])}. Unique vs {reg_n if reg else '412'} earlier rasters.
+random control {fmt(a4['dti'])}. Literal containment gate failed; no slot is cleared.
 <b>The one-click download above is this run's file.</b></p></div>
 <div class=card><h3>Run B &mdash; merged PR #4 (branch <code>arena/1d3dbc39-56gemsdoe</code>) &mdash; <span class=warn>NEGATIVE, no slot recommended</span></h3>
 <p>Question: <em>is the catalogue displaced from A crest by &ge; 2&nbsp;px?</em> No:
@@ -724,10 +730,10 @@ containment is &le; 0.334 and Jaccard &le; 0.052. Spearman rank correlation is a
 (surface) against all {reg_n if reg else '412'} unique registry rasters &mdash; far below the
 0.90 threshold. <b>Determination: UNIQUE &mdash; no prior is re-issued and this raster is not
 a re-issue of any prior.</b> The flags are logged with full numbers in
-<code>evidence/corrections/registry_check.json</code>; the selector can veto with that record.
+<code>evidence/corrections/registry_check.json</code>; the protocol requires a stop on those flags.
 A literal reading that treats &ldquo;inside a big habitat lattice&rdquo; as duplication would
 condemn every small precise emission (including the prior best itself) &mdash; the
-mass-ratio/Jaccard analysis is the discriminator the protocol's intent requires.</p></div>
+mass-ratio/Jaccard analysis is diagnostic only and does not override the rule.</p></div>
 """
     (out / "irregularities.html").write_text(page("Irregularities", "irregularities.html", irr))
 

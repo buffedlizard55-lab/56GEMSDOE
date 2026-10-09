@@ -1,5 +1,20 @@
 [
  {
+  "path": "evidence/build_corrections_v1.json",
+  "bytes": 10334,
+  "sha256": "fa2116d51203188691d90f1292ae766830ec3a56e84632ae899e3419ba14b05d"
+ },
+ {
+  "path": "evidence/calibration_v1.json",
+  "bytes": 6292,
+  "sha256": "3a9014c0f0d4decede137cf38ccf75ee25526e8d1051f80c16bd3951c787478a"
+ },
+ {
+  "path": "evidence/cluster_gate_control.json",
+  "bytes": 752,
+  "sha256": "3c9a96eda60344fec6a6335b103e978ad1a6e967be0d7f52c733d0e811aab63e"
+ },
+ {
   "path": "evidence/corrections/holdout_corrections.json",
   "bytes": 5363,
   "sha256": "2b6a891bd55d319e21e1ec2f62eba184166aa5062dbfa48f5c5e829345f916da"
@@ -76,8 +91,28 @@
  },
  {
   "path": "evidence/corrections/run_card.json",
-  "bytes": 10044,
-  "sha256": "e0a119a56e3312280976c9658af3eeb1578f3255f51fee253efc6efb39f77dc7"
+  "bytes": 9914,
+  "sha256": "4a7051285387915989a8f108e36c9ddc8f61c28a1d24346b1d656204937d0b4c"
+ },
+ {
+  "path": "evidence/estimator_validation.json",
+  "bytes": 6522,
+  "sha256": "4cb61bf72832f851a3ddf3dfd486955de5c765d976dc1b5be045e357566efd00"
+ },
+ {
+  "path": "evidence/grid.json",
+  "bytes": 7874,
+  "sha256": "06db12bfb36a970aa6f61b39b6a01f278fb1648016693c6e8e53699f19b7e886"
+ },
+ {
+  "path": "evidence/holdout_corrections_v1.json",
+  "bytes": 5564,
+  "sha256": "07465b0cee3dd191c4ed32342e9fd2c094cf24f37787483e74c4e7bbb8127a79"
+ },
+ {
+  "path": "evidence/inventory.json",
+  "bytes": 3724,
+  "sha256": "3e4515375ac3b528c15673ba1f60379164800bfd2bb23c73f328782231b188de"
  },
  {
   "path": "evidence/inventory_official_data.json",
@@ -85,9 +120,94 @@
   "sha256": "5a397d4915f7335658771e89a8c3b29db813505f2c6c314939f2ff6dde55a3d1"
  },
  {
+  "path": "evidence/irregularities.json",
+  "bytes": 13709,
+  "sha256": "7f52abac89de19d6c2e11700ce03b94b02204c2fbf95261fb029ecc1fcb1e951"
+ },
+ {
+  "path": "evidence/lane_uniqueness_h56-corr-snap100cm-20261009.json",
+  "bytes": 539427,
+  "sha256": "61e69cae34c99e5b8f3e04e8948840ee0442a017ef485d41d495894886fee3ef"
+ },
+ {
+  "path": "evidence/lane_uniqueness_h56-corr-snap200cm-20261009.json",
+  "bytes": 528008,
+  "sha256": "c084e3b96591590daf0feee8ab36cc88d4c428e57e99eba7071b8d26913c417f"
+ },
+ {
+  "path": "evidence/lidar_calibration_v1.json",
+  "bytes": 14291,
+  "sha256": "61f32b024588fc96901f75b5d3da88d6c810cef385aa691999103af8de56ef57"
+ },
+ {
+  "path": "evidence/offsets_v1.json",
+  "bytes": 16703,
+  "sha256": "1055d5168196481c98193198b99e826f0fd093008974ccf37ff75b8c57429713"
+ },
+ {
+  "path": "evidence/offsets_v1_corridors.json.gz",
+  "bytes": 110905,
+  "sha256": "9985d9a284da28e9a779606aafa83ba6a35a5b4c275fcb2d425918f1e3ea5f46"
+ },
+ {
+  "path": "evidence/offsets_v1_rows.npz",
+  "bytes": 3142884,
+  "sha256": "da7b82ebf02ec1e2760416e1ef85ba1e0f55b80f421f8ed086af69ad10482e4b"
+ },
+ {
+  "path": "evidence/registry_screen_v1.json",
+  "bytes": 19730,
+  "sha256": "5696bc19e5d44babb311b562a52d2a744a56f49e1495460205cbbc43cdd108df"
+ },
+ {
+  "path": "evidence/registry_screen_v1_rows.jsonl",
+  "bytes": 181284,
+  "sha256": "90686b6cb155fed9a1c94064770f1855c8d40c33c5ba9888bc19f147c7e59c7e"
+ },
+ {
+  "path": "evidence/run_card.json",
+  "bytes": 9435,
+  "sha256": "990624cb802c7f2fbad8adedcf0800db1357ceacbb1943a7870470c24dfe1493"
+ },
+ {
+  "path": "docs/downloads/README.md",
+  "bytes": 1039,
+  "sha256": "ae67edb2ba4039000751192e410356a62362326bde4c4da680ad68d805a7176f"
+ },
+ {
   "path": "docs/downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif",
   "bytes": 351093,
   "sha256": "08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7"
+ },
+ {
+  "path": "docs/downloads/h56-corr-snap100cm-20261009.json",
+  "bytes": 6551,
+  "sha256": "c4249a7ea57ce7a70c26f66ee702dfbcbf04b803806ab30ff81ff949261e6645"
+ },
+ {
+  "path": "docs/downloads/h56-corr-snap100cm-20261009.tif",
+  "bytes": 55844,
+  "sha256": "e3285854e73ae4ba3fce8faea64940fdc4bee3b702eb52d2530a67fb60195196"
+ },
+ {
+  "path": "docs/downloads/h56-corr-snap100cm-20261009.zip",
+  "bytes": 1776,
+  "sha256": "1483e2c19c553d27e4742731e68da1d971b9f113fc3ace0b40d0c2cd2a7e114d"
+ },
+ {
+  "path": "docs/downloads/h56-corr-snap200cm-20261009.json",
+  "bytes": 3608,
+  "sha256": "c2a04ddb841c6badaad5b48acfa64e1e19a7081e22a8bac82c24fba2cc0e6557"
+ },
+ {
+  "path": "docs/downloads/h56-corr-snap200cm-20261009.tif",
+  "bytes": 55772,
+  "sha256": "65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b"
+ },
+ {
+  "path": "docs/downloads/h56-corr-snap200cm-20261009.zip",
+  "bytes": 1499,
+  "sha256": "6a391551f1c581e8ebd4a2a548fc9f56ceffa89696ae858551ecba9682b96f7f"
  },
  {
   "path": "docs/downloads/offset_histogram.png",

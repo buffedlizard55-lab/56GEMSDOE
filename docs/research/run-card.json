@@ -1,0 +1,82 @@
+{
+  "session": {
+    "date_utc": "2026-10-09",
+    "repo": "buffedlizard55-lab/56GEMSDOE",
+    "branch": "arena/4211893d-56gemsdoe",
+    "experiments_used": 3,
+    "experiments": [
+      "E1 metric re-pin and reproduction: template metric pinned at GEMSDOE32 @ 0d6a6243147cd63a2000412d575d4c80a36d3a62; 12 metric tests + 6 validator tests pass",
+      "E2 corrections-lane proxy: catalogue (QFaults v2 raster) vs evidence (SGMC raster) offset measurement",
+      "E3 uniqueness audit: 944 GeoTIFFs mirrored from the GEMSDOE* account and indexed"
+    ],
+    "budget_limit": "3 experiments or 2 hours",
+    "weekly_submission_cap_checked": false,
+    "note": "Submission promotion is a separate selector step and was not performed."
+  },
+  "hypothesis": "Corrections lane: GeoDAWN catalogue traces sit more than about two pixels (200 m) from the evidence-defined trace along a consistent direction.",
+  "hypothesis_status": "PROXY NEGATIVE; DEM-crest test BLOCKED",
+  "mechanism": "A consistent displacement would show as a peak at a constant (dy, dx) in nearest-trace displacements, or as 5 km block means above 2 px with a shared direction.",
+  "named_non_fault_process_that_could_mimic_it": "Rasterisation and generalisation error of 1:50,000 to 1:1,000,000 geologic-map traces (USGS SGMC) and of catalogue traces, which displaces lines by up to a few pixels with no fault involved. Also lithologic contacts and drainage that a map can mistake for faults.",
+  "result_proxy": {
+    "catalogue_proxy_px": 59065,
+    "evidence_proxy_px": 82151,
+    "catalogue_px_with_evidence_within_4px": 22007,
+    "catalogue_px_with_evidence_within_4px_share": 0.3726,
+    "nearest_displacement_median_px": 1.4142,
+    "nearest_displacement_share_le_2px": 0.7271,
+    "local_blocks_tested_5km": 306,
+    "local_block_mean_median_px": 0.7747,
+    "local_block_mean_p90_px": 1.4826,
+    "local_blocks_over_2px": 8,
+    "source": "docs/research/corrections-proxy.json"
+  },
+  "holdout_dti": {
+    "value": null,
+    "ci95": null,
+    "label": "NOT COMPUTED",
+    "evaluator_version": "none",
+    "withheld_positives": null,
+    "reason": "The competition training features and labels are login-walled (IR-01). No hide-and-recover split can be built without them."
+  },
+  "leakage_canary": {
+    "status": "NOT RUN",
+    "reason": "Requires the holdout (IR-01)."
+  },
+  "organizer_confirmed_score": null,
+  "correlation_overlap_vs_registry": {
+    "status": "NOT APPLICABLE",
+    "reason": "No candidate raster was produced, so there is nothing to check for rank correlation (threshold 0.90) or dot overlap (threshold 70% within 3 px).",
+    "registry_index": "docs/research/registry-index.json",
+    "registry_summary": "docs/research/registry-summary.json",
+    "registry_size": {
+      "files": 944,
+      "on_reference_grid": 920,
+      "distinct_sha256": 651,
+      "files_sharing_a_hash_with_another": 432
+    }
+  },
+  "raster_sha256": null,
+  "validator_output": {
+    "status": "NOT RUN ON A CANDIDATE",
+    "self_test": "tests/test_submission.py: 6 passed (valid file passes; NaN, out-of-range, nodata sentinel, wrong CRS and footprint NaN are rejected)",
+    "checks_implemented": [
+      "no NaN unless a reference footprint mask is given, and then only on that mask",
+      "values in [0, 1] for every finite cell",
+      "CRS == EPSG:32611",
+      "shape == (3730, 3292)",
+      "transform == (100, 0, 243350, 0, -100, 4508550)",
+      "single band, float32",
+      "nodata is None or NaN (rejects sentinel nodata)"
+    ]
+  },
+  "submission": {
+    "name": null,
+    "note": null,
+    "note_max_chars": 140,
+    "file": null,
+    "why_not_issued": "The only lane in this session emits nothing when the offset proxy clusters below two pixels (protocol item 1 and the brief's corrections-lane rule). Producing a file from another lane would be drift (protocol item 1). The user must choose the route; see the README decision section."
+  },
+  "irregularities": ["IR-01", "IR-02", "IR-03", "IR-04", "IR-05", "IR-06", "IR-07", "IR-08", "IR-09", "IR-10", "IR-11", "IR-12", "IR-13", "IR-14", "IR-15"],
+  "verdict": "negative",
+  "verdict_detail": "Corrections lane, proxy: NEGATIVE, so emit nothing. The DEM-crest test is BLOCKED and must be run before this lane is closed. Submission: not promoted."
+}
