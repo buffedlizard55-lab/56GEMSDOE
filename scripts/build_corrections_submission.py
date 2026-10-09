@@ -122,6 +122,11 @@ def main(argv):
     hd = float(np.nanpercentile(null["dem_hgt"][nv], 90))
     hm = float(np.nanpercentile(null["mag_hgt"][nv], 90))
     priors = sorted(str(p) for p in reg.glob("*.tif")) if reg.exists() else []
+    # Fail closed: an empty corpus made the gate check zero priors and write an empty receipt
+    # (found in the 2026-10-09 re-run). Rebuild the corpus with scripts/mirror_registry_corpus.py first.
+    if len(priors) < 944:
+        raise SystemExit(f"uniqueness corpus incomplete: {len(priors)} of 944 indexed priors in {reg}; "
+                         "refusing to write a uniqueness receipt. Run scripts/mirror_registry_corpus.py.")
     sample = ROOT / "data" / "grid" / "sample_submission.tif"
     out = dict(evidence_class="built artefacts with local format and lane receipts; no organizer receipt exists",
                rule=dict(corroboration_px=CORR_PX, min_cluster=MIN_CLUSTER, spacing_m=MIN_SPACING_PX * 100,

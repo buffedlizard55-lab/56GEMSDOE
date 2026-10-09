@@ -114,3 +114,93 @@ signal, not a discovery signal.
   and the card read those receipts rather than restating them, so prose cannot drift from measurement.
 - `tests/test_contracts.py` — the 10 tests that found IR-56-009. Steal them for any lane with a crest/ridge
   detector.
+
+---
+
+# Round 2 — discovery sub-lane, 2026-10-09
+
+Same evidence discipline: every number below is a receipt value; the receipt file is named.
+Nothing here is a board score; no ORGANIZER-CONFIRMED number exists for anything in this repo.
+
+## R1. Why the published top sibling scored 0.2778 (ANSWERED, raster-verified)
+
+- Source: GEMSDOE54 `RUN2-SUMMARY.md`, fetched this session via api.github.com; their check:
+  child `dotted_b2_prune_02778` (37,654 dots) == parent `dotted_d2_8_02708` (40,199 dots)
+  **minus exactly the 2,545 parent dots within 2 px (200 m) of a USGS catalogue fault**.
+- Mechanism: round-1 truth = new faults only; known-fault pixels are masked (staff, thread 11516),
+  so a dot ≤200 m off a known trace earns TP only if a new fault lies within its 300 m kernel,
+  while its FP cost (α = 0.2) is unconditional. Deleting those dots: 0.2708 → 0.2778.
+- Also from that receipt: 0.2778 is *rank 13* on the displayed board (top 0.3774, 0.3195 rank 7);
+  the 0.2778−0.2750 gap (0.0028) is inside their local detection floor (paired MDE 0.0043–0.0121);
+  and "can we beat 0.2778? Not demonstrated" — no file there has an organizer score.
+- Consequence for us: our emission rule structurally excludes catalogue pixels AND their 200 m
+  halo — adopted pre-registration in `docs/research/hypotheses-20261009.md`.
+
+## R2. The five new hypotheses and what the holdout said (NEGATIVE)
+
+- Ranked H6 iso-gravity steps > H7 basement×conductivity concordance > H8 tilt-low lineaments >
+  H9 INGENOUS 2 m probe gate > H10 probe×structure coincidence: `docs/research/hypotheses-20261009.md`.
+- E1 (`evidence/holdout_discovery_v1.json`, evaluator `gems52-pooled-hide-v1`, 4 folds,
+  48,080 withheld positives, budgets 8k/15k/25k/37,654):
+  - chance floor MEASURED: uniform-random emission scores **0.0152 / 0.0248 / 0.0350 / 0.0445**
+    across the four budgets — on this instrument uniform coverage of diffuse thinned truth is a
+    *strong* strategy, stronger than any sibling receipt's chance arm (theirs 0.0104).
+  - pick multi@25000 = **0.01242 [0.00787, 0.01718]**; paired vs chance@25000 delta
+    **−0.02257 [−0.02749, −0.01717]** — strictly below chance. iso 0.0072, bc 0.0052, tilt ~0.0001.
+  - canary (per-single-field AUC vs withheld truth): iso 0.535, basement 0.538, cond 0.499,
+    tilt 0.567, mag 0.527 — all ≤ 0.90, no leakage; the fields are simply uninformative here.
+  - pre-registered verdict: **NEGATIVE** (CI-vs-chance criterion failed; the brief's older bar
+    0.00021 is beaten, but a candidate that loses to uniform dots is not promotable).
+- Reading: GeoDAWN step/tilt signatures locate *mapped* structure. Once known traces are masked
+  (±200 m), what remains in these fields does not concentrate on hidden catalogue segments —
+  consistent with this repo's own corrections result that the catalogue sits on the evidence to
+  within ~1–2 px. Discovery signal from these layers must therefore come from evidence families
+  whose peaks are NOT on known traces (independent maps, heat, seismicity), or from emission
+  *along* catalogue extensions, which this instrument is not built to reward.
+
+## R3. Instrument defect found by E1 and fixed once in the template (IR-56-020)
+
+- `transform.scarp_step` zero-fills the exterior before differencing: on the real footprint the
+  23,600-cell rim band returned median 5.28 vs 0.47 interior, and **56.5 % of iso_step's
+  top-25,000 cells were rim cells** — the first E1 run was measuring the data edge, not geology.
+- `rank01` had the mirror-image bug: NaN-inside-valid cells landed in the top histogram bin
+  (rank ≈ 1.0), so edge-masking a transform without fixing rank01 re-created the artefact.
+- Fixed once in `src/gems56/transform.py` (support masks in `scarp_step`; 3σ band in
+  `hessian_line`; 2 px band in `gradient_magnitude`; finite-only ranking in `rank01`), six
+  regression tests in `tests/test_transform_edges.py` (each fails pre-fix), first run preserved as
+  `evidence/holdout_discovery_v0_prefx.json`, E1 re-run — verdict unchanged (below chance either
+  way), which is what a robust negative looks like.
+- Lesson (generalises): **any transform that touches the zero-filled exterior must publish its
+  support mask, and the ranker must not resurrect masked cells.**
+
+## R4. Data placement solved (IR-56-021)
+
+- `bash scripts/download_competition_data.sh` (alias `scripts/fetch_inputs.sh`, the name the pins
+  document): route A verifies official files dropped in `data/raw/`; route B assembles from the
+  owner's GitHub bridge verifying BOTH the live owner-manifest shard hashes and our pins.
+- Exercised end to end this session: features 418,912,844 B `4371c82e…`, catalogue `7ba308cc…`,
+  sample `2176d08e…`, lidar scarp `b5e53d67…` — all match `registry/input_pins.json`;
+  `evidence/grid.json` regenerated byte-identically (determinism check).
+
+## R5. The probe layer is obtainable (was "blocked" in round 1)
+
+- GDR 1391 (DOI 10.15121/1881483, CC BY 4.0) fetched live this session; the 1,080,530 B zip in
+  `data/external/` unpacks to 3,800 NAD83 points (3,439 inside the competition grid bbox),
+  T2m 5.8–70.6 °C, F2mDAB −7.1…+54.7. Round 1's "not downloadable from this sandbox" is obsolete:
+  the bytes ride in through the org's hash-pinned mirror (`GEMSDOE48` → `GEMSDOE24` commit).
+
+## R6. The registry lane gate, round 2 (receipt: `evidence/lane_gate_discovery_v2.json`)
+
+- Corpus: 996 mirrored rasters → 960 on-grid single-band priors (36 off-grid/multiband, listed not
+  dropped), both phases run through the vendored `gates.lane_report` — surface AND final dots.
+- Surface phase: **PASS / PASS** — max Spearman 0.193 (bar 0.90), zero near-offenders; the ranked
+  field the dots came from correlates with nothing in the registry.
+- Dots phase: literal **DUPLICATE/STOP** and policy **DUPLICATE/STOP** — 22 informative priors
+  (13GEMSDOE composites, 15GEMSDOE curv_scarp, pindrop-v4, GEMSDOE54 registry rasters) each
+  contain ≥70 % of our 25,000 dots within 3 px. The trigger is density-degenerate: for every
+  offender `near_frac ≈ its own 3 px halo coverage of the grid` (0.887 vs 0.861, 0.740 vs 0.759,
+  0.700 vs 0.735), i.e. any dot set whatsoever would trip it; max Spearman on dots 0.043, identical
+  hashes 0, reciprocal >0.70 = 0. Logged as **IR-56-023** (mirror of IR-56-006). Protocol executed
+  as written: verdict logged, nothing promoted.
+- Net round-2 verdict: **NEGATIVE twice over** (holdout below chance; gate stop) — the unique TIF
+  is published for review with both reasons in its receipt, note and the front-page banner.

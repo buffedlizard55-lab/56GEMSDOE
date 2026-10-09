@@ -24,3 +24,28 @@ _pr_body.md
 _venv.log
 data/_screen.log
 data/_lane_gate.log
+# --- competition inputs: never committed (login-gated, licence-restricted) ---
+# Run A (this branch) reassembles them from the sha256-pinned bridge (data/README.md,
+# scripts/assemble_data_bridge.py); run B resolves them from the sandbox bridge as
+# recorded in data_manifest.json / registry/input_pins.json.
+data/*.tif
+data/bridge/*.part-*
+data/cache/
+data/reconstructed/
+data/raw/
+data/interim/
+data/external/
+data/grid/
+
+# --- rasters, model outputs and archives stay out of Git ---
+
+# --- the published deliverables are the exception: they are hosted on Pages ---
+!data/bridge/*.tif
+
+# --- receipts and derived tables are text/committed audit trail ---
+
+# --- python / tooling ---
+venv/
+
+# holdout arm rasters are intermediates (regenerate with scripts/holdout_corrections.py)
+data/cache/holdout_arms/

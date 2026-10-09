@@ -440,6 +440,25 @@ def main() -> int:
                    f"docs/downloads/{NAME_PRIMARY}.tif docs/downloads/{NAME_SECONDARY}.tif",
                    "python scripts/invert_hidden_size.py", "python tests/test_contracts.py"])
     (DOCS / "research").mkdir(exist_ok=True)
+    _irr_all = j(EV / "irregularities.json", default=[])
+    _disc = sorted((DOCS / "downloads").glob("h56-disc-*.json"))
+    _d = j(_disc[0], default={}) if _disc else {}
+    run_card["merge_with_pr7"] = dict(
+        merged_from="origin/main tip 44ea13b (PR #7, the parallel discovery round-2 run of this lane)",
+        other_run_raster=str(_disc[0].name.replace(".json", ".tif")) if _disc else None,
+        other_run_holdout_dti=(_d.get("metadata") or {}).get("holdout_dti"),
+        other_run_promoted=_d.get("promoted"),
+        irregularities_total=len(_irr_all),
+        renumbered_to_this_run=[r["id"] for r in _irr_all
+                               if "assigned on merge with the parallel discovery run" in str(r.get("action"))],
+        consequence=("That run's IR-56-016 records that the page hosting the 0.2778 file calls it UNSCORED and "
+                     "quotes a conflicting leader, so every number this run derived from 0.2600 -> 0.2778 "
+                     "(|G| band, T_credit, the break-even credit per dot) is conditional on those two "
+                     "user-reported scores being the real public values. The structural conclusion - pruning "
+                     "known-fault pixels is worth +0.0178 because the scorer deletes them from the truth while "
+                     "the 300 m kernel still discounts their neighbours - rests on the metric definition and "
+                     "stands either way. Neither run claims an organizer-confirmed score, and neither certifies "
+                     "the other's raster."))
     for p in (EV / "run_card_round2.json", DOCS / "research" / "run-card-round2.json"):
         p.write_text(json.dumps(run_card, indent=1, default=float))
 
@@ -474,10 +493,12 @@ def main() -> int:
 </div>"""
 
     REPRO = "\n".join([
-        '# 0. inputs first: data/ is not in Git (licence-restricted). scripts/get_inputs-style fetch is',
-        '#    impossible from this sandbox (egress: GitHub + package indexes only), so the pinned files are',
-        '#    resolved from the lane manifest and then verified - never trusted:',
-        'python scripts/prepare_data.py                   # verifies pins, writes evidence/grid.json',
+        '# 0. inputs first: data/ is not in Git (licence-restricted). This sandbox cannot reach the',
+        '#    competition host (egress: GitHub + package indexes only), so the fetch below is the',
+        '#    documented route from a machine that can, and every file is hash-checked either way:',
+        'bash scripts/download_competition_data.sh         # PR #7 script: rebuilds every pinned input (needs network)',
+        'python scripts/preflight_data.py                    # hash-check what is on disk against the pins',
+        'python scripts/prepare_data.py                      # verifies pins, writes evidence/grid.json',
         'python scripts/build_fields.py                   # E1a: 17 label-free channels (~3 min, 2 cores)',
         'python scripts/run_field_holdout.py              # E1b: every channel alone, both instruments, canary',
         'python scripts/build_lineament.py                # E2: fusion + discrete-Radon persistence fields',
@@ -803,6 +824,7 @@ histogram, emit no correction. Details: <a href="lane1-corrections.html">the rou
 """)
 
     # ---- docs/downloads/README.md: the folder's own inventory, generated from what is on disk ----
+    j0 = j          # receipts are read with the same loader the rest of the builder uses
     rows = []
     for f in sorted((DOCS / "downloads").glob("*")):
         if f.suffix.lower() not in (".tif", ".zip", ".json"):
@@ -815,17 +837,52 @@ histogram, emit no correction. Details: <a href="lane1-corrections.html">the rou
                          f"`{rec['arm']}` field is behind the group's filed surface on the shared holdout",
                          f"`evidence/raster_{f.stem}.json`"))
         elif f.suffix.lower() == ".tif":
-            rows.append((f.name, f"{f.stat().st_size:,}", "round-1 corrections raster",
-                         "**safe to download, do not submit** - the lane's own round-1 card called it a "
-                         "negative result (a handful of dots, no qualifying corridor)",
-                         "`evidence/run_card.json`"))
+            size = f"{f.stat().st_size:,}"
+            if "-nan" in f.name.lower():
+                rows.append((f.name, size, "diagnostic twin that carries NaN in the grid",
+                             "**NOT safe to submit** - a NaN inside the footprint is exactly what makes the "
+                             "portal answer 'Predicted values must be in range [0, 1]'; kept here as evidence "
+                             "of the failure mode (IR-56-002), never as a candidate", "-"))
+            elif f.stem.startswith("h56-corr-"):
+                o = j0(DOCS / "downloads" / f"{f.stem}.json", default={})
+                nd = (o.get("validator") or {}).get("n_nonzero")
+                what = (f"{nd:,} dot{'s' if nd != 1 else ''} at value 1.0 - round 1 of this lane "
+                        "(corrections experiment), not this page's method" if isinstance(nd, int)
+                        else "round-1 corrections raster of this lane")
+                rows.append((f.name, size, what,
+                             "**safe to download for inspection, do not submit** - round 1's own run card "
+                             "recorded it as a negative result (no corridor passed the offset-consistency gate), "
+                             "and a file this sparse cannot reach the filed score under the metric at all "
+                             "(PR #7's IR-56-018 derives that ceiling)",
+                             f"`docs/downloads/{f.stem}.json`, `evidence/run_card.json`"))
+            elif (DOCS / "downloads" / f"{f.stem}.json").exists():
+                o = j0(DOCS / "downloads" / f"{f.stem}.json", default={})
+                v = o.get("validator") or {}
+                ok = bool(v.get("ok"))
+                nd = v.get("n_nonzero")
+                prom = o.get("promoted", o.get("approved_for_weekly_slot"))
+                status = str(o.get("status") or ("promoted" if prom else "not promoted"))
+                rows.append((f.name, size,
+                             f"{nd:,} dots - published by the parallel discovery run (PR #7), not by this "
+                             "page's method" if isinstance(nd, int) else
+                             "a raster from another run, no dot count in its receipt",
+                             f"**safe to download for inspection** (its own format gate says ok={ok}); **no run "
+                             f"clears it for a weekly slot** - it says {status}, and promoted={prom} is recorded "
+                             f"in the same receipt",
+                             f"`docs/downloads/{f.stem}.json`"))
+            else:
+                rows.append((f.name, size, "raster in this folder with no receipt next to it",
+                             "**do not submit without checking** - nothing here proves the format gate for this "
+                             "file, so treat it as an unverified artefact rather than a candidate", "-"))
         elif f.suffix.lower() == ".zip":
             has = (EV / f"raster_{f.stem}.json").exists()
             rows.append((f.name, f"{f.stat().st_size:,}", "exactly one GeoTIFF inside",
                          "the same bytes as the .tif, zipped because the portal accepts either form",
                          f"`evidence/raster_{f.stem}.json`" if has else "-"))
         else:
-            rows.append((f.name, f"{f.stat().st_size:,}", "validator receipt",
+            kin = "published by the parallel discovery run (PR #7)" if (f.stem.startswith("h56-disc")
+                                                                        or f.stem.startswith("gems56")) else "this run"
+            rows.append((f.name, f"{f.stat().st_size:,}", f"validator receipt, {kin}",
                          "machine-readable proof of the row above, not a submission", "-"))
     (DOCS / "downloads" / "README.md").write_text(
         "# Submission downloads - inventory\n\n"
@@ -846,18 +903,30 @@ histogram, emit no correction. Details: <a href="lane1-corrections.html">the rou
 
     # ---- docs/irregularities.html, rendered from the same list the round-1 page used ----------
     irr = j(EV / "irregularities.json", default=[])
-    sev = {"bad": "bad", "warn": "warn", "info": "warn"}
+
+    def _f(r, *keys):
+        for key in keys:
+            if r.get(key):
+                return r[key]
+        return ""
+
+    sev = {"bad": "bad", "high": "bad", "warn": "warn", "warning": "warn", "info": "warn"}
+    n_merge = sum(1 for r in irr if "assigned on merge with the parallel discovery run" in str(r.get("action")))
     (DOCS / "irregularities.html").write_text(page(
         "Irregularities logged while building this",
         "<a href='index.html'>&#8592; back to the evidence page</a> - every flag raised during the run, "
         "whether or not it turned out to be ours, per the brief. Rendered from "
         "<code>evidence/irregularities.json</code>.",
-        f"<p>{len(irr)} entries. Three of them are about this tooling, not the geology, and are kept in the "
-        f"list because a documentation defect that survives into a decision is still a defect.</p>"
-        + "".join(f"""<div class="card"><h3><span class="badge {sev.get(r.get('severity'), 'warn')}">{esc(r.get('id'))} · {esc(r.get('severity'))}</span> {esc(r.get('title'))}</h3>
-<p><b>Finding.</b> {esc(r.get('finding'))}</p>
-<p><b>What we did.</b> {esc(r.get('action'))}</p>
-<p class="muted"><b>Verified by:</b> {esc(r.get('verified_by'))} &nbsp; <b>Source:</b> {esc(r.get('link'))}</p></div>""" for r in irr)))
+        f"<p>{len(irr)} entries, the whole list this repository has ever raised - the round-1 corrections run, "
+        f"the parallel discovery round-2 run (PR&nbsp;#7) and this run. {n_merge} of them were drafted by this "
+        "run after that merge and re-ids because both runs had independently used the same numbers; the notes "
+        "say so inline. Several are about tooling rather than geology, and are kept because a documentation "
+        "defect that survives into a decision is still a defect.</p>"
+        + "".join(f"""<div class="card"><h3><span class="badge {sev.get(str(_f(r, 'severity')).lower(), 'warn')}">{esc(r.get('id', ''))} · {esc(_f(r, 'severity'))}</span> {esc(_f(r, 'title', 'area'))}</h3>
+<p><b>Finding.</b> {esc(_f(r, 'finding', 'what'))}</p>
+{("<p><b>Why it matters.</b> " + esc(_f(r, 'why_it_matters')) + "</p>") if r.get("why_it_matters") else ""}
+<p><b>What we did.</b> {esc(_f(r, 'action'))}</p>
+<p class="muted"><b>Verified by:</b> {esc(_f(r, 'verified_by', 'found_by'))} &nbsp; <b>Source:</b> {esc(_f(r, 'link'))}</p></div>""" for r in irr)))
 
     pub = DOCS / "evidence"
     pub.mkdir(exist_ok=True)
@@ -869,24 +938,126 @@ histogram, emit no correction. Details: <a href="lane1-corrections.html">the rou
         tgt = DOCS / "downloads" / f"checks-{nm}.json"
         if tgt.exists():
             (pub / f"checks-{nm}.json").write_text(tgt.read_text())
+    curated = {
+        "hidden_size_inversion.json": "E0: what the two published scores imply about hidden |G|, credit per dot, the marginal-dot rule and the perfect-placement ceiling - arithmetic on user-reported scores, never a projection",
+        "field_holdout_v1.json": "E1b: every official channel scored alone on the shared blocked holdout, both instruments, AUC canaries, budget ladder",
+        "emission_holdout_h56-mpp-r1-20261009.json": "E3: emitter arms (top-K, exact packing, calibrated greedy) at matched budget, with the two filed sibling rasters scored as-is on the same folds",
+        "quota_union_v1.json": "E4: combination rules - equal-rank mean, quota union, credit-weighted union, packing - with paired bootstrap CIs",
+        "registry_screen_h56b.json": "uniqueness screen over the mirrored sibling corpus: 868 rasters, <=3 px dot proximity in both directions",
+        "raster_h56-magpack-37k-20261009.json": "primary raster: dot count, distance-to-catalogue statistics, format-gate output, sha256",
+        "raster_h56-quota-37k-20261009.json": "secondary raster: the same fields",
+        "run_card_round2.json": "the round-2 run card (identical to docs/research/run-card-round2.json)",
+        "run_card.json": "the round-1 lane-assignment run card",
+        "irregularities.json": "the shared irregularity registry for this repository: round 1, the parallel "
+                               "discovery run (PR #7) and this run, merged with ids reconciled rather than "
+                               "overwritten - rendered at docs/irregularities.html",
+        "lane_uniqueness2_summary.json": "the shared lane gate's own summary for both round-2 rasters, with the "
+                               "resolved prior count and the disclosed-subset rule",
+    }
+
+    def _desc(pubf):
+        """Curated line if we wrote the receipt, otherwise a description read from the file itself."""
+        src = pubf.name.replace("-", "_")
+        if src in curated:
+            return curated[src]
+        d = j(EV / src, default={}) if (EV / src).exists() else j(pubf, default={})
+        if isinstance(d, list):
+            return (f"published by another run of this lane: a list of {len(d)} records "
+                    "(its own tool wrote it, not this page; read it as that run's claim)")
+        if not isinstance(d, dict):
+            d = {}
+        if pubf.name.startswith("checks-"):
+            d = d.get("validator") or d
+        bits = []
+        for holder in (d, d.get("metadata") if isinstance(d.get("metadata"), dict) else {}):
+            for key in ("lane", "evidence_class", "validation_class", "status", "note", "purpose", "summary"):
+                v = holder.get(key) if isinstance(holder, dict) else None
+                if isinstance(v, str) and v.strip() and v not in bits:
+                    bits.append(v.strip())
+        head = " ; ".join(bits[:2])[:300] or "no header recorded in the file"
+        return ("published by another run of this lane (its own page is under docs/); not re-derived here, "
+                f"so read it as that run's claim. Its file says: {esc(head)}")
+
+    pub_rows = [f.name for f in sorted(pub.iterdir()) if f.name != "README.md"]
     (pub / "README.md").write_text(
         "# Published evidence copies\n\n"
         "Byte copies of the receipts in `evidence/` at the repo root, with underscores swapped for hyphens so "
         "the Pages URL is the exact string the site links to. `evidence/` at the repo root stays canonical; this "
         "directory exists so every number on the site can be checked without cloning the repository. "
         "Regenerate with `python scripts/build_round2.py`.\n\n"
-        "| file | what it is |\n|---|---|\n"
-        + "\n".join(f"| `{fn.replace('_', '-')}` | {desc} |" for fn, desc in [
-            ("hidden_size_inversion.json", "E0: what the two published scores imply about hidden |G|, credit per dot, the marginal-dot rule and the perfect-placement ceiling - arithmetic on user-reported scores, never a projection"),
-            ("field_holdout_v1.json", "E1b: every official channel scored alone on the shared blocked holdout, both instruments, AUC canaries, budget ladder"),
-            ("emission_holdout_h56-mpp-r1-20261009.json", "E3: emitter arms (top-K, exact packing, calibrated greedy) at matched budget, with the two filed sibling rasters scored as-is on the same folds"),
-            ("quota_union_v1.json", "E4: combination rules - equal-rank mean, quota union, credit-weighted union, packing - with paired bootstrap CIs"),
-            ("registry_screen_h56b.json", "uniqueness screen over the mirrored sibling corpus: 868 rasters, <=3 px dot proximity in both directions"),
-            ("raster_h56-magpack-37k-20261009.json", "primary raster: dot count, distance-to-catalogue statistics, format-gate output, sha256"),
-            ("raster_h56-quota-37k-20261009.json", "secondary raster: the same fields"),
-            ("run_card_round2.json", "the round-2 run card (identical to docs/research/run-card-round2.json)"),
-            ("run_card.json", "the round-1 lane-assignment run card"),
-        ]) + "\n")
+        "The list is generated from the directory, so a receipt that exists is a receipt that is described - "
+        "nothing published here is left unexplained. Rows without a description of their own are receipts "
+        "belonging to the parallel run (PR #7) or to round 1; they are copied so the group can audit both runs "
+        "from one place, and they are labelled as that run's claim rather than ours.\n\n"
+        f"| file | what it is | {len(pub_rows)} files |\n|---|---|\n"
+        + "\n".join(f"| `{f}` | {_desc(pub / f)} |" for f in pub_rows) + "\n")
+
+    # ---- the parallel round-2 run in this repository (PR #7): what it says, read from its own files ----
+    disc = {}
+    disc_receipt = "-"
+    for _f in sorted((DOCS / "downloads").glob("h56-disc-*.json")):
+        disc, disc_receipt = j(_f, default={}), _f.name
+        break
+    dmd = disc.get("metadata") or {}
+    dv = disc.get("validator") or {}
+    dci = dmd.get("holdout_ci95") or [None, None]
+    irr_by_id = {r.get("id"): r for r in j(EV / "irregularities.json", default=[])}
+
+    def _irr(iid):
+        r = irr_by_id.get(iid) or {}
+        return str(r.get("title") or r.get("area") or "logged by that run")
+
+    def _num(v, fmt="{:.4f}"):
+        return fmt.format(v) if isinstance(v, (int, float)) else "?"
+
+    cross_run = (
+        "<h2>The other round-2 run in this repository, and where it disagrees with us</h2>"
+        "<p>This branch merges with <code>main</code>, which carries a <b>parallel round-2 run of the same "
+        "lane</b> (PR&nbsp;#7) that worked the discovery question with different inputs. Both records are kept; "
+        "neither run certifies the other's files.</p>"
+        "<ul>"
+        f"<li><b>Its raster sits in our downloads folder, and it is not ours to clear.</b> "
+        f"<code>{esc(str(disc.get('file', 'h56-disc-multi')))}</code> - {_num(dv.get('n_nonzero'), '{:,.0f}')} dots, "
+        f"{disc.get('bytes', 0):,} bytes, sha256 <code>{str(disc.get('sha256'))[:12]}&#8230;</code>, its format "
+        f"gate ok={dv.get('ok')}. Its own receipt records <code>promoted={disc.get('promoted')}</code> / "
+        f"<code>approved_for_weekly_slot={disc.get('approved_for_weekly_slot')}</code>, status "
+        f"&ldquo;{esc(str(disc.get('status', '')))}&rdquo;, and its own HOLDOUT-DTI for this arm: "
+        f"{_num(dmd.get('holdout_dti'))} [{_num(dci[0])}, {_num(dci[1])}] on "
+        f"<code>{esc(str(dmd.get('holdout_evidence', '?')))}</code> - an instrument of that run's, not the one "
+        f"this page uses, so the two numbers are not directly comparable. Same conclusion either way: negative, "
+        f"and not a slot candidate. Receipt: <code>docs/downloads/{disc_receipt}</code>.</li>"
+        "<li><b>That run already flagged the anchor number we build on.</b> Its IR-56-016 "
+        f"(&ldquo;{esc(_irr('IR-56-016'))}&rdquo;) records that the page hosting the 0.2778 file calls the file "
+        "<b>UNSCORED</b> and shows a projection of 0.2747, and that the same page reports a leader of 0.3262 while "
+        "our brief quotes 0.3774 and 0.3195; the DrivenData leaderboard renders client-side, so neither run could "
+        "read it. Nothing on this page is presented as an organizer-confirmed score, and the consequence is worth "
+        "stating plainly: our budget inversion (|G| in 12,783-18,294 px, T_credit 5,223, break-even 0.0556 credit "
+        "per dot) is <b>conditional on 0.2600 -&gt; 0.2778 being the real public numbers for those two files</b>. "
+        "If they are not, |G| moves and the bar moves with it. The conclusion that survives regardless is "
+        "structural, because it follows from the metric definition alone: pruning known-fault pixels is worth "
+        "+0.0178 because the scorer deletes those pixels from the truth while the 300 m kernel still discounts "
+        "their neighbours.</li>"
+        "<li><b>The same gate, measured from the other side.</b> Its IR-56-018 "
+        f"(&ldquo;{esc(_irr('IR-56-018')[:110])}&hellip;&rdquo;) derives the ceiling for a 14-dot file under the "
+        "official kernel (K = 9.3803; DTI &le; 0.0129 at |G| = 12,691), and its IR-56-015 "
+        f"(&ldquo;{esc(_irr('IR-56-015'))}&rdquo;) is the class of defect we hit too: a uniqueness gate silently "
+        "running on zero priors. Same fix on both sides - resolve the corpus, assert it is non-empty, write the "
+        "count into the receipt.</li>"
+        "<li><b>Both runs end in the same place:</b> negative on their respective shared holdouts, rasters "
+        "published for inspection, no weekly slot claimed, and not one organizer-confirmed number on either "
+        "page.</li>"
+        "</ul>"
+        "<p class='small'>Merge bookkeeping, so nothing looks like a silent overwrite: the irregularity list is a "
+        "union and this run's four new flags were renumbered to IR-56-024&#8211;027 (both runs had drafted "
+        "014&#8211;017); <code>scripts/screen_registry.py</code> is now the merged version (<code>--tag</code>, "
+        "recursive corpus walk, curated set under <code>data/</code>), so a re-run will find a larger corpus than "
+        "the 868 files in our receipt, which the pre-merge script produced over a flat symlink index; and "
+        "PR&nbsp;#7's front pages are preserved verbatim at <a href='discovery-index.html'>"
+        "<code>discovery-index.html</code></a>, <a href='discovery-executive-summary.html'>"
+        "<code>discovery-executive-summary.html</code></a> and <a href='discovery-irregularities.html'>"
+        "<code>discovery-irregularities.html</code></a>, while its non-colliding pages "
+        "(<a href='hypotheses.html'>hypotheses</a>, <a href='research.html'>research</a>, "
+        "<a href='sources.html'>sources</a>, <a href='prior-run.html'>prior run</a>) keep their names.</p>")
 
     (DOCS / "index.html").write_text(page(
         "56GEMSDOE · GEMS Prize - submission desk and the measurement behind it",
@@ -894,7 +1065,7 @@ histogram, emit no correction. Details: <a href="lane1-corrections.html">the rou
         "buffedlizard55-lab.github.io/56GEMSDOE</a> · how to file: <a href='executive-summary.html'>executive "
         "summary</a> · step by step: <a href='submit.html'>submit page</a> · flags: <a "
         "href='irregularities.html'>irregularities</a> · round 1: <a href="
-        "'lane1-corrections.html'>corrections measurement</a> · <a href='#sources'>sources</a>", summary + hero + limits + body +
+        "'lane1-corrections.html'>corrections measurement</a> · <a href='#sources'>sources</a>", summary + hero + limits + cross_run + body +
         f"""<h2 id="sources">Official sources, every claim above traceable</h2>
 <table class='data'><thead><tr><th>what we rely on</th><th>source</th></tr></thead><tbody>
 <tr><td>metric definition, DTI formula, alpha 0.2 / beta 0.8, R = 300 m, worked example TPw 3.00 FPw 1.89 FNw 2.00 = 0.60</td>

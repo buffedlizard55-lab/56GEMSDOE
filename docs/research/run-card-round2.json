@@ -1,8 +1,8 @@
 {
  "lane": "corrections (round 2: emission-side consequences of the same measurement)",
  "competition": "DrivenData GEMS Prize 306 (GeoDAWN, NW Nevada)",
- "run_utc": "2026-10-09T18:39:58Z",
- "commit": "b3d2ff6c367490d57fc836148d5526bb94ea7f19",
+ "run_utc": "2026-10-09T18:49:56Z",
+ "commit": "e7cf9270cef4bf50a60a17de1b9bb5a49dcff175",
  "hypothesis": "The catalogue is displaced from the evidence by more than ~2 px in places, so dots on the evidence-defined trace earn credit the catalogue line cannot. Round 1 measured that this is false (median offset -0.10 px against a 1.32 px estimator noise floor). The surviving consequence is the *other* side of the same fact: because the catalogue is accurate, mass near a mapped trace is masked out of the scored truth and pays the false-positive term, so the leverage is (i) pruning near-catalogue mass and (ii) raising credit per emitted pixel on channels the catalogue compiler did not use.",
  "mechanism": "Percentile-rank physical channels built from the official 19-band stack only; ridge/edge detectors (Meijster second-derivative-along-gradient on detrended-elevation slope, on smoothed |tmi_hg|, on reduced-to-pole, on gravity gradient, on the geodetic strain-rate second invariant); a discrete-Radon lineament-persistence channel over 4 strikes x {400,800,1600} m; exact greedy farthest-point packing at 2.8 px; a 2 px catalogue emission floor; binary p=1 mass; three combination rules (single channel, equal-rank mean, credit-weighted quota union) scored against each other at matched budget.",
  "named_non_fault_process": "Drainage incision and gully heads give convex break-in-slope lineations that are not faults; slope-dependent scarp degradation migrates a crest; magnetic gradients ridge on lithologic contacts and on the edges of demagnetised Tertiary units, not on slip surfaces; and the geodetic strain-rate bands are smooth at 10 km scale, so they carry regional, not pixel, information - which is why their AUC against the hidden set is 0.59-0.71 while their DTI at 300 m precision is one fifth of the magnetic ridge.",
@@ -428,7 +428,7 @@
   "clock_utc": {
    "first_receipt": "2026-10-09T18:37Z",
    "last_experiment_receipt": "2026-10-09T18:37Z",
-   "this_card": "2026-10-09T18:39:58Z",
+   "this_card": "2026-10-09T18:49:56Z",
    "reading": "measured work ran between the receipt stamps above; the experiment count exceeded the 3-experiment stop-loss by one (E4), the wall clock did not exceed 2 h"
   },
   "overrun_reason": "E4 (the combination-rule test) was added after the stop-loss because E3's arm table showed the instrument itself was inverted; the experiment count is reported as an overrun rather than restated to fit the budget",
@@ -455,5 +455,19 @@
   "SCREEN_PREFIX=h56b python scripts/screen_registry.py data/registry_flat docs/downloads/h56-magpack-37k-20261009.tif docs/downloads/h56-quota-37k-20261009.tif",
   "python scripts/invert_hidden_size.py",
   "python tests/test_contracts.py"
- ]
+ ],
+ "merge_with_pr7": {
+  "merged_from": "origin/main tip 44ea13b (PR #7, the parallel discovery round-2 run of this lane)",
+  "other_run_raster": "h56-disc-multi-b25000-20261009-20261009T165646Z.tif",
+  "other_run_holdout_dti": 0.012423943839880595,
+  "other_run_promoted": false,
+  "irregularities_total": 28,
+  "renumbered_to_this_run": [
+   "IR-56-024",
+   "IR-56-025",
+   "IR-56-026",
+   "IR-56-027"
+  ],
+  "consequence": "That run's IR-56-016 records that the page hosting the 0.2778 file calls it UNSCORED and quotes a conflicting leader, so every number this run derived from 0.2600 -> 0.2778 (|G| band, T_credit, the break-even credit per dot) is conditional on those two user-reported scores being the real public values. The structural conclusion - pruning known-fault pixels is worth +0.0178 because the scorer deletes them from the truth while the 300 m kernel still discounts their neighbours - rests on the metric definition and stands either way. Neither run claims an organizer-confirmed score, and neither certifies the other's raster."
+ }
 }
