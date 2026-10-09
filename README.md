@@ -98,6 +98,43 @@ the sibling repository bridge and verified against `registry/input_pins.json` (`
 **A logged-in human should confirm those three hashes against the data tab** — that is the one link in the
 chain this sandbox cannot close by itself (IR-56-003).
 
+## Relationship to the earlier session on this repo (PRs #1–#3)
+
+PRs #1–#3 built a *proxy* version of this lane and correctly stopped: with no training stack in the sandbox,
+they measured catalogue-vs-SGMC (a stand-in), reported "no consistent offset > 2 px in the proxy", listed the
+DEM-crest test as **blocked**, and opened a "Decision needed" because the brief simultaneously demands a unique
+GeoTIFF and forbids emitting one under 2 px. Two things have changed:
+
+- **The blocker is gone.** The aligned feature stack, `existing_faults.tif`, `sample_submission.tif` and the
+  1 m LiDAR scarp layer are now present in the sandbox and hash-pinned in `data_manifest.json` (3 of 3 pinned
+  files reproduce byte-for-byte). The real DEM-crest and magnetic-ridge measurement was run, not a proxy, over
+  every one of the 60,894 catalogue cells.
+- **The decision is answered by the measurement, not by choice.** The full instrument says the same thing the
+  proxy did but now with nulls, calibration and a LiDAR check: no corridor is displaced by 2 px. The brief's own
+  clause — "if offsets cluster under two pixels, report that as the result" — is the instruction being followed,
+  and the artefacts published here are the report plus format-valid rasters that a human can submit if they
+  choose to, with the gate's adverse verdict on them printed at the top of the page.
+
+Still valid and reused from that session: `src/gems/metric.py` and `src/gems/submission.py` with their 18 tests
+(`pytest -q` now runs **28**), `scripts/registry_audit.py` + `docs/research/registry-index.json` (a hash-level
+index of **944** sibling TIFs, 920 on this grid, 432 sharing a hash with another file — the complement of this
+lane's dot-level screen), the licence policy that organizer inputs never enter Git, the rules answer in
+`docs/submit.html`, and the claim-label vocabulary below. Two vendored copies of the template metric now
+coexist (`src/gems/` and `src/gems56/`) because neither session could see the other; consolidating them is a
+template-side change, and both are pinned to the same upstream commit, so they agree by construction
+(`tests/test_metric.py` and `tests/test_contracts.py` pin the identical formula).
+
+## Claim labels used everywhere in this repository
+
+- **HOLDOUT-DTI (evaluator version, withheld positives, 95% CI)** — computed on whole withheld fault segments
+  with a 4 px buffer, 48,080 withheld positives per arm, 4 folds: `evidence/holdout_corrections_v1.json`.
+- **ORGANIZER-CONFIRMED (submission-page receipt)** — *none exists*: no upload was filed, so no score here is
+  organizer-confirmed, and `0.3195` / `0.3774` are quoted only as CLAIM / USER-REPORTED from the brief.
+- **MEASURED** — read off a file in this repository by a script in this repository.
+- **PROXY** — a stand-in input. The earlier session's SGMC number is labelled so; nothing on the current site
+  is a proxy for a score.
+- **PROJECTION** — a model output. Never written as a score; none of the published figures is one.
+
 ## How to run it
 
 ```bash

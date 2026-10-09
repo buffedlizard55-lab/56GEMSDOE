@@ -88,7 +88,11 @@ nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;fl
 
 NAV = ("<nav><div class='wrap'><a href='index.html'><b>56GEMSDOE</b> · corrections lane</a>"
        "<a href='executive-summary.html'>Executive summary &amp; how to submit</a>"
-       "<a href='irregularities.html'>Irregularities</a>"
+       "<a href='irregularities.html'>Irregularities (this run)</a>"
+       "<a href='submit.html'>Submission how-to (prior session)</a>"
+       "<a href='evidence.md'>Source table (prior)</a>"
+       "<a href='irregularities.md'>Prior flag list</a>"
+       "<a href='research/hypotheses.md'>Ranked hypotheses</a>"
        "<a href='https://github.com/buffedlizard55-lab/56GEMSDOE'>repo</a></div></nav>")
 
 
@@ -443,7 +447,11 @@ def main():
     grid-aligned <code>.tif</code> between 80 KB and 2.6 MB under their submission/registry paths:
     <b>{esc(scr['corpus']['files'])} rasters, {esc(scr['corpus']['errors'])} read errors</b>, scored in one pass
     by exact directed &le;3 px dot proximity in both directions
-    (<code>evidence/registry_screen_v1_rows.jsonl</code>).</p>
+    (<code>evidence/registry_screen_v1_rows.jsonl</code>). That is the dot-level view; the earlier session in
+    this repo built the hash-level view (<code>docs/research/registry-index.json</code>: 944 sibling TIFs,
+    920 on this grid, 432 sharing a hash with another file). The two are complementary &mdash; a hash match
+    would catch a literal copy, a proximity match catches a re-derivation &mdash; and neither finds a duplicate
+    of these rasters in the reciprocal direction.</p>
     {table(['prior', 'its dots', 'share of my dots within 3 px', 'share of its dots within 3 px of mine', 'reciprocal min'],
            [row([f"<code>{esc(r['path'][:74])}&hellip;</code>", esc(r.get('prior_dots')),
                  pct(r.get(frac_k[0]) if frac_k else None, 1), pct(r.get(rev_k[0]) if rev_k else None, 2),
@@ -632,7 +640,11 @@ table (component {esc((cor_raw.get('top') or [{{}}])[0].get('comp', 'n/a'))} is 
             [row([f"<code>{esc(i['id'])}</code>", f"<b>{esc(i['title'])}</b> &mdash; " + esc(i["finding"]),
                   f"<span class='pill {esc(i.get('severity', 'info'))}'>{esc(i.get('severity', 'info'))}</span>",
                   esc(i.get("action", "")), esc(i.get("verified_by", "")),
-                  (f"<a href='{esc(i['link'])}'>link</a>" if i.get("link") else "")]) for i in irr])))
+                  (f"<a href='{esc(i['link'])}'>link</a>" if i.get("link") else "")]) for i in irr])
+        + "<p class='small muted'>This is the corrections lane's own log for this run. The earlier session in "
+          "this repository kept a separate one at <a href='irregularities.md'>irregularities.md</a> (IR-01 to "
+          "IR-07, covering the vendored metric, the submission validator and the registry audit); those entries "
+          "remain in force and are not restated here.</p>"))
 
     idx = DOCS / "index.html"
     print(f"wrote {idx} ({len(idx.read_text()):,} B), executive-summary.html, irregularities.html")

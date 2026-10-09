@@ -88,27 +88,62 @@
   "det_elev": {
    "band": 12,
    "description": "det_elev - Detrended elevation - topography with regional trends removed",
-   "nan_fraction": 0.579299235452588
+   "nodata_cells": 7113308,
+   "nan_fraction": 0.579299235452588,
+   "stats": {
+    "min": -589.9837036132812,
+    "max": 1469.9127197265625,
+    "p50": -75.59772872924805,
+    "p99": 707.4514129638679
+   }
   },
   "tmi_hg": {
    "band": 3,
    "description": "tmi_hg - Total magnetic intensity horizontal gradient - rate of change in horizontal direction",
-   "nan_fraction": 0.579299235452588
+   "nodata_cells": 7113308,
+   "nan_fraction": 0.579299235452588,
+   "stats": {
+    "min": 0.004909869749099016,
+    "max": 2200.4365234375,
+    "p50": 13.15235185623169,
+    "p99": 189.2081387329103
+   }
   },
   "tmi": {
    "band": 14,
    "description": "tmi - Total magnetic intensity - total strength of magnetic field",
-   "nan_fraction": 0.579299235452588
+   "nodata_cells": 7113308,
+   "nan_fraction": 0.579299235452588,
+   "stats": {
+    "min": -2178.27783203125,
+    "max": 4506.14111328125,
+    "p50": -124.8043327331543,
+    "p99": 354.6530398559575
+   }
   },
   "iso_grav_anom_hg": {
    "band": 18,
    "description": "iso_grav_anom_hg - Isostatic gravity anomaly horizontal gradient - horizontal rate of change",
-   "nan_fraction": 0.579299235452588
+   "nodata_cells": 7113308,
+   "nan_fraction": 0.579299235452588,
+   "stats": {
+    "min": -15.441243171691895,
+    "max": 12.856057167053223,
+    "p50": 0.03768332861363888,
+    "p99": 5.406415681838995
+   }
   },
   "det_elev_slope": {
    "band": 19,
    "description": "det_elev_slope - Detrended elevation slope - gradient of elevation after detrending",
-   "nan_fraction": 0.579299235452588
+   "nodata_cells": 7113308,
+   "nan_fraction": 0.579299235452588,
+   "stats": {
+    "min": 0.001103136339224875,
+    "max": 62.64591598510742,
+    "p50": 3.7491300106048584,
+    "p99": 32.722683448791535
+   }
   }
  },
  "band_descriptions": {

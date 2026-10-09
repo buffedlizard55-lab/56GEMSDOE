@@ -80,7 +80,7 @@ def main(argv):
     # band inventory, footprints and the band-6 identity question (GEMSDOE52 IR-52-019 claims
     # band 6 is the radiometric total-count channel, not the magnetic tilt the tag says)
     feats = C.load_fields(ROOT / pins["files"]["features"]["path"])
-    out["bands"] = feats["_band_inventory"]
+    out["bands"] = feats["_inventory"]
     with rasterio.open(ROOT / pins["files"]["features"]["path"]) as ds:
         out["band_descriptions"] = {str(i): (ds.descriptions[i - 1] or "") for i in range(1, ds.count + 1)}
         out["sentinel"] = dict(
