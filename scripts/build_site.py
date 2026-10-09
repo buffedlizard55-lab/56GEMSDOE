@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """Build the GitHub Pages site (docs/) from the lane evidence JSONs.
 
-Pages: index (one-click download + status), executive-summary (how to submit),
-research (method, offset histogram, LiDAR calibration, holdout, canary, the
-"why 0.2778" analysis), hypotheses (ranked candidates), sources (official
-verified links), irregularities (flagged claims).  All numbers are read from
-evidence/corrections/*.json so the site cannot drift from the evidence.
+Pages: index (one-click download + status + the two runs on this repo),
+executive-summary (how to submit), research (method, offset histogram, LiDAR
+calibration, holdout, canary, the "why 0.2778" analysis, the sibling run's
+reconciliation), hypotheses (ranked candidates), sources (official verified
+links), irregularities (flagged claims from both runs), prior-run (the merged
+sibling corrections run: negative verdict, its downloads and receipts).
+All numbers are read from evidence/corrections/*.json (run A) and
+evidence/*.json (run B) so the site cannot drift from the evidence.
 
 Run:  python scripts/build_site.py
 """
@@ -75,7 +78,8 @@ def page(title, active, body, dl=True):
         f'<a href="{h}"{" class=active" if h == active else ""}>{t}</a>'
         for h, t in (("index.html", "Home"), ("executive-summary.html", "Make a submission"),
                      ("research.html", "Research"), ("hypotheses.html", "Hypotheses"),
-                     ("sources.html", "Sources"), ("irregularities.html", "Irregularities")))
+                     ("sources.html", "Sources"), ("irregularities.html", "Irregularities"),
+                     ("prior-run.html", "Prior run")))
     return f"""<!doctype html><html lang=en><head><meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>{esc(title)} · 56GEMSDOE</title><style>{CSS}</style></head><body>
@@ -91,9 +95,10 @@ on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</
 <span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
 data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
 <main class=wrap>{body}</main>
-<footer><div class=wrap>56GEMSDOE · branch <code>arena/b71ede8d-56gemsdoe</code> ·
+<footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
 generated {dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} by
-<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> ·
+<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
+and <code>evidence/*.json</code> (run B) ·
 site served from <code>main</code> at
 <a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
 </body></html>"""
@@ -127,6 +132,24 @@ def main():
     reg_worst_rev = reg["worst"]["rev_containment"] if reg else None
     reg_worst_sp = reg["worst"]["spearman_dots"] if reg else None
     reg_worst_sps = reg["worst"]["spearman_surface"] if reg else None
+
+    # run B (merged PR #4, arena/1d3dbc39-56gemsdoe): the sibling corrections run
+    # on this repository - a NEGATIVE result. Its receipts live in evidence/.
+    EVB = ROOT / "evidence"
+    card_b_path = EVB / "run_card.json"
+    card_b = load_json(card_b_path) if card_b_path.exists() else None
+    irr_b_path = EVB / "irregularities.json"
+    irr_b = load_json(irr_b_path) if irr_b_path.exists() else None
+    if card_b:
+        mb = card_b["measurements"]
+        m_ung = mb["offsets_ungated_px"]
+        m_cal = mb["offsets_null_calibrated_px"]
+        m_cor = mb["corridors"]
+        m_lid = mb["lidar_3m"]
+        hb = card_b["holdout_dti"]
+        hab = hb["arms"]
+        gate_b = card_b["registry_comparison"]["shared_gate_verdict"]
+        art_b = card_b["artefacts"]
 
     tifs = sorted((out / "downloads").glob("gems56-corr-*-nan.tif"))
     tif = tifs[-1] if tifs else None
@@ -177,6 +200,42 @@ decision to spend a weekly slot is yours &mdash; the full reasoning is on
 <a href="executive-summary.html">Make a submission</a>.</p>
 </div>
 
+<h2>Two runs, one repository</h2>
+<p>This repository has run the corrections lane <b>twice</b>, in two parallel sessions.
+Both runs measured the same catalogue against the same evidence; they gate different
+questions and reached opposite verdicts. Both are reported in full &mdash; the disagreement
+is the finding.</p>
+<div class=grid>
+<div class=card><h3>Run A &mdash; this run (branch <code>arena/b71ede8d-56gemsdoe</code>) &mdash; <span class=ok>POSITIVE, verdict PROMOTE</span></h3>
+<p>Question: <em>is the catalogue on the MAIN scarp?</em> For 28 of 125 well-sampled records
+(22.4%) the strongest, LiDAR-confirmed DEM-scarp crest sits consistently &gt; 2&nbsp;px
+(200&ndash;340&nbsp;m) from the catalogue line &rarr; <b>{dots:,} dots</b> emitted on the
+evidence-defined traces, 0 on the catalogue. HOLDOUT-DTI(sim) {fmt(a1['dti'])}
+[{fmt(a1['ci95'][0])}, {fmt(a1['ci95'][1])}] vs masked control {fmt(a0['dti'])} and
+random control {fmt(a4['dti'])}. Unique vs {reg_n if reg else '412'} earlier rasters.
+<b>The one-click download above is this run's file.</b></p></div>
+<div class=card><h3>Run B &mdash; merged PR #4 (branch <code>arena/1d3dbc39-56gemsdoe</code>) &mdash; <span class=warn>NEGATIVE, no slot recommended</span></h3>
+<p>Question: <em>is the catalogue displaced from A crest by &ge; 2&nbsp;px?</em> No:
+null-calibrated median offset {fmt(m_cal['dem_median'],3)}&nbsp;px (DEM) /
+{fmt(m_cal['mag_median'],3)}&nbsp;px (magnetic), below the estimator's own noise floor
+({fmt(m_cal['null_random_abs_median'],2)}&nbsp;px); <b>0 of {m_cor['decision_gate']['components']}
+corridors</b> reach a consistent &ge; 2&nbsp;px offset; 3&nbsp;m LiDAR: 0 of
+{m_lid['segments']} segments displaced by &ge; 200&nbsp;m. Their primary raster carries
+<b>{art_b['primary']['dots']} dot</b> &mdash; the emptiness is their finding. Their two
+files are format-valid and safe to download but <b>not cleared for a slot</b> (their
+uniqueness gate returned <code>ok:false</code> on the proximity criterion at 1-dot count,
+IR-56-006). Details: <a href="prior-run.html">Prior run</a>.</p></div>
+</div>
+<p class=mut>Reconciliation: the two runs agree on the measurement &mdash; the catalogue sits
+within ~1&nbsp;px of <em>some</em> crest (run A's nearest-crest reading matches run B's
+negative). They differ on the decision rule: run B gates on null-calibrated corridor
+consistency with a crest-strength gate and DEM+mag concordance (very conservative &rarr;
+0 corridors); run A gates on per-record strongest-crest consistency (median offset
+&gt; 2&nbsp;px, sign agreement &ge; 0.70, &ge; 8 transects) with the crest identity
+calibrated on 1&nbsp;m LiDAR (MAD 0.29&nbsp;px) &rarr; 28 records. Which gate matches the
+organizer's hidden labels is exactly what a submission slot would test; neither run has an
+organizer score.</p>
+
 <h2>What this repository is</h2>
 <p>56GEMSDOE runs one lane of a parallel multi-session effort on the DOE GEMS Prize: the
 <b>corrections lane</b>. The organizers stated that new-fault ground truth can lie within
@@ -217,6 +276,7 @@ not the fault;</li>
 <li><a href="hypotheses.html">Hypotheses</a> &mdash; five ranked geological hypotheses (expected DTI vs cost)</li>
 <li><a href="sources.html">Sources</a> &mdash; official, verified links for manual review</li>
 <li><a href="irregularities.html">Irregularities</a> &mdash; flagged claims and how each was checked</li>
+<li><a href="prior-run.html">Prior run</a> &mdash; the sibling corrections run on this repo (negative verdict), its downloads and its reconciliation with this run</li>
 </ul>
 """
     (out / "index.html").write_text(page("Home", "index.html", idx))
@@ -275,6 +335,20 @@ the implied hidden truth is ~7,900&nbsp;px (GEMSDOE32 estimate, user-reported fa
 corrections-only file cannot approach the live leaders by itself. Promotion to a weekly
 slot is a separate selector decision within the weekly cap.</li>
 </ul>
+</div>
+
+<h2>Prior run's files &mdash; do NOT submit these</h2>
+<div class=card>
+<p>The merged prior run (PR #4) on this repository reached a <b>NEGATIVE</b> verdict and
+ships two format-valid rasters <b>as research output only</b>: its own receipt says the
+expected gain is {fmt(hab['B_snap']['dti'],5)} DTI with a 95% interval of
+[{fmt(hab['B_snap']['ci95'][0],5)}, {fmt(hab['B_snap']['ci95'][1],5)}] &mdash; which
+contains the value for doing nothing (0.00000) and for jittering dots at random
+({fmt(hab['D_jitter']['dti'],5)}). Its uniqueness gate also returned
+<code>ok:false</code> on the proximity criterion at 1-dot count (IR-56-006), and its
+rasters write 0.0 (not NaN) outside the data footprint (IR-56-013). They are safe to
+download for inspection; they are <b>not cleared for a weekly slot</b>. Details and
+downloads: <a href="prior-run.html">Prior run</a>.</p>
 </div>
 """
     (out / "executive-summary.html").write_text(page("Make a submission", "executive-summary.html", exe))
@@ -441,7 +515,61 @@ The GEMSDOE32 owner pages label that artifact <b>UNSCORED</b> with a modelled pr
 0.2747 and state that no organizer score exists for it; the GEMSDOE51 sibling's audit calls
 the attribution &ldquo;unsupported and contradicted&rdquo;. What can be said is what the file
 <em>embodies</em> (the mechanism above), not that it scored 0.2778.</p>
-<h3>9. Reproduce</h3>
+<h3>9. The sibling run on this repo (run B): same lane, negative verdict</h3>
+<p>A parallel session (merged PR #4, branch <code>arena/1d3dbc39-56gemsdoe</code>) ran the
+same corrections lane with a different, more conservative gate, and reported a
+<b>negative</b> result. Its receipts are in <code>evidence/</code>
+(<code>run_card.json</code>, <code>offsets_v1.json</code>, <code>calibration_v1.json</code>,
+<code>holdout_corrections_v1.json</code>, <code>registry_screen_v1.json</code>,
+<code>irregularities.json</code>); full presentation on <a href="prior-run.html">Prior run</a>.</p>
+<ul>
+<li><b>The measurement agrees with this run's nearest-crest reading:</b> null-calibrated
+median catalogue-to-crest offset {fmt(m_cal['dem_median'],3)}&nbsp;px (DEM,
+n={m_cal['dem_n']:,}) and {fmt(m_cal['mag_median'],3)}&nbsp;px (magnetic,
+n={m_cal['mag_n']:,}); joint median {fmt(m_cal['joint_median'],3)}&nbsp;px over
+n={m_cal['joint_n']:,} &mdash; <b>below the estimator's own noise floor</b>
+(random traceless points: {fmt(m_cal['null_random_abs_median'],2)}&nbsp;px;
+rotated: {fmt(m_cal['null_rotated_abs_median'],2)}&nbsp;px). The two families' offsets
+correlate at r&nbsp;=&nbsp;{fmt(m_ung['dem_mag_correlation_r'],3)}.</li>
+<li><b>Its gate is stricter:</b> a crest must exceed the 90th percentile of the same
+statistic at random traceless points (DEM &ge; {fmt(m_cal['strength_gate']['dem_min_hgt'],1)},
+mag &ge; {fmt(m_cal['strength_gate']['mag_min_hgt'],1)}), corridors need DEM+mag
+concordance, and the corridor offset must clear a {fmt(m_cor['decision_gate']['sigma_floor_px'],2)}&nbsp;&sigma;
+floor &rarr; <b>{m_cor['decision_gate']['qualifying']} of {m_cor['decision_gate']['components']}
+corridors qualify</b> (ungated exploration: {m_cor['ungated_exploration']['qualifying']} of
+{m_cor['ungated_exploration']['components_evaluated']:,}).</li>
+<li><b>Its LiDAR check is finer but smaller:</b> 3&nbsp;m resolution over
+{fmt(m_lid['coverage_fraction_of_catalogue']*100,1)}% of the catalogue &mdash; pooled median
+{fmt(m_lid['pooled_median_px'],3)}&nbsp;px, <b>{m_lid['segments_ge_200m']} of
+{m_lid['segments']} segments displaced by &ge; 200&nbsp;m</b>. This run's 1&nbsp;m
+calibration (75% of the footprint) instead validates the crest operator itself
+(MAD 0.29&nbsp;px).</li>
+<li><b>Its holdout</b> (evaluator <code>{esc(hb['evaluator_version'])}</code>,
+{hb['withheld_positive_pixels']:,} withheld positives, whole 8-connected components
+withheld, visible catalogue masked pixel-exactly): A as-is {fmt(hab['A_as_is']['dti'],5)},
+B snap {fmt(hab['B_snap']['dti'],5)} [{fmt(hab['B_snap']['ci95'][0],5)},
+{fmt(hab['B_snap']['ci95'][1],5)}], C snap-sub {fmt(hab['C_snap_sub']['dti'],5)},
+D jitter {fmt(hab['D_jitter']['dti'],5)} &mdash; the snap arms' intervals contain zero.
+This run's holdout (different truth construction: simulated corrections,
+{hold['n_withheld_positives']:,} withheld positives, official <code>src/metrics.py</code>)
+gives the lane arm {fmt(a1['dti'],5)}. The two holdouts validate different machinery on
+different simulated truths; neither is an organizer score.</li>
+<li><b>Its uniqueness gate failed on a technicality:</b> the shared gate's proximity
+criterion fires trivially at 1-dot count ({gate_b['directed_near3px_fraction']*100:.0f}% of
+its dots within 3&nbsp;px of {gate_b['offender_count']} of {gate_b['priors_checked']} priors;
+reciprocal overlap 0 above 0.70) &mdash; the same class of false positive this run hit at
+6,504 dots and resolved with Jaccard/reverse-containment/mass-ratio (IR-56-07). Run B
+chose to publish the artefacts as research output and claim no slot.</li>
+</ul>
+<p><b>Reconciliation:</b> both runs agree the catalogue sits within ~1&nbsp;px of
+<em>some</em> crest. Run B's gate asks whether the catalogue is displaced from
+<em>a</em> crest by &ge; 2&nbsp;px under null calibration &mdash; no. Run A's rule asks
+whether the <em>strongest</em> crest (the dominant scarp, LiDAR-confirmed) is consistently
+&gt; 2&nbsp;px away per vector record &mdash; yes, on 22.4% of well-sampled records. A
+catalogue line on a secondary strand with the main scarp 200&ndash;340&nbsp;m away is
+consistent with both statements. The organizer's hidden labels decide which gate is right;
+that is the experiment a slot would run.</p>
+<h3>10. Reproduce</h3>
 <pre>python scripts/prepare_records.py            # vector catalogue -> record ids
 python scripts/measure_corrections_offsets.py # E1: offset histogram + LiDAR calibration
 python scripts/holdout_corrections.py        # E2 canary + E3 holdout

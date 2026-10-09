@@ -1,16 +1,38 @@
-# large payloads: the official competition rasters are reassembled from the
-# sha256-pinned bridge (see data/README.md); never commit the multi-hundred-MB parts
+# --- competition inputs: never committed (login-gated, licence-restricted) ---
+# Run A (this branch) reassembles them from the sha256-pinned bridge (data/README.md,
+# scripts/assemble_data_bridge.py); run B resolves them from the sandbox bridge as
+# recorded in data_manifest.json / registry/input_pins.json.
 data/*.tif
 data/bridge/*.part-*
 data/cache/
 data/reconstructed/
-# python
+data/raw/
+data/interim/
+data/external/
+data/grid/
+
+# --- rasters, model outputs and archives stay out of Git ---
+*.tif
+*.tiff
+*.npy
+*.npz
+*.zip
+
+# --- the published deliverables are the exception: they are hosted on Pages ---
+!docs/downloads/*.tif
+!docs/downloads/*.zip
+!data/bridge/*.tif
+
+# --- receipts and derived tables are text/committed audit trail ---
+!evidence/*.npz
+!evidence/*.json.gz
+
+# --- python / tooling ---
 __pycache__/
+.pytest_cache/
 *.pyc
 .venv/
 venv/
 
 # holdout arm rasters are intermediates (regenerate with scripts/holdout_corrections.py)
 data/cache/holdout_arms/
-# stale prototype tables from the first measurement draft (superseded by
-# record_offsets_*.csv / offset_transects.csv)

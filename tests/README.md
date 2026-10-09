@@ -10,7 +10,9 @@ src/dataset.py            dataset name discovery / placement helpers
 src/postprocess.py        post-processing version shims used by the metric tests
 scripts/validate_submission.py    the submission validator
 scripts/sanitize_submission.py    the validator's suggested fix tool
-scripts/prepare_data.py          pre-flight data check
+scripts/preflight_data.py        pre-flight data check (the template's
+                                 `prepare_data.py`, renamed to coexist with run B's
+                                 pin verifier at `scripts/prepare_data.py`)
 scripts/assemble_data_bridge.py  reassemble the official rasters from bridge parts
 ```
 
