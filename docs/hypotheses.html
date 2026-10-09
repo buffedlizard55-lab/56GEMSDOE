@@ -1,0 +1,104 @@
+<!doctype html><html lang=en><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Hypotheses · 56GEMSDOE</title><style>
+:root{--bg:#0f1420;--fg:#e8eaf0;--mut:#9aa3b5;--acc:#4da3ff;--ok:#3fd68f;--warn:#ffb454;--bad:#ff6b6b;--card:#171d2e;--line:#28304a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+header.top{background:linear-gradient(180deg,#131a2c,#0f1420);border-bottom:1px solid var(--line);padding:22px 0 18px}
+h1{font-size:24px;margin:0 0 4px}
+h2{font-size:19px;margin:28px 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px}
+h3{font-size:16px;margin:20px 0 6px}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+nav a{color:var(--mut);text-decoration:none;padding:5px 10px;border:1px solid var(--line);border-radius:16px;font-size:13px}
+nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
+.dlbtn{margin:14px 0}
+.btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:8px}
+.btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn:hover{filter:brightness(1.1)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.mut{color:var(--mut)}
+.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+code{background:#0a0e18;border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:13px}
+pre{background:#0a0e18;border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;font-size:12.5px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#131a2c}
+img{max-width:100%;border:1px solid var(--line);border-radius:8px}
+.values{background:#10182b;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;font-size:13.5px;color:var(--mut)}
+footer{border-top:1px solid var(--line);margin-top:34px;padding:18px 0 30px;color:var(--mut);font-size:13px}
+.tag{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:10px;padding:1px 8px;color:var(--mut);margin-right:5px}
+ul{margin:6px 0 6px 20px}li{margin:3px 0}
+</style></head><body>
+<header class=top><div class=wrap>
+<h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
+<div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
+faults missing from the USGS/INGENIOUS catalogue</div>
+<nav><a href="index.html">Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html" class=active>Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download the submission GeoTIFF</a> <a class="btn alt" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">.tif (343 KB)</a></div>
+</div></header>
+<div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
+submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
+on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
+<span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
+data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
+<main class=wrap>
+<h2>Ranked geological hypotheses</h2>
+<p>Five candidates, ranked by expected DTI improvement versus implementation cost. Each
+names its layers, target physical signature/operator, why it could expose fault geometry
+missing from the USGS/INGENIOUS catalogue (rather than merely recovering known-fault
+habitat), how it differs from implemented repository/prior-art work, expected benefit and
+cost. The top candidate was implemented and validated on a spatially-blocked holdout this
+session (HOLDOUT-DTI, simulated truth); the others are preregistered future lanes. Budget
+note: the session's 3-experiment budget is spent (E1 measurement, E2 canary, E3 holdout).</p>
+<table>
+<tr><th>#</th><th>hypothesis</th><th>layers</th><th>signature / operator</th><th>why it catches catalogue-missing faults</th><th>differs from prior art</th><th>expected &Delta;DTI vs cost</th><th>status</th></tr>
+<tr><td>1</td><td><b>Corrections: catalogue-to-evidence registration offset</b></td>
+<td>det_elev, det_elev_slope (12, 19); 1 m 3DEP LiDAR (calibration); vector catalogue records</td>
+<td>perpendicular transects &plusmn;400 m; strongest-crest offset of the DEM-scarp ridge per record; emit at the crest when consistent &gt; 2 px</td>
+<td>the hidden truth contains &ldquo;corrections or modifications&rdquo; within 300 m of known traces (forum 11516); USGS-to-refined discrepancies up to 400 m are documented (Hermant et al. 2025). The catalogue line is masked, so only the refined position scores</td>
+<td>siblings emit on catalogue-distance halos or learned fields; none measures the catalogue-to-evidence offset per vector trace with a LiDAR-calibrated crest</td>
+<td><b>validated this session</b>: HOLDOUT-DTI(sim) 0.3105 vs 0.0000 masked control, 0.0117 random; cost already spent</td>
+<td><span class=ok>IMPLEMENTED + HOLDOUT-VALIDATED</span></td></tr>
+<tr><td>2</td><td><b>Magnetic-gradient ridge lineaments off-catalogue</b></td>
+<td>tmi_hg (3), tc (6), rtp (2), tmi (14)</td>
+<td>ridge tracing of the horizontal-gradient / tilt-angle fields; strike-family filtering (Basin-and-Range orientations); exclude anything within 2 px of the catalogue</td>
+<td>faults with magnetic contrast produce gradient ridges even where scarps are absent (buried or eroded faults) &mdash; the largest pool of genuinely new faults</td>
+<td>siblings feed mag bands into CNNs as inputs; none traces mag ridges as primary lineament evidence with strike filtering and a holdout gate</td>
+<td>moderate (largest new-fault pool; lithologic contacts give false ridges &mdash; needs scarp corroboration); cost: ~1 session</td>
+<td>preregistered future lane</td></tr>
+<tr><td>3</td><td><b>Radiometric alteration halos along faults</b></td>
+<td>cond_surf (17); cached GeoDAWN K/Th/U/TC radiometrics (7GEMSDOE external/geodawn_rad)</td>
+<td>K/Th ratio and TC lineament detection; halo = elongated high-ratio anomaly parallel to a scarp or gradient ridge</td>
+<td>geothermal fault conduits produce clay/potassium alteration halos; the competition asks for geothermal-indicative faults, so alteration-aligned faults are exactly the target class</td>
+<td>siblings use cond_surf as one CNN input; none builds ratio lineaments with a holdout gate. Data is free/public (USGS GeoDAWN, DOI 10.5066/P93LGLVQ)</td>
+<td>moderate (goal-aligned; GeoDAWN radiometrics are ~1 km flight-line scale &mdash; coarse); cost: ~1 session</td>
+<td>preregistered future lane</td></tr>
+<tr><td>4</td><td><b>Basement-depth edges under cover</b></td>
+<td>depth_to_base_surf (15); cached 3 m LiDAR scarp product (GEMSDOE48 h52_scarp3m_100m)</td>
+<td>gradient ridge of depth-to-basement, corroborated by a DEM scarp; emit at the corroborated edge, off-catalogue</td>
+<td>faults control basin-fill thickness: buried fault edges in alluvial cover are invisible in the catalogue but offset the basement surface</td>
+<td>GEMSDOE40 tried depth-KDE clusters cross-family; a gradient-edge + scarp corroboration with a blocked holdout is a different operator</td>
+<td>low&ndash;moderate (indirect, two-step inference); cost: low&ndash;medium</td>
+<td>preregistered future lane</td></tr>
+<tr><td>5</td><td><b>Geodetic strain-gradient anomalies</b></td>
+<td>geod_shearrate (7), geod_dilaterate (8), geod_2ndinv (4), deq/ieq (10, 16)</td>
+<td>localized shear/dilation maxima off-catalogue; wavelength-filtered ridge detection</td>
+<td>active faults concentrate strain; the 2020 Mw 6.5 Monte Cristo rupture occurred on a largely unmapped fault (Candelaria fault, inside the footprint &mdash; USGS field response, SRL 92(2A))</td>
+<td>GEMSDOE51 tried Kreemer et al. (2000) Eq. 3 coarse priors (Spearman 0.14 &mdash; weak); a fine-scale strain-gradient ridge detector with holdout gating is different</td>
+<td>low (the strain field is smooth at 100 m; one event is a weak prior); cost: medium</td>
+<td>preregistered future lane</td></tr>
+</table>
+<p class=mut>Ranking rationale: expected DTI improvement per unit cost. H1 is the only
+candidate whose target (corrections near known traces) is confirmed by the organizers to be
+in the hidden label set, and it is the only one with a completed holdout. H2 addresses the
+largest untapped pool (genuinely new faults) but carries lithology false-positive risk.
+H3 is the most goal-aligned but the coarsest data. H4 is cheap but indirect. H5 is the
+weakest signal at the official resolution.</p>
+</main>
+<footer><div class=wrap>56GEMSDOE · branch <code>arena/b71ede8d-56gemsdoe</code> ·
+generated 2026-10-09 16:20 UTC by
+<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> ·
+site served from <code>main</code> at
+<a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
+</body></html>

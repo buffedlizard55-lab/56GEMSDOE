@@ -1,0 +1,16 @@
+# large payloads: the official competition rasters are reassembled from the
+# sha256-pinned bridge (see data/README.md); never commit the multi-hundred-MB parts
+data/*.tif
+data/bridge/*.part-*
+data/cache/
+data/reconstructed/
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# holdout arm rasters are intermediates (regenerate with scripts/holdout_corrections.py)
+data/cache/holdout_arms/
+# stale prototype tables from the first measurement draft (superseded by
+# record_offsets_*.csv / offset_transects.csv)

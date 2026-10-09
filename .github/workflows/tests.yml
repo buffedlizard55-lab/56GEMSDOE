@@ -1,0 +1,44 @@
+name: tests
+
+on:
+  push:
+    branches: [main, "arena/**"]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy scipy scikit-image rasterio scikit-learn pandas \
+                      matplotlib pytest
+
+      - name: reassemble official rasters from the sha256-pinned bridge
+        run: python scripts/assemble_data_bridge.py
+
+      - name: pre-flight data check
+        run: python scripts/prepare_data.py
+
+      - name: pytest
+        run: python -m pytest tests -q
+
+      - name: validate the shipped submission GeoTIFF
+        run: |
+          TIF=$(ls docs/downloads/gems56-corr-*-nan.tif | head -1)
+          python scripts/validate_submission.py --pred "$TIF" \
+                 --sample data/sample_submission.tif \
+                 --train data/training_features.tif
+          python -m src.submission_io validate-conformant "$TIF" \
+                 --sample data/sample_submission.tif

@@ -1,0 +1,117 @@
+[
+ {
+  "path": "evidence/corrections/holdout_corrections.json",
+  "bytes": 5363,
+  "sha256": "2b6a891bd55d319e21e1ec2f62eba184166aa5062dbfa48f5c5e829345f916da"
+ },
+ {
+  "path": "evidence/corrections/holdout_simulated_truth_records.csv",
+  "bytes": 657,
+  "sha256": "4c6ce380a229edd381fb9c26acb8c0607217bca8a03879d241b62e0c43358d74"
+ },
+ {
+  "path": "evidence/corrections/offset_histogram.csv",
+  "bytes": 9623,
+  "sha256": "f894e41c3fce5a642838f94fa06033f098f1e8e669cb0c737a552a90323e40cb"
+ },
+ {
+  "path": "evidence/corrections/offset_histogram.png",
+  "bytes": 174042,
+  "sha256": "3f4165f75177e1c3dc85215d5c24b286a16771205b36622bc98e67696e4b3691"
+ },
+ {
+  "path": "evidence/corrections/offset_stats.json",
+  "bytes": 5890,
+  "sha256": "5874aef4f3e2918fff1bacf55398737c58f3bf6bde7a5524a44b50caf2b37cf1"
+ },
+ {
+  "path": "evidence/corrections/offset_transects.csv",
+  "bytes": 2723687,
+  "sha256": "2c6b34d4112517a9b4f8de257a3f5c69fddfafc7b7aebd1b5cb05687bb7a401a"
+ },
+ {
+  "path": "evidence/corrections/record_1567_crop.png",
+  "bytes": 145807,
+  "sha256": "5aa2f28203acc9ea30437cbecdb430a25d295545b14a8bca93fb024e8636a24d"
+ },
+ {
+  "path": "evidence/corrections/record_2665_crop.png",
+  "bytes": 111830,
+  "sha256": "af025aec10f150e65b6b070f27d68894f6ca2af03229d04b90ee3770cc4f3125"
+ },
+ {
+  "path": "evidence/corrections/record_322_crop.png",
+  "bytes": 77042,
+  "sha256": "38c0743c30eebae6194fe32c8f26dc3ef49e7e87e4723b73a8a4410a6eb391ee"
+ },
+ {
+  "path": "evidence/corrections/record_630_crop.png",
+  "bytes": 223925,
+  "sha256": "0446c0e8e143a7357aa0c4b84b253f1bce2887a16657c3cc6422ea832b626081"
+ },
+ {
+  "path": "evidence/corrections/record_offsets_dem_slope_nearest.csv",
+  "bytes": 5460,
+  "sha256": "4ccc8d1c1ca40710c292316b8f52f8854c6a206996f00ab1565b2a499f1d3f66"
+ },
+ {
+  "path": "evidence/corrections/record_offsets_dem_slope_strongest.csv",
+  "bytes": 13838,
+  "sha256": "a4b24d7cfee0ddc8998239b8e4f3a4292706438727cffd41b023811b55f2acc9"
+ },
+ {
+  "path": "evidence/corrections/record_offsets_mag_hg_nearest.csv",
+  "bytes": 10038,
+  "sha256": "6831457117e12f608727deef8d26c8c7c1c3e5ce466e7167f59f5ab36b798f5d"
+ },
+ {
+  "path": "evidence/corrections/record_offsets_mag_hg_strongest.csv",
+  "bytes": 4698,
+  "sha256": "c848866129a5164f8c5040f1d969203f2a04ebe3e5b5546581f6760627322dcc"
+ },
+ {
+  "path": "evidence/corrections/registry_check.json",
+  "bytes": 11682,
+  "sha256": "5fc26eb67002fb2f155cddd424f669dde4ec7d6c7b4fd3dc14039a443092a7ac"
+ },
+ {
+  "path": "evidence/corrections/run_card.json",
+  "bytes": 10044,
+  "sha256": "e0a119a56e3312280976c9658af3eeb1578f3255f51fee253efc6efb39f77dc7"
+ },
+ {
+  "path": "evidence/inventory_official_data.json",
+  "bytes": 1623,
+  "sha256": "5a397d4915f7335658771e89a8c3b29db813505f2c6c314939f2ff6dde55a3d1"
+ },
+ {
+  "path": "docs/downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif",
+  "bytes": 351093,
+  "sha256": "08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7"
+ },
+ {
+  "path": "docs/downloads/offset_histogram.png",
+  "bytes": 174042,
+  "sha256": "3f4165f75177e1c3dc85215d5c24b286a16771205b36622bc98e67696e4b3691"
+ },
+ {
+  "path": "docs/downloads/record_1567_crop.png",
+  "bytes": 145807,
+  "sha256": "5aa2f28203acc9ea30437cbecdb430a25d295545b14a8bca93fb024e8636a24d"
+ },
+ {
+  "path": "docs/downloads/record_2665_crop.png",
+  "bytes": 111830,
+  "sha256": "af025aec10f150e65b6b070f27d68894f6ca2af03229d04b90ee3770cc4f3125"
+ },
+ {
+  "path": "docs/downloads/record_322_crop.png",
+  "bytes": 77042,
+  "sha256": "38c0743c30eebae6194fe32c8f26dc3ef49e7e87e4723b73a8a4410a6eb391ee"
+ },
+ {
+  "path": "docs/downloads/record_630_crop.png",
+  "bytes": 223925,
+  "sha256": "0446c0e8e143a7357aa0c4b84b253f1bce2887a16657c3cc6422ea832b626081"
+ }
+]
