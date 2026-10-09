@@ -3,10 +3,7 @@
 DrivenData competition 306 (GeoDAWN / NW Nevada): find **geothermal-indicative faults missing
 from the USGS/INGENIOUS catalogue** and ship them as a legal GeoTIFF.
 Site: **https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html**
-(one-click submission download at the top; submission guide on *Make a submission*).
-
-> **Arena Core Values (quoted in the brief):** Maximize P(Win). Own the Outcome.
-
+(one-click submission download at the very top; step-by-step guide on *Make a submission*).
 > **Bottom line of the round-3 (twin-family) run (2026-10-09, branch `arena/e86c5610-56gemsdoe,
 > this PR):** the round asked the first *independent* question about this lane's offsets — does
 > the catalogue's own location-quality metadata (`FTYPE_`/`MAPSCALE`/`FCODE2023` from the
@@ -31,7 +28,133 @@ Site: **https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html**
 > One instrument bug was caught before any decision used it (the first H-C1 draft joined
 > `record_id` to `NUM` — wrong key space; corrected to the positional join, IR-56-031).
 
-> **Bottom line of the round-2 (discovery) run (2026-10-09):** five new hypotheses were
+
+> ## Round 2 - submission desk (this branch; receipts stamped 16:29Z → 17:26Z): the submission the brief asks for, and the measurement that says what it is worth
+>
+> **Two validated GeoTIFFs are published and one click from a submission form** —
+> [`h56-magpack-37k-20261009.tif`](docs/downloads/h56-magpack-37k-20261009.tif)
+> (37,654 dots, `mag_ridge|packed`, min 2.24 px off the catalogue,
+> sha256 `62824bcab55d…`) and
+> [`h56-quota-37k-20261009.tif`](docs/downloads/h56-quota-37k-20261009.tif) (30,800 dots,
+> `QUOTA|packed|weighted`). Both are single band float32, EPSG:32611, 100 m, 3730×3292, values in [0, 1],
+> zero NaN, no nodata tag — re-read from disk after writing
+> ([receipts](docs/downloads/checks-h56-magpack-37k-20261009.json)), so the portal error
+> `Predicted values must be in range [0, 1]` cannot come from these files. **Downloading is safe.**
+>
+> **Submitting is a different question, and the answer is no this round.** On the shared blocked holdout
+> (`gems52-pooled-hide-v1`, 4 folds, 36,335 withheld
+> positive pixels) our best arm reaches **0.0387**
+> [0.0348, 0.0424] where the group's filed sibling surface reaches
+> **0.0900** [0.0811, 0.0988] at the same budget on the same folds (our arm read from `evidence/quota_union_v1.json`, the incumbent from `evidence/field_holdout_v1.json`; both receipts print 0.0387 for our arm).
+> Verdict on the run card: **negative**, `promote: false`, no weekly slot claimed. Six hypotheses were tested;
+> five were rejected on measurement and one (packing vs top-K) is **not resolvable on this instrument** and is
+> reported as a null, not a win: [`docs/research/hypotheses-round2.md`](docs/research/hypotheses-round2.md).
+>
+> **Why the group's best file scores what it scores** — measured, not narrated. The
+> 37,654-dot file claimed at 0.2778 (USER-REPORTED) is a strict subset
+> of the 44,090-dot file claimed at 0.2600: the
+> 6,436 deleted cells are *exactly* the dots within 2 px of a catalogue pixel
+> (the survivor's distance floor is 2.24 px). The whole difference is one
+> prune, because known-fault pixels are deleted from the truth. Inverting the published formula on those two
+> numbers (DERIVED, never a projection) gives T = 5,223 credit,
+> 0.139 per dot, and |G| ≈ 12,783–18,294
+> hidden pixels; perfect placement at that mass would score 0.825.
+>
+> **The instrument is inverted for that decision, and that is the round's most useful finding.** The same folds
+> score the *unpruned* sibling file at 0.0900 and its pruned, higher-scoring-live
+> twin at 0.0038 — the opposite sign — because the withheld truth *is* the
+> catalogue. So no near-catalogue policy was chosen from hide-DTI here (IR-56-004, IR-56-011).
+>
+> **Unique.** 868 sibling rasters from the whole account mirror were screened at
+> ≤3 px dot proximity in both directions: **0** exceed the 0.70 duplicate rule. The
+> shared lane gate on the disclosed top-40 adversarial subset returns
+> ok=true / duplicate=false for both files
+> ([`evidence/lane_uniqueness2_summary.json`](evidence/lane_uniqueness2_summary.json)). 56
+> files trip the *one-way* criterion and all of them are dense artefacts — the largest is a 5-pixel lattice
+> probe (IR-56-025 after the PR #7 merge; drafted as 015 before ids were reconciled), which is why the
+> reciprocal direction is the criterion.
+>
+> **Run card:** [`docs/research/run-card-round2.json`](docs/research/run-card-round2.json)
+> (= [`evidence/run_card_round2.json`](evidence/run_card_round2.json)) · site generator:
+> `scripts/build_round2.py` · budget: 4 experiments against a stop-loss of 3 (the card says so and why),
+> 2 h clock met. Round 1 (the lane's assigned measurement) is preserved at
+> [`docs/lane1-corrections.html`](docs/lane1-corrections.html).
+>
+> *(Both round-2 runs of this lane ended negative on their own shared holdout; neither
+> claims a weekly slot, and neither has an organizer-confirmed score. The two records are kept
+> side by side: this page's front-end is `docs/index.html`, that run's preserved pages are
+> `docs/discovery-*.html` and `docs/{hypotheses,research,sources,prior-run}.html`.)*
+
+---
+
+> **Arena Core Values (quoted in the brief):** Maximize P(Win). Own the Outcome.
+> **Read `docs/brief/2026-10-09-session-prompt-h57.md` at the start of every session** — it is
+> the standing brief (lane, protocol, product requirements, official sources) and this README
+> links it first on purpose.
+
+## H57 run — 2026-10-09 (current)
+
+**Deliverable file:** `docs/downloads/h57-corr-band2px-cover-20261009T191337Z.tif`
+(+ `.zip`, + `.json` receipt) — 54,914 dots, single band, float32, **0 NaN cells**, every value
+in [0, 1], EPSG:32611, 3292×3730, geotransform identical to `sample_submission.tif`,
+sha256 `fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced`.
+**OK to download: yes. OK to submit (the form will accept it): yes.** Promotion to a weekly slot
+remains a separate selector decision; this repository has submitted nothing.
+
+**Hypothesis verdict: NEGATIVE — crest steering is refuted, by our own measurements.**
+
+| experiment | what it measured | result |
+|---|---|---|
+| E1 (offset histogram, MEASURED) | catalogue → nearest DEM crest / magnetic ridge within ±400 m, 44,390 transects | median \|offset\| **1.48 px**, signed median −0.11 px, 0.326 beyond 2 px vs **0.273 for the random null**; DEM–magnetic r = 0.022; 2 of 1,273 corridors pass the consistency gate → *offsets cluster under two pixels* |
+| E2 (`--mode spatial`) | hide-and-recover with whole-component spatial folds, 60,894 withheld px | corridor arms ≈ 0; uniform-random 0.01758 — **the split itself cannot test a corrections lane** (IR-57-001), so a second mode was built |
+| E3 (`--mode neighbour`) | hide-and-recover withholding only components with another mapped component within 400 m; 41,742 withheld positives | crest-steered **0.00087** [0.00049, 0.00133] vs evidence-free corridor **0.00177** [0.00130, 0.00232] at an identical dot budget; paired contrast **[−0.00138, −0.00048]**, P(beats) = 0.0; `B4_catalogue` = 0.00000 exactly (masking control) |
+
+All numbers are **HOLDOUT-DTI** (evaluator `h57-hide-and-recover-v1`: `src/metrics.py`, α 0.2,
+β 0.8, 300 m triangular kernel, visible faults masked pixel-exactly, 20×20 px block bootstrap,
+2,000 draws). None is a competition score; no ORGANIZER-CONFIRMED number exists for this repo.
+
+**So what ships, and why.** The brief's own stop rule applies to crest steering, and it was
+obeyed: nothing in the shipped file is steered by a crest. What ships is the *unsteered*,
+kernel-optimal cover of the band the organizers themselves describe as containing corrections —
+dots 200 m either side of every catalogue trace, every 200 m along strike, 0 dots on the
+(masked) catalogue. The geometry was chosen by an explicit metric calculation over nine
+candidate geometries (`evidence/h57_geometry_sweep.json`), whose target is circular by
+construction and is therefore reported as a sizing number and never as a score. **This is a
+bet on an organizer statement, not a validated discovery, and the site says so on the front
+page.**
+
+**Uniqueness.** Full-corpus directed screen over 944 sibling rasters
+(`evidence/registry_screen_v1.json`) plus the shared template gate on the 40 worst-overlapping
+earlier *submissions* (`evidence/h57_uniqueness_submissions.json`): **max Spearman 0.286**
+(bar 0.90) and **max exact-pixel Jaccard 0.152** against any earlier submission. The literal
+3 px containment clause fires — unavoidably, since every dot 2 px off a trace is within 3 px of
+that trace, including of the competition's own `existing_faults.tif` — and is logged as
+IR-57-003 with the discriminating statistics in
+`evidence/h57_uniqueness_discriminators.json`.
+
+**Reproduce the whole run:**
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+bash scripts/download_competition_data.sh                       # hash-pinned inputs
+.venv/bin/python scripts/h57_corridor_holdout.py --mode spatial   --out evidence/h57_holdout.json
+.venv/bin/python scripts/h57_corridor_holdout.py --mode neighbour --out evidence/h57_holdout_neighbour.json
+.venv/bin/python scripts/h57_build_corridor_submission.py --sweep
+.venv/bin/python scripts/h57_build_corridor_submission.py --build --offsets 2,-2 --step 2 --name h57-corr-band2px-cover
+.venv/bin/python scripts/mirror_registry_corpus.py /home/user/_reg /home/user/_regsrc
+.venv/bin/python scripts/screen_registry.py /home/user/_reg docs/downloads/h57-corr-*.tif
+.venv/bin/python scripts/h57_uniqueness.py --candidate docs/downloads/h57-corr-*.tif --registry /home/user/_reg_sub40
+.venv/bin/python scripts/build_site.py && .venv/bin/python -m pytest -q
+```
+
+**New irregularities from this run:** IR-57-001 (the spatial-fold holdout cannot test this lane),
+IR-57-002 (crest steering refuted), IR-57-003 (the literal containment clause is unpassable for
+any corrections emission), IR-57-004 (no holdout exists for the family the file bets on),
+IR-57-005 (`data/sample_submission.tif` vs `data/grid/sample_submission.tif` path split — fixed
+once in `scripts/download_competition_data.sh`), IR-57-006 (two mutually exclusive export
+policies coexist in the template; the tests now assert the policy the file declares).
+
+> ## Round 2 - discovery run (already on `main` via PR #7): **Bottom line:** five new hypotheses were
 > pre-registered (`docs/research/hypotheses-20261009.md`), the missing probe layer was obtained
 > (3,800 INGENOUS points), `scripts/download_competition_data.sh` now rebuilds every input from
 > the hash-pinned bridge, and the top-three hypotheses were validated on the shared 4-fold blocked
@@ -119,20 +242,22 @@ Site: **https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html**
 
 ---
 
-### Round-3 session brief (2026-10-09, branch `arena/e86c5610-56gemsdoe`, this PR)
+### Round-3 session brief (2026-10-09, branch `arena/e86c5610-56gemsdoe`, newest)
 
 The standing prompt, re-read as the starting point. Executed this run, in order:
 pre-registered `docs/research/hypotheses-20261009-round3.md` (H-C1 map-quality
 stratification + H-C2 dip-facing secondary + the emission decision rule) **before** any
-join was inspected; rebuilt every input from the hash-pinned bridge
-(`scripts/download_competition_data.sh`, all pins OK); ran E1 (H-C1: NEGATIVE on the
-pre-registered conjunction, IR-56-031 join bug caught and fixed before any decision), E2
-(twin-family tightening as the pre-registered fallback; holdout machinery re-check with a
-matched-mass chance control; canaries clean), E3 (unique 2,139-dot GeoTIFF, validators ok,
-registry screen over 1,026 rasters: documented UNIQUE, literal clause fires — logged,
-STOP); one JSON run card (`evidence/corrections/run_card_round3.json`, verdict NEGATIVE,
-0 slots spent); site regenerated from receipts with the one-click TIF + obvious
-OK-to-download / NOT-OK-to-submit verdict; 72 tests pass; PR + merge to `main`.
+join was inspected; rebuilt every input from the hash-pinned bridge (all pins OK); ran
+E1 (H-C1: NEGATIVE on the pre-registered conjunction, IR-56-031 join bug caught and fixed
+before any decision), E2 (twin-family tightening as the pre-registered fallback; holdout
+machinery re-check with a matched-mass chance control; canaries clean), E3 (unique
+2,139-dot GeoTIFF, validators ok, registry screen: documented UNIQUE, literal clause
+fires — logged, STOP); one JSON run card (`evidence/corrections/run_card_round3.json`,
+verdict NEGATIVE, 0 slots spent); site regenerated from receipts with the one-click TIF +
+obvious OK-to-download / NOT-OK-to-submit verdict; 72 tests pass; PR + merge to `main`.
+Cross-run note: the concurrent H57 session independently measured the pooled DEM–mag offset
+correlation at r = 0.022 (near-independent) — a caveat on the twin-family gate's strength
+(9 of 28 records vs ~4–7 expected by chance concordance), recorded in the round-3 run card.
 
 ### Round-2 session brief (2026-10-09, also active)
 
@@ -269,11 +394,11 @@ bash scripts/download_competition_data.sh              # place + hash-verify ALL
 .venv/bin/python scripts/cluster_gate_control.py            #     sign-flip permutation control
 .venv/bin/python scripts/build_corrections_submission.py    # E3  the rasters + receipts
 .venv/bin/python scripts/run_discovery_holdout.py           # R2  E1 hypotheses H6-H8 on the holdout
-.venv/bin/python scripts/build_discovery_submission.py      # R2  E2 the candidate .tif + receipt
 .venv/bin/python scripts/test_map_quality_stratification.py # R3  E1 H-C1: map-quality join + tests
 .venv/bin/python scripts/holdout_corrections.py             # R3  E2 arms incl. A1b twin + A4b chance
 .venv/bin/python scripts/build_round3_submission.py         # R3  E3 the twin-family .tif + receipt
 .venv/bin/python scripts/run_card_round3.py                 # R3     the one JSON run card
+.venv/bin/python scripts/build_discovery_submission.py      # R2  E2 the candidate .tif + receipt
 bash scripts/mirror_registry.sh /home/user/_reg             # R2  E3 harvest sibling rasters (once)
 .venv/bin/python scripts/screen_registry.py --tag v2 /home/user/_reg <candidate.tif>
 .venv/bin/python scripts/lane_gate_discovery.py             # R2  E3 surface + dots lane gates
@@ -303,18 +428,19 @@ The registry check needs the harvested sibling rasters (outside this repo; see
 
 ## Remaining work and limitations
 
+1b. **Round 3's independent test failed to confirm.** H-C1 (map-quality stratification) is the
+   only non-simulated test of the corrections mechanism run so far beside the H57 neighbour-fold
+   refutation of crest steering, and its pre-registered conjunction returned NEGATIVE
+   (suggestive secondaries; the sharp-crest control vanishes — the terrain confound). Until an
+   independent test passes, the lane's emissions stay research-only. The next testable
+   candidates, in cost order: (a) the dip-direction vs scarp-facing consistency check (H-C2,
+   data in hand, confounded by basinward-facing geomorphology — supportive only); (b) the
+   INGENIOUS 2 m probe warm-lineament gate (3,439 in-grid points, power-limited); (c) a second
+   mapping epoch (e.g. a future USGS QFaults release — not obtainable in this sandbox).
+
 1. **No organizer score exists for this file.** Every number here is MEASURED (official data),
    HOLDOUT-DTI (simulated truth), or USER-REPORTED (siblings). The only ORGANIZER-CONFIRMED
    number will be the receipt after you submit.
-1b. **Round 3's independent test failed to confirm.** H-C1 (map-quality stratification) is the
-   only non-simulated test of the corrections mechanism run so far, and its pre-registered
-   conjunction returned NEGATIVE (suggestive secondaries; the sharp-crest control vanishes —
-   the terrain confound). Until an independent test passes, the lane's emissions stay
-   research-only. The next testable candidates, in cost order: (a) the dip-direction vs
-   scarp-facing consistency check (H-C2, data in hand, confounded by basinward-facing
-   geomorphology — supportive only); (b) the INGENIOUS 2 m probe warm-lineament gate (3,439
-   in-grid points, power-limited); (c) a second mapping epoch (e.g. differencing the merged
-   catalogue against a future USGS QFaults release — not obtainable in this sandbox).
 2. **The holdout truth is simulated** (the measured crest lines of withheld records). It
    validates the machinery and the controls, not the organizer's hidden labels; the
    A1-vs-A2 (gate vs no-gate) contrast is construction-biased toward A2 and is reported as

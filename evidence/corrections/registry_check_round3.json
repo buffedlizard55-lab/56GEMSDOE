@@ -7,9 +7,9 @@
   "kernel_px": 3,
   "sparse_support_fraction": 0.05
  },
- "n_registry_rasters": 1026,
- "n_unique_pixel_content": 477,
- "n_sparse_dot_rasters": 358,
+ "n_registry_rasters": 1034,
+ "n_unique_pixel_content": 485,
+ "n_sparse_dot_rasters": 366,
  "n_dense_rasters": 118,
  "n_lane_dots": 2139,
  "n_surface_dots": 57904,

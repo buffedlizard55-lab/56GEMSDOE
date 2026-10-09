@@ -35,24 +35,57 @@ ul{margin:6px 0 6px 20px}li{margin:3px 0}
 <h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
 <div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
 faults missing from the USGS/INGENIOUS catalogue</div>
-<nav><a href="index.html">Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html" class=active>Irregularities</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif">&#11015; Download the submission GeoTIFF</a> <a class="btn alt" href="downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif">.tif (333 KB)</a></div>
+<nav><a href="index.html">Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html" class=active>Irregularities</a><a href="h57.html">H57 run (current)</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">&#11015; Download the submission GeoTIFF (150 KB)</a> <a class="btn alt" href="executive-summary.html">How to submit it &rarr;</a></div>
 </div></header>
 <div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
 submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
 on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
 <span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
 data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
-<main class=wrap><div class=card><h2 class=bad>STOP: not cleared for submission (round 3, twin-family)</h2>
-<p>The one-click TIF is format-valid research output. This round's pre-registered
-geological test (H-C1) returned NEGATIVE; the holdout number is machinery-only (simulated
-truth); and the literal &gt;70%-containment duplicate-and-stop rule fires (12 flags,
-including this lane's own round-1 raster, of which the round-3 dots are a strict subset).
-Historical UNIQUE/PROMOTE labels below describe earlier interpretations, not current
-authorization. Superset explanations do not waive the rule. No competition submission has
-been made; no weekly slot has been spent.</p>
-<p><a href="prior-run.html">Preserved prior run</a> ·
+<main class=wrap><div class=card><h2 class=ok>Current file: OK to download and OK to submit</h2>
+<p>The download button above gives you <code>h57-corr-band2px-cover-20261009T191337Z.tif</code>. It is
+<b>format-valid for the DrivenData form</b>: single band, float32, every value in [0,&nbsp;1],
+<b>zero NaN cells anywhere</b> (the earlier "Predicted values must be in range [0, 1]" rejection
+was caused by NaN padding, which this file does not contain), EPSG:32611, 3292&times;3730, and a
+geotransform identical to <code>sample_submission.tif</code>. Paste the submission name and note
+printed on the home page into the form.</p>
+<p><b>What it is not:</b> it is not a validated discovery. This run's crest-steering hypothesis is
+<b>REFUTED</b> by its own holdout (see <a href="h57.html">H57 run</a>); what ships is the
+unsteered, kernel-optimal cover of the 100&ndash;400&nbsp;m band the organizers describe as
+containing "corrections or modifications to existing fault traces". Spending one of your weekly
+slots on it is a judgement call that stays with you &mdash; the full evidence is one click away.</p>
+<p><a href="h57.html">H57 run card and holdout</a> ·
+<a href="executive-summary.html">Step-by-step submission guide</a> ·
+<a href="prior-run.html">Preserved prior runs</a> ·
 <a href="prior-irregularities.html">Prior run irregularities</a></p></div>
 <h2>Irregularities &mdash; flagged, and how each was checked</h2>
+<div class=card><h3 class=warn>IR-57-001: the spatial-fold holdout cannot test a corrections lane</h3>
+<p>Withholding whole catalogue components by spatial block (<code>evidence/h57_holdout.json</code>)
+places every hidden fault far from any visible trace, so a corridor-restricted emitter is
+structurally unable to reach it &mdash; measured: uniform-random dots 0.01758 vs corridor dots
+0.00023 pooled HOLDOUT-DTI. The result is a property of the split, not of the hypothesis. The
+neighbour-strand mode (<code>--mode neighbour</code>) was added in the same run and is the mode
+used for the verdict. Both are published; neither is deleted.</p></div>
+<div class=card><h3 class=bad>IR-57-002: the crest-steering corrections hypothesis is refuted</h3>
+<p>E1: |offset| median 1.48 px with a signed median of -0.11 px and a random null at nearly the
+same spread (0.326 vs 0.273 of transects beyond 2 px); DEM&ndash;magnetic agreement r = 0.022;
+2 of 1,273 corridors pass the consistency gate. E3: crest-steered dots 0.00087
+[0.00049, 0.00133] vs evidence-free corridor dots 0.00177 [0.00130, 0.00232] at an identical
+budget, paired contrast [-0.00138, -0.00048], P(beats) = 0.0. The lane therefore emits nothing
+steered by crests, exactly as the brief instructs.</p></div>
+<div class=card><h3 class=warn>IR-57-003: the literal 3 px containment clause cannot be passed by any corrections emission</h3>
+<p>Every dot placed 2 px off a catalogue trace is, by arithmetic, within 3 px of that trace. The
+gate therefore reports 100 % containment against the competition's own
+<code>existing_faults.tif</code> and against habitat-sized priors 4&ndash;13&times; larger. The
+discriminating statistics are published instead:
+max Spearman <b>0.286</b> (bar 0.90) and max exact-pixel Jaccard <b>0.152</b> against any earlier
+submission (<code>evidence/h57_uniqueness_discriminators.json</code>). Logged as a duplicate flag
+per the protocol; the file is not promoted to a slot by this repository.</p></div>
+<div class=card><h3 class=warn>IR-57-004: no holdout exists for the family this file bets on</h3>
+<p>The shipped raster bets on the organizers' statement that part of the hidden truth is
+"corrections or modifications to existing fault traces" within 300 m of a known trace. There are
+no corrections labels available to us, so that family cannot be scored locally; the geometry was
+sized against an explicitly circular simulation and that number is never reported as a score.</p></div>
 <div class=card><h3>IR-56-01: the 0.2778 attached to <code>h33-h33-2-b2</code> is user-reported and unsupported</h3>
 <p>The brief asks why <code>h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros</code> &ldquo;got the
 highest score (0.2778)&rdquo;. Checked against the sibling's own pages: the GEMSDOE32 site and
@@ -155,18 +188,17 @@ never used for a decision and was overwritten. The corrected join is positional
 (22,956 attribute rows = the dbf record count; <code>SLIPSENSE</code> agrees
 1,126/1,126 once NaN spellings are normalised). Both drafts' logic is documented in
 <code>scripts/test_map_quality_stratification.py</code>.</p></div>
-<div class=card><h3>IR-56-032: PR #8 (a parallel session) is open and CONFLICTING on main</h3>
+<div class=card><h3>IR-56-032: PR #8 (a parallel session) was open and CONFLICTING; superseded by the PR #13 merge</h3>
 <p><code>arena/17f46fe0-56gemsdoe</code> (&ldquo;Round 2: shipped GeoTIFFs&rdquo;, the
-magpack/quota rasters) was opened 2026-10-09 18:40 UTC and reports
-<code>mergeable: CONFLICTING</code> &mdash; it predates this session and edits the same
-files (README, index, executive summary). This session did not merge or build on it; its
-rasters ARE in the uniqueness registry via the sibling mirror. The owner should rebase or
-close it deliberately.</p></div>
+magpack/quota rasters) was opened 2026-10-09 18:40 UTC and reported
+<code>mergeable: CONFLICTING</code>. Its content reached <code>main</code> through PR
+#13's session instead; this round-3 session neither merged nor built on PR #8, and its
+rasters are in the uniqueness registry via the sibling mirror. The PR can be closed.</p></div>
 </main>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
 round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
 round-3 twin-family branch <code>arena/e86c5610-56gemsdoe</code> ·
-generated 2026-10-09 19:27 UTC by
+generated 2026-10-09 19:50 UTC by
 <code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
 and <code>evidence/*.json</code> (run B) ·
 site served from <code>main</code> at

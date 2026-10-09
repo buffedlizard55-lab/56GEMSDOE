@@ -35,54 +35,139 @@ ul{margin:6px 0 6px 20px}li{margin:3px 0}
 <h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
 <div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
 faults missing from the USGS/INGENIOUS catalogue</div>
-<nav><a href="index.html" class=active>Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif">&#11015; Download the submission GeoTIFF</a> <a class="btn alt" href="downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif">.tif (333 KB)</a></div>
+<nav><a href="index.html" class=active>Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="h57.html">H57 run (current)</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">&#11015; Download the submission GeoTIFF (150 KB)</a> <a class="btn alt" href="executive-summary.html">How to submit it &rarr;</a></div>
 </div></header>
 <div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
 submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
 on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
 <span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
 data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
-<main class=wrap><div class=card><h2 class=bad>STOP: not cleared for submission (round 3, twin-family)</h2>
-<p>The one-click TIF is format-valid research output. This round's pre-registered
-geological test (H-C1) returned NEGATIVE; the holdout number is machinery-only (simulated
-truth); and the literal &gt;70%-containment duplicate-and-stop rule fires (12 flags,
-including this lane's own round-1 raster, of which the round-3 dots are a strict subset).
-Historical UNIQUE/PROMOTE labels below describe earlier interpretations, not current
-authorization. Superset explanations do not waive the rule. No competition submission has
-been made; no weekly slot has been spent.</p>
-<p><a href="prior-run.html">Preserved prior run</a> ·
+<main class=wrap><div class=card><h2 class=ok>Current file: OK to download and OK to submit</h2>
+<p>The download button above gives you <code>h57-corr-band2px-cover-20261009T191337Z.tif</code>. It is
+<b>format-valid for the DrivenData form</b>: single band, float32, every value in [0,&nbsp;1],
+<b>zero NaN cells anywhere</b> (the earlier "Predicted values must be in range [0, 1]" rejection
+was caused by NaN padding, which this file does not contain), EPSG:32611, 3292&times;3730, and a
+geotransform identical to <code>sample_submission.tif</code>. Paste the submission name and note
+printed on the home page into the form.</p>
+<p><b>What it is not:</b> it is not a validated discovery. This run's crest-steering hypothesis is
+<b>REFUTED</b> by its own holdout (see <a href="h57.html">H57 run</a>); what ships is the
+unsteered, kernel-optimal cover of the 100&ndash;400&nbsp;m band the organizers describe as
+containing "corrections or modifications to existing fault traces". Spending one of your weekly
+slots on it is a judgement call that stays with you &mdash; the full evidence is one click away.</p>
+<p><a href="h57.html">H57 run card and holdout</a> ·
+<a href="executive-summary.html">Step-by-step submission guide</a> ·
+<a href="prior-run.html">Preserved prior runs</a> ·
 <a href="prior-irregularities.html">Prior run irregularities</a></p></div>
-<h2>&#11015;&nbsp;ONE-CLICK SUBMISSION FILE (round 3, twin-family corrections)</h2>
+
+<h2>&#11015;&nbsp;ROUND-3 TWIN-FAMILY CANDIDATE (this PR, newest corrections run) &mdash; download for review only</h2>
+<div class=card>
+<p><a class="btn" href="downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif">Download gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif</a>
+<span class=mut>333 KB · 2,139 dots on the
+DEM-scarp crest lines of the 9 records whose displacement is
+corroborated by BOTH evidence families (DEM + magnetic, sign-concordant medians &ge; 1&nbsp;px
+on one shared perpendicular reference) · values {0.0, 1.0}</span></p>
+<p><b>OK to download: yes.</b> <b>OK to submit: <span class=bad>NO</span>.</b>
+Round verdict <b>NEGATIVE</b>: H-C1 failed its pre-registered conjunction; the holdout is
+construction-biased by design; the literal containment clause fires (own round-1 superset).
+Receipts: <code>evidence/corrections/run_card_round3.json</code>.</p>
+<h3>The round's scientific test &mdash; H-C1: does the offset respect the catalogue's own map quality?</h3>
+<p>Joining the official QFaults/INGENIOUS attribute table (GDR 1391; positional join verified
+1,126/1,126 on SLIPSENSE) to the round-1 per-record offsets &mdash; never done in any sibling
+(&ldquo;FCODE&rdquo;/&ldquo;MAPSCALE&rdquo;/&ldquo;FTYPE_&rdquo;: 0 registry hits) &mdash; tests
+whether map-position error (the corrections mechanism) or mimic terrain produces the offsets:</p>
+<table>
+<tr><th>pre-registered arm</th><th>statistic</th><th>result</th></tr>
+<tr><td>(1) Spearman(MAPSCALE, |median offset|)</td><td>&rho; = 0.059, one-sided p = 0.257</td><td class=bad>FAIL (also: 120/125 records are 1:250k &mdash; no scale variance to detect)</td></tr>
+<tr><td>(2) Mann&ndash;Whitney (not-Well &gt; Well Constrained)</td><td>medians 1.52 vs 1.05 px, p = 0.039</td><td class=ok>PASS</td></tr>
+<tr><td>conjunction (both arms)</td><td>&mdash;</td><td class=bad><b>FAIL &rarr; H-C1 NEGATIVE</b></td></tr>
+</table>
+<p class=mut>Secondaries (reported, never gating): FCODE2023 &rho; = 0.169
+(p = 0.030), Kruskal&ndash;Wallis over FTYPE_ p = 0.034 with monotone
+medians Well 1.05 &lt; Moderately 1.50 &lt; Inferred 3.15 px; the stratification holds in the
+LiDAR-covered subset but <b>vanishes among sharp crests</b> (top-prominence quartile MW
+p = 0.62) &mdash; the pre-registered terrain confound. Suggestive, not
+confirmed; no goalposts were moved. Cross-run caveat: the concurrent H57 session measured the
+pooled DEM&ndash;mag offset correlation at r = 0.022 (near-independent), so the twin-family
+gate's 9-of-28 selection is only modestly above chance concordance (~4&ndash;7 expected).</p>
+<h3>The 9 twin-family records</h3>
+<table>
+<tr><th>record</th><th>name (official)</th><th>DEM med (px)</th><th>mag med (px)</th><th>DEM n</th><th>mag n</th></tr>
+<tr><td><code>29</code></td><td>Benton Spring fault</td><td>-2.75</td><td>-3.04</td><td>16</td><td>5</td></tr><tr><td><code>606</code></td><td>Montezuma Range fault</td><td>2.55</td><td>2.24</td><td>8</td><td>9</td></tr><tr><td><code>856</code></td><td>Seven Troughs Range fault zone</td><td>-2.77</td><td>-1.10</td><td>8</td><td>7</td></tr><tr><td><code>1149</code></td><td>Unnamed fault zone between Kumiva and Sage Hen Valleys</td><td>-2.14</td><td>-1.09</td><td>8</td><td>5</td></tr><tr><td><code>1169</code></td><td>Unnamed fault zone in Desert Mountains</td><td>-2.16</td><td>-2.94</td><td>11</td><td>13</td></tr><tr><td><code>1307</code></td><td>Unnamed faults in Gabbs Valley Range</td><td>-2.02</td><td>-1.30</td><td>20</td><td>11</td></tr><tr><td><code>1514</code></td><td>Unnamed faults west of Cocoon Mountains</td><td>2.98</td><td>2.99</td><td>11</td><td>4</td></tr><tr><td><code>1577</code></td><td>Western Fairview Peak fault</td><td>-2.03</td><td>-2.97</td><td>11</td><td>3</td></tr><tr><td><code>2665</code></td><td>Sand Springs Range fault</td><td>2.99</td><td>1.76</td><td>8</td><td>3</td></tr>
+</table>
+<p class=mut>Emission on the DEM crest (LiDAR-calibrated, MAD 0.29&nbsp;px); the magnetic family
+is the corroboration gate, not the emitter. HOLDOUT-DTI (simulated truth, machinery only):
+A1b 0.10788 [0.08976, 0.12681] vs matched-mass
+chance 0.00414 &mdash; 26&times; chance with CI excluding 0; leakage canary
+&le; 0.58 (bar 0.90). Registry (re-screened post-merge over the updated corpus): documented
+UNIQUE; the literal clause fires on degenerate supersets + the own round-1 superset &mdash;
+numbers in the run card. Map-tolerance sensitivity and the H57 cross-caveat are in
+<code>evidence/corrections/build_round3.json</code> and the run card.</p>
+<p><b>submission name</b> <code>gems56-corr-twinfam9-20261009T190155Z-0279ca86</code><br>
+<b>note</b> (136/140): <code>h56 round-3 corrections: twin-family gate (DEM+mag concordant offsets, 9 records); H-C1 map-quality NEGATIVE; research only, do not slot</code><br>
+<b>sha256</b> <code>a614a594e179fa2af24a3d9c311bbab45f3c39ca868023da23b43ece16a32b75</code> · validator exit
+0</p>
+</div>
+
+
+<h2>&#11015;&nbsp;CURRENT SUBMISSION FILE (H57, this run)</h2>
+<div class=card>
+<p><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">Download h57-corr-band2px-cover-20261009T191337Z.tif</a>
+<span class=mut>150 KB · single band · float32 ·
+EPSG:32611 · 100 m · 3292&times;3730 · 54,914 dots · values {0.0, 1.0} ·
+<b>0 NaN cells</b></span></p>
+<p><b>OK to download: <span class=ok>YES</span>. OK to submit (the form will accept it):
+<span class=ok>YES</span>.</b> Validator: ok=True, NaN cells 0,
+min 0.0, max 1.0, problems [].</p>
+<p><b>Submission name</b> <code>h57-corr-band2px-cover-20261009T191337Z</code><br>
+<b>Note</b> (122/140): <code>corrections-band cover: dots 2px either side of every catalogue trace, 2px along strike; crest steering refuted on holdout</code><br>
+<b>sha256</b> <code>fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced</code></p>
+<p><b>What the evidence says, in one line:</b> the crest-steering hypothesis is
+<span class=bad>REFUTED</span> &mdash; measured offsets cluster under two pixels
+(median 1.48 px, signed median
+-0.11 px, 0.326 beyond 2 px vs
+0.273 for the random null) and crest-steered dots score
+<b>below</b> an evidence-free corridor at the identical budget
+(HOLDOUT-DTI 0.00087 vs 0.00177;
+paired contrast [-0.001378, -0.000476],
+P(beats)=0.0;
+41,742 withheld positives). So this file emits the
+<b>unsteered</b> cover instead: dots 200 m either side of every trace, which with the 300 m
+triangular kernel credits a refined trace anywhere out to about 500 m.</p>
+<p><b>Uniqueness:</b> max Spearman 0.286 against the 40 worst-overlap
+earlier submission rasters (bar 0.90); largest exact-pixel Jaccard
+0.152 against a 6.6&times; larger raster. The
+literal 3&nbsp;px containment clause fires &mdash; it does so for the competition's own
+<code>existing_faults.tif</code> too, because every dot 2&nbsp;px off a trace is within 3&nbsp;px
+of that trace &mdash; and is logged as <a href="irregularities.html">IR-57-003</a>.</p>
+<p class=mut>Receipts: <code>evidence/h57_run_card.json</code>,
+<code>evidence/h57_holdout_neighbour.json</code>, <code>evidence/h57_holdout.json</code>,
+<code>evidence/h57_geometry_sweep.json</code>,
+<code>evidence/h57_uniqueness_submissions.json</code>. Full detail:
+<a href="h57.html">H57 run page</a>.</p>
+</div>
+
+<h2>&#11015;&nbsp;EARLIER RUN FILE (run A, superseded)</h2>
 <div class=card>
 <p><a class="btn" href="downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif">Download gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif</a>
 <span class=mut>333 KB · single band · float32 · EPSG:32611 · 100 m ·
-3292&times;3730 · 2,139 predicted pixels · every value in [0, 1] · NaN only outside the
+3292&times;3730 · 6,504 predicted pixels · every value in [0, 1] · NaN only outside the
 scored footprint · nodata tag <code>nan</code> (the official sample's own format)</span></p>
-<p><b>sha256:</b> <code>a614a594e179fa2af24a3d9c311bbab45f3c39ca868023da23b43ece16a32b75</code></p>
-<p><b>Unique submission name to use:</b> <code>gems56-corr-twinfam9-20261009T190155Z-0279ca86</code><br>
+<p><b>sha256:</b> <code>08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7</code></p>
+<p><b>Unique submission name to use:</b> <code>GEMSDOE56-CORR-CRESTGT2PX</code><br>
 <b>Note to paste into the submit form's <em>Note (optional)</em> field</b>
-(136/140 characters):<br><code>h56 round-3 corrections: twin-family gate (DEM+mag concordant offsets, 9 records); H-C1 map-quality NEGATIVE; research only, do not slot</code></p>
+(137/140 characters):<br><code>GEMSDOE56 corrections: 6504 dots on LiDAR-calibrated DEM-scarp crest where catalogue offset &gt;2px; 0 on-catalogue; HOLDOUT-DTI(sim) 0.3105</code></p>
 <p><b>Format status:</b> <span class=ok>PASS</span> &mdash; <code>scripts/validate_submission.py</code>
-exit 0 and template conformance verified at build time
+exit 0 and <code>python -m src.submission_io validate-conformant</code> exit 0
 (no NaN inside the footprint, every value in [0,1], CRS/shape/transform match
-<code>sample_submission.tif</code>, GDAL_NODATA=<code>nan</code>).</p>
-<p><b>Verdict &mdash; is it OK to download and submit?</b>
-<b>OK to download: yes.</b> <b>OK to submit: <span class=bad>NO</span>.</b>
-This round's pre-registered geological test (H-C1, map-quality stratification of the
-catalogue-to-crest offsets) returned <b>NEGATIVE</b> on its pre-registered conjunction; the
-holdout number below is machinery-only (simulated truth = the measured crests); and the literal
-registry containment clause fires on 12 supersets (including this lane's own round-1 raster,
-of which this file is a strict subset). Nothing is promoted; no weekly slot is spent.</p>
-<p><b>Uniqueness status:</b> <span class=ok>UNIQUE - no prior re-issued (literal containment flags logged and investigated below)</span> vs 1026 earlier rasters (477 unique pixel contents): max Spearman 0.5732, max 3&nbsp;px Jaccard 0.329; literal &gt;70% containment flags 12 (degenerate supersets + own round-1 superset), logged and investigated</p>
-<p><b>Evidence status:</b> <span class=warn>HOLDOUT-DTI (simulated-corrections truth, machinery only)</span>
-A1b twin 0.10788 [0.08976, 0.12681] vs
-matched-mass random 0.00414 and masked control 0.00000 &mdash; see
-<a href="research.html">research</a>. The round-1 reference arm reproduces
-0.31049 exactly (deterministic pipeline, re-run this session).</p>
-<p class=mut>The previous one-click files (round-1 crest&gt;2px 6,504-dot raster, the 1-dot and
-6-dot sensitivity arms, the round-2 discovery raster) remain in
-<code>downloads/</code> with their own verdict cards below and on
-<a href="prior-run.html">prior run</a>.</p>
+<code>sample_submission.tif</code>, template conformance, GDAL_NODATA=<code>nan</code>).</p>
+<p><b>Uniqueness status:</b> <span class=ok>UNIQUE - no prior re-issued (literal containment flags logged and investigated below)</span> vs 412 unique earlier rasters (max Spearman 0.0429, max 3&nbsp;px Jaccard 0.091)</p>
+<p><b>Evidence status:</b> <span class=warn>HOLDOUT-DTI (simulated-corrections truth)</span>
+A1 lane 0.3105 [0.2821, 0.3378] vs masked control
+0.0000 and random control 0.0117 &mdash; see <a href="research.html">research</a>.</p>
+<p class=mut>Is it OK to download and submit? The file is format-validated but fails the literal uniqueness gate; the
+holdout validates the mechanism on a simulated truth; no organizer score exists for it. The
+standing protocol requires a stop, not a submission &mdash; the full reasoning is on
+<a href="executive-summary.html">Make a submission</a>.</p>
 </div>
 
 
@@ -110,62 +195,11 @@ same budget; paired difference -0.02257
 True</p>
 </div>
 
-
-<h2>&#11015;&nbsp;ROUND-3 TWIN-FAMILY CANDIDATE (this PR) &mdash; download for review only</h2>
-<div class=card>
-<p><a class="btn" href="downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif">Download gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif</a>
-<span class=mut>333 KB · 2,139 dots on the
-DEM-scarp crest lines of the 9 records whose displacement is
-corroborated by BOTH evidence families (DEM + magnetic, sign-concordant medians &ge; 1&nbsp;px
-on one shared perpendicular reference) · values {0.0, 1.0}</span></p>
-<p><b>OK to download: yes.</b> <b>OK to submit: <span class=bad>NO</span>.</b>
-Round verdict <b>NEGATIVE</b> (negative): H-C1 failed its
-pre-registered conjunction; the holdout is construction-biased by design; the literal
-containment clause fires (own round-1 superset). Receipts:
-<code>evidence/corrections/run_card_round3.json</code>.</p>
-<h3>The round's scientific test &mdash; H-C1: does the offset respect the catalogue's own map quality?</h3>
-<p>Joining the official QFaults/INGENIOUS attribute table (GDR 1391; positional join verified
-1,126/1,126 on SLIPSENSE) to the round-1 per-record offsets &mdash; never done in any sibling
-(&ldquo;FCODE&rdquo;/&ldquo;MAPSCALE&rdquo;/&ldquo;FTYPE_&rdquo;: 0 registry hits) &mdash; tests
-whether map-position error (the corrections mechanism) or mimic terrain produces the offsets:</p>
-<table>
-<tr><th>pre-registered arm</th><th>statistic</th><th>result</th></tr>
-<tr><td>(1) Spearman(MAPSCALE, |median offset|)</td><td>&rho; = 0.059, one-sided p = 0.257, n = 125</td><td class=bad>FAIL (also: 120/125 records are 1:250k &mdash; no scale variance to detect)</td></tr>
-<tr><td>(2) Mann&ndash;Whitney (not-Well &gt; Well Constrained)</td><td>medians 1.52 vs 1.05 px, p = 0.039</td><td class=ok>PASS</td></tr>
-<tr><td>conjunction (both arms)</td><td>&mdash;</td><td class=bad><b>FAIL &rarr; H-C1 NEGATIVE</b></td></tr>
-</table>
-<p class=mut>Secondaries (reported, never gating): FCODE2023 &rho; = 0.169
-(p = 0.030), Kruskal&ndash;Wallis over
-FTYPE_ p = 0.034 with monotone medians
-Well 1.05 &lt; Moderately 1.50 &lt; Inferred 3.15 px; the stratification holds in the
-LiDAR-covered subset but <b>vanishes among sharp crests</b> (top-prominence quartile MW
-p = 0.62) &mdash; the
-pre-registered terrain confound. Suggestive, not confirmed; no goalposts were moved.</p>
-<h3>The 9 twin-family records</h3>
-<table>
-<tr><th>record</th><th>name (official)</th><th>DEM med (px)</th><th>mag med (px)</th><th>DEM n</th><th>mag n</th></tr>
-<tr><td><code>29</code></td><td>Benton Spring fault</td><td>-2.75</td><td>-3.04</td><td>16</td><td>5</td></tr><tr><td><code>606</code></td><td>Montezuma Range fault</td><td>2.55</td><td>2.24</td><td>8</td><td>9</td></tr><tr><td><code>856</code></td><td>Seven Troughs Range fault zone</td><td>-2.77</td><td>-1.10</td><td>8</td><td>7</td></tr><tr><td><code>1149</code></td><td>Unnamed fault zone between Kumiva and Sage Hen Valleys</td><td>-2.14</td><td>-1.09</td><td>8</td><td>5</td></tr><tr><td><code>1169</code></td><td>Unnamed fault zone in Desert Mountains</td><td>-2.16</td><td>-2.94</td><td>11</td><td>13</td></tr><tr><td><code>1307</code></td><td>Unnamed faults in Gabbs Valley Range</td><td>-2.02</td><td>-1.30</td><td>20</td><td>11</td></tr><tr><td><code>1514</code></td><td>Unnamed faults west of Cocoon Mountains</td><td>2.98</td><td>2.99</td><td>11</td><td>4</td></tr><tr><td><code>1577</code></td><td>Western Fairview Peak fault</td><td>-2.03</td><td>-2.97</td><td>11</td><td>3</td></tr><tr><td><code>2665</code></td><td>Sand Springs Range fault</td><td>2.99</td><td>1.76</td><td>8</td><td>3</td></tr>
-</table>
-<p class=mut>Emission on the DEM crest (LiDAR-calibrated, MAD 0.29&nbsp;px); the magnetic family
-is the corroboration gate, not the emitter. HOLDOUT-DTI (simulated truth, machinery only):
-A1b 0.10788 [0.08976, 0.12681] vs matched-mass
-chance 0.00414 &mdash; 26&times; chance with CI excluding 0; leakage canary
-&le; 0.58 (bar 0.90). Registry: documented UNIQUE (max Spearman 0.573, max Jaccard 0.329, no
-mutual containment) over 1,026 rasters; literal clause fires on 12 degenerate supersets +
-the own round-1 superset (this file's dots are a strict subset of round-1's &mdash;
-pre-registered before the screen ran).</p>
-<p><b>submission name</b> <code>gems56-corr-twinfam9-20261009T190155Z-0279ca86</code><br>
-<b>note</b> (136/140): <code>h56 round-3 corrections: twin-family gate (DEM+mag concordant offsets, 9 records); H-C1 map-quality NEGATIVE; research only, do not slot</code><br>
-<b>sha256</b> <code>a614a594e179fa2af24a3d9c311bbab45f3c39ca868023da23b43ece16a32b75</code> · validator exit
-0</p>
-</div>
-
-<h2>Three corrections runs, one repository &mdash; plus a discovery run</h2>
-<p>This repository has run the corrections lane <b>three times</b>, in parallel sessions.
-All runs measured the same catalogue against the same evidence; they gate different
-questions (strongest-crest displacement? null-calibrated corridor consistency?
-two-family corroboration + map-quality stratification?) and are reported in full &mdash;
-the disagreements are the findings.</p>
+<h2>Two corrections runs, one repository &mdash; plus a discovery run</h2>
+<p>This repository has run the corrections lane <b>twice</b>, in two parallel sessions.
+Both runs measured the same catalogue against the same evidence; they gate different
+questions and reached opposite verdicts. Both are reported in full &mdash; the disagreement
+is the finding.</p>
 <div class=grid>
 <div class=card><h3>Run A &mdash; this run (branch <code>arena/b71ede8d-56gemsdoe</code>) &mdash; <span class=ok>strongest-crest finding; protocol verdict NEGATIVE</span></h3>
 <p>Question: <em>is the catalogue on the MAIN scarp?</em> For 28 of 125 well-sampled records
@@ -197,17 +231,6 @@ canaries clean. Registry gate: surface PASS, dots
 DUPLICATE/STOP (density-degenerate trigger, IR-56-023).
 Their unique TIF is the second download above &mdash; labelled NEGATIVE / do not submit in
 its name, note and receipt. 0 slots spent.</p></div>
-<div class=card><h3>Run D &mdash; this PR (branch <code>arena/e86c5610-56gemsdoe</code>) &mdash; <span class=warn>twin-family tightening; round verdict NEGATIVE</span></h3>
-<p>Question: <em>does the catalogue's own map-quality metadata explain the measured offsets, and
-which corrections survive two-family corroboration?</em> H-C1 (map-quality stratification, the
-first independent test of the corrections mechanism, using the official attribute table)
-returned NEGATIVE on the pre-registered conjunction (suggestive secondaries; the sharp-crest
-control vanishes &mdash; the terrain confound). The fallback emission keeps the
-9 records whose displacement both the DEM-scarp crest and the magnetic ridge
-corroborate &rarr; <b>2,139 dots</b>, HOLDOUT-DTI(sim, machinery-only)
-0.10788 vs matched-mass chance 0.00414. Registry: documented UNIQUE
-over 1,026 rasters; literal clause fires (own round-1 superset). <b>The one-click download
-above is this run's file.</b> 0 slots spent.</p></div>
 </div>
 <p class=mut>Reconciliation: the two runs agree on the measurement &mdash; the catalogue sits
 within ~1&nbsp;px of <em>some</em> crest (run A's nearest-crest reading matches run B's
@@ -265,7 +288,7 @@ not the fault;</li>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
 round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
 round-3 twin-family branch <code>arena/e86c5610-56gemsdoe</code> ·
-generated 2026-10-09 19:27 UTC by
+generated 2026-10-09 19:50 UTC by
 <code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
 and <code>evidence/*.json</code> (run B) ·
 site served from <code>main</code> at

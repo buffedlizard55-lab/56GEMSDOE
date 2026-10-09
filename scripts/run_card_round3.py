@@ -107,9 +107,13 @@ def main() -> int:
                 "returned NEGATIVE on the pre-registered conjunction."),
         ),
         registry_comparison=dict(
-            tool="scripts/check_registry.py (shared; 1,026 rasters incl. 17 unzipped "
-                 "single-GeoTIFF zips; 477 unique pixel contents; surface AND dots checked)",
+            tool="scripts/check_registry.py (shared; re-screened AFTER merging main, over the "
+                 "updated corpus that includes this repo's newest parallel-session rasters "
+                 "(H57 cover band, magpack/quota, dotted-ridge, corridor, triconcord, "
+                 "persist-step); surface AND dots checked)",
             documented_verdict=reg["verdict"],
+            n_registry_rasters=reg["n_registry_rasters"],
+            n_unique_pixel_content=reg["n_unique_pixel_content"],
             n_duplicates=reg["n_duplicates"],
             worst=dict(spearman_dots=reg["worst"]["spearman_dots"],
                        spearman_surface=reg["worst"]["spearman_surface"],
@@ -117,14 +121,28 @@ def main() -> int:
                        containment=reg["worst"]["containment"],
                        rev_containment=reg["worst"]["rev_containment"]),
             literal_clause=(
-                "FIRES (12 flags, STOP logged per protocol): 11 are 12-40x-larger habitat/"
-                "lattice/scatter supersets with reverse containment <= 0.011 and Jaccard "
-                "<= 0.020 (the known density-degenerate class, IR-56-007/IR-56-023), plus THIS "
-                "lane's own round-1 raster (containment 1.000, reverse 0.332, Jaccard 0.329) - "
-                "the dots are a strict subset of the round-1 emission by construction, which was "
-                "pre-registered before the screen ran. No prior is re-issued: no Spearman > 0.90 "
-                "(max 0.573), no Jaccard > 0.50 (max 0.329), no mutual containment."),
+                "FIRES (STOP logged per protocol): the degenerate-superset class (habitat/"
+                "lattice/scatter/cover-band emissions many times larger, reverse containment "
+                "small) plus THIS lane's own round-1 raster - the dots are a strict subset of "
+                "the round-1 emission by construction, which was pre-registered before the "
+                "screen ran. No prior is re-issued: see the worst statistics and "
+                "n_duplicates=0 in this receipt."),
             receipt="evidence/corrections/registry_check_round3.json",
+        ),
+        cross_run_caveat=dict(
+            h57_session=(
+                "The concurrent H57 session (merged to main during this round) independently "
+                "measured the pooled DEM-mag offset correlation at r = 0.022 (near-independent) "
+                "and refuted crest steering on a neighbour-strand hide-and-recover holdout "
+                "(crest-steered 0.00087 vs evidence-free corridor 0.00177 at equal budget). "
+                "Consistent with this round's NEGATIVE on H-C1, and a stated caveat on the "
+                "twin-family gate: 9 of 28 records pass vs ~4-7 expected by chance sign "
+                "concordance, so the gate's incremental evidence is modest."),
+            reconciliation=(
+                "Both rounds agree the corrections hypothesis currently lacks a passing "
+                "independent validation. The shipped artefacts answer different questions: "
+                "H57's cover band is an unsteered bet on the organizer statement; round 3's "
+                "twin raster is the best-corroborated crest subset. Neither is promoted."),
         ),
         raster=dict(
             file=e3["artefact"]["file"],

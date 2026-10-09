@@ -1,0 +1,100 @@
+{
+  "generated_utc": "20261009T190421Z",
+  "hypothesis": "Faults produce ridges in three independent physics fields simultaneously (DEM slope curvature det_elev_slope, magnetic horizontal gradient tmi_hg, isostatic-gravity horizontal gradient iso_grav_anom_hg); local-maximum suppression at the 300 m scoring-kernel scale yields a sparse set of candidate pixels; the top 37,654 outside a 200 m dilated catalogue mask is the emission.",
+  "mechanism": "Hessian bright-ridge (sigma=300 m) per band; ECDF rank transform to [0,1]; arithmetic mean of ranks across bands; 280 m disc local-maximum suppression; top-k=37,654 restricted to footprint minus a 2 px (200 m) dilation of the USGS/INGENIOUS catalogue; emitted value 1.0, background 0.0, NaN strictly outside the sample footprint. No learned component; no external data beyond the competition feature stack.",
+  "named_non_fault_process": "Basin-and-Range range-front escarpments, volcanic flow edges, and lithologic contacts produce Hessian ridges in one or two of the three bands; requiring three bands and NMS thinning reduces but does not eliminate non-fault lineaments.",
+  "holdout_dti": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "alpha": 0.2,
+    "beta": 0.8,
+    "triangular_radius_m": 300.0,
+    "pooled": true,
+    "scores": {
+      "final@37654": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "dti": 0.05339837306342991,
+        "ci95": [
+          0.04754621343153738,
+          0.0587732159498789
+        ],
+        "withheld_positive_pixels": 48124,
+        "tpw": 3688.7921088161556,
+        "fpw": 149218.25082981217,
+        "fnw": 44435.20789118384
+      },
+      "random@37654": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "dti": 0.046925315708425536,
+        "ci95": [
+          0.04263121608047941,
+          0.05077555244609271
+        ],
+        "withheld_positive_pixels": 48124,
+        "tpw": 3238.47207992373,
+        "fpw": 149332.15464734787,
+        "fnw": 44885.52792007627
+      }
+    },
+    "best_comparable_control": "random@37654",
+    "paired_differences": {
+      "random@37654": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "delta": 0.006473057355004377,
+        "ci95": [
+          0.001836250834880206,
+          0.01091468324789348
+        ],
+        "withheld_positive_pixels": 48124
+      }
+    },
+    "bootstrap": {
+      "method": "paired physical spatial-cluster percentile",
+      "clusters": 640,
+      "draws": 1000,
+      "seed": 520810,
+      "confidence": 0.95,
+      "caveat": "Conditional on fitted folds, catalogue labels and fixed budgets; not a leaderboard interval."
+    },
+    "implementation_sha256": {
+      "evaluate_holdout.py": "ffb084fdf34bb30438485b89caeb1228a6680abfd9f9f0472f4355845da05cc6",
+      "holdout.py": "f6706d781de72092e59332074af26e1d58cf734f95bf947a0d7c3fea577e6145",
+      "metric.py": "3d454119edfcec3cc2a83278c2015d7e41d39d8c1142fca12311409a18ce7d1a",
+      "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+    }
+  },
+  "raster": {
+    "file": "h56-final-dotted-ridge-d2p8-20261009T190421Z.tif",
+    "sha256": "88495c1c3dc535f85f9c15a03c4e1bcd2eb0123bc3bfec249b159f034f4f809b",
+    "bytes": 410258,
+    "dots": 37654,
+    "dots_on_catalogue": 0,
+    "dots_within_200m": 0,
+    "sigma_m": 300.0,
+    "nms_radius_px": 2.8,
+    "exclude_px": 2,
+    "k": 37654,
+    "local_max_candidates": 61150
+  },
+  "format_validation": {
+    "validator": "scripts/validate_submission.py",
+    "validator_pass": true,
+    "finite_inside": 5167373,
+    "nan_outside": 7111787
+  },
+  "submission_name": "GEMSDOE56-dotted-ridge-d2p8",
+  "note": "h56 final: 37654 unit dots on 3-band mean-rank Hessian ridge (det_elev_slope/tmi_hg/iso_grav_anom_hg, sigma=300 m, 280 m NMS, 200 m catalogu",
+  "zip_file": "h56-final-dotted-ridge-d2p8-20261009T190421Z.zip",
+  "zip_sha256": "7eb33960a6542f04d1fa593f0254b99b0534d9acc6dee59047339ddc5e7a8303",
+  "verdict": {
+    "promote": true,
+    "verdict": "promote",
+    "format_valid": true,
+    "holdout_beats_random": true,
+    "rationale": "promote iff paired 95% CI vs same-mask random at equal budget is strictly positive AND format-valid."
+  },
+  "ok_to_download_and_submit": true
+}

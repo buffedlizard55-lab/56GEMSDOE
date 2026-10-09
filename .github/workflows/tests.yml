@@ -64,11 +64,30 @@ jobs:
       - name: pytest
         run: python -m pytest tests -q
 
-      - name: validate the shipped submission GeoTIFF
+      - name: validate the shipped submission GeoTIFFs
         run: |
-          TIF=$(ls docs/downloads/gems56-corr-*-nan.tif | head -1)
-          python scripts/validate_submission.py --pred "$TIF" \
-                 --sample data/sample_submission.tif \
-                 --train data/training_features.tif
-          python -m src.submission_io validate-conformant "$TIF" \
-                 --sample data/sample_submission.tif
+          # Legacy NaN-outside file: only when the feature stack is present, because the
+          # validator cross-checks against it.
+          TIF=$(ls docs/downloads/gems56-corr-*-nan.tif 2>/dev/null | head -1)
+          if [ -n "$TIF" ] && [ -f data/training_features.tif ]; then
+            python scripts/validate_submission.py --pred "$TIF" \
+                   --sample data/sample_submission.tif \
+                   --train data/training_features.tif
+            python -m src.submission_io validate-conformant "$TIF" \
+                   --sample data/sample_submission.tif
+          else
+            echo "legacy NaN-outside file or feature stack absent - skipping its validator"
+          fi
+          # Current all-finite file: checked by the gate that actually governs it.
+          python - <<'EOF'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, "src")
+          from gems56 import gates
+          tifs = sorted(Path("docs/downloads").glob("h57-corr-*.tif"))
+          assert tifs, "no H57 submission raster found"
+          rep = gates.format_report(tifs[-1], "data/sample_submission.tif")
+          print(rep["path"], "ok=", rep["ok"], "nan=", rep["n_nan"],
+                "min=", rep.get("min"), "max=", rep.get("max"))
+          assert rep["ok"] and rep["n_nan"] == 0, rep["problems"]
+          EOF

@@ -1,0 +1,205 @@
+{
+ "experiment": "E2 H57 hide-and-recover holdout, real withheld catalogue components",
+ "evaluator": "src/metrics.py GtContext (official DTI, alpha 0.2, beta 0.8, R=3 px/300 m) + pixel-exact visible-fault masking model",
+ "evaluator_version": "h57-hide-and-recover-v1",
+ "label": "HOLDOUT-DTI (never an organizer score)",
+ "folds": 4,
+ "buffer_px": 3,
+ "min_offset_px": 2.0,
+ "n_withheld_positives": 60894,
+ "pooled": {
+  "B0_chance": 0.017584,
+  "B1_corridor": 0.000231,
+  "B2_evidence": 3.8e-05,
+  "B3_corroborated": 0.0,
+  "B4_catalogue": 0.0
+ },
+ "dots": {
+  "B0_chance": 39737,
+  "B1_corridor": 40103,
+  "B2_evidence": 40103,
+  "B3_corroborated": 6539,
+  "B4_catalogue": 182625
+ },
+ "bootstrap": {
+  "B1_corridor": {
+   "dti_p50": 0.000218,
+   "dti_ci95": [
+    4.1e-05,
+    0.000518
+   ],
+   "contrast_vs_reference_p50": 0.0,
+   "contrast_vs_reference_ci95": [
+    0.0,
+    0.0
+   ],
+   "prob_beats_reference": null,
+   "n_blocks": 30855,
+   "n_scoreable_blocks": 4288
+  },
+  "B0_chance": {
+   "dti_p50": 0.017627,
+   "dti_ci95": [
+    0.016205,
+    0.019036
+   ],
+   "contrast_vs_reference_p50": 0.017398,
+   "contrast_vs_reference_ci95": [
+    0.015943,
+    0.018811
+   ],
+   "prob_beats_reference": 1.0,
+   "n_blocks": 30855,
+   "n_scoreable_blocks": 12654
+  },
+  "B2_evidence": {
+   "dti_p50": 3.7e-05,
+   "dti_ci95": [
+    0.0,
+    9.2e-05
+   ],
+   "contrast_vs_reference_p50": -0.00018,
+   "contrast_vs_reference_ci95": [
+    -0.000459,
+    -2.6e-05
+   ],
+   "prob_beats_reference": 0.003,
+   "n_blocks": 30855,
+   "n_scoreable_blocks": 3997
+  },
+  "B3_corroborated": {
+   "dti_p50": 0.0,
+   "dti_ci95": [
+    0.0,
+    0.0
+   ],
+   "contrast_vs_reference_p50": -0.000218,
+   "contrast_vs_reference_ci95": [
+    -0.000518,
+    -4.1e-05
+   ],
+   "prob_beats_reference": 0.0,
+   "n_blocks": 30855,
+   "n_scoreable_blocks": 3849
+  },
+  "B4_catalogue": {
+   "dti_p50": 0.0,
+   "dti_ci95": [
+    0.0,
+    0.0
+   ],
+   "contrast_vs_reference_p50": -0.000218,
+   "contrast_vs_reference_ci95": [
+    -0.000518,
+    -4.1e-05
+   ],
+   "prob_beats_reference": 0.0,
+   "n_blocks": 30855,
+   "n_scoreable_blocks": 3816
+  }
+ },
+ "per_fold": [
+  {
+   "fold": 0,
+   "withheld_px": 12916,
+   "visible_px": 47967,
+   "B0_chance": {
+    "dti": 0.016816,
+    "dots": 10255
+   },
+   "B1_corridor": {
+    "dti": 6.3e-05,
+    "dots": 10343
+   },
+   "B2_evidence": {
+    "dti": 0.0,
+    "dots": 10343
+   },
+   "B3_corroborated": {
+    "dti": 0.0,
+    "dots": 1708
+   },
+   "B4_catalogue": {
+    "dti": 0.0,
+    "dots": 47967
+   }
+  },
+  {
+   "fold": 1,
+   "withheld_px": 14191,
+   "visible_px": 46683,
+   "B0_chance": {
+    "dti": 0.01667,
+    "dots": 10244
+   },
+   "B1_corridor": {
+    "dti": 0.000235,
+    "dots": 10345
+   },
+   "B2_evidence": {
+    "dti": 6.7e-05,
+    "dots": 10345
+   },
+   "B3_corroborated": {
+    "dti": 0.0,
+    "dots": 1656
+   },
+   "B4_catalogue": {
+    "dti": 0.0,
+    "dots": 46683
+   }
+  },
+  {
+   "fold": 2,
+   "withheld_px": 13045,
+   "visible_px": 47830,
+   "B0_chance": {
+    "dti": 0.020985,
+    "dots": 10462
+   },
+   "B1_corridor": {
+    "dti": 0.00073,
+    "dots": 10577
+   },
+   "B2_evidence": {
+    "dti": 0.000101,
+    "dots": 10577
+   },
+   "B3_corroborated": {
+    "dti": 0.0,
+    "dots": 1723
+   },
+   "B4_catalogue": {
+    "dti": 0.0,
+    "dots": 47830
+   }
+  },
+  {
+   "fold": 3,
+   "withheld_px": 20742,
+   "visible_px": 40145,
+   "B0_chance": {
+    "dti": 0.016448,
+    "dots": 8776
+   },
+   "B1_corridor": {
+    "dti": 0.0,
+    "dots": 8838
+   },
+   "B2_evidence": {
+    "dti": 0.0,
+    "dots": 8838
+   },
+   "B3_corroborated": {
+    "dti": 0.0,
+    "dots": 1452
+   },
+   "B4_catalogue": {
+    "dti": 0.0,
+    "dots": 40145
+   }
+  }
+ ],
+ "reference_arm": "B1_corridor (geometry-matched, evidence-free corridor coverage)",
+ "runtime_s": 92.4
+}
