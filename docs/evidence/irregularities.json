@@ -260,5 +260,29 @@
   "found_by": "scripts/check_site_links.py (generalised), run over the merged tree",
   "link": "docs/prior-irregularities.html",
   "verified_by": "python3 scripts/check_site_links.py -> BROKEN LINKS: none, 13 pages audited"
+ },
+ {
+  "id": "IR-56-029",
+  "raised": "2026-10-09",
+  "severity": "warn",
+  "area": "merge bookkeeping: an HTML splice that silently did nothing",
+  "title": "The archive banner we said we had added to the merged run's pages was never written",
+  "finding": "The merge script prefixed PR #7's three preserved pages with an explanatory banner by inserting after a `<main>` tag. Their pages have no `<main>` element - content is wrapped in `<div class='wrap'>` - so str.replace matched nothing, wrote no change, and both the merge commit message and the PR body then asserted a banner that did not exist. Caught minutes later while fixing an unrelated reference in the same file, because the script never re-read what it had written.",
+  "why_it_matters": "This is the defect class the whole round is about: a claim about an artefact derived from a script run instead of from the artefact. A replace() that no-ops is silent unless somebody checks the bytes - which is why the fixed splice now asserts its own marker is present in the file it re-reads, and why the link checker resolves cited paths.",
+  "action": "Banner inserted after <body> in all three pages, with a per-file assertion that the marker is on disk afterwards. The wording in the merge commit and PR body is true only from this commit on; that is recorded here rather than quietly amended.",
+  "verified_by": "python: assert MARK in Path(name).read_text(), per file, after writing",
+  "link": "docs/discovery-index.html"
+ },
+ {
+  "id": "IR-56-030",
+  "raised": "2026-10-09",
+  "severity": "info",
+  "area": "published site: an ambiguous path in the merged run's page",
+  "title": "A cited receipt belonged to a sibling repository and read as a dangling path",
+  "finding": "PR #7's archived irregularities page cited `evidence/score_attribution_audit.json`, which does not exist in this repository: it is the GEMSDOE51 audit that run was describing. As written it looked like a broken link to evidence that never existed.",
+  "why_it_matters": "The instruction for this site is that every number is checkable by a reader following the published paths; a repository-relative path is only unambiguous inside that repository.",
+  "action": "Rewritten as an explicit link to the sibling blob with its size and the check date, so the reference is verifiable and clearly not ours (verified: gh api repos/buffedlizard55-lab/GEMSDOE51/contents/evidence/score_attribution_audit.json -> 3,357 bytes at main). scripts/check_site_links.py was extended to resolve every <code>evidence|docs|registry|scripts/...</code> path cited in any page against the working tree, skipping sentences that name a sibling repository - which is how this was caught.",
+  "verified_by": "GitHub contents API for the sibling path + scripts/check_site_links.py over 13 pages",
+  "link": "https://github.com/buffedlizard55-lab/GEMSDOE51/blob/main/evidence/score_attribution_audit.json"
  }
 ]

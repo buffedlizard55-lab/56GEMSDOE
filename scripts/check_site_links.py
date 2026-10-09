@@ -36,6 +36,22 @@ for p in pages:
                 r"""id=['"]""" + re.escape(anc) + r"""['"]""", tgt.read_text()):
             bad.append((p.relative_to(docs), h, "anchor missing on target page"))
 
+# Repo-relative paths that the pages cite as <code>...</code> are resolved against the working tree too: a
+# receipt named on a page has to exist, or the page is not verifiable. Sentences that name a sibling
+# repository are skipped - those paths are not ours.
+root = docs.parent
+cited = 0
+for q in pages:
+    t = q.read_text()
+    for m in re.finditer(r"<code>((?:evidence|docs|registry|scripts)/[A-Za-z0-9_.\-/]+\.(?:json|csv|md|tif|py|sh))</code>", t):
+        ctx = t[max(0, m.start() - 170):m.end() + 60]
+        if re.search(r"GEMSDOE\d+|buffedlizard55-lab/|sibling", ctx):
+            continue
+        cited += 1
+        if not (root / m.group(1)).exists():
+            bad.append((q.relative_to(docs), m.group(1), "cited path does not exist in this repository"))
+print(f"repo-relative receipt paths cited and resolved: {cited}")
+
 print(f"pages audited: {len(pages)}  ({', '.join(str(p.relative_to(docs)) for p in pages[:6])}, ...)")
 print("BROKEN LINKS:", "none - every internal link resolves inside docs/" if not bad else "")
 for b in bad:
