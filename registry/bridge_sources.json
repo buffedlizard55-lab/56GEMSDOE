@@ -1,0 +1,35 @@
+{
+  "disclaimer": "Public owner-maintained copies of participant/competition inputs; these pins establish byte identity only, not direct organizer authentication, licensing, or permission to redistribute. Verify participation terms in the DrivenData account before using or sharing data.",
+  "competition_bridge": {
+    "repository": "buffedlizard55-lab/GEMSDOE",
+    "commit": "dcbbb192e56b2b32c0a131eba791dc363305d4a3",
+    "commit_url": "https://github.com/buffedlizard55-lab/GEMSDOE/commit/dcbbb192e56b2b32c0a131eba791dc363305d4a3",
+    "manifest_blob": "e49628fff62bf08c4fd83ab42614187f816c0405",
+    "files": {
+      "features": {
+        "destination": "data/training_features.tif",
+        "bytes": 418912844,
+        "sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+        "parts": [
+          {"path": "data/bridge/gems-geodawn-numerical-features.tif.part-000", "blob": "f34e5143d5e7c10014b5cfe01c85d01bcede4c0a", "bytes": 94371840, "sha256": "0a330f8951af6c921029e25c84a579319d2db554d62d30d894d6ddc97f98cff7"},
+          {"path": "data/bridge/gems-geodawn-numerical-features.tif.part-001", "blob": "4bd98099ae505f63cc6c3733954f259974efd290", "bytes": 94371840, "sha256": "3c98037b2c997e3bbfcdfc2d9a982e8b820a77410dd7404b05cdb80594922c50"},
+          {"path": "data/bridge/gems-geodawn-numerical-features.tif.part-002", "blob": "d6f883ba8822207ac2765445737ecd2ecdfd2914", "bytes": 94371840, "sha256": "c375c4dbc40c59bbaece572b5e348700b75935f9a30c879c82b6417e0836f31c"},
+          {"path": "data/bridge/gems-geodawn-numerical-features.tif.part-003", "blob": "976977b4ac84c4c9b6fec72495c4e512341de872", "bytes": 94371840, "sha256": "b164159e6d0cb2595bc9f63a948af2646b124114a9c5921880c7516092137320"},
+          {"path": "data/bridge/gems-geodawn-numerical-features.tif.part-004", "blob": "41a7bb7b7603c1e7669d8cc8405cfeb5efb5cf0c", "bytes": 41425484, "sha256": "fa0a6f9c936fac1d6f20ca37f5929b2d60bf7a80f3d477dcab886f941aee2696"}
+        ]
+      },
+      "catalogue": {"destination": "data/grid/existing_faults.tif", "blob": "4ad3c1f3f19823e40924589bee7e51e44ae3a2e7", "bytes": 425830, "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093"},
+      "sample": {"destination": "data/grid/sample_submission.tif", "blob": "7d865a9921a40ed2ea4c742a6a25b1fa2f357c5a", "bytes": 1599597, "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc"}
+    }
+  },
+  "lidar_cache": {
+    "repository": "buffedlizard55-lab/GEMSDOE48",
+    "commit": "268ec599f51c517cc3485da077c24d83af5be81d",
+    "commit_url": "https://github.com/buffedlizard55-lab/GEMSDOE48/commit/268ec599f51c517cc3485da077c24d83af5be81d",
+    "files": {
+      "scarp_summary": {"destination": "data/external/h52_scarp3m_100m.tif", "blob": "394e9f31e1c4d2ffcf678a5ad786030d9cdfa7c7", "bytes": 43839078, "sha256": "b5e53d67c3a7d3d1ca44ae04ae1e84d8574857da3fcd5e34ba47276d6c04b923", "classification": "sibling-derived 100 m summary of 3 m DEM analysis; not an organizer file"},
+      "tile_x42y425": {"destination": "data/pilot/dem3m/x42y425_3m.tif", "blob": "67f853215db8bb339345446a294722d3852d1d56", "bytes": 4156097, "sha256": "927c36c88debcaa65e9de9fbd0f3adf02b338614fbaed86e3e321111084735de", "classification": "sibling-derived 3 m pilot resampled from a USGS 3DEP 1 m tile; not the source 1 m raster"},
+      "tile_x40y427": {"destination": "data/pilot/dem3m/x40y427_3m.tif", "blob": "064d9f69259dcdc0818db177fe57b39861fd4e80", "bytes": 5677887, "sha256": "3a14850f2d33bb8b7ae077951c589ad9866f1978e0722691f2ef6ffcffeee718", "classification": "sibling-derived 3 m pilot resampled from a USGS 3DEP 1 m tile; not the source 1 m raster"}
+    }
+  }
+}

@@ -1,130 +1,203 @@
 {
- "generated_utc": "2026-10-09T05:34:22Z",
- "statement": "every number published by this repository derives from the files listed here; nothing was downloaded or generated between the pin and the measurement that is not in this list",
- "official_inputs": {
-  "catalogue": {
-   "path": "data/grid/existing_faults.tif",
-   "bytes": 425830,
-   "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
-   "sha256_now": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
-   "matches_pin": true,
-   "present_in_repo": true,
-   "note": null,
-   "role": "the competition fault catalogue (USGS quaternary faults + INGENIOUS), rasterised on the 100 m grid; 60,988 positive cells; int8; nodata -1. THIS is the object the corrections lane measures.",
-   "source": "DrivenData competition 306 data tab",
-   "link": "https://drivendata.org/competitions/306/competition-doe-gems/data/",
-   "access": "login required (HTTP 302 observed); bytes obtained through the pinned sibling bridge"
+  "generated_utc": "2026-10-09T18:44:34Z",
+  "statement": "SHA-256 equality confirms byte identity with the owner-maintained public mirror pins; it does not authenticate these files as direct organizer downloads or resolve licensing/redistribution terms. Confirm those on the login-gated competition data page.",
+  "competition_data_page": "https://www.drivendata.org/competitions/306/competition-doe-gems/data/",
+  "competition_mirror": {
+    "repository": "buffedlizard55-lab/GEMSDOE",
+    "commit": "dcbbb192e56b2b32c0a131eba791dc363305d4a3",
+    "commit_url": "https://github.com/buffedlizard55-lab/GEMSDOE/commit/dcbbb192e56b2b32c0a131eba791dc363305d4a3",
+    "manifest_blob": "e49628fff62bf08c4fd83ab42614187f816c0405",
+    "classification": "public owner-maintained mirror; not direct organizer authentication"
   },
-  "sample": {
-   "path": "data/grid/sample_submission.tif",
-   "bytes": 1599597,
-   "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
-   "sha256_now": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
-   "matches_pin": true,
-   "present_in_repo": true,
-   "note": null,
-   "role": "the organizer's sample submission, used by the format gate as the CRS/shape/transform reference",
-   "source": "DrivenData competition 306 data tab",
-   "link": "https://drivendata.org/competitions/306/competition-doe-gems/data/",
-   "access": "login required (HTTP 302 observed); bytes obtained through the pinned sibling bridge"
+  "official_inputs": {
+    "catalogue": {
+      "path": "data/grid/existing_faults.tif",
+      "bytes": 425830,
+      "bytes_now": 425830,
+      "expected_bytes": 425830,
+      "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+      "sha256_now": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+      "matches_pin": true,
+      "present_in_workspace": true,
+      "source_class": "competition input, obtained from public owner-maintained mirror",
+      "source_repository": "buffedlizard55-lab/GEMSDOE",
+      "source_commit": "dcbbb192e56b2b32c0a131eba791dc363305d4a3",
+      "source_blob": "4ad3c1f3f19823e40924589bee7e51e44ae3a2e7",
+      "source_shards": null,
+      "role": "the competition fault catalogue (USGS quaternary faults + INGENIOUS), rasterised on the 100 m grid; 60,988 positive cells; int8; nodata -1. THIS is the object the corrections lane measures.",
+      "provenance": "public owner-maintained mirror copy of the login-gated DrivenData data-tab file, at the immutable source commit recorded in registry/bridge_sources.json; byte hash verified, but not direct organizer authentication",
+      "data_page": "https://www.drivendata.org/competitions/306/competition-doe-gems/data/",
+      "access": "competition data page login-gated; mirrored bytes hash-pinned; organizer provenance not independently authenticated",
+      "note": "hash matches recorded mirror pin; this is not proof of organizer authenticity or licensing"
+    },
+    "sample": {
+      "path": "data/grid/sample_submission.tif",
+      "bytes": 1599597,
+      "bytes_now": 1599597,
+      "expected_bytes": 1599597,
+      "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+      "sha256_now": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+      "matches_pin": true,
+      "present_in_workspace": true,
+      "source_class": "competition input, obtained from public owner-maintained mirror",
+      "source_repository": "buffedlizard55-lab/GEMSDOE",
+      "source_commit": "dcbbb192e56b2b32c0a131eba791dc363305d4a3",
+      "source_blob": "7d865a9921a40ed2ea4c742a6a25b1fa2f357c5a",
+      "source_shards": null,
+      "role": "the organizer's sample submission, used by the format gate as the CRS/shape/transform reference",
+      "provenance": "public owner-maintained mirror of the sample submission listed on the DrivenData data page, at the immutable source commit recorded in registry/bridge_sources.json; byte hash verified, but not direct organizer authentication",
+      "data_page": "https://www.drivendata.org/competitions/306/competition-doe-gems/data/",
+      "access": "competition data page login-gated; mirrored bytes hash-pinned; organizer provenance not independently authenticated",
+      "note": "hash matches recorded mirror pin; this is not proof of organizer authenticity or licensing"
+    },
+    "features": {
+      "path": "data/training_features.tif",
+      "bytes": 418912844,
+      "bytes_now": 418912844,
+      "expected_bytes": 418912844,
+      "sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+      "sha256_now": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+      "matches_pin": true,
+      "present_in_workspace": true,
+      "source_class": "competition input, obtained from public owner-maintained mirror",
+      "source_repository": "buffedlizard55-lab/GEMSDOE",
+      "source_commit": "dcbbb192e56b2b32c0a131eba791dc363305d4a3",
+      "source_blob": null,
+      "source_shards": [
+        {
+          "path": "data/bridge/gems-geodawn-numerical-features.tif.part-000",
+          "blob": "f34e5143d5e7c10014b5cfe01c85d01bcede4c0a",
+          "bytes": 94371840,
+          "sha256": "0a330f8951af6c921029e25c84a579319d2db554d62d30d894d6ddc97f98cff7"
+        },
+        {
+          "path": "data/bridge/gems-geodawn-numerical-features.tif.part-001",
+          "blob": "4bd98099ae505f63cc6c3733954f259974efd290",
+          "bytes": 94371840,
+          "sha256": "3c98037b2c997e3bbfcdfc2d9a982e8b820a77410dd7404b05cdb80594922c50"
+        },
+        {
+          "path": "data/bridge/gems-geodawn-numerical-features.tif.part-002",
+          "blob": "d6f883ba8822207ac2765445737ecd2ecdfd2914",
+          "bytes": 94371840,
+          "sha256": "c375c4dbc40c59bbaece572b5e348700b75935f9a30c879c82b6417e0836f31c"
+        },
+        {
+          "path": "data/bridge/gems-geodawn-numerical-features.tif.part-003",
+          "blob": "976977b4ac84c4c9b6fec72495c4e512341de872",
+          "bytes": 94371840,
+          "sha256": "b164159e6d0cb2595bc9f63a948af2646b124114a9c5921880c7516092137320"
+        },
+        {
+          "path": "data/bridge/gems-geodawn-numerical-features.tif.part-004",
+          "blob": "41a7bb7b7603c1e7669d8cc8405cfeb5efb5cf0c",
+          "bytes": 41425484,
+          "sha256": "fa0a6f9c936fac1d6f20ca37f5929b2d60bf7a80f3d477dcab886f941aee2696"
+        }
+      ],
+      "role": "official 19-band GeoDAWN numerical feature stack, 100 m, EPSG:32611",
+      "provenance": "public owner-maintained mirror of the competition data tab; all shard and assembled hashes are recorded in registry/bridge_sources.json; direct organizer authentication was not possible here",
+      "data_page": "https://www.drivendata.org/competitions/306/competition-doe-gems/data/",
+      "access": "competition data page login-gated; mirrored bytes hash-pinned; organizer provenance not independently authenticated",
+      "note": "hash matches recorded mirror pin; this is not proof of organizer authenticity or licensing"
+    }
   },
-  "features": {
-   "path": "data/training_features.tif",
-   "bytes": 418912844,
-   "sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
-   "sha256_now": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
-   "matches_pin": true,
-   "present_in_repo": true,
-   "note": null,
-   "role": "official 19-band GeoDAWN numerical feature stack, 100 m, EPSG:32611",
-   "source": "DrivenData competition 306 data tab",
-   "link": "https://drivendata.org/competitions/306/competition-doe-gems/data/",
-   "access": "login required (HTTP 302 observed); bytes obtained through the pinned sibling bridge"
+  "external_inputs": {
+    "lidar_cache": {
+      "scarp_summary": {
+        "path": "data/external/h52_scarp3m_100m.tif",
+        "bytes": 43839078,
+        "bytes_now": 43839078,
+        "expected_bytes": 43839078,
+        "sha256": "b5e53d67c3a7d3d1ca44ae04ae1e84d8574857da3fcd5e34ba47276d6c04b923",
+        "sha256_now": "b5e53d67c3a7d3d1ca44ae04ae1e84d8574857da3fcd5e34ba47276d6c04b923",
+        "matches_pin": true,
+        "present_in_workspace": true,
+        "source_class": "sibling-derived 100 m summary of 3 m DEM analysis; not an organizer file",
+        "source_repository": "buffedlizard55-lab/GEMSDOE48",
+        "source_commit": "268ec599f51c517cc3485da077c24d83af5be81d",
+        "source_blob": "394e9f31e1c4d2ffcf678a5ad786030d9cdfa7c7",
+        "source_url": "https://github.com/buffedlizard55-lab/GEMSDOE48/commit/268ec599f51c517cc3485da077c24d83af5be81d",
+        "note": "matches sibling-repo pin; not a direct USGS 1 m source file"
+      },
+      "tile_x42y425": {
+        "path": "data/pilot/dem3m/x42y425_3m.tif",
+        "bytes": 4156097,
+        "bytes_now": 4156097,
+        "expected_bytes": 4156097,
+        "sha256": "927c36c88debcaa65e9de9fbd0f3adf02b338614fbaed86e3e321111084735de",
+        "sha256_now": "927c36c88debcaa65e9de9fbd0f3adf02b338614fbaed86e3e321111084735de",
+        "matches_pin": true,
+        "present_in_workspace": true,
+        "source_class": "sibling-derived 3 m pilot resampled from a USGS 3DEP 1 m tile; not the source 1 m raster",
+        "source_repository": "buffedlizard55-lab/GEMSDOE48",
+        "source_commit": "268ec599f51c517cc3485da077c24d83af5be81d",
+        "source_blob": "67f853215db8bb339345446a294722d3852d1d56",
+        "source_url": "https://github.com/buffedlizard55-lab/GEMSDOE48/commit/268ec599f51c517cc3485da077c24d83af5be81d",
+        "note": "matches sibling-repo pin; not a direct USGS 1 m source file"
+      },
+      "tile_x40y427": {
+        "path": "data/pilot/dem3m/x40y427_3m.tif",
+        "bytes": 5677887,
+        "bytes_now": 5677887,
+        "expected_bytes": 5677887,
+        "sha256": "3a14850f2d33bb8b7ae077951c589ad9866f1978e0722691f2ef6ffcffeee718",
+        "sha256_now": "3a14850f2d33bb8b7ae077951c589ad9866f1978e0722691f2ef6ffcffeee718",
+        "matches_pin": true,
+        "present_in_workspace": true,
+        "source_class": "sibling-derived 3 m pilot resampled from a USGS 3DEP 1 m tile; not the source 1 m raster",
+        "source_repository": "buffedlizard55-lab/GEMSDOE48",
+        "source_commit": "268ec599f51c517cc3485da077c24d83af5be81d",
+        "source_blob": "064d9f69259dcdc0818db177fe57b39861fd4e80",
+        "source_url": "https://github.com/buffedlizard55-lab/GEMSDOE48/commit/268ec599f51c517cc3485da077c24d83af5be81d",
+        "note": "matches sibling-repo pin; not a direct USGS 1 m source file"
+      }
+    }
   },
-  "lidar_scarp": {
-   "path": "data/external/h52_scarp3m_100m.tif",
-   "bytes": 43839078,
-   "sha256": null,
-   "sha256_now": "b5e53d67c3a7d3d1ca44ae04ae1e84d8574857da3fcd5e34ba47276d6c04b923",
-   "matches_pin": null,
-   "present_in_repo": true,
-   "note": "no pin recorded for this input in registry/input_pins.json (it is not part of the data-tab bridge); the hash measured here is published so a later run can pin it",
-   "role": "LiDAR calibration layer: int16, 7 bands, value/SCALE encodings (h_all m, strike_at deg, facing_at, cover fraction), built by GEMSDOE48 from 700 USGS 3DEP 1 m tiles (NV WestCentral EarthMRI 2020) resampled to 3 m and aggregated to the competition grid",
-   "source": "DrivenData competition 306 data tab",
-   "link": "https://drivendata.org/competitions/306/competition-doe-gems/data/",
-   "access": "login required (HTTP 302 observed); bytes obtained through the pinned sibling bridge"
+  "derived_inputs": {
+    "catalogue": {
+      "path": "data/grid/existing_faults.tif",
+      "bytes": 425830,
+      "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+      "role": "the competition fault catalogue (USGS quaternary faults + INGENIOUS), rasterised on the 100 m grid; 60,988 positive cells; int8; nodata -1. THIS is the object the corrections lane measures.",
+      "provenance": "public owner-maintained mirror copy of the login-gated DrivenData data-tab file, at the immutable source commit recorded in registry/bridge_sources.json; byte hash verified, but not direct organizer authentication",
+      "pin_match": true
+    },
+    "sample": {
+      "path": "data/grid/sample_submission.tif",
+      "bytes": 1599597,
+      "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+      "role": "the organizer's sample submission, used by the format gate as the CRS/shape/transform reference",
+      "provenance": "public owner-maintained mirror of the sample submission listed on the DrivenData data page, at the immutable source commit recorded in registry/bridge_sources.json; byte hash verified, but not direct organizer authentication",
+      "pin_match": true
+    },
+    "features": {
+      "path": "data/training_features.tif",
+      "bytes": 418912844,
+      "sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+      "role": "official 19-band GeoDAWN numerical feature stack, 100 m, EPSG:32611",
+      "provenance": "public owner-maintained mirror of the competition data tab; all shard and assembled hashes are recorded in registry/bridge_sources.json; direct organizer authentication was not possible here",
+      "pin_match": true
+    },
+    "lidar_scarp": {
+      "path": "data/external/h52_scarp3m_100m.tif",
+      "bytes": 43839078,
+      "sha256": "b5e53d67c3a7d3d1ca44ae04ae1e84d8574857da3fcd5e34ba47276d6c04b923",
+      "role": "LiDAR calibration layer: int16, 7 bands, value/SCALE encodings (h_all m, strike_at deg, facing_at, cover fraction), built by GEMSDOE48 from 700 USGS 3DEP 1 m tiles (NV WestCentral EarthMRI 2020) resampled to 3 m and aggregated to the competition grid",
+      "provenance": "sibling-derived 100 m summary from buffedlizard55-lab/GEMSDOE48 at pinned commit 268ec599f51c517cc3485da077c24d83af5be81d; not an organizer file or a direct USGS 1 m DEM",
+      "pin_match": true
+    }
+  },
+  "summary": {
+    "official_files": 3,
+    "verified_here": 3,
+    "pinned_official_files": 3,
+    "missing_here": 0,
+    "mismatched_here": 0,
+    "all_pinned_files_verified": true,
+    "external_files": 3,
+    "external_hash_verified": 3,
+    "external_missing_here": 0,
+    "source_authentication": "mirror byte identity only; not organizer authentication"
   }
- },
- "external_inputs": {
-  "/home/user/_lidar/x42y427_3m.tif": {
-   "role": "3 m lidar DEM pilot tile for the sub-cell crest calibration",
-   "source": "USGS 3DEP 1 m lidar, resampled to 3 m by sibling repo GEMSDOE48",
-   "link": "https://github.com/buffedlizard55-lab/GEMSDOE48/actions/runs/37565284104",
-   "access": "public (GitHub release artefact of a sibling repo)",
-   "exists": false,
-   "bytes": null,
-   "sha256": null
-  },
-  "/home/user/_lidar/x40y425_3m.tif": {
-   "role": "second 3 m tile, for a sign check across separate areas",
-   "source": "USGS 3DEP 1 m lidar via GEMSDOE48",
-   "link": "https://github.com/buffedlizard55-lab/GEMSDOE48",
-   "access": "public",
-   "exists": false,
-   "bytes": null,
-   "sha256": null
-  },
-  "/home/user/_lidar/h52_scarp3m_100m.tif": {
-   "role": "7-band 100 m scarp stack derived from the same lidar (used for coverage only)",
-   "source": "GEMSDOE48 merged product, int16 decimetres, nodata -32768",
-   "link": "https://github.com/buffedlizard55-lab/GEMSDOE48/blob/main/data/external/h52_scarp3m_100m.json",
-   "access": "public",
-   "exists": true,
-   "bytes": 43839078,
-   "sha256": "b5e53d67c3a7d3d1ca44ae04ae1e84d8574857da3fcd5e34ba47276d6c04b923"
-  }
- },
- "derived_inputs": {
-  "catalogue": {
-   "path": "data/grid/existing_faults.tif",
-   "bytes": 425830,
-   "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
-   "sha256_now": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
-   "role": "the competition fault catalogue (USGS quaternary faults + INGENIOUS), rasterised on the 100 m grid; 60,988 positive cells; int8; nodata -1. THIS is the object the corrections lane measures.",
-   "provenance": "owner mirror of https://www.drivendata.org/competitions/306/competition-doe-gems/data/ existing_faults.tif; committed in this repo, verified at build time by scripts/prepare_data.py"
-  },
-  "sample": {
-   "path": "data/grid/sample_submission.tif",
-   "bytes": 1599597,
-   "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
-   "sha256_now": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
-   "role": "the organizer's sample submission, used by the format gate as the CRS/shape/transform reference",
-   "provenance": "owner mirror of example_submission.tif from the same data tab (dropbox mirror URL recorded in GEMSDOE data/bridge/manifest.json)"
-  },
-  "features": {
-   "path": "data/training_features.tif",
-   "bytes": 418912844,
-   "sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
-   "sha256_now": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
-   "role": "official 19-band GeoDAWN numerical feature stack, 100 m, EPSG:32611",
-   "provenance": "assembled from shards on 2026-10-09T04:24Z; every shard hash matched the owner manifest before assembly"
-  },
-  "lidar_scarp": {
-   "path": "data/external/h52_scarp3m_100m.tif",
-   "bytes": 43839078,
-   "sha256": "b5e53d67c3a7d3d1ca44ae04ae1e84d8574857da3fcd5e34ba47276d6c04b923",
-   "sha256_now": "b5e53d67c3a7d3d1ca44ae04ae1e84d8574857da3fcd5e34ba47276d6c04b923",
-   "role": "LiDAR calibration layer: int16, 7 bands, value/SCALE encodings (h_all m, strike_at deg, facing_at, cover fraction), built by GEMSDOE48 from 700 USGS 3DEP 1 m tiles (NV WestCentral EarthMRI 2020) resampled to 3 m and aggregated to the competition grid",
-   "provenance": "buffedlizard55-lab/GEMSDOE48@main data/external/h52_scarp3m_100m.tif, fetched through api.github.com blobs on 2026-10-09T04:27Z"
-  }
- },
- "summary": {
-  "official_files": 4,
-  "official_hash_verified": 3,
-  "external_files": 3,
-  "verified_here": 3,
-  "unpinned_here": 1,
-  "missing_here": 0,
-  "all_pinned_files_verified": true
- }
 }

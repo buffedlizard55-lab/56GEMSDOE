@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
 """E3 -- build the corrections-lane GeoTIFF(s), validate, and screen for lane uniqueness.
 
-Two arms, both from one preregistered rule family, differing only in the offset gate:
-
-* **primary (>= 2 px = 200 m)** -- exactly the brief's rule: "where a consistent offset exceeds about
-  two pixels, emit dots on the evidence-defined trace rather than the catalogue line". Measured
-  emission: a handful of pixels. This is the lane's answer, and the answer is "emit nothing".
-* **sensitivity (>= 1 px = 100 m)** -- the same rule relaxed one cell, kept so that the lane ships a
-  real, inspectable raster and so that the *cost* of the gate is visible. It is labelled as a
-  sensitivity arm everywhere: run card, receipt, site. It is not cleared for a weekly slot.
+The default build has exactly one arm: **primary (>= 2 px = 200 m)**, the brief's correction threshold.
+There is no sub-threshold sensitivity output in the default path. If no corridor passes the calibrated
+strength and consistency gates, no corrected-trace dots are emitted; do not relax the threshold merely
+to create a non-empty raster or satisfy a file-deliverable request.
 
 The rule, fixed before counting pixels
 --------------------------------------
@@ -42,20 +38,18 @@ sys.path.insert(0, str(ROOT / "src"))
 from gems56 import corrections as C, gates, lane_inputs as L, submission_writer as SW  # noqa: E402
 
 CORR_PX, MIN_CLUSTER, MIN_SPACING_PX = 1.5, 3, 2.0
-ARMS = {"primary": 2.0, "sensitivity": 1.0}
+ARMS = {"primary": 2.0}
 # 1.296 px: RMS difference between a 100 m-grid offset and the same offset measured on 3 m LiDAR
 # (evidence/lidar_calibration_v1.json, "estimator"). Used as the floor on the corridor robust-SE so a
 # four-pixel corridor with a collapsed MAD cannot manufacture a significant z.
 SIGMA_FLOOR_PX = 1.296
 
 
-def build_arm(fields, cat, fp, gate_px, *, use_null_floor=False, hd=0.0, hm=0.0, corridor_gate=True):
-    # The emission rule is the corroboration + prominence structure, which is what E2 scored on the
-    # shared holdout (arm B_snap, 4,965 dots across folds). The null-calibrated strength floor is used
-    # for the *histogram and the verdict* (scripts/lidar_calibration.py) and deliberately not applied
-    # here: with it the 2 px arm collapses to 1 dot and the 1 px arm to 6, which is not an artefact
-    # anybody could read a board score from. Recorded, not hidden.
-    rec = C.measure(fields, cat, fp, min_hgt=((hd, hm, 0.0) if use_null_floor else (0.0, 0.0, 0.0)))
+def build_arm(fields, cat, fp, gate_px, *, hd, hm, corridor_gate=True):
+    # The same null-calibrated crest-strength floors used by the decision histogram are mandatory
+    # at build time. Never disable them to preserve a non-empty raster: doing so would turn null-level
+    # crests into apparent corrections merely to satisfy a deliverable requirement.
+    rec = C.measure(fields, cat, fp, min_hgt=(hd, hm, 0.0))
     # "consistent offset exceeds ~2 pixels" is read at the scale the brief states it at: a *corridor*, i.e.
     # a whole catalogue component whose pixels agree in sign, are corroborated by both families, and survive
     # the robust-SE test. A single pixel agreeing with itself is not a displaced map line.
@@ -117,20 +111,26 @@ def main(argv):
     t0 = time.time()
     reg = Path(argv[0]) if argv else Path("/home/user/_reg")
     fields, cat, fp, meta = L.load()
-    null = C.control_points(fields, cat, fp, mode="random", n=20000, seed=5601)
-    nv = null["valid"]
-    hd = float(np.nanpercentile(null["dem_hgt"][nv], 90))
-    hm = float(np.nanpercentile(null["mag_hgt"][nv], 90))
+    calibration_path = ROOT / "evidence" / "calibration_v1.json"
+    if not calibration_path.is_file():
+        raise SystemExit("missing null-calibration receipt; run the prescribed calibration before building")
+    calibration = json.loads(calibration_path.read_text())
+    hd = float(calibration["strength_gate"]["dem_min_hgt"])
+    hm = float(calibration["strength_gate"]["mag_min_hgt"])
+    if not (np.isfinite(hd) and np.isfinite(hm)):
+        raise SystemExit("null-calibrated strength floors are not finite; refusing to build")
     priors = sorted(str(p) for p in reg.glob("*.tif")) if reg.exists() else []
     sample = ROOT / "data" / "grid" / "sample_submission.tif"
     out = dict(evidence_class="built artefacts with local format and lane receipts; no organizer receipt exists",
                rule=dict(corroboration_px=CORR_PX, min_cluster=MIN_CLUSTER, spacing_m=MIN_SPACING_PX * 100,
                          null_dem_hgt_p90=hd, null_mag_hgt_p90=hm,
-                         note="strength floor calibrated on the random null, not tuned on the labels"),
+                         floor_source="evidence/calibration_v1.json (the same recorded decision thresholds)",
+                         applied_at_build=True,
+                         note="strength floor is mandatory; it is never disabled to preserve non-empty output"),
                catalogue_pixels=int(cat.sum()), arms={}, priors_in_registry=len(priors),
                built_utc=time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime()))
     for arm, gate in ARMS.items():
-        pred, counts, rec = build_arm(fields, cat, fp, gate)
+        pred, counts, rec = build_arm(fields, cat, fp, gate, hd=hd, hm=hm)
         name = f"h56-corr-snap{int(gate * 100):03d}cm-20261009"
         dots = counts["after_thinning"]
         note = (f"h56 corrections lane, {'PRIMARY' if arm=='primary' else 'sensitivity'} arm: dots on the "
@@ -139,6 +139,9 @@ def main(argv):
         tif = ROOT / "docs" / "downloads" / f"{name}.tif"
         receipt = SW.write_submission(tif, pred, sample, fp, note=note, name=name,
                                       metadata=dict(arm=arm, offset_gate_px=gate, counts=counts,
+                                                    null_strength_floor_applied=True,
+                                                    null_calibration_receipt="evidence/calibration_v1.json",
+                                                    null_dem_min_hgt=hd, null_mag_min_hgt=hm,
                                                     holdout_dti_arm="B_snap/C_snap_sub",
                                                     cleared_for_weekly_slot=False))
         rep = {}

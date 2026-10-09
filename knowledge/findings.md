@@ -9,17 +9,18 @@ that contains it is named. Nothing here is a score, and no board position is cla
 |---|---|---|
 | The feature stack's nodata is float32 `-3.4028e+38`, which is **finite**. 57.9% of band 1 is the sentinel. | `evidence/grid.json` (`sentinel`) | Any unmasked min/median/correlation is garbage. Read through `corrections.load_fields`, which converts to NaN **and asserts the band DESCRIPTION string** — sibling repos index the same physical bands under different numbers. |
 | The LiDAR products are packed, differently per file: the 100 m stack is int16 decimetres with `SCALE` and nodata `-32768`; the 3 m pilot tiles decode as `z_m = 1000 + v/10`. | IR-56-005 | Assert decoding against bounds, and guard a reprojection with a valid-fraction check — a silently all-NaN destination grid was a real failure mode here. |
-| `sample_submission.tif` **is** the catalogue, cell-for-cell (60,988 positives in both). | `evidence/grid.json` (`sample_submission_forensics`) | Never treat it as a zero template. It is the format reference (CRS/shape/transform) and the "do nothing" baseline, and that baseline scores DTI 0.00000 under the organizer's own masking. |
+| `sample_submission.tif` **is** the catalogue, cell-for-cell (60,988 positives in both). | `evidence/grid.json` (`sample_submission_forensics`) | Never treat it as a zero template. It is the format reference (CRS/shape/transform) and the "do nothing" baseline. Historical HOLDOUT-DTI `gems52-pooled-hide-v1` (48,080 withheld positives): A_as_is 0.00000000 [0.00000000, 0.00000000] (95% CI); this is a local hide-and-recover result, not an organizer score. |
 | Grid `(3730, 3292)`, EPSG:32611, transform `(100, 0, 243350, 0, -100, 4508550)`, 5,165,840 footprint cells, 60,894 catalogue cells inside it. | `evidence/grid.json` | One pixel = 100 m exactly along either axis, so offsets quote metres without a resampling correction. |
-| The data tab is login-gated (HTTP 302). `fetch_page` reads drivendata.org pages that the sandbox's own HTTP client cannot. | IR-56-003, `knowledge/sources.json` | For official text use the page fetcher; for bytes use the hash-pinned sibling bridge and say so. 3 of 4 inputs reproduce their pin; the LiDAR cache has no pin, so its measured hash is published in `data_manifest.json`. |
+| The competition data page is login-gated. This workspace restored 3 competition inputs from the public owner-maintained GitHub mirror and separately restored 3 sibling-derived LiDAR products; all six match the SHA-256 pins recorded in `registry/bridge_sources.json`. This proves mirror byte identity, not direct organizer authentication, licensing, or redistribution rights. | `data_manifest.json`, `registry/bridge_sources.json`, IR-56-003 | Verify terms on the participant data page. Keep `data/` out of Git; do not describe the sibling 3 m/100 m LiDAR cache as the original regional 1 m DEM. |
 
 ## 2. Scoring geometry (where submission decisions should come from)
 
 - `DTI = TPw / (TPw + 0.2·FPw + 0.8·FNw + ε)`, triangular kernel `k(d) = max(1 − d/300 m, 0)` = **3 cells at
   100 m**. Pinned to a brute force to 1e-9 and to the organizer's published aggregates (`tests/test_contracts.py`).
 - `k(3 px) = 0`: a dot 3 cells from a truth pixel earns **nothing**; 2 cells earns 1/3 of it.
-- Known-fault pixels are excluded from the penalty terms (staff, thread 11516). A sibling measured that
-  deleting exactly the 2,545 dots within 2 px of a catalogue trace **raised** the score 0.2708 → 0.2778.
+- Known-fault pixels are excluded from the penalty terms (DrivenData staff, thread 11516). A sibling-reported,
+  unauthenticated leaderboard comparison says deleting exactly the 2,545 dots within 2 px of a catalogue trace
+  raised its score 0.2708 → 0.2778; these are **SIBLING-REPORTED**, not ORGANIZER-CONFIRMED for this project.
   ⇒ *Mass on the catalogue is worth nothing.* Every emission rule here forbids it structurally.
 - β = 0.8 vs α = 0.2: a missed truth pixel costs 4× a false dot at unit mass, so sparse confident dots on
   genuinely new lineations dominate dense fuzz.
@@ -37,13 +38,13 @@ that contains it is named. Nothing here is a score, and no board position is cla
 | **corridors, decision gate** (height gate + SE floored at the measured 1.296 px precision) | **0 of 21** qualify; worst z 4.85 | `calibration_v1.json` |
 | 3 m LiDAR, 0.9% of catalogue px | pooled median **−0.021 px**, MAD 0.664, 7.9% ≥2 px, **0.27% ≥3 px**; **0 of 13** segments ≥200 m, max z 2.68 | `lidar_calibration_v1.json` |
 | coarse vs fine | bias 17.9 m, **RMS 180.9 m** (> 1 cell) between a 100 m offset and the same offset at 3 m | `lidar_calibration_v1.json` |
-| holdout (HOLDOUT-DTI, 4 folds, 48,080 withheld positives) | do-nothing 0.00000; evidence snap 0.00016 [0, 0.00045]; subtractive 0.00005; **random jitter 0.00021** — `best_comparable_control = D_jitter` | `holdout_corrections_v1.json` |
+| historical catalogue holdout (HOLDOUT-DTI, `gems52-pooled-hide-v1`, 4 folds, 48,080 withheld positives) | B_snap 0.00015661 [0.00000000, 0.00045357]; D_jitter 0.00020550 [0.00000261, 0.00050850]; the marginal 95% CIs overlap, and no direct paired B_snap-vs-D_jitter interval is in the receipt. Not the ranked three-physics candidate or an organizer score. | `holdout_corrections_v1.json` |
 
-**Answer: the catalogue is on the lineations to within the noise of any instrument buildable from these
-inputs.** The residual is a coherent ~1 px wobble (see the control below), not a ≥2 px displacement, and the
-two independent datasets do not even correlate in their apparent offsets.
+**Conclusion for the evidence measured here: no defensible ≥2 px correction is established.** The residual is a
+coherent ~1 px wobble under the historical control (see below), not a qualifying displacement under the calibrated
+gate, and the two independent datasets do not correlate in their apparent offsets.
 
-## 4. One genuine positive, and why it still emits nothing
+## 4. One genuine local coherence signal, and why it still emits nothing
 
 The cluster rule ("≥3 of 9 neighbouring candidates") was tested against two nulls built from the same 5,612
 candidate target cells (`cluster_gate_control.json`):
@@ -53,12 +54,12 @@ candidate target cells (`cluster_gate_control.json`):
 | label permutation | which pixel gets which offset — magnitudes, signs and the detector's placement bias preserved | 152.6 ± 15.5 (max 193 of 250) | **680** |
 | sign flip | each pixel keeps its offset, re-draws its side (not neutral: a bias b displaces a flipped dot by 2b) | 170.8 ± 14.2 | **680** |
 
-p < 0.004 against both. So the small residual offset is *spatially coherent* — a real, local disagreement
-between the mapped trace and the geomorphic/magnetic lineation. It is not emittable because (a) it lives at
-~0.8 px, under both the brief's 2 px bar and the estimator's own 1.3 px floor, (b) at 3 m resolution no segment
-reaches 200 m, and (c) the holdout cannot see a shift that small at all. A future lane with a 1 m-native
-instrument should pick this up: it is the only positive signal this run found, and it is a *registration*
-signal, not a discovery signal.
+p < 0.004 against both in the historical control receipt. This supports spatial coherence in the small residual
+under that rule, but does not establish a corrected trace. It is not emittable because (a) it lives at ~0.8 px,
+under both the brief's 2 px bar and the estimator's own 1.3 px floor; (b) the 3 m pilot found no segment reaching
+200 m; and (c) the historical holdout is not a matched same-segment correction test, with overlapping marginal
+B_snap/D_jitter intervals. More extensive, provenance-verified native 1 m data could help adjudicate the signal
+in a separately budgeted and preregistered study; that was not done here.
 
 ## 5. Instrument lessons (generalise to any "find the feature near the label" lane)
 
@@ -85,10 +86,11 @@ signal, not a discovery signal.
 
 ## 6. Dead ends (do not re-try)
 
-- **The hide-and-recover holdout cannot judge a lateral correction.** Masking visible catalogue pixels
-  pixel-exactly makes it blind to ≤3 px shifts: snap 0.00016, subtractive 0.00005, *random jitter* 0.00021,
-  do-nothing 0.00000, all overlapping, and the harness itself names the jitter arm as the best control. Use it
-  to rule out a catastrophe, never to license a correction.
+- **The historical hide-and-recover holdout is not a direct same-segment correction test.** It withholds different
+  catalogue segments, masks visible pixels exactly, and does not represent organizer new-fault truth. HOLDOUT-DTI
+  `gems52-pooled-hide-v1` (48,080 withheld positives): B_snap 0.00015661 [0.00000000, 0.00045357], D_jitter
+  0.00020550 [0.00000261, 0.00050850]. Marginal 95% intervals overlap; this is neither proof for snapping nor
+  organizer scoring. Use it only as a limited generalization check; never as sole evidence to license a correction.
 - **Bulk-harvesting sibling rasters for a duplicate screen is cheap** (485 files, one pass, ~7 min, 0 errors)
   **but the rule it feeds is degenerate in both directions**: the forward fraction fires for 105 of 485 priors
   because our primary raster has *one* dot (100% of one dot is near any prior that touches it), and it fires
@@ -114,3 +116,13 @@ signal, not a discovery signal.
   and the card read those receipts rather than restating them, so prose cannot drift from measurement.
 - `tests/test_contracts.py` — the 10 tests that found IR-56-009. Steal them for any lane with a crest/ridge
   detector.
+
+## 8. Review addendum — 2026-10-09
+
+This review restored the competition stack, catalogue, sample, and three sibling-derived LiDAR cache files from immutable owner-maintained GitHub mirrors. `data_manifest.json` records all six byte counts and SHA-256 matches; this is mirror byte identity, not direct organizer authentication or a licensing determination. Inputs stay under ignored `data/` paths.
+
+The earlier download status was wrong. There are two tracked historical rasters, but neither is safe to submit: the one-dot primary was built with the null-calibrated crest-strength floor disabled; the 14-dot sensitivity artifact uses a 1 px gate below the brief's threshold. The calibrated decision receipt passes 0/21 corridors, and the directed registry proximity rule triggered for the primary. `evidence/submission_status.json` is the current decision record.
+
+The official submission format page says cells outside the training bounds are null or NaN, and the sample uses NaN. The shared `gems52` grid/writer/gate modules require all cells finite even though the gate docstring acknowledges the public allowance. The copies here were verified byte-identical to the shared versions; no private fork was made. Upstream report: [GEMSDOE52 issue #65](https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65). No upload was tested and no organizer score is claimed.
+
+The candidate register now ranks three-physics displacement consensus first, but it is not validated. The existing holdout is historical DEM/magnetic catalogue recovery and has no per-feature leakage-canary result for that candidate. No new holdout or feature-alone AUC was run because the repository's recorded three-experiment/two-hour stop-loss is treated as consumed. Do not choose a slot; reset the experiment budget before another candidate run.

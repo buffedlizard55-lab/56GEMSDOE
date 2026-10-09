@@ -2,10 +2,11 @@
 """E1c -- the LiDAR calibration the corrections brief asks for: same detector, 3 m versus 100 m.
 
 The 100 m grid cannot say where inside a cell a scarp crest sits, so a measured offset of 0.6 px
-could mean either "the catalogue is on the line" or "the coarse grid cannot see". This settles it on
-real high-resolution data: the two cached USGS 3DEP 1 m tiles (block-averaged to 3 m by GEMSDOE48's
-pilot, receipt ``data/pilot/dem3m/dem_pilot_receipt.json``) that overlap the study area, containing
-every catalogue pixel under their footprints.
+could mean either "the catalogue is on the line" or "the coarse grid cannot see". This is a limited
+3 m pilot check: two cached tiles in ``data/pilot/dem3m/`` were derived from USGS 3DEP 1 m source
+rasters and block-averaged by sibling repo GEMSDOE48 (source/commit/hash notes in ``registry/bridge_sources.json``).
+This script does not read the native 1 m source rasters, does not cover the full study area, and cannot
+settle regional native-resolution calibration.
 
 Reported: (i) the offset distribution measured at 3 m, (ii) per-segment 3 m medians with a robust SE
 -- the lane's actual unit of claim, (iii) the coarse-vs-fine agreement, which is the *precision* of
@@ -33,7 +34,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from gems56 import corrections as C, lane_inputs as L   # noqa: E402
 
-TILES = {"x42y425": "/home/user/_lidar/x42y425_3m.tif", "x40y427": "/home/user/_lidar/x40y427_3m.tif"}
+TILES = {
+    "x42y425": ROOT / "data" / "pilot" / "dem3m" / "x42y425_3m.tif",
+    "x40y427": ROOT / "data" / "pilot" / "dem3m" / "x40y427_3m.tif",
+}
 SRC_CRS = "EPSG:26911"      # NAD83 / UTM 11N, read from each tile's own CRS
 DST_CRS = "EPSG:32611"      # WGS84 / UTM 11N, the competition grid
 RES = 3.0

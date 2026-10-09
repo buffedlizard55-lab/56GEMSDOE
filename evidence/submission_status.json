@@ -1,0 +1,111 @@
+{
+  "as_of_date_utc": "2026-10-09",
+  "status": "RESEARCH-ONLY \u2014 NOT CLEARED FOR SUBMISSION",
+  "safe_to_submit": false,
+  "download_status": "Existing historical rasters are directly downloadable for audit/research inspection only; neither is approved for competition upload.",
+  "organizer_confirmed_score": null,
+  "weekly_slots_used": 0,
+  "decision": "Do not emit or promote a correction from this lane. The calibrated decision gate qualifies 0 of 21 corridors; the 1-dot primary artifact was built with the crest-height/null gate disabled, and the 14-dot sensitivity artifact relaxes the lane's approximately 2-pixel rule. The existing artifacts are retained only as historical diagnostics.",
+  "artifacts": {
+    "primary": {
+      "file": "docs/downloads/h56-corr-snap200cm-20261009.tif",
+      "submission_name": "h56-corr-snap200cm-20261009",
+      "dots": 1,
+      "sha256": "65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b",
+      "local_format_gate": "PASSED under the vendored all-finite policy; this is not organizer acceptance or proof of exact format compatibility",
+      "status": "historical diagnostic only; not safe to submit",
+      "on_disk_audit": {
+        "shape": [
+          3730,
+          3292
+        ],
+        "bands": 1,
+        "dtype": "float32",
+        "crs": "EPSG:32611",
+        "transform_matches_sample": true,
+        "value_range": [
+          0.0,
+          1.0
+        ],
+        "local_vendored_format_gate": "PASSED; local check is not organizer acceptance",
+        "sha256_matches_adjacent_receipt": true,
+        "sample_nan_exterior_pixels": 7111787,
+        "candidate_nan_pixels": 0,
+        "candidate_nonzero_pixels_outside_sample": 0,
+        "exterior_behavior": "finite zero outside the sample data extent; the official sample uses NaN there",
+        "nonzero_pixels": 1
+      }
+    },
+    "sensitivity": {
+      "file": "docs/downloads/h56-corr-snap100cm-20261009.tif",
+      "submission_name": "h56-corr-snap100cm-20261009",
+      "dots": 14,
+      "sha256": "e3285854e73ae4ba3fce8faea64940fdc4bee3b702eb52d2530a67fb60195196",
+      "local_format_gate": "PASSED under the vendored all-finite policy; this is not organizer acceptance or proof of exact format compatibility",
+      "status": "historical sub-threshold sensitivity diagnostic only; not safe to submit",
+      "on_disk_audit": {
+        "shape": [
+          3730,
+          3292
+        ],
+        "bands": 1,
+        "dtype": "float32",
+        "crs": "EPSG:32611",
+        "transform_matches_sample": true,
+        "value_range": [
+          0.0,
+          1.0
+        ],
+        "local_vendored_format_gate": "PASSED; local check is not organizer acceptance",
+        "sha256_matches_adjacent_receipt": true,
+        "sample_nan_exterior_pixels": 7111787,
+        "candidate_nan_pixels": 0,
+        "candidate_nonzero_pixels_outside_sample": 0,
+        "exterior_behavior": "finite zero outside the sample data extent; the official sample uses NaN there",
+        "nonzero_pixels": 14
+      }
+    }
+  },
+  "blocking_gates": [
+    {
+      "gate": "scientific positive-evidence rule",
+      "result": "FAIL / negative finding",
+      "evidence": "evidence/calibration_v1.json reports 0 of 21 corridors passing the null-calibrated decision gate; evidence/lidar_calibration_v1.json reports no 3 m segment displaced by >=200 m"
+    },
+    {
+      "gate": "spatially blocked holdout",
+      "result": "NO PROMOTION",
+      "evidence": "Historical HOLDOUT-DTI `gems52-pooled-hide-v1`, 48,080 withheld positives: B_snap 0.00015661 [0.00000000, 0.00045357] and D_jitter 0.00020550 [0.00000261, 0.00050850] (arm-level marginal 95% CIs). These intervals overlap; this holdout is not new-fault discovery."
+    },
+    {
+      "gate": "feature-alone leakage canary",
+      "result": "NOT RUN for the ranked three-physics candidate",
+      "evidence": "the historical DEM/magnetic holdout receipt predates the current hypothesis register and does not report per-feature AUCs; this review did not run an additional experiment because the recorded three-experiment stop-loss is consumed"
+    },
+    {
+      "gate": "registry uniqueness",
+      "result": "FAIL AS WRITTEN; report, do not bypass",
+      "evidence": "the directed <=3 px rule triggered for the one-dot primary against 105 of 485 priors; reciprocal overlap was 0 of 485. This gate did not clear the candidate"
+    },
+    {
+      "gate": "official raster exterior semantics",
+      "result": "UNRESOLVED",
+      "evidence": "historical rasters fill the exterior with 0.0; the official sample uses NaN outside the data extent. The shared gems52 writer/grid/gate reject outside NaN despite documenting the public allowance. No organizer upload test exists. Upstream issue: https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65"
+    }
+  ],
+  "provenance_note": "No new holdout run, feature-alone leakage canary, or positive correction was produced in this review. The existing receipts are historical project evidence and are not organizer scores. Input byte hashes are pinned to public owner-maintained mirrors, not directly authenticated organizer downloads.",
+  "next_step": "The recorded three-experiment/two-hour stop-loss is consumed. Wait for the shared template to resolve issue #65 and for a new run budget to be explicitly reset; only then preregister the top candidate, run the shared holdout plus per-feature leakage canaries, and reassess. Do not spend a weekly slot.",
+  "shared_template": {
+    "defect": "shared grid/writer/gate require all-finite raster values despite the official null/NaN exterior convention and the gate docstring",
+    "upstream_issue": "https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65",
+    "local_private_fork_created": false,
+    "organizer_upload_test_performed": false
+  },
+  "deliverable_tension": {
+    "requested": "one unique downloadable submission GeoTIFF",
+    "lane_stop_condition": "if calibrated offsets cluster under approximately 2 pixels, report the negative and emit nothing from this lane",
+    "resolution": "the calibrated decision gate qualifies 0 of 21 corridors, so no new TIF or submission name/note was created; the requested file deliverable does not justify inventing a positive correction",
+    "existing_downloads": "historical primary and sensitivity rasters remain available for audit only and are not cleared for upload"
+  },
+  "safe_to_download_for_audit": true
+}

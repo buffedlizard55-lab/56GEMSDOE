@@ -20,54 +20,29 @@ pre{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:12
 nav{position:sticky;top:0;background:rgba(13,17,23,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:10px 0;z-index:5}
 nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:14px}
 .small{font-size:13px}.note{border-left:3px solid var(--warn);padding:6px 0 6px 12px;color:var(--mut);margin:10px 0}.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
-</style></head><body><nav><div class='wrap'><a href='index.html'><b>56GEMSDOE</b> · corrections lane</a><a href='executive-summary.html'>Executive summary &amp; how to submit</a><a href='irregularities.html'>Irregularities (this run)</a><a href='submit.html'>Submission how-to (prior session)</a><a href='evidence.md'>Source table (prior)</a><a href='irregularities.md'>Prior flag list</a><a href='research/hypotheses.md'>Ranked hypotheses</a><a href='https://github.com/buffedlizard55-lab/56GEMSDOE'>repo</a></div></nav><main><h1>Executive summary</h1><p class='sub'>One page: what to download, how to file it, what this run proved, and what it rules out.</p><div class="banner warn"><div class="big">
-Downloadable, format-valid, and not cleared for a slot by this run</div>
-    <p class="why">Downloading is safe: both rasters are in the submission format, values in [0, 1], null
-    outside the footprint, validated after writing. Submitting spends one of the three weekly slots and buys an
-    expected 0.00016 DTI (95% CI [0.00000,
-    0.00045]) against 0.00000 for submitting nothing at
-    all. Filing it once is a legitimate way to record a negative on the scoreboard &mdash; it is not a way to
-    beat 0.3195, and this run does not recommend it as one.</p></div>
-<h2>How to submit, exactly</h2><ol style='line-height:1.9'>
-<li>Download <a href='downloads/h56-corr-snap200cm-20261009.tif' download>the primary .tif</a> (1 dots) or <a href='downloads/h56-corr-snap100cm-20261009.tif' download>the 1 px sensitivity .tif</a> (14 dots). The <code>.zip</code> beside each holds the same single band; either is accepted.</li>
-<li>Sign in at <a href='https://drivendata.org/competitions/306/'>drivendata.org/competitions/306</a> and open the <b>Submissions</b> tab. This competition accepts a file upload; no kernel is required.</li>
-<li>Pick a short <b>submission name</b> and paste the one from the download card, so the scoreboard row carries the label. Then upload. Do <b>not</b> re-save the file in a GIS or let a viewer strip its geotransform: the form requires the CRS (EPSG:32611), shape (3730&times;3292), 100 m pixel size and bounds to match the submission format exactly.</li>
-<li>Paste the note (the form allows one, &le;140 characters). Ours states the verdict, so a future reader of the scoreboard sees &quot;NEGATIVE&quot; next to the row rather than a mystery.</li>
-<li>Wait for the receipt. Until the platform returns a score, this page claims none: a projection is never written as a score.</li></ol>
-<h2>Why earlier uploads were rejected, and why these will not be</h2>
-<p class="small">The error <code>Predicted values must be in range [0, 1]</code> comes from a
-    raster whose band holds a confidence-like quantity that is not a probability &mdash; log-odds, a 0&ndash;255
-    mask, or an int8 catalogue written straight out. It is a validator on the uploaded values, not on the
-    geometry. These files were produced by the shared <code>submission_writer</code> and re-read after writing:
-    the distinct values present are 0.0, 1.0 (primary)
-    and 0.0, 1.0 (sensitivity), the validator reported
-    no problems. One difference from the official sample, stated
-    rather than hidden: the sample leaves everything outside the data extent as NaN, while these rasters fill
-    it with 0.0, because the shared writer enforces an all-finite export policy
-    (<code>gates.format_report</code> fails a file containing NaN and notes that the public spec permits it).
-    Under the metric this cannot matter &mdash; FPw sums only over pixels with p &gt; 0, so a 0 outside is
-    arithmetically identical to a null &mdash; and 0 is in range, which is what the upload validator checks.
-    Logged as IR-56-013, with the one-line change that flips it if the platform ever objects.</p>
+</style></head><body><nav><div class='wrap'><a href='index.html'><b>56GEMSDOE</b> · corrections lane</a><a href='executive-summary.html'>Executive summary</a><a href='submit.html'>Submission status &amp; conditional steps</a><a href='irregularities.html'>Irregularities</a><a href='research/hypotheses.md'>Ranked hypotheses</a><a href='https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/knowledge/sources.json'>Sources</a><a href='https://github.com/buffedlizard55-lab/56GEMSDOE'>repo</a></div></nav><main><h1>Executive summary</h1><p class='sub'>One page: what to download, how to file it, what this run proved, and what it rules out.</p><div class="banner bad"><div class="big">NO FILE IS SAFE TO SUBMIT</div>
+    <p class="why">Two historical raster artifacts remain in the repository for audit. The primary has one dot but was
+    built while the null-calibrated crest-strength floor was disabled; the calibrated decision gate accepts 0 of 21
+    corridors. The sensitivity file uses a 1 px threshold below the brief's ~2 px rule. Both are research-only and
+    must not be uploaded. No organizer submission receipt or score exists; no weekly slot has been used.</p>
+    <p><b>Deliverable conflict:</b> the brief also asks for a new unique TIF, but the lane's stop rule says to emit
+    nothing when calibrated offsets remain below about 2 px. The gate passes 0 of 21 corridors, so no new raster or
+    submission metadata was created; the existing files remain downloadable for audit only.</p></div>
+<h2>How to submit (when a future candidate is actually cleared)</h2><ol style='line-height:1.9'>
+<li><b>Do not submit either current artifact.</b> There is no approved file. The primary and sensitivity files are historical diagnostics only; no slot is recommended.</li>
+<li>Before any future upload, require a positive corrections-lane evidence gate, a spatially blocked HOLDOUT-DTI result with evaluator version, withheld-positive count and paired 95% CI, and a passing final registry comparison. Do not treat the existing DEM/magnetic holdout as validation of the ranked three-physics candidate.</li>
+<li>Require the shared writer and format gate to accept the official exterior convention: the official page says data outside the training bounds is null or NaN; the shared writer currently enforces all-finite output. Track upstream resolution at <a href='https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65'>GEMSDOE52 issue #65</a>. Do not patch only this repository.</li>
+<li>Then verify a single-band float32 GeoTIFF with values in [0,1], EPSG:32611, the exact 100 m bounds/transform, and null/NaN outside the data bounds. Use a unique name and a note of at most 140 characters.</li>
+<li>Only after all gates pass, sign in to the <a href='https://drivendata.org/competitions/306/'>competition portal</a>, upload the file, and preserve the organizer's receipt. A score is ORGANIZER-CONFIRMED only from that receipt.</li></ol>
+<h2>Why the current files are not submission-ready</h2>
+<p class="small">The historical local validator reported [0,1] values, one float32 band and EPSG:32611, but this proves only that the vendored all-finite local policy passed. The official format page requires data outside the training bounds to be null or NaN, and the sample uses NaN. The local <code>grid.py</code>, <code>submission_writer.py</code> and <code>gates.py</code> reject such values despite the gate's own documentation; the historical rasters therefore use finite 0.0 outside. This discrepancy is unresolved and has not been tested by an organizer upload. Upstream issue <a href="https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65">#65</a> requests a shared fix. See irregularities IR-56-013 and IR-56-014.</p>
 <h2>What this run established</h2>
-<table class='data'><thead><tr><th>claim</th><th>class</th><th>number</th></tr></thead><tbody><tr><td>Catalogue-to-evidence offset after null calibration</td><td>MEASURED</td><td>joint median 0.774 px over n=156; MAD 1.877 px; 0.3% of pixels corroborated by both families</td></tr><tr><td>Agreement between the two independent data families</td><td>MEASURED</td><td>Pearson r = 0.0223 &mdash; no shared displacement signal</td></tr><tr><td>Same measurement at 3 m LiDAR</td><td>MEASURED</td><td>median -0.021 px, 0.27% beyond 3 px, 0 of 13 segments &ge; 200 m</td></tr><tr><td>Corridors with a consistent &ge;2 px shift</td><td>MEASURED</td><td>0 of 21 under the decision gate (2 of 1273 ungated)</td></tr><tr><td>Holdout DTI of snapping vs not snapping vs jitter</td><td>HOLDOUT-DTI</td><td>0.00016 / 0.00000 / 0.00021, overlapping intervals</td></tr><tr><td>Organizer-confirmed score for anything in this repository</td><td>ORGANIZER-CONFIRMED</td><td>none &mdash; this run filed no submission</td></tr><tr><td>Project's current best and the leader</td><td>BOARD-UNVERIFIED</td><td>0.3195 (given in the brief) and 0.3774 (sibling page, read 2026-10-09); the leaderboard is behind a login and could not be confirmed from an organizer source here</td></tr></tbody></table>
-<p class="note">Detection floor, from the sibling protocol we reuse: their holdout's paired
-    minimum detectable effect is 0.004&ndash;0.012 DTI. Board gaps of a few thousandths are therefore inside the
-    noise of anything we can build locally, which argues for spending slots on <i>diverse mechanisms</i> rather
-    than on refining one &mdash; and is a second, independent reason not to burn one on this lane's empty
-    raster.</p>
-<h2>If the goal is to beat 0.3195, the next move is elsewhere &mdash; and this run says why</h2>
+<table class='data'><thead><tr><th>claim</th><th>class</th><th>number</th></tr></thead><tbody><tr><td>Catalogue-to-evidence offset after null calibration</td><td>MEASURED</td><td>joint median 0.774 px over n=156; MAD 1.877 px; 0.3% of pixels corroborated by both families</td></tr><tr><td>Agreement between the two independent data families</td><td>MEASURED</td><td>Pearson r = 0.0223 &mdash; no shared displacement signal</td></tr><tr><td>Same measurement at 3 m LiDAR</td><td>MEASURED</td><td>median -0.021 px, 0.27% beyond 3 px, 0 of 13 segments &ge; 200 m</td></tr><tr><td>Corridors with a consistent &ge;2 px shift</td><td>MEASURED</td><td>0 of 21 under the decision gate (2 of 1273 ungated)</td></tr><tr><td>Historical DEM+mag snap vs jitter (catalogue holdout only)</td><td>HOLDOUT-DTI · gems52-pooled-hide-v1 · 48080 withheld positives · 95% CI</td><td>B_snap 0.00015661 [0.00000000, 0.00045357]; D_jitter 0.00020550 [0.00000261, 0.00050850]. Historical test; not the ranked three-physics candidate or an organizer score.</td></tr><tr><td>Organizer-confirmed score for anything in this repository</td><td>ORGANIZER-CONFIRMED</td><td>none &mdash; this run filed no submission</td></tr><tr><td>Current best cited in the standing brief</td><td>USER-REPORTED, not independently verified</td><td>0.3195 from the user's brief; no leaderboard page or submission receipt was authenticated in this review.</td></tr></tbody></table>
+<p class="note">The existing HOLDOUT-DTI receipt tests the older DEM/magnetic snapping rule against withheld catalogue segments, not the ranked three-physics candidate and not the organizer's genuinely unmapped faults. Its evaluator, 48,080 withheld positives, arm-level 95% CIs, and limitation are shown above. Treat it as historical local evidence, never as an organizer score.</p>
+<h2>Next actions in this corrections lane</h2>
 <ul>
-<li><b>Mass on the catalogue is worth nothing.</b> Staff-confirmed masking, plus a measured sibling result
-(0.2708 &rarr; 0.2778 from deleting exactly the 2,545 catalogue-adjacent dots). Every emission rule in this
-repo encodes that: no dot on a catalogue pixel.</li>
-<li><b>The geometry rewards sparse, confident coverage of unmapped lineations.</b> With &alpha; = 0.2, &beta; = 0.8
-and a 300 m kernel, a dot within 3 px of a truth pixel already earns partial credit, a missed truth pixel costs
-0.8, and a false dot costs 0.2 &mdash; so the marginal value is in places with no candidate at all, not in
-sharpening places that already have one.</li>
-<li><b>Registration is now ruled out as the explanation for a mediocre score</b>, which is the useful product of
-a diagnostics lane: three candidate mechanisms (catalogue displacement, tail-only displacement, catalogue
-sharpening) are closed or declared untestable here, and effort can move to discovery and to fusion.</li>
-<li><b>What would change this lane's mind:</b> 1 m LiDAR over a corridor that qualifies even in the ungated
-table (component 2754 is the best candidate at
--3.17 px), or a shifted-label instrument that can see a
-2 px move at all.</li></ul></main></html>
+<li><b>Keep the finding negative.</b> The null-calibrated gate passes 0 of 21 corridors; do not emit evidence-defined correction dots from this result.</li>
+<li><b>Resolve the shared format-tool mismatch once upstream.</b> Do not privately fork the shared writer. Issue <a href="https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65">GEMSDOE52 #65</a> records the conflict between the official NaN/null exterior and the all-finite policy.</li>
+<li><b>Only resume candidate tests under a reset run budget.</b> The ranked three-physics displacement-consensus hypothesis is unvalidated; any holdout must use the shared evaluator, whole buffered segments, exact visible-fault masking and leakage canaries.</li>
+<li><b>Keep the LiDAR limitation visible.</b> The existing cache is sibling-derived 3 m pilot data, not the original regional 1 m DEM collection; it covers only a small subset of catalogue pixels.</li>
+</ul></main></html>

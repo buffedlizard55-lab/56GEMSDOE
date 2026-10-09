@@ -1,0 +1,129 @@
+{
+  "review_date_utc": "2026-10-09",
+  "lane": "corrections",
+  "review_type": "repository, provenance, shared-template, and deliverable-status review; no new scientific experiment",
+  "hypothesis_register": {
+    "file": "docs/research/hypotheses.md",
+    "ranked_candidates": [
+      "three-physics displacement consensus: DEM curvature + magnetic gradient + gravity gradient",
+      "scale-persistent crest/ridge registration",
+      "profile-likelihood / segment-level translation posterior",
+      "symmetric scarp-break locator",
+      "native 1 m LiDAR displacement calibration"
+    ],
+    "top_candidate_status": "UNVALIDATED; no new HOLDOUT-DTI or feature-alone leakage canary was run"
+  },
+  "inputs_restored": {
+    "source_type": "public owner-maintained GitHub mirror; not direct organizer authentication",
+    "competition_inputs": {
+      "files": 3,
+      "hash_verified": 3,
+      "missing": 0,
+      "mismatched": 0
+    },
+    "sibling_derived_lidar_inputs": {
+      "files": 3,
+      "hash_verified": 3,
+      "missing": 0,
+      "mismatched": 0
+    },
+    "manifest": "data_manifest.json",
+    "pins": "registry/bridge_sources.json",
+    "download_command": "bash scripts/download_competition_data.sh",
+    "data_kept_out_of_git": true
+  },
+  "historical_decision_receipts": {
+    "calibrated_corridor_gate": {
+      "qualifying": 0,
+      "components": 21,
+      "evidence_file": "evidence/calibration_v1.json"
+    },
+    "lidar_pilot": {
+      "segments_with_abs_median_ge_200m": 0,
+      "segments": 13,
+      "source_resolution_used": "sibling-derived 3 m pilots, not original native 1 m rasters",
+      "evidence_file": "evidence/lidar_calibration_v1.json"
+    },
+    "holdout": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems52-pooled-hide-v1",
+      "withheld_positive_count": 48080,
+      "arms": {
+        "B_snap": {
+          "dti": 0.00015660914317701405,
+          "ci95": [
+            0.0,
+            0.00045357384313326045
+          ]
+        },
+        "D_jitter": {
+          "dti": 0.00020550105762550465,
+          "ci95": [
+            2.6074210302486136e-06,
+            0.0005084996249930672
+          ]
+        }
+      },
+      "limitation": "historical hide-and-recover on withheld catalogue faults; does not test new-fault discovery or the ranked three-physics hypothesis",
+      "evidence_file": "evidence/holdout_corrections_v1.json"
+    }
+  },
+  "prior_artifact_review": {
+    "primary": {
+      "file": "docs/downloads/h56-corr-snap200cm-20261009.tif",
+      "dots": 1,
+      "null_strength_floor_applied": false,
+      "safe_to_submit": false,
+      "submission_name": "h56-corr-snap200cm-20261009"
+    },
+    "sensitivity": {
+      "file": "docs/downloads/h56-corr-snap100cm-20261009.tif",
+      "dots": 14,
+      "gate_px": 1.0,
+      "safe_to_submit": false,
+      "submission_name": "h56-corr-snap100cm-20261009"
+    },
+    "registry_gate": {
+      "primary_directed_near3px_fraction": 1.0,
+      "near_threshold": 0.7,
+      "prior_count_triggered": 105,
+      "priors_checked": 485,
+      "reciprocal_overlaps_over_threshold": 0,
+      "gate_result": "not cleared; report trigger without bypass"
+    },
+    "outside_mask": "historical rasters use finite zero outside; official sample uses NaN; no organizer upload test",
+    "current_status_file": "evidence/submission_status.json",
+    "on_disk_validation": {
+      "method": "gems56.gates.format_report plus direct rasterio comparison with sample_submission.tif; no model/evaluator run",
+      "local_gate": "both historical rasters passed the vendored all-finite/range/grid check",
+      "grid": "single-band float32, EPSG:32611, sample shape/transform, values [0,1]",
+      "sample_nan_exterior_pixels": 7111787,
+      "candidate_nan_pixels": 0,
+      "candidate_nonzero_pixels_outside_sample": 0,
+      "exterior_semantics": "both candidates are finite zero outside sample extent; official sample uses NaN there",
+      "receipt_sha256_match": true,
+      "organizer_acceptance": "not tested; local pass is not submission clearance"
+    },
+    "safe_to_download_for_audit": true,
+    "safe_to_submit": false
+  },
+  "shared_template": {
+    "defect": "shared grid/writer/gate require all-finite raster despite official null/NaN exterior and gate docstring",
+    "upstream_issue": "https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65",
+    "local_private_fork_created": false
+  },
+  "run_budget": {
+    "new_experiments_this_review": 0,
+    "historical_budget": "three experiments/two hours treated as consumed",
+    "weekly_slots_used": 0
+  },
+  "verdict": "negative; no correction approved; no safe-to-submit file; do not spend a slot",
+  "organizer_confirmed_score": null,
+  "next_step": "await shared writer/gate resolution and explicit run-budget reset; then preregister the top candidate and run the shared holdout plus per-feature leakage canaries before reconsidering any artifact",
+  "deliverable_tension": {
+    "requested": "one unique downloadable submission GeoTIFF",
+    "lane_stop_condition": "when calibrated offsets remain under approximately two pixels, report the negative and emit nothing",
+    "resolution": "0 of 21 corridors qualify; no new TIF or final submission metadata was created. Historical files are audit-only.",
+    "reason": "do not manufacture a positive correction merely to satisfy the file-deliverable request"
+  }
+}

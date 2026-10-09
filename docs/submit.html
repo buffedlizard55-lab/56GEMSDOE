@@ -3,65 +3,77 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>How to submit — DOE GEMS Prize (56GEMSDOE)</title>
+<title>Submission status — 56GEMSDOE corrections lane</title>
 <link rel="stylesheet" href="assets/site.css">
+<style>
+:root{--bg:#0d1117;--ink:#e6edf3;--muted:#9da7b3;--line:#30363d;--panel:#161b22;--bad:#ff7b72;--warn:#e3b341;--link:#79c0ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+nav{display:flex;gap:18px;flex-wrap:wrap;padding:14px max(20px,calc((100% - 1040px)/2));border-bottom:1px solid var(--line);background:var(--panel)}
+a{color:var(--link)}main{max-width:1040px;margin:28px auto;padding:0 20px 64px}h1{font-size:30px;line-height:1.2}h2{margin-top:34px;padding-top:16px;border-top:1px solid var(--line)}
+.banner{border:2px solid var(--bad);background:#351a1d;border-radius:12px;padding:18px 20px;margin:18px 0}.banner strong{font-size:20px;color:#ffdcd7}.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;margin:12px 0}code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}code{overflow-wrap:anywhere}.muted{color:var(--muted)}table{width:100%;border-collapse:collapse}th,td{text-align:left;vertical-align:top;border:1px solid var(--line);padding:9px}th{background:var(--panel)}footer{border-top:1px solid var(--line);padding:20px;color:var(--muted);text-align:center}
+</style>
 </head>
 <body>
-<header class="nav">
-  <a class="brand" href="index.html">56GEMSDOE</a>
-  <a href="index.html">Summary</a>
-  <a href="submit.html">How to submit</a>
-  <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/evidence.md">Evidence</a>
-  <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/irregularities.md">Irregularities</a>
-</header>
+<nav>
+  <a href="index.html">56GEMSDOE</a>
+  <a href="executive-summary.html">Executive summary</a>
+  <a href="research/hypotheses.md">Ranked hypotheses</a>
+  <a href="irregularities.html">Irregularities</a>
+  <a href="downloads/README.md">Download directory status</a>
+</nav>
 <main>
-
-<h1>How to submit (step by step)</h1>
-
-<div class="banner bad" style="margin-top:6px">
-  <h2>Status: no file is ready to download</h2>
-  <p style="margin:0;color:var(--ink)">This page explains the procedure. When a validated file exists it will be linked from <a href="index.html#submission-file">the summary</a> at the top.</p>
+<h1>Submission status and conditional instructions</h1>
+<div class="banner">
+  <strong>NO FILE IS SAFE TO SUBMIT</strong>
+  <p><b>Safe to download: yes, for audit only. Safe to submit: NO.</b> Do not upload either historical raster below. No correction is supported by the null-calibrated decision gate, the shared writer's exterior-mask policy conflicts with the official format, and the local uniqueness gate did not clear the primary artifact. No organizer submission receipt or score exists; no weekly slot has been used.</p>
+  <p><b>Deliverable conflict:</b> the brief asks for a new unique TIF, but the corrections-lane rule says to emit nothing when calibrated offsets remain below about 2 px. The gate qualifies 0 of 21 corridors, so no new raster or submission metadata was manufactured; only historical audit files remain downloadable.</p>
 </div>
 
-<h2>The procedure</h2>
+<h2>Why the current artifacts are not approved</h2>
+<div class="card">
+  <h3>Primary historical diagnostic</h3>
+  <ul>
+    <li>File: <code>downloads/h56-corr-snap200cm-20261009.tif</code>; one dot; SHA-256 <code>65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b</code>.</li>
+    <li>The old build explicitly disabled the random-null-calibrated strength floor. The separate decision receipt qualifies 0 of 21 corridors. The dot is not an evidence-supported correction.</li>
+    <li>The directed registry rule triggered for the one-dot raster against 105 of 485 priors. This is reported as a failed gate, not waived.</li>
+  </ul>
+</div>
+<div class="card">
+  <h3>Sub-threshold sensitivity diagnostic — not offered as a submission</h3>
+  <ul>
+    <li>File: <code>downloads/h56-corr-snap100cm-20261009.tif</code>; 14 dots; SHA-256 <code>e3285854e73ae4ba3fce8faea64940fdc4bee3b702eb52d2530a67fb60195196</code>.</li>
+    <li>Its 1 px threshold is below the brief's approximately 2-pixel correction bar. It is retained in the repository for historical audit only and must not be uploaded or promoted.</li>
+  </ul>
+</div>
+<p>The historical local format gate reported single-band float32 data, EPSG:32611, values in [0,1], and the expected grid shape. That is not proof of organizer acceptance. The official page requires data outside the training bounds to be null or NaN; the sample submission uses NaN there. The shared writer and gate reject NaN across the entire raster, so the historical files use finite zeros outside. No upload test has resolved this mismatch. The shared-template issue is <a href="https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65">GEMSDOE52 #65</a>. We will not privately fork the shared template.</p>
+
+<h2>What must pass before any future upload</h2>
 <ol>
-  <li><b>Register and accept the rules</b> on the <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">competition page</a>. Accepting the rules creates a binding agreement with DOE (rules, "Accept" on the DrivenData platform).</li>
-  <li><b>Check the data terms</b> before you download the training files. The <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/data/">data page</a> requires login; its terms are not covered by the official rules.</li>
-  <li><b>Generate the GeoTIFF</b> from your own model, on the grid of <code>training_features.tif</code> (EPSG:32611, 100 m). Write NaN outside the footprint and probabilities in [0, 1] inside it.</li>
-  <li><b>Validate</b> the file. The validator in this repository rejects NaN outside a footprint, values outside [0, 1], a sentinel nodata value, a wrong CRS or grid, and multi-band files:
-<pre><code>/home/user/.venv-gems/bin/python -c "import sys; sys.path.insert(0,'src'); from gems.submission import validate_submission; print(validate_submission('path/to/file.tif'))"</code></pre>
-  </li>
-  <li><b>Name and comment.</b> Give the file a unique name and a one-line comment, for example <code>clustering with k=25</code>. Do not reuse another team's name or file.</li>
-  <li><b>Upload</b> on the DrivenData submission page. Record the returned receipt; a score shown there is an ORGANIZER-CONFIRMED value.</li>
-  <li><b>Disclose generative-AI use</b> in the narrative (rules §3.2). Keep public elements free of trade secrets (rules A.4).</li>
+  <li><b>Scientific gate:</b> a calibrated, segment-level displacement consistent across independent evidence, exceeding approximately two 100 m pixels. Under the current receipts, 0 of 21 corridors qualifies, so this gate fails.</li>
+  <li><b>Holdout gate:</b> validate the newly selected hypothesis using the shared pooled holdout, whole buffered segments, pixel-exact visible-fault masking, and leakage canaries. Label every value HOLDOUT-DTI with evaluator version, withheld-positive count, and a paired spatial-block 95% CI. A catalogue hide-and-recover result is not evidence of organizer scoring or of new-fault discovery.</li>
+  <li><b>Uniqueness gate:</b> compare the pre-placement and final rasters against the registered corpus. Log and stop on a duplicate trigger; do not bypass an inconvenient result.</li>
+  <li><b>Format gate:</b> single-band float32; finite probabilities in [0,1] within the eligible data bounds; EPSG:32611; 100 m resolution; exact dimensions, bounds, and transform; null/NaN outside the provided data bounds. The shared writer/gate mismatch must be fixed once upstream and tested before this can pass.</li>
+  <li><b>Governance:</b> check the participant data terms and competition rules, use a unique name and a note of at most 140 characters, and keep the weekly-slot selection separate. Do not use a slot for an unvalidated research artifact.</li>
 </ol>
 
-<h2 id="limits">Limits you must respect</h2>
-<table>
-  <tr><th>Rule</th><th>What it means</th><th>Source</th></tr>
-  <tr><td>3 submissions per week</td><td>Plan your slots. Do not spend one on an untested candidate.</td><td>Rules §3.4</td></tr>
-  <tr><td>One final submission</td><td>Chosen before the deadline by a separate selection.</td><td>Rules §3.4, §3.6.2</td></tr>
-  <tr><td>Originality</td><td>No third-party content unless disclosed and licensed.</td><td>Rules A.5(1)</td></tr>
-  <tr><td>Public elements</td><td>Designated public elements are posted and licensed to DOE. No confidential material in them.</td><td>Rules A.4</td></tr>
-  <tr><td>Generative AI</td><td>Must be disclosed in the narrative.</td><td>Rules §3.2</td></tr>
-</table>
-
-<h2 id="error">"Predicted values must be in range [0, 1]"</h2>
-<p>The portal rejects the file when any finite cell is outside [0, 1]. Causes, in order of likelihood:</p>
+<h2>Conditional upload steps (only after every gate passes)</h2>
 <ol>
-  <li><b>Unclipped model output</b> (negatives or values above 1). Fix: clip, or apply a sigmoid.</li>
-  <li><b>A nodata sentinel</b> inside the footprint, for example <code>-3.4028234663852886e+38</code>. The owner's site attributes the error to this (CLAIM, not verified here: IR-06). Fix: replace it with NaN, and check the nodata tag.</li>
-  <li><b>NaN or wrong grid</b>, for example a different transform, size or CRS. Fix: write on the reference grid.</li>
+  <li>Use the organizer's sample as the grid and exterior-mask reference; validate the exact final raster after writing and record its SHA-256.</li>
+  <li>Choose a unique submission name and a note no longer than 140 characters. The historical names and notes in the archived receipts are not approved for reuse.</li>
+  <li>Sign in to the <a href="https://www.drivendata.org/competitions/306/">GEMS Prize portal</a>, open Submissions, and upload the approved GeoTIFF.</li>
+  <li>Save the organizer's submission receipt. Only a score shown on that receipt may be labelled <b>ORGANIZER-CONFIRMED</b>. Without it, report no organizer score.</li>
 </ol>
-<p class="small">Run the validator above before every upload.</p>
 
-<h2>Sources</h2>
+<h2>Current evidence and sources</h2>
+<p>Historical HOLDOUT-DTI: evaluator <code>gems52-pooled-hide-v1</code>, 48,080 withheld catalogue positives. Evidence-based snap: 0.00015661 [0.00000000, 0.00045357]; random jitter control: 0.00020550 [0.00000261, 0.00050850]. These marginal 95% intervals overlap; a paired B_snap-versus-D_jitter interval is not in the historical receipt. This was a local catalogue holdout, not an organizer score, and it does not validate the new three-physics hypothesis. See <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/holdout_corrections_v1.json">the receipt</a> and <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/submission_status.json">the current status record</a>.</p>
 <ul>
-  <li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Problem description (metric and format)</a></li>
-  <li><a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf">Official rules (PDF, all 7 chunks read)</a></li>
-  <li><a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/evidence.md">Evidence table with labels</a></li>
+  <li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Official problem description, metric, and submission format</a></li>
+  <li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/data/">Competition data page (login required)</a></li>
+  <li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/rules/">Official competition rules</a></li>
+  <li><a href="https://community.drivendata.org/t/11516/2">DrivenData staff clarification on known-fault pixel masking</a></li>
+  <li><a href="https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65">Shared-template writer/gate issue #65</a></li>
 </ul>
 </main>
-<footer>Not affiliated with DrivenData or DOE. Last checked 2026-10-09 (UTC).</footer>
+<footer>Research repository; not affiliated with DrivenData or DOE. Last reviewed 2026-10-09.</footer>
 </body>
 </html>

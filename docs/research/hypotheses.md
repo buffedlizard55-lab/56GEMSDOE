@@ -1,84 +1,35 @@
-# Candidate hypotheses — ranked, with the data each one needs
+# Corrections-lane hypothesis register (2026-10-09)
 
-Status key: **VALIDATED** = a holdout DTI with CI exists. **BLOCKED** = cannot be tested here; the blocker is named. **NEGATIVE** = a measured null.
-No expected-DTI number below is a score. The ranking is qualitative and is a judgement, not a projection.
+## Scope and status
 
-Scope rule from the brief: each hypothesis must (a) name the layer(s), (b) name the physical signature, (c) say why it would find a fault **missing** from the USGS/INGENIOUS catalogue, (d) say how it differs from what is already implemented here, and (e) name the free official source and whether it is obtainable.
+This register obeys the parallel-run instruction: **Corrections lane only**. It does not rank thermal, seismic, spring, volcanic, or unrelated discovery lanes. All hypotheses are about a possible evidence-defined displacement of a catalogue trace, measured on perpendicular transects within the stated ±400 m window. A result would justify moving a dot off the catalogue line only when an independently calibrated, segment-level offset is consistent and at least about two 100 m pixels. These are hypotheses, not score projections.
 
-What is implemented in **this** repository today: the metric (pinned from the template), the validator and writer, and the corrections proxy. Nothing else. "Differs from implemented here" therefore means "differs from the registry of earlier runs", judged by grepping the sibling docs (counts below). Those counts are grep hits in sibling documents, not an audit of their code.
+The competition's official problem description says the catalogue is incomplete and possibly inaccurate, that the target faults can include corrections to currently mapped information, and that submissions are probability rasters on the prescribed 100 m grid. It also specifies the evidence layers (including detrended elevation, magnetic gradients, and gravity gradients) and the GeoTIFF format. [Problem description](https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/). DrivenData staff confirmed that known USGS/INGENIOUS pixels are excluded from scoring; this does **not** mean a multi-pixel buffer around each known trace is excluded. [Forum thread 11516, staff reply](https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516/2).
 
----
+### What the current implementation already does
 
-## H1 (rank 1) — Shallow-temperature lineaments from the INGENIOUS 2 m probe survey
+`src/gems56/corrections.py` computes a single-scale `-d²z/dn²` crest from `det_elev` (band 12), a ridge in `|tmi_hg|` (band 3), and a gravity-gradient ridge from `|iso_grav_anom_hg|` (band 18). It samples ±4 competition pixels (±400 m) perpendicular to local catalogue strike. The current submission builder combines only DEM and magnetic offsets; gravity is measured but is not part of emission. The current corridor check aggregates the selected DEM/magnetic offsets after peak selection. These implementation claims can be checked in those source files; they are not evidence that any candidate improves DTI.
 
-- **Layer(s):** INGENIOUS "2m Temperature Probes" point survey (GDR 1391, CC BY 4.0, 1.03 MB zip), interpolated to the 100 m grid.
-- **Physical signature:** linear or en-échelon alignments of anomalously warm 2 m probes (for example, more than 2 σ above a local background) that run along a trend, lie 300 m or more from every catalogue trace, and lie within a corridor that a trend analysis of the probe values picks out.
-- **Why it should find a missing fault:** fault-controlled hydrothermal leakage and damage zones can give shallow thermal anomalies on fault traces that never reached the Quaternary catalogue, because the offset is too small or the trace was never mapped.
-- **Named non-fault mimic:** shallow groundwater, irrigation or playa-margin moisture; vegetation and soil contrasts; drainage channels; roads and buildings. A 2 m survey alignment can follow a drainage or a road.
-- **Difference from what exists:** `2m probes` appears in 2 GEMSDOE30 docs and 1 GEMSDOE32 doc (grep). No thermal-probe lineament feature exists in this repo.
-- **Validation:** **BLOCKED.** It needs the labels and a holdout, neither available in the sandbox. A catalogue-only holdout is possible once the probe zip is downloaded, but the sibling notes say the catalogue holdout cannot reward genuinely new faults.
-- **Free official source and obtainability:** GDR submission 1391 (CC BY 4.0). Listed in the page we fetched. **Not downloadable from this sandbox** (egress limited to GitHub and package indexes). A user with a normal browser can download it.
-- **Cost:** medium (point-to-raster, then a lineament extraction).
-- **Expected improvement (judgement):** the highest novelty of the candidates, moderate expected gain, unvalidated.
+The historical run receipts report a 1.323 px median absolute DEM offset at random no-trace controls and no calibrated corridor meeting the nominal 2 px criterion. They also report a 3 m LiDAR pilot over a small fraction of the catalogue. Those receipts are **historical, not a fresh holdout validation**. A later run must re-pin the staged inputs and recalculate before treating them as current evidence.
 
-## H2 (rank 2) — Spring and sinter collinearity from the INGENIOUS well/spring and paleo layers
+## Ranked candidates
 
-- **Layer(s):** INGENIOUS "Well and Spring Temperature and Chemistry" geodatabase (19.85 MB) and "Paleo Geothermal Features" shapefile (82 kB).
-- **Signature:** three or more springs or paleo-deposits (sinter, tufa) that are collinear within a stated tolerance, on a trend consistent with the regional stress field, and more than 300 m from every catalogue trace.
-- **Why it should find a missing fault:** spring and sinter alignments mark conduits, and the conduit can lie on a fault the catalogue never mapped.
-- **Named non-fault mimic:** stratigraphic contacts, lithological linear units, drainage valleys, and sampling artefacts (wells are drilled along roads).
-- **Difference:** `paleo` appears in 13 GEMSDOE30 docs and 7 GEMSDOE32 docs, and `springs` in 7 and 4. The novelty lies in a strict collinearity test. Not novel as a data source.
-- **Validation:** **BLOCKED** (same as H1).
-- **Source:** GDR 1391 (CC BY 4.0). Not downloadable from the sandbox.
-- **Cost:** low to medium.
-- **Expected improvement (judgement):** moderate to low. Springs cluster near known faults, so much of the signal lies within the 300 m corridor that the catalogue already covers.
+Rank reflects qualitative scientific plausibility and implementation cost, not a projected score. `HOLDOUT-DTI` is the only local score label used below; no candidate is called a leaderboard improvement without a new holdout receipt and, ultimately, an ORGANIZER-CONFIRMED submission receipt.
 
-## H3 (rank 3) — Seismicity-density lineaments from INGENIOUS earthquake density
+| Rank | Candidate / layers | Physical signature and why it could find a correction near a known trace | Difference from current implementation | Expected DTI effect (judgement only) | Cost / source status |
+|---|---|---|---|---|---|
+| 1 | **Three-physics displacement consensus** — `det_elev` band 12, `tmi_hg` band 3, `iso_grav_anom_hg` band 18 | A DEM scarp crest, magnetic-gradient ridge, and gravity-gradient ridge share a signed normal displacement from a catalogue trace. Requiring independent physical expressions at the *same displaced location* may reject isolated DEM erosional scarps and magnetic-only lithologic edges while retaining a genuine near-trace correction. It targets a correction or short missing continuation adjacent to mapped geometry, not an arbitrary fault far from the catalogue. | Gravity is currently computed for measurement but not used by the emission rule; emission currently requires only the DEM and magnetic estimates. This candidate adds gravity to the evidence gate and must calibrate its own null distribution. | **Moderate, uncertain**: potential precision gain, with a real recall cost because shallow faults may not have a resolvable gravity expression. No numeric DTI projection. | **Low–medium.** Uses cached competition feature layers obtained through the owner-maintained mirror; no new external data. Top candidate to evaluate first only after the run budget is reset. |
+| 2 | **Scale-persistent crest/ridge registration** — `det_elev` band 12, `tmi_hg` band 3, plus the cached 3 m DEM pilot where available | A real surface break should retain a coherent signed offset when the profile is examined at more than one smoothing/derivative scale, whereas a one-cell rasterization wiggle or a narrow interpolation spike should not. Persistent offsets can locate evidence-defined traces adjacent to a generalized or displaced catalogue line. | Current profiles use one curvature baseline and a nearest local maximum; the 3 m pilot is used as an estimator check, not as a spatially varying correction gate. | **Low–moderate, uncertain**: could improve robustness but cannot create information absent from the DEM or magnetic data. No numeric projection. | **Medium–high.** The public sibling cache contains 3 m derivatives of USGS 3DEP 1 m DEM tiles, not the full regional native-resolution tiles. The derived cache is not an organizer file; verify its receipt and hashes before use. |
+| 3 | **Profile-likelihood / segment-level translation posterior** — signed DEM-curvature and magnetic-gradient transect profiles, optionally gravity | Estimate one latent lateral translation for a whole connected trace from the full profile shapes, then emit only when the posterior interval is outside the ±2 px no-correction band. This can average noisy, partially observed transects without letting one high-amplitude peak dictate the answer; omission-tolerant fitting can retain transects with only one usable evidence family. | Current code picks the nearest qualified local maximum in each family independently, averages agreeing peak locations, and then uses a corridor summary. It does not fit a joint shift distribution to the full profiles. | **Moderate, uncertain**: theoretically lowers peak-selection noise, but systematic geomorphic migration remains and can be mistaken for map displacement. No numeric projection. | **Medium–high.** Uses the cached feature stack; requires a preregistered fitting rule and leakage-canary/holdout tests. Any learned version must use a registration- and omission-tolerant loss (Mnih & Hinton, ICML 2012), not exact pixel matching. |
+| 4 | **Symmetric scarp-break locator** — `det_elev` band 12, `det_elev_slope` band 19, with `tmi_hg` band 3 as independent corroboration | Locate a break from the paired curvature lobes or a slope-profile transition, rather than treating the largest convexity lobe as the fault position. If the catalogue is displaced, a repeatable inflection/paired-lobe centre could sit off the line while a one-sided erosional face would not. | Current DEM locator reports the nearest maximum of `-d²z/dn²`; the proposed locator uses a symmetric profile geometry and a separate magnetic check. | **Low–moderate, uncertain**: could remove shape-dependent placement bias, but the scarp's geomorphic expression need not coincide with the subsurface fault. No numeric projection. | **Medium.** Uses cached feature layers, but needs synthetic known-offset tests and the same blocked holdout before any emission. |
+| 5 | **Native 1 m LiDAR displacement calibration** — USGS 3DEP bare-earth 1 m DEM tiles, plus GeoDAWN `det_elev` and `tmi_hg` | On unambiguous LiDAR scarps, compare the fine-scale crest with the GeoDAWN evidence profile and the catalogue; estimate detector bias and test whether a ≥200 m segment shift persists at native resolution. This is a calibration/correction test, not a search for unrelated regional faults. | The repository's historical calibration used a 3 m pilot and a 100 m derived scarp summary, not the full set of original 1 m tiles. | **Potentially useful, not established.** It must not be treated as viable until coverage and rights are verified. No numeric projection. | **High and BLOCKED in this sandbox.** Needed source: USGS 3DEP one-meter DEM collection / The National Map, public-domain bare-earth DEMs. The competition data page also lists `1m_DEM_links.csv`. The official one-meter metadata describes the product and its National Map distribution ([USGS/FGDC metadata](https://www.fgdc.gov/technical-guidance/metadata/dem1meterdatacollection-csdgm-ngdametadataexample.xml)); official program entry point: [USGS 3DEP](https://www.usgs.gov/3d-elevation-program). The source is public in principle, but the raw download host is outside this sandbox's network allowlist and the competition link table is login-gated. The GitHub cache provides only derivatives/pilot tiles. Therefore this candidate is **not validated or promoted here**. |
 
-- **Layer(s):** INGENIOUS "Earthquake Density Models" GeoTIFFs (22.98 MB, CC BY 4.0), or ComCat (USGS).
-- **Signature:** linear ridges of earthquake density that trend along a fault direction and are off catalogue.
-- **Why it could find a missing fault:** microseismicity aligns on active faults, including unmapped ones.
-- **Named non-fault mimic:** mining, reservoir or quarry seismicity; aftershock sequences; network-coverage bias.
-- **Difference:** seismicity is already in heavy use (13 GEMSDOE32 docs, 4 GEMSDOE30 docs). **Lowest novelty of the three data-driven candidates.**
-- **Validation:** **BLOCKED.**
-- **Source:** GDR 1391 (CC BY 4.0); ComCat (USGS) listed, not reached from the sandbox.
-- **Cost:** medium.
-- **Expected improvement (judgement):** moderate, uncertain.
+## Validation gate before any weekly slot
 
-## H4 (rank 4) — Corrections lane: offset of the catalogue from a DEM-crest scarp
+For the top candidate, use the shared pooled hide-and-recover evaluator with whole catalogue components withheld and a buffer, derive catalogue-based features only from visible faults, mask visible catalogue pixels exactly, and score pooled DTI at α=0.2, β=0.8, and a 300 m triangular kernel. Report evaluator version, withheld-positive count, and a paired spatial-block 95% CI. Evaluate each candidate input alone as a leakage canary; an AUC above 0.90 is a leakage alarm until investigated. A holdout on catalogue segments is not proof of performance on genuinely unmapped faults, so its scope must be stated.
 
-- **Layer(s):** 1 m DEM tiles (USGS 3DEP, listed by the competition), DEM curvature, magnetic gradient ridge (GeoDAWN).
-- **Signature:** the crest of a DEM-curvature scarp, or of a magnetic gradient ridge, lying 2 px or more from a catalogue trace along a consistent direction.
-- **Why it could find a missing fault:** the brief's own premise is that known traces are misplaced, and the Stanford 2025 paper reports up to 400 m of discrepancy in North Central Nevada (D5).
-- **Result so far (PROXY, NEGATIVE):** the USGS SGMC-to-QFaults proxy gives a median nearest-pixel displacement of 1.41 px. Eight of 306 five-km blocks have mean displacement above 2 px, with no consistent direction. The protocol says that when offsets cluster below two pixels the lane emits nothing. **The DEM-crest measurement itself is BLOCKED** (no DEM, no GeoDAWN magnetics in the sandbox). See [corrections-proxy.json](corrections-proxy.json).
-- **Named non-fault mimic:** scarps from erosion or landslides; magnetic ridges from lithology contacts or intrusions.
-- **Difference:** the sibling repos contain DEM-scarp features (`lidar_scarp_features_u8.tif` in GEMSDOE24 and GEMSDOE7; provenance not checked here) and many scarp-based submissions. Not novel.
-- **Validation:** BLOCKED (DEM). The proxy is NEGATIVE; the proxy's own limits are listed in IR-11.
-- **Source:** USGS 3DEP (free, official). Listed; not reachable from the sandbox.
-- **Cost:** high (1 m DEM at scale).
-- **Expected improvement (judgement):** low, given the proxy result.
+Do not spend a submission slot unless the top candidate beats the current holdout best with a defensible paired interval, passes the final registry gate, and its GeoTIFF passes the official grid/range/null contract. The weekly-slot selector is separate. A negative result is a deliverable.
 
-## H5 (rank 5) — Volcanic-vent alignments as dike or fault proxies
+## Data-provenance caveat
 
-- **Layer(s):** INGENIOUS "Quaternary Volcanics" vents and flows (9.44 MB, CC BY 4.0).
-- **Signature:** alignments of vents along a trend, more than 300 m from catalogue traces.
-- **Named non-fault mimic:** volcanic vent alignments reflect magma pathways and can be non-tectonic.
-- **Difference:** `volcanic` appears in 16 GEMSDOE30 docs and 8 GEMSDOE32 docs. **Low novelty.**
-- **Validation:** BLOCKED.
-- **Cost:** low.
-- **Expected improvement (judgement):** low.
-
----
-
-## What we should not do
-
-- Copy any sibling submission. The brief forbids it, and the registry shows many byte-identical duplicates (IR-03).
-- Use the public copies of competition files (`existing_faults.tif`, `labels.tif`, `sample_submission.tif`) without a rights check (IR-03).
-- Rank hypotheses by sibling scores. Those scores are unverified (IR-04, IR-05).
-
-## Free official sources still needed, in order
-
-1. **Competition training files** (`training_features.tif`, `labels.tif`, `sample_submission.tif`, DEM links). Source: DrivenData data page, login required. **Not obtainable from the sandbox**; a registered user can download them into `data/raw/`.
-2. **INGENIOUS regional compilation** (GDR 1391), for H1–H3, H5. Free, CC BY 4.0, public. The zips are listed on the page we fetched; the sandbox cannot download them.
-3. **USGS 3DEP 1 m DEM tiles** (for H4). Free, official. Listed by the competition; not reachable from the sandbox.
-4. **SGMC 2026 update** (DOI 10.5066/P1A3DQZK), to replace the superseded 2017 raster (IR-08).
+The competition page states that its data tab provides `training_features.tif`, labels, a sample submission and `1m_DEM_links.csv`; that tab requires participant access. A public copy in a sibling repository can be checked against this repository's SHA-256 pins, but matching a hash proves byte identity to the recorded pin—not direct organizer provenance, licensing, or permission to redistribute. Keep organizer inputs out of Git and label the mirror route accurately.

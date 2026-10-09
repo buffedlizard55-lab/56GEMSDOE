@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Write data_manifest.json: every input this repository reads, with hash, source and access status.
+"""Write ``data_manifest.json`` with current input presence, hashes, and provenance limits.
 
-A manifest is an integrity statement about the bytes on this machine plus a pointer a reviewer can open. It
-does not authenticate organizer provenance by itself: for a login-gated file the strongest honest claim is
-"these bytes hash to X, and here is the page where a logged-in human can confirm X".
+The competition inputs are mirrored in public owner-maintained GitHub repositories because the
+competition data tab is login-gated. Their SHA-256 pins establish byte identity with those mirrors,
+not direct organizer authentication, licence terms, or permission to redistribute. The LiDAR products
+are sibling-repo derivatives and are explicitly kept separate from competition inputs.
 
-Reproduce: python scripts/make_manifest.py
+Reproduce after ``bash scripts/download_competition_data.sh`` with:
+``python scripts/make_manifest.py``
 """
 from __future__ import annotations
 
@@ -15,83 +17,115 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-
-EXTERNAL = {
-    "/home/user/_lidar/x42y427_3m.tif": dict(
-        role="3 m lidar DEM pilot tile for the sub-cell crest calibration",
-        source="USGS 3DEP 1 m lidar, resampled to 3 m by sibling repo GEMSDOE48",
-        link="https://github.com/buffedlizard55-lab/GEMSDOE48/actions/runs/37565284104",
-        access="public (GitHub release artefact of a sibling repo)"),
-    "/home/user/_lidar/x40y425_3m.tif": dict(
-        role="second 3 m tile, for a sign check across separate areas",
-        source="USGS 3DEP 1 m lidar via GEMSDOE48", link="https://github.com/buffedlizard55-lab/GEMSDOE48",
-        access="public"),
-    "/home/user/_lidar/h52_scarp3m_100m.tif": dict(
-        role="7-band 100 m scarp stack derived from the same lidar (used for coverage only)",
-        source="GEMSDOE48 merged product, int16 decimetres, nodata -32768",
-        link="https://github.com/buffedlizard55-lab/GEMSDOE48/blob/main/data/external/h52_scarp3m_100m.json",
-        access="public"),
-}
+OFFICIAL_DATA_PAGE = "https://www.drivendata.org/competitions/306/competition-doe-gems/data/"
 
 
-def sha(p: Path, n: int = 1 << 22):
-    h = hashlib.sha256()
-    with p.open("rb") as fh:
-        for blk in iter(lambda: fh.read(n), b""):
-            h.update(blk)
-    return h.hexdigest()
+def hash_file(path: Path, block_size: int = 1 << 22) -> tuple[int, str]:
+    digest = hashlib.sha256()
+    size = 0
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(block_size), b""):
+            size += len(block)
+            digest.update(block)
+    return size, digest.hexdigest()
 
 
-def main():
+def main() -> None:
     pins = json.loads((ROOT / "registry" / "input_pins.json").read_text())
-    grid = json.loads((ROOT / "evidence" / "grid.json").read_text())
-    out = dict(
-        generated_utc=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        statement=("every number published by this repository derives from the files listed here; nothing was "
-                   "downloaded or generated between the pin and the measurement that is not in this list"),
-        official_inputs={}, external_inputs={}, derived_inputs={})
+    bridge = json.loads((ROOT / "registry" / "bridge_sources.json").read_text())
+    core = bridge["competition_bridge"]
+    lidar = bridge["lidar_cache"]
+    out = {
+        "generated_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "statement": ("SHA-256 equality confirms byte identity with the owner-maintained public mirror pins; "
+                      "it does not authenticate these files as direct organizer downloads or resolve licensing/"
+                      "redistribution terms. Confirm those on the login-gated competition data page."),
+        "competition_data_page": OFFICIAL_DATA_PAGE,
+        "competition_mirror": {
+            "repository": core["repository"], "commit": core["commit"],
+            "commit_url": core["commit_url"], "manifest_blob": core["manifest_blob"],
+            "classification": "public owner-maintained mirror; not direct organizer authentication",
+        },
+        "official_inputs": {},
+        "external_inputs": {},
+        "derived_inputs": {},
+    }
 
-    for name, meta in (pins.get("files") or {}).items():
-        p = (ROOT / meta["path"]) if meta.get("path") else None
-        here = bool(p and p.exists())
-        out["official_inputs"][name] = dict(
-            path=str(p.relative_to(ROOT)) if here else meta.get("path"), bytes=meta["bytes"],
-            sha256=meta.get("sha256"), sha256_now=sha(p) if here else None,
-            matches_pin=((sha(p) == meta["sha256"]) if meta.get("sha256") else None) if here else None,
-            present_in_repo=here,
-            note=("no pin recorded for this input in registry/input_pins.json (it is not part of the data-tab "
-                  "bridge); the hash measured here is published so a later run can pin it"
-                  if here and not meta.get("sha256") else
-                  (None if here else "not stored in the repository (too large for git); cached in the sandbox "
-                                     "workspace at the path above -- a null matches_pin means absent here, "
-                                     "not a mismatch")),
-            role=meta.get("role"), source=meta.get("source", "DrivenData competition 306 data tab"),
-            link="https://drivendata.org/competitions/306/competition-doe-gems/data/",
-            access="login required (HTTP 302 observed); bytes obtained through the pinned sibling bridge")
+    file_key = {"catalogue": "catalogue", "sample": "sample", "features": "features"}
+    for name in ("catalogue", "sample", "features"):
+        meta = pins["files"][name]
+        path = ROOT / meta["path"]
+        exists = path.is_file()
+        current_bytes, current_hash = hash_file(path) if exists else (None, None)
+        expected_hash = meta.get("sha256")
+        match = (current_hash == expected_hash) if exists and expected_hash else (None if not exists else None)
+        mirror_spec = core["files"][file_key[name]]
+        out["official_inputs"][name] = {
+            "path": meta["path"], "bytes": current_bytes if exists else meta.get("bytes"),
+            "bytes_now": current_bytes, "expected_bytes": meta.get("bytes"),
+            "sha256": expected_hash, "sha256_now": current_hash,
+            "matches_pin": match, "present_in_workspace": exists,
+            "source_class": "competition input, obtained from public owner-maintained mirror",
+            "source_repository": core["repository"], "source_commit": core["commit"],
+            "source_blob": mirror_spec.get("blob"),
+            "source_shards": mirror_spec.get("parts"),
+            "role": meta.get("role"), "provenance": meta.get("provenance"),
+            "data_page": OFFICIAL_DATA_PAGE,
+            "access": "competition data page login-gated; mirrored bytes hash-pinned; organizer provenance not independently authenticated",
+            "note": ("missing here; download with scripts/download_competition_data.sh" if not exists else
+                     ("hash does not match the recorded mirror pin" if expected_hash and match is False else
+                      "hash matches recorded mirror pin; this is not proof of organizer authenticity or licensing")),
+        }
 
-    for path, meta in EXTERNAL.items():
-        p = Path(path)
-        out["external_inputs"][path] = dict(
-            **meta, exists=p.exists(), bytes=p.stat().st_size if p.exists() else None,
-            sha256=sha(p) if p.exists() else None)
+    out["external_inputs"]["lidar_cache"] = {}
+    for name, meta in lidar["files"].items():
+        path = ROOT / meta["destination"]
+        exists = path.is_file()
+        current_bytes, current_hash = hash_file(path) if exists else (None, None)
+        match = (current_hash == meta["sha256"]) if exists else None
+        out["external_inputs"]["lidar_cache"][name] = {
+            "path": meta["destination"], "bytes": current_bytes if exists else meta["bytes"],
+            "bytes_now": current_bytes, "expected_bytes": meta["bytes"],
+            "sha256": meta["sha256"], "sha256_now": current_hash,
+            "matches_pin": match, "present_in_workspace": exists,
+            "source_class": meta["classification"],
+            "source_repository": lidar["repository"], "source_commit": lidar["commit"],
+            "source_blob": meta["blob"],
+            "source_url": lidar["commit_url"],
+            "note": ("missing here; optional 3 m sibling-derived calibration cache" if not exists else
+                     ("hash mismatch with sibling-repo pin" if match is False else
+                      "matches sibling-repo pin; not a direct USGS 1 m source file")),
+        }
 
-    for name, meta in (grid.get("inputs") or {}).items():
-        p = ROOT / meta["path"]
-        out["derived_inputs"][name] = dict(path=meta["path"], bytes=meta["bytes"], sha256=meta["sha256"],
-                                           sha256_now=sha(p) if p.exists() else None,
-                                           role=meta.get("role"), provenance=meta.get("provenance"))
+    grid_path = ROOT / "evidence" / "grid.json"
+    if grid_path.is_file():
+        grid = json.loads(grid_path.read_text())
+        for name, meta in (grid.get("inputs") or {}).items():
+            out["derived_inputs"][name] = {
+                "path": meta.get("path"), "bytes": meta.get("bytes"),
+                "sha256": meta.get("sha256"), "role": meta.get("role"),
+                "provenance": meta.get("provenance"), "pin_match": meta.get("pin_match"),
+            }
 
-    n_ok = sum(1 for v in out["official_inputs"].values() if v["matches_pin"])
-    out["summary"] = dict(official_files=len(out["official_inputs"]), official_hash_verified=n_ok,
-                          external_files=len(out["external_inputs"]),
-                          verified_here=sum(1 for v in out["official_inputs"].values() if v["matches_pin"] is True),
-                          unpinned_here=sum(1 for v in out["official_inputs"].values() if v["matches_pin"] is None and v["present_in_repo"]),
-                          missing_here=sum(1 for v in out["official_inputs"].values() if not v["present_in_repo"]),
-                          all_pinned_files_verified=all(v["matches_pin"] is not False for v in out["official_inputs"].values()))
-    (ROOT / "data_manifest.json").write_text(json.dumps(out, indent=1) + "\n")
-    print(json.dumps(out["summary"], indent=1))
-    for k, v in out["official_inputs"].items():
-        print(f"  {k}: pin_match={v['matches_pin']}")
+    official = list(out["official_inputs"].values())
+    external = [v for group in out["external_inputs"].values() for v in group.values()]
+    out["summary"] = {
+        "official_files": len(official),
+        "verified_here": sum(v["matches_pin"] is True for v in official),
+        "pinned_official_files": sum(bool(v.get("sha256")) for v in official),
+        "missing_here": sum(not v["present_in_workspace"] for v in official),
+        "mismatched_here": sum(v["matches_pin"] is False for v in official),
+        "all_pinned_files_verified": all(v["matches_pin"] is True for v in official if v.get("sha256")),
+        "external_files": len(external),
+        "external_hash_verified": sum(v["matches_pin"] is True for v in external),
+        "external_missing_here": sum(not v["present_in_workspace"] for v in external),
+        "source_authentication": "mirror byte identity only; not organizer authentication",
+    }
+    (ROOT / "data_manifest.json").write_text(json.dumps(out, indent=2) + "\n")
+    print(json.dumps(out["summary"], indent=2))
+    for group, rows in (("competition", out["official_inputs"]), ("sibling-derived", out["external_inputs"]["lidar_cache"])):
+        for name, row in rows.items():
+            print(f"  {group}/{name}: present={row['present_in_workspace']} pin_match={row['matches_pin']}")
 
 
 if __name__ == "__main__":

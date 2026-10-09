@@ -1,119 +1,128 @@
 [
- {
-  "id": "IR-56-001",
-  "title": "sample_submission.tif is not an empty template",
-  "severity": "warn",
-  "finding": "The file named sample_submission.tif is cell-for-cell identical to existing_faults.tif: 60,988 positive cells in both, same lattice. Reading it as an all-zero template -- which is what the name invites -- would make a 'valid' submission that is just the catalogue.",
-  "action": "Treated as the catalogue baseline, never as zeros. It is the reference grid for CRS/shape/geotransform in submission_writer, and it is arm A/C of the holdout, where it scores DTI 0.00000 because the evaluator masks visible catalogue pixels.",
-  "link": "https://drivendata.org/competitions/306/competition-doe-gems/data/",
-  "verified_by": "rasterio read of both files in this workspace (evidence/grid.json)"
- },
- {
-  "id": "IR-56-002",
-  "title": "Nodata in the feature stack is a finite number",
-  "severity": "bad",
-  "finding": "training_features.tif stores nodata as float32 -3.4028234663852886e+38, which is finite, and 57.9% of band 1 is that sentinel. Any min/median/correlation computed without masking returns the sentinel and looks like a real, enormous signal.",
-  "action": "Every read in this repo goes through gems56.corrections.load_fields, which converts the sentinel to NaN and asserts each band's DESCRIPTION string before use (sibling repos index the same bands differently -- GEMSDOE52 logged the same hazard as IR-52-019).",
-  "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/src/gems56/corrections.py",
-  "verified_by": "measured on the pinned file in this workspace"
- },
- {
-  "id": "IR-56-003",
-  "title": "Competition data tab requires login",
-  "severity": "warn",
-  "finding": "drivendata.org/competitions/306/competition-doe-gems/data/ returns HTTP 302 to /accounts/login/ for training_features.tif, labels.tif, sample_submission.tif and 1m_DEM_links.csv, so the official inputs cannot be downloaded from an unauthenticated sandbox.",
-  "action": "Inputs were assembled from the sibling repository's pinned copies and hash-verified against registry/input_pins.json (pin_match true for all three), so the numbers on this site are the official rasters, not a look-alike. Links are provided for manual review by a logged-in human.",
-  "link": "https://drivendata.org/competitions/306/competition-doe-gems/data/",
-  "verified_by": "curl 302 observation + sha256 comparison in this workspace"
- },
- {
-  "id": "IR-56-004",
-  "title": "The shared holdout is structurally blind to what this lane measures",
-  "severity": "warn",
-  "finding": "holdout.make_folds masks visible catalogue pixels pixel-exactly, so a prediction that moves a dot 1-3 px off a catalogue line has nothing to be credited against: the withheld target is the catalogue's own hidden segments, and a lateral shift of a traced line is not a new segment. Measured, not argued: arm B (evidence snap) 0.00012 vs arm D (random sub-pixel jitter) 0.00011, overlapping intervals.",
-  "action": "Reported as a limitation of the instrument rather than a failure of the hypothesis. The lane is judged by its own pre-registered rule (corridor-level consistency) plus two nulls and a sign-flip permutation control, and the holdout is used only to rule out a catastrophe.",
-  "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/holdout_corrections_v1.json",
-  "verified_by": "evidence/holdout_corrections_v1.json"
- },
- {
-  "id": "IR-56-005",
-  "title": "LiDAR layers are packed, and the packing differs between files",
-  "severity": "warn",
-  "finding": "The 100 m scarp stack (h52_scarp3m_100m.tif) is int16 with nodata -32768 and a per-band SCALE divisor; the 3 m pilot tiles are plain int16 with z_m = 1000 + value/10. Taking either at face value yields elevations near -3276 m or a 1000 m bias.",
-  "action": "Decoding asserted against each file's own metadata and bounds at load time, plus a valid-fraction guard that raises when a reprojection returns less than 90% valid data (the failure mode that silently produced all-NaN tiles during development).",
-  "link": "https://github.com/buffedlizard55-lab/GEMSDOE48/blob/main/data/external/h52_scarp3m_100m.json",
-  "verified_by": "rasterio metadata + values read in this workspace"
- },
- {
-  "id": "IR-56-006",
-  "title": "The duplicate-submission rule as written is vacuous against dense rasters",
-  "severity": "bad",
-  "finding": "The lane protocol says: if >70% of my dots lie within 3 px of one registry raster's dots, log a duplicate and stop. Sibling repos publish whole-footprint plausibility masks (5,167,373 and 4,830,583 dotted cells). Against those, ANY non-empty submission is 100% contained, so the rule fires on every candidate in the corpus, including files that are not submissions at all. The reverse overlap for the same pairs was 0.01-0.12%. The authoritative run confirms it: gates.lane_uniqueness_report on the final primary dots returns max Spearman 0.0051 (pass, threshold 0.90) but directed <=3px proximity 1.000 against a 0.70 threshold, duplicate=true, ok=false, 105 offending priors -- because the raster carries a single dot. The sensitivity raster (14 dots) triggers 31 priors on the same criterion and 0 in the reciprocal direction.",
-  "action": "Both directions plus the reciprocal minimum are computed for all 485 rasters (evidence/registry_screen_v1_rows.jsonl), the trigger is reported with the prior's dot count so a reader can see which priors are density masks, and the site does not claim a clean uniqueness pass. The rule's *intent* -- do not resubmit someone's raster -- is additionally served by the emission rule never placing a dot on a catalogue pixel. The gate's own verdict is published on the site banner and in the run card as a failure, and no slot is claimed for either raster.",
-  "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/registry_screen_v1.json",
-  "verified_by": "scripts/screen_registry.py over /home/user/_reg"
- },
- {
-  "id": "IR-56-007",
-  "title": "The first offset result was an instrument artifact, not a finding",
-  "severity": "bad",
-  "finding": "Before calibration, the median absolute catalogue-to-crest offset was 0.656 px and looked like a small real displacement. Two null controls showed a random point with no fault anywhere is 'nearest crest' 0.49 px away and catalogue pixels sampled in a random direction 0.52 px away: the signal was inside the noise floor of the estimator.",
-  "action": "Null-calibrated gates became mandatory for every statistic in this lane (crest height floor = 90th percentile of the null), the histogram is published next to both nulls, and the sign-flip permutation control was added for the cluster rule.",
-  "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/calibration_v1.json",
-  "verified_by": "evidence/calibration_v1.json, evidence/cluster_gate_control.json"
- },
- {
-  "id": "IR-56-008",
-  "title": "Corridor z-scores explode when the MAD collapses",
-  "severity": "info",
-  "finding": "The robust SE of a median goes to zero when four corroborated pixels share a value, so z = |median|/SE reached 60.6 on one component -- arithmetically true, scientifically meaningless.",
-  "action": "corridor_table now takes sigma_floor_px and floors the SE at the measured disagreement between a 100 m offset and the same offset measured on 3 m LiDAR (1.296 px). With the floor the same corridor's z is bounded by the instrument's precision. No z is quoted anywhere in this repo without that floor.",
-  "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/src/gems56/corrections.py",
-  "verified_by": "evidence/lidar_calibration_v1.json estimator block"
- },
- {
-  "id": "IR-56-009",
-  "title": "A sign-asymmetric crest detector in the lane's own code (found by a test, fixed here)",
-  "severity": "bad",
-  "finding": "Three defects were caught while writing contract tests against synthetic scarps of known position: (a) the PCA strike vector had an arbitrary sign, so neighbouring pixels of one trace could place corrected dots on opposite sides; (b) the second difference was taken at 0.25 px sample spacing on bilinearly interpolated data, which turns the interpolation's piecewise linearity into a comb of curvature spikes one cell apart, and the 'nearest crest' rule then selected a spike instead of the scarp; (c) the prominence test measured a crest against its own flanking concave lobe, which exists only on one side of the trace, so right-hand scarps were rejected and left-hand ones accepted. (b) and (c) both shrink the offset histogram toward zero -- i.e. they could manufacture exactly the negative verdict this lane reported.",
-  "action": "Fixed in src/gems56/corrections.py (lane code, not a vendored template module, so no shared-tool fork was created): strike canonicalisation, a one-cell curvature baseline with a widened sampling window, full-kernel-support requirement, and a relative-strength rule symmetric in the sign of the offset. All of E1, E1c, E2, E3 and the uniqueness screen were then re-run from scratch. The remaining known bias (+0.2 to +0.5 px, constant in offset, shape-dependent) is characterised in evidence/estimator_validation.json and is why no claim here rests on an absolute sub-pixel offset.",
-  "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/estimator_validation.json",
-  "verified_by": "tests/test_contracts.py (10 tests) + scripts/validate_estimator.py"
- },
- {
-  "id": "IR-56-010",
-  "title": "Leaderboard figures cannot be verified from this environment",
-  "severity": "info",
-  "finding": "The leaderboard page is JavaScript-rendered behind login, so the 'current best 0.3195' and the sibling-reported 0.3774 could not be read from an organizer source here. Sibling repo summaries also disagree with the brief about what the project's best score is (0.2778 / 0.2750 appear as their own submissions).",
-  "action": "Every score on this site is labelled HOLDOUT-DTI (local), ORGANIZER-CONFIRMED (none), or BOARD-UNVERIFIED. No projection is written as a score, and no claim of ranking is made anywhere in the repo.",
-  "link": "https://drivendata.org/competitions/306/leaderboard/",
-  "verified_by": "fetch_page of the leaderboard and community threads in this session"
- },
- {
-  "id": "IR-56-011",
-  "title": "Sibling 'registry' rasters are a mixture of submissions and diagnostics",
-  "severity": "info",
-  "finding": "The uniqueness corpus was harvested by enumerating git trees of 34 sibling repos and filtering to single-band, grid-aligned .tif between 80 KB and 2.6 MB under docs/downloads, docs/submissions, submission/ and registry/. That filter still admits diagnostic layers, and it excludes any submission stored as .zip or as a float64 raster.",
-  "action": "The filter is stated in the screen's own 'rule' field and in the corpus block of the receipt; the site reports the corpus size (485 files, 0 read errors) so the reader can judge coverage. A full-corpus sweep is re-runnable in one pass.",
-  "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/scripts/screen_registry.py",
-  "verified_by": "scripts/screen_registry.py receipt"
- },
- {
-  "id": "IR-56-012",
-  "title": "The published worked example cannot be reproduced as a grid",
-  "severity": "info",
-  "finding": "The evaluation page's DTI example quotes TPw 3.00, FPw 1.89, FNw 2.00 alongside a schematic. Reconstructing a pixel grid from the figure text does not reproduce those aggregates, because the figure is illustrative.",
-  "action": "The vendored metric is pinned instead to (i) the published formula evaluated on the published aggregates and (ii) a hand-computed one-truth-pixel case, plus agreement with a brute-force implementation to 1e-9 on random grids -- tests test_published_metric_formula and test_metric_matches_brute_force.",
-  "link": "https://drivendata.org/competitions/306/competition-doe-gems/page/967/",
-  "verified_by": "tests/test_contracts.py"
- },
- {
-  "id": "IR-56-013",
-  "title": "Our rasters write 0.0 outside the data extent; the official sample writes NaN",
-  "severity": "warn",
-  "finding": "The format page says cells outside the provided data extent should be null or NaN, and sample_submission.tif does exactly that (7,111,787 NaN cells of 12,279,160). The rasters built here carry 0.0 in that region instead, because the shared template tool enforces an all-finite export policy: gates.format_report appends 'NaN/infinite pixels: fail our all-finite export policy (public spec permits outside-footprint NaN)' and submission_writer.write_submission refuses a prediction that is not finite. So this is a deliberate template decision that contradicts the organizer's sentence, not an oversight of this lane's.",
-  "action": "Measured the consequence rather than assuming it: under DTI, FPw sums only over prediction pixels with p > 0, so 0 and null outside are arithmetically identical, and both are inside [0,1], which is what the upload range check enforces. Kept the template behaviour so this lane's file is byte-comparable with the sibling submissions that already uploaded, published the exact difference on the site instead of claiming compliance, and recorded the flip: writing out[~valid]=nan with nodata=nan in submission_writer (one edit, shared tool) if DrivenData ever rejects a 0-filled exterior. A reviewer with an account should confirm which convention the platform's validator prefers.",
-  "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/src/gems56/submission_writer.py",
-  "verified_by": "independent rasterio read of both rasters and of the sample: non-null-outside-footprint count 12,218,172, sample NaN count 7,111,787"
- }
+  {
+    "id": "IR-56-001",
+    "title": "sample_submission.tif is not an empty template",
+    "severity": "warn",
+    "finding": "The file named sample_submission.tif is cell-for-cell identical to existing_faults.tif: 60,988 positive cells in both, same lattice. Reading it as an all-zero template -- which is what the name invites -- would make a 'valid' submission that is just the catalogue.",
+    "action": "Treated it as the catalogue baseline, never as zeros. It is the reference grid for CRS/shape/geotransform in submission_writer and arm A/C of the historical holdout. HOLDOUT-DTI `gems52-pooled-hide-v1` (48,080 withheld positives), A_as_is = 0.00000000 [0.00000000, 0.00000000] (95% CI); this is not an organizer score.",
+    "link": "https://drivendata.org/competitions/306/competition-doe-gems/data/",
+    "verified_by": "evidence/grid.json and evidence/holdout_corrections_v1.json"
+  },
+  {
+    "id": "IR-56-002",
+    "title": "Nodata in the feature stack is a finite number",
+    "severity": "bad",
+    "finding": "training_features.tif stores nodata as float32 -3.4028234663852886e+38, which is finite, and 57.9% of band 1 is that sentinel. Any min/median/correlation computed without masking returns the sentinel and looks like a real, enormous signal.",
+    "action": "Every read in this repo goes through gems56.corrections.load_fields, which converts the sentinel to NaN and asserts each band's DESCRIPTION string before use (sibling repos index the same bands differently -- GEMSDOE52 logged the same hazard as IR-52-019).",
+    "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/src/gems56/corrections.py",
+    "verified_by": "measured on the pinned file in this workspace"
+  },
+  {
+    "id": "IR-56-003",
+    "title": "Competition data tab requires login",
+    "severity": "warn",
+    "finding": "drivendata.org/competitions/306/competition-doe-gems/data/ returns HTTP 302 to /accounts/login/ for training_features.tif, labels.tif, sample_submission.tif and 1m_DEM_links.csv, so direct retrieval from the official data tab was unavailable without participant access. The three competition files restored here match SHA-256 pins from the public owner-maintained GEMSDOE mirror (repository/commit recorded in registry/bridge_sources.json); byte identity is not direct organizer authentication, proof of licensing, or permission to redistribute.",
+    "action": "Record the owner-maintained mirror route, immutable source commit, and hashes in registry/bridge_sources.json, registry/input_pins.json, and data_manifest.json. Keep the organizer data page as the authoritative source for participant access/terms; do not describe the mirror copy as directly authenticated official downloads.",
+    "link": "https://drivendata.org/competitions/306/competition-doe-gems/data/",
+    "verified_by": "HTTP 302 observation; scripts/download_competition_data.sh; data_manifest.json reports 3/3 competition hashes and 3/3 sibling-derived cache hashes matching their recorded pins"
+  },
+  {
+    "id": "IR-56-004",
+    "title": "Historical holdout is not a direct validation of a same-segment lateral correction",
+    "severity": "warn",
+    "finding": "The hide-and-recover evaluator withholds whole catalogue components and masks visible catalogue pixels pixel-exactly; its positive targets are different held-out catalogue segments, not the corrected positions of the visible segments and not the organizer's genuinely unmapped faults. It can provide a broad generalization check but is not a matched same-trace correction instrument. Historical HOLDOUT-DTI `gems52-pooled-hide-v1`, 48,080 withheld positives: B_snap 0.00015661 [0.00000000, 0.00045357]; D_jitter 0.00020550 [0.00000261, 0.00050850]. The marginal 95% intervals overlap; this does not validate a correction.",
+    "action": "Report the holdout scope and uncertainty; do not call its score organizer-confirmed or use it to license a lateral correction. The ranked three-physics candidate still requires a fresh, preregistered spatial holdout and feature-alone leakage canaries after the run budget is reset.",
+    "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/holdout_corrections_v1.json",
+    "verified_by": "evidence/holdout_corrections_v1.json; evaluator version/count/arm CIs copied from the receipt"
+  },
+  {
+    "id": "IR-56-005",
+    "title": "LiDAR layers are packed, and the packing differs between files",
+    "severity": "warn",
+    "finding": "The 100 m scarp stack (h52_scarp3m_100m.tif) is int16 with nodata -32768 and a per-band SCALE divisor; the 3 m pilot tiles are plain int16 with z_m = 1000 + value/10. Taking either at face value yields elevations near -3276 m or a 1000 m bias.",
+    "action": "Decoding asserted against each file's own metadata and bounds at load time, plus a valid-fraction guard that raises when a reprojection returns less than 90% valid data (the failure mode that silently produced all-NaN tiles during development).",
+    "link": "https://github.com/buffedlizard55-lab/GEMSDOE48/blob/main/data/external/h52_scarp3m_100m.json",
+    "verified_by": "rasterio metadata + values read in this workspace"
+  },
+  {
+    "id": "IR-56-006",
+    "title": "The duplicate-submission rule as written is vacuous against dense rasters",
+    "severity": "bad",
+    "finding": "The lane protocol says: if >70% of my dots lie within 3 px of one registry raster's dots, log a duplicate and stop. Sibling repos publish whole-footprint plausibility masks (5,167,373 and 4,830,583 dotted cells). Against those, ANY non-empty submission is 100% contained, so the rule fires on every candidate in the corpus, including files that are not submissions at all. The reverse overlap for the same pairs was 0.01-0.12%. The authoritative run confirms it: gates.lane_uniqueness_report on the final primary dots returns max Spearman 0.0051 (pass, threshold 0.90) but directed <=3px proximity 1.000 against a 0.70 threshold, duplicate=true, ok=false, 105 offending priors -- because the raster carries a single dot. The sensitivity raster (14 dots) triggers 31 priors on the same criterion and 0 in the reciprocal direction.",
+    "action": "Both directions plus the reciprocal minimum are computed for all 485 rasters (evidence/registry_screen_v1_rows.jsonl), the trigger is reported with the prior's dot count so a reader can see which priors are density masks, and the site does not claim a clean uniqueness pass. The rule's *intent* -- do not resubmit someone's raster -- is additionally served by the emission rule never placing a dot on a catalogue pixel. The gate's own verdict is published on the site banner and in the run card as a failure, and no slot is claimed for either raster.",
+    "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/registry_screen_v1.json",
+    "verified_by": "scripts/screen_registry.py over /home/user/_reg"
+  },
+  {
+    "id": "IR-56-007",
+    "title": "The first offset result was an instrument artifact, not a finding",
+    "severity": "bad",
+    "finding": "Before calibration, the median absolute catalogue-to-crest offset was 0.656 px and looked like a small real displacement. Two null controls showed a random point with no fault anywhere is 'nearest crest' 0.49 px away and catalogue pixels sampled in a random direction 0.52 px away: the signal was inside the noise floor of the estimator.",
+    "action": "Null-calibrated gates became mandatory for every statistic in this lane (crest height floor = 90th percentile of the null), the histogram is published next to both nulls, and the sign-flip permutation control was added for the cluster rule.",
+    "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/calibration_v1.json",
+    "verified_by": "evidence/calibration_v1.json, evidence/cluster_gate_control.json"
+  },
+  {
+    "id": "IR-56-008",
+    "title": "Corridor z-scores explode when the MAD collapses",
+    "severity": "info",
+    "finding": "The robust SE of a median goes to zero when four corroborated pixels share a value, so z = |median|/SE reached 60.6 on one component -- arithmetically true, scientifically meaningless.",
+    "action": "corridor_table now takes sigma_floor_px and floors the SE at the measured disagreement between a 100 m offset and the same offset measured on 3 m LiDAR (1.296 px). With the floor the same corridor's z is bounded by the instrument's precision. No z is quoted anywhere in this repo without that floor.",
+    "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/src/gems56/corrections.py",
+    "verified_by": "evidence/lidar_calibration_v1.json estimator block"
+  },
+  {
+    "id": "IR-56-009",
+    "title": "A sign-asymmetric crest detector in the lane's own code (found by a test, fixed here)",
+    "severity": "bad",
+    "finding": "Three defects were caught while writing contract tests against synthetic scarps of known position: (a) the PCA strike vector had an arbitrary sign, so neighbouring pixels of one trace could place corrected dots on opposite sides; (b) the second difference was taken at 0.25 px sample spacing on bilinearly interpolated data, which turns the interpolation's piecewise linearity into a comb of curvature spikes one cell apart, and the 'nearest crest' rule then selected a spike instead of the scarp; (c) the prominence test measured a crest against its own flanking concave lobe, which exists only on one side of the trace, so right-hand scarps were rejected and left-hand ones accepted. (b) and (c) both shrink the offset histogram toward zero -- i.e. they could manufacture exactly the negative verdict this lane reported.",
+    "action": "Fixed in src/gems56/corrections.py (lane code, not a vendored template module, so no shared-tool fork was created): strike canonicalisation, a one-cell curvature baseline with a widened sampling window, full-kernel-support requirement, and a relative-strength rule symmetric in the sign of the offset. All of E1, E1c, E2, E3 and the uniqueness screen were then re-run from scratch. The remaining known bias (+0.2 to +0.5 px, constant in offset, shape-dependent) is characterised in evidence/estimator_validation.json and is why no claim here rests on an absolute sub-pixel offset.",
+    "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/estimator_validation.json",
+    "verified_by": "tests/test_contracts.py (10 tests) + scripts/validate_estimator.py"
+  },
+  {
+    "id": "IR-56-010",
+    "title": "Leaderboard figures cannot be verified from this environment",
+    "severity": "info",
+    "finding": "The leaderboard page is JavaScript-rendered behind login, so no organizer score or current rank was authenticated in this review. The 0.3195 target is USER-REPORTED from the standing brief; 0.3774 and 0.2778/0.2750 are sibling-reported, unverified figures. Do not present any of them as ORGANIZER-CONFIRMED without a submission receipt.",
+    "action": "Keep the local hide-and-recover values labelled HOLDOUT-DTI with evaluator version, withheld-positive count and 95% CI. Label the 0.3195 target USER-REPORTED and the other figures as unverified sibling reports; no ranking claim or organizer-confirmed score is made in this repository.",
+    "link": "https://drivendata.org/competitions/306/leaderboard/",
+    "verified_by": "Leaderboard page fetch in review; current evidence/submission_status.json records organizer_confirmed_score=null"
+  },
+  {
+    "id": "IR-56-011",
+    "title": "Sibling 'registry' rasters are a mixture of submissions and diagnostics",
+    "severity": "info",
+    "finding": "The uniqueness corpus was harvested by enumerating git trees of 34 sibling repos and filtering to single-band, grid-aligned .tif between 80 KB and 2.6 MB under docs/downloads, docs/submissions, submission/ and registry/. That filter still admits diagnostic layers, and it excludes any submission stored as .zip or as a float64 raster.",
+    "action": "The filter is stated in the screen's own 'rule' field and in the corpus block of the receipt; the site reports the corpus size (485 files, 0 read errors) so the reader can judge coverage. A full-corpus sweep is re-runnable in one pass.",
+    "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/scripts/screen_registry.py",
+    "verified_by": "scripts/screen_registry.py receipt"
+  },
+  {
+    "id": "IR-56-012",
+    "title": "The published worked example cannot be reproduced as a grid",
+    "severity": "info",
+    "finding": "The evaluation page's DTI example quotes TPw 3.00, FPw 1.89, FNw 2.00 alongside a schematic. Reconstructing a pixel grid from the figure text does not reproduce those aggregates, because the figure is illustrative.",
+    "action": "The vendored metric is pinned instead to (i) the published formula evaluated on the published aggregates and (ii) a hand-computed one-truth-pixel case, plus agreement with a brute-force implementation to 1e-9 on random grids -- tests test_published_metric_formula and test_metric_matches_brute_force.",
+    "link": "https://drivendata.org/competitions/306/competition-doe-gems/page/967/",
+    "verified_by": "tests/test_contracts.py"
+  },
+  {
+    "id": "IR-56-013",
+    "title": "Shared submission tooling rejects the official NaN/null exterior and writes all-finite zeros instead",
+    "severity": "bad",
+    "finding": "The official submission-format page states that the raster must match the training bounds and that data outside those bounds is null or NaN; the official sample uses NaN there. The shared gems52 grid/writer/gate copies in this repository reject non-finite raster values across the whole array, although gates.py's own docstring acknowledges that outside-footprint NaN is permitted. Historical TIFs therefore fill the exterior with 0.0 to satisfy the local all-finite policy. No organizer upload has tested this discrepancy, so local validity is not proof of portal compatibility.",
+    "action": "Withhold all upload-ready claims and do not patch the vendored modules privately. Filed upstream issue #65 in GEMSDOE52 requesting a mask-aware shared writer/gate and outside-mask tests. Keep the historical artifacts available only for audit until the shared tool and format gate are reconciled; never claim that zeros outside are accepted by DrivenData.",
+    "link": "https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65",
+    "verified_by": "official format page fetched 2026-10-09; byte comparison against current GEMSDOE52/main showed src/gems56/{grid.py,gates.py,submission_writer.py} are identical; issue #65 created"
+  },
+  {
+    "id": "IR-56-014",
+    "title": "A stale build produced dots even though the null-calibrated decision gate rejects every corridor",
+    "severity": "bad",
+    "finding": "The historical primary TIF contains one dot and the relaxed 1 px sensitivity TIF contains 14. The build receipt's calibration-floor fields coexist with a call path that disabled the null strength thresholds for artifact construction. The independently recorded decision gate qualifies 0 of 21 corridors; therefore neither raster is an evidence-supported correction under the standing brief. The historical holdout also shows the evidence-based snap does not beat the random-jitter control within uncertainty.",
+    "action": "Keep both files only as explicitly labelled historical diagnostics; do not create another correction raster, do not promote either file, and do not spend a weekly slot. The current submission_status.json is authoritative. If new experiments are later permitted, reset the stop-loss budget and correct the null-gate mismatch before any build.",
+    "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/submission_status.json",
+    "verified_by": "evidence/calibration_v1.json (0/21), evidence/build_corrections_v1.json (primary=1, sensitivity=14), evidence/holdout_corrections_v1.json, and scripts/build_corrections_submission.py"
+  }
 ]

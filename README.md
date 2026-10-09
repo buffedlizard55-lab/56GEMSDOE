@@ -3,27 +3,28 @@
 Live site: **https://buffedlizard55-lab.github.io/56GEMSDOE/** · downloadable rasters in
 [`docs/downloads/`](docs/downloads/) · all receipts in [`evidence/`](evidence/)
 
-> **Bottom line of the first run (2026-10-09):** the USGS/INGENIOUS fault catalogue is *not* displaced from the
-> geomorphic and magnetic lineations by more than ~2 pixels anywhere we can show. Null-calibrated, the median
-> catalogue-to-crest offset is **−0.10 px** (DEM) and **+0.03 px** (magnetic) against an estimator noise floor of
-> **1.32 px**, the two datasets' offsets correlate at **r = 0.022**, **0 of 21** catalogue corridors pass the
-> consistency test, and at 3 m LiDAR resolution **0 of 13** segments is displaced by 200 m. The one positive
-> structure — the sub-pixel residual is spatially coherent beyond a label permutation (p < 0.004) — is real but
-> is a ~1 px wobble, not a correctable displacement, so the lane **emits no defensible correction**: the primary
-> raster carries **1 dot** and its own receipt says we do not believe it. The deliverable is the negative result
-> — histograms, two nulls, a 3 m calibration, a corridor table, a shared blocked holdout and two permutation
-> controls. Both rasters are format-valid and safe to download; **neither is cleared for a weekly submission
-> slot**, and the shared uniqueness gate returns `ok: false` on its proximity criterion (it fires trivially at
-> this dot count — 105 of 485 priors, none reciprocally — and is reported as a failure rather than argued
-> around; IR-56-006). Numbers, links and caveats: [the site](https://buffedlizard55-lab.github.io/56GEMSDOE/).
-
+> **Current decision (2026-10-09): corrections lane negative; NO FILE IS SAFE TO SUBMIT.** The calibrated gate
+> accepts **0 of 21** corridors; the cached, sibling-derived 3 m LiDAR check reports **0 of 13** segments at or
+> beyond 200 m displacement. The historical DEM/magnetic snap has HOLDOUT-DTI `gems52-pooled-hide-v1` of
+> 0.00015661 [0.00000000, 0.00045357] over 48,080 withheld catalogue positives; random jitter is
+> 0.00020550 [0.00000261, 0.00050850]. These marginal 95% CIs overlap and the holdout is not the organizer's new-fault
+> test. The one-dot primary artifact was built with the null-strength floor disabled; the 14-dot sensitivity is
+> below the ~2 px rule. Both remain in `docs/downloads/` for audit only and are **not upload-ready**. The official
+> format requires null/NaN outside the training bounds, but the shared writer rejects non-finite output; no portal
+> upload has resolved the conflict (upstream issue [GEMSDOE52 #65](https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65)).
+> No weekly slot has been used and no ORGANIZER-CONFIRMED score exists. The request for a new unique TIF conflicts
+> with the lane's explicit stop condition (under-2 px offsets mean emit nothing): we honor the negative scientific
+> result rather than manufacture or promote a correction. No new TIF or submission metadata was created; the
+> existing rasters remain downloadable only for audit. See the [current status record](evidence/submission_status.json)
+> and [submission page](docs/submit.html).
 ---
 
-## Standing project brief (the assignment, verbatim as recorded)
+## Standing project brief (reconstructed from the session record)
 
-Reproduced from the session record of the instruction this repository was created to execute. The
-original message text was not preserved byte-for-byte in the workspace, so this is the recorded
-brief — every requirement below is active, and nothing here is summarised away.
+Reproduced from the available session record of the instruction this repository was created to execute. The
+original user message was not preserved byte-for-byte in the workspace, so this cannot honestly be called a
+verbatim full prompt. This reconstruction retains the active scope, requirements, constraints, and guidance known
+to this review; recover the original text from the authoritative conversation record if exact wording is required.
 
 > Autonomously build `56GEMSDOE` into a DrivenData "GEMS Prize" (competition 306) project that beats the
 > current best 0.3195, and produce ONE unique, validated, downloadable submission GeoTIFF.
@@ -45,7 +46,7 @@ brief — every requirement below is active, and nothing here is summarised away
 > before any slot is spent; all findings stored for reuse; PR created and merged to `main`; multi-pass
 > self-review; flag irregularities; no hallucination (every claim backed by a tool call this turn).
 
-### Standing constraints (also verbatim, also active)
+### Standing constraints (reconstructed from the record; active)
 
 - MUST generate a UNIQUE TIF submission; never copy a previous submission except for learning. It must be
   obvious whether it is OK to download and submit.
@@ -53,8 +54,9 @@ brief — every requirement below is active, and nothing here is summarised away
   `Predicted values must be in range [0, 1]`; the site must not offer a raster that triggers this.
 - The submission form accepts a single-band GeoTIFF (`.tif`) or a `.zip` with one GeoTIFF; it must match the
   submission format's CRS, shape and geotransform; an optional short note is accepted.
-- Every number is labelled **HOLDOUT-DTI** (our evaluator version, withheld positives, 95% CI) or
-  **ORGANIZER-CONFIRMED** (from a submission-page receipt). A projection is never written as a score.
+- Every **score** is labelled **HOLDOUT-DTI** (evaluator version, withheld-positive count, 95% CI) or
+  **ORGANIZER-CONFIRMED** (from a submission receipt). Other measurements are labelled MEASURED, user statements
+  USER-REPORTED, and projections PROJECTION; no projection is written as a score.
 - Run only this lane. Drift check before placement *and* on the final dots: rank-correlation with any
   registry raster > 0.90, or > 70% of dots within 3 px of one registry raster's dots ⇒ log as duplicate and
   stop.
@@ -83,91 +85,86 @@ A single lane of a multi-agent attack on the same competition, built to be audit
 | `src/gems56/` | 10 modules vendored **byte-identically** from the shared template (grid, metric, holdout, evaluate_holdout, gates, submission_writer, features, …) plus this lane's `corrections.py` and `lane_inputs.py` |
 | `scripts/` | the seven numbered experiments and the site builder, each self-documenting and re-runnable |
 | `evidence/` | one JSON receipt per measurement, written by the code that produced it; `irregularities.json` |
-| `registry/input_pins.json` | sha256 + byte count of every official input, so a reviewer can confirm we measured the real rasters |
+| `registry/input_pins.json` | SHA-256 and byte counts for downloaded competition-input mirrors and sibling-derived LiDAR; proves identity to recorded pins, not direct organizer provenance |
 | `knowledge/sources.json` | every external claim with its link, its access status, and what was actually read |
 | `tests/test_contracts.py` | 10 contract tests on the vendored metric and on the lane's detector |
 | `docs/` | the GitHub Pages site and the downloadable rasters |
 
 ### Data provenance
 
-The competition data tab is behind a login, so the feature stack was assembled from hash-pinned copies in
-the sibling repository bridge and verified against `registry/input_pins.json` (`pin_match: true` for
-`training_features.tif` 418,912,844 B `4371c82e…`, `existing_faults.tif` `7ba308cc…`,
-`sample_submission.tif` `2176d08e…`). The grid is `(3730, 3292)` cells, EPSG:32611, transform
-`(100, 0, 243350, 0, -100, 4508550)`, 5,164,300 usable cells, catalogue prevalence 1.179%.
-**A logged-in human should confirm those three hashes against the data tab** — that is the one link in the
-chain this sandbox cannot close by itself (IR-56-003).
-
+The competition data page is login-gated. `scripts/download_competition_data.sh` fetches hash-pinned bytes from a
+public, owner-maintained GitHub mirror recorded in `registry/bridge_sources.json`; `data/` remains ignored by
+Git. Matching SHA-256 pins proves byte identity to that mirror, not direct organizer authentication, licensing,
+or permission to redistribute. Verify the participant terms on the [official data page](https://www.drivendata.org/competitions/306/competition-doe-gems/data/).
+The optional LiDAR inputs are sibling-derived products: two 3 m pilot tiles and a 100 m summary, not the original
+regional USGS 1 m DEM rasters. See `data_manifest.json` for actual workspace presence, hash status, and
+source-class labels. Do not describe the sibling cache as official 1 m input.
 ## Relationship to the earlier session on this repo (PRs #1–#3)
 
-PRs #1–#3 built a *proxy* version of this lane and correctly stopped: with no training stack in the sandbox,
-they measured catalogue-vs-SGMC (a stand-in), reported "no consistent offset > 2 px in the proxy", listed the
-DEM-crest test as **blocked**, and opened a "Decision needed" because the brief simultaneously demands a unique
-GeoTIFF and forbids emitting one under 2 px. Two things have changed:
+The earlier proxy-only stage correctly reported that real inputs were blocked. A later historical run restored
+owner-mirrored competition bytes, measured catalogue offsets and generated the two diagnostic rasters now retained
+under `docs/downloads/`. The current review found those artifacts were not safe to submit: the primary build
+bypassed the calibrated strength floor, the relaxed sensitivity file is below threshold, the uniqueness gate
+triggered, and the shared writer's all-finite exterior policy conflicts with the official sample/spec. The
+historical HOLDOUT-DTI is not a validation of the newly ranked three-physics hypothesis. No new experiment or
+upload was run in this review, and the existing three-experiment stop-loss is treated as consumed.
 
-- **The blocker is gone.** The aligned feature stack, `existing_faults.tif`, `sample_submission.tif` and the
-  1 m LiDAR scarp layer are now present in the sandbox and hash-pinned in `data_manifest.json` (3 of 3 pinned
-  files reproduce byte-for-byte). The real DEM-crest and magnetic-ridge measurement was run, not a proxy, over
-  every one of the 60,894 catalogue cells.
-- **The decision is answered by the measurement, not by choice.** The full instrument says the same thing the
-  proxy did but now with nulls, calibration and a LiDAR check: no corridor is displaced by 2 px. The brief's own
-  clause — "if offsets cluster under two pixels, report that as the result" — is the instruction being followed,
-  and the artefacts published here are the report plus format-valid rasters that a human can submit if they
-  choose to, with the gate's adverse verdict on them printed at the top of the page.
-
-Still valid and reused from that session: `src/gems/metric.py` and `src/gems/submission.py` with their 18 tests
-(`pytest -q` now runs **28**), `scripts/registry_audit.py` + `docs/research/registry-index.json` (a hash-level
-index of **944** sibling TIFs, 920 on this grid, 432 sharing a hash with another file — the complement of this
-lane's dot-level screen), the licence policy that organizer inputs never enter Git, the rules answer in
-`docs/submit.html`, and the claim-label vocabulary below. Two vendored copies of the template metric now
-coexist (`src/gems/` and `src/gems56/`) because neither session could see the other; consolidating them is a
-template-side change, and both are pinned to the same upstream commit, so they agree by construction
-(`tests/test_metric.py` and `tests/test_contracts.py` pin the identical formula).
-
+The shared writer issue is tracked once upstream at [GEMSDOE52 #65](https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65);
+these vendored copies remain unchanged. The active hypotheses and status are recorded in
+[`docs/research/hypotheses.md`](docs/research/hypotheses.md) and [`evidence/submission_status.json`](evidence/submission_status.json).
+The older `src/gems/` copy and the current `src/gems56/` shared template also coexist; consolidation is a shared
+template concern and is not attempted here.
 ## Claim labels used everywhere in this repository
 
-- **HOLDOUT-DTI (evaluator version, withheld positives, 95% CI)** — computed on whole withheld fault segments
-  with a 4 px buffer, 48,080 withheld positives per arm, 4 folds: `evidence/holdout_corrections_v1.json`.
-- **ORGANIZER-CONFIRMED (submission-page receipt)** — *none exists*: no upload was filed, so no score here is
-  organizer-confirmed, and `0.3195` / `0.3774` are quoted only as CLAIM / USER-REPORTED from the brief.
+- **HOLDOUT-DTI (evaluator version, withheld positives, 95% CI)** — the historical DEM/magnetic hide-and-recover
+  receipt uses `gems52-pooled-hide-v1`, 48,080 withheld catalogue positives and 4 folds:
+  `evidence/holdout_corrections_v1.json`. It is not the new three-physics candidate's result and not an organizer score.
+- **ORGANIZER-CONFIRMED (submission-page receipt)** — *none exists*: no upload was filed. The `0.3195` target is
+  USER-REPORTED from the standing brief; the leaderboard was not independently verified here.
 - **MEASURED** — read off a file in this repository by a script in this repository.
 - **PROXY** — a stand-in input. The earlier session's SGMC number is labelled so; nothing on the current site
   is a proxy for a score.
 - **PROJECTION** — a model output. Never written as a score; none of the published figures is one.
 
-## How to run it
+## How to reproduce safely
+
+Read the standing brief above before working on this project. The current review restored and hash-checked inputs,
+updated manifests/site status and added tests/documentation, but did **not** run a new holdout or leakage experiment.
+The historical E1/E2/E3 experimental budget is already treated as consumed; do not rerun the experiment scripts
+unless a new run budget is explicitly reset. The current top-ranked three-physics hypothesis has not been validated.
 
 ```bash
-python -m venv .venv && .venv/bin/pip install numpy scipy rasterio shapely pyproj pandas
-.venv/bin/python scripts/prepare_data.py                    # grid, footprint, catalogue stats
-.venv/bin/python scripts/measure_offsets.py                 # E1  offsets + corridor table
-.venv/bin/python scripts/lidar_calibration.py               # E1b/E1c nulls, strength gate, 3 m calibration
-.venv/bin/python scripts/run_corrections_holdout.py         # E2  shared blocked holdout, 4 arms
-.venv/bin/python scripts/cluster_gate_control.py            #     sign-flip permutation control
-.venv/bin/python scripts/build_corrections_submission.py    # E3  the rasters + receipts
-.venv/bin/python scripts/screen_registry.py                 #     uniqueness vs the harvested corpus
-.venv/bin/python tests/test_contracts.py                    #     contract tests
-.venv/bin/python scripts/build_site.py                      #     docs/*.html, from the receipts
+python -m venv .venv && .venv/bin/pip install -r requirements.txt
+bash scripts/download_competition_data.sh       # public owner-maintained mirror, pinned hashes; ignored data/
+.venv/bin/python scripts/prepare_data.py        # recompute grid facts from the restored bytes
+.venv/bin/python scripts/make_manifest.py       # current presence, hashes, and provenance limits
+.venv/bin/python tests/test_contracts.py        # non-experimental contract tests
+.venv/bin/python scripts/build_site.py          # regenerate the public pages from receipts/status
 ```
 
-Everything is deterministic: fixed seeds, no network at run time beyond the pinned inputs, and every script
-writes its own receipt.
-
+The following are historical experiment commands and **must not be run under the consumed stop-loss** without a
+newly reset budget and a reviewed preregistration: `measure_offsets.py`, `calibrate_gate.py`,
+`lidar_calibration.py`, `run_corrections_holdout.py`, `cluster_gate_control.py`,
+`build_corrections_submission.py`, and `screen_registry.py`. Reproduction of old receipts is not a new candidate
+validation and does not establish organizer scoring.
 ## Reading order for a reviewer
 
-1. [`docs/executive-summary.html`](docs/executive-summary.html) — what to download and how to file it.
-2. [`docs/index.html`](docs/index.html) — the measurement, with both nulls next to every histogram.
-3. [`docs/irregularities.html`](docs/irregularities.html) — 12 logged irregularities, including the three
-   estimator defects that a test caught and that changed the answer.
-4. [`evidence/`](evidence/) — the receipts the pages are generated from.
+1. [`docs/executive-summary.html`](docs/executive-summary.html) — current negative result and why no file is safe to submit.
+2. [`docs/index.html`](docs/index.html) — the historical measurements and current submission status.
+3. [`docs/submit.html`](docs/submit.html) — why no current file is safe and the conditional upload checklist.
+4. [`docs/irregularities.html`](docs/irregularities.html) — 14 logged irregularities, including the shared-template blocker.
+5. [`evidence/`](evidence/) — the receipts the pages are generated from.
 
 ## Honest limits of this run
 
-* The holdout cannot adjudicate this lane (IR-56-004): a ≤3 px lateral shift is invisible to an instrument
-  that hides whole catalogue segments. Snapping scored 0.00012, jitter 0.00011, no snapping 0.00000.
-* The 3 m LiDAR check covers 0.9% of catalogue pixels (two cached tiles); the corridor-level negative is
-  therefore partly an extrapolation, stated as such in the receipt.
+* The historical holdout cannot adjudicate new-fault discovery or reliably distinguish a small lateral shift.
+  HOLDOUT-DTI `gems52-pooled-hide-v1` (48,080 withheld catalogue positives): B_snap 0.00015661
+  [0.00000000, 0.00045357], D_jitter 0.00020550 [0.00000261, 0.00050850]. These marginal 95% CIs overlap;
+  the historical receipt contains no direct paired B_snap-versus-D_jitter interval. This is not a leaderboard score
+  and does not validate the ranked three-physics hypothesis.
+* The 3 m LiDAR check uses two sibling-derived pilot tiles and covers about 0.9% of catalogue pixels; it is not
+  direct native 1 m validation of the region. The corridor-level negative is partly an extrapolation.
 * The crest locator has a measured, shape-dependent placement bias of +0.2 to +0.5 px
   (`evidence/estimator_validation.json`). Nothing here rests on an absolute sub-pixel offset.
-* Board scores could not be read from an organizer source in this session; every number on the site carries
-  an evidence class and none of them is a claimed ranking.
+* Board scores could not be read from an organizer source in this review; `0.3195` remains USER-REPORTED from
+  the standing brief, and there is no organizer-confirmed score or upload receipt.
