@@ -1,0 +1,5 @@
+# Versions used for the recorded runs (2026-10-09). Python 3.11.
+numpy==2.4.6
+rasterio==1.4.4
+scipy==1.17.1
+pytest==9.1.1

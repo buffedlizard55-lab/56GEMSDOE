@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DOE GEMS Prize — submission guide and evidence (56GEMSDOE)</title>
+<meta name="description" content="Executive summary, submission steps, format rules, sources and irregularities for the DOE GEMS Prize (DrivenData 306).">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="nav">
+  <a class="brand" href="index.html">56GEMSDOE</a>
+  <a href="index.html">Summary</a>
+  <a href="submit.html">How to submit</a>
+  <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/evidence.md">Evidence</a>
+  <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/irregularities.md">Irregularities</a>
+  <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/research/hypotheses.md">Hypotheses</a>
+  <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/README.md">README (full brief)</a>
+</header>
+
+<main>
+
+<!-- ============ 1. SUBMISSION FILE — FIRST THING ON THE PAGE ============ -->
+<section class="banner bad" id="submission-file">
+  <h2>Submission file: <u>NOT READY</u> — nothing to download yet</h2>
+  <p style="margin:0;color:var(--ink)">No GeoTIFF has been produced from this repository, and nothing in it has been scored. Two things are needed before a file exists:</p>
+  <ul>
+    <li>The competition training files, which DrivenData serves only after login (<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/data/">data page</a>). This sandbox cannot download them.</li>
+    <li>A decision on the lane to use. The only lane tested so far, the corrections lane, returned a <b>negative</b> result, so the protocol says to emit nothing. See <a href="#decision">the decision</a>.</li>
+  </ul>
+  <p class="small" style="margin:10px 0 0;color:var(--ink)">When a file is produced it will appear here with a name, a comment, a SHA-256 hash and a download link, and it will pass the validator first. The rules on whether it may be submitted are in <a href="#rules">Rules: can I download and submit the TIF?</a>.</p>
+</section>
+
+<!-- ============ 2. EXECUTIVE SUMMARY ============ -->
+<h1>Executive summary</h1>
+<p>This repository is an <b>evidence-first</b> attempt at the <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">DOE GEMS Prize</a> (DrivenData competition 306). The task is to predict, for each 100 m cell, the probability that a geothermal-relevant fault is present, and submit that as a GeoTIFF. The score is a distance-weighted Tversky index (DTI).</p>
+
+<div class="grid2">
+  <div class="card">
+    <h3>What is verified</h3>
+    <ul>
+      <li>The metric, the submission format and the rules, read from the official pages and the NLR rules PDF. <span class="pill verified">verified</span></li>
+      <li>A pinned copy of the template metric, with 12 metric tests that agree with a brute-force reference (18 tests across the repository). <span class="pill verified">verified</span></li>
+      <li>A uniqueness audit of 944 GeoTIFFs in the owner's public repositories. <span class="pill verified">verified</span></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>What is not verified</h3>
+    <ul>
+      <li>Any leaderboard figure. The official leaderboard page renders no scores. <span class="pill claim">claim</span></li>
+      <li>The "0.2778" score for the H33 file. The owner's manifest says UNSCORED. <span class="pill claim">claim</span></li>
+      <li>Any holdout DTI for any candidate. The training data is not in the sandbox. <span class="pill blocked">HOLDOUT-DTI: not computed</span></li>
+    </ul>
+  </div>
+</div>
+
+<h3>Where things stand</h3>
+<table>
+  <tr><th>Lane / question</th><th>Status</th><th>Plain-English meaning</th></tr>
+  <tr><td>Corrections lane (are known traces offset from the evidence?)</td><td><span class="pill neg">PROXY NEGATIVE</span></td><td>Using the USGS SGMC map as a stand-in for evidence, the median offset is 1.41 px (141 m), under the 2 px (200 m) threshold. The DEM test is still <span class="pill blocked">BLOCKED</span>. Result: emit nothing.</td></tr>
+  <tr><td>Metric and submission checks</td><td><span class="pill verified">VERIFIED</span></td><td>The repo's metric matches the template and a brute-force reference. The validator enforces the portal rules.</td></tr>
+  <tr><td>Uniqueness (are our files original?)</td><td><span class="pill verified">VERIFIED</span></td><td>944 files audited. 432 of them share a hash with another file, so duplicates are common in the public repositories. Nothing in this lane was copied from another submission.</td></tr>
+  <tr><td>New geological hypotheses</td><td><span class="pill blocked">BLOCKED</span></td><td>Five ranked candidates in <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/research/hypotheses.md">hypotheses.md</a>. Top candidate: 2 m temperature-probe lineaments (INGENIOUS, CC BY 4.0). None validated; holdout needed first.</td></tr>
+  <tr><td>Best published score (0.2778 or 0.3774 or 0.3262)</td><td><span class="pill claim">UNVERIFIED</span></td><td>The sources conflict. See <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/irregularities.md">IR-04 and IR-05</a>.</td></tr>
+</table>
+
+<h3 id="decision">Decision needed (choose one)</h3>
+<div class="card">
+  <ol>
+    <li><b>Ship nothing this round.</b> Publish the tooling and the null result. This matches the corrections-lane protocol and needs no further input.</li>
+    <li><b>Ship an out-of-lane candidate</b>, flagged as drift and UNSCORED, after a uniqueness check against the 920 on-grid rasters. This would not be a corrections-lane result.</li>
+    <li><b>Upload the official files</b> to <code>data/raw/</code> (for example by a logged-in download). Then the holdout DTI, leakage canary and organizer-format checks can run, and the H1 candidate can be tested.</li>
+  </ol>
+  <p class="small">The choice is not made in this repo. A separate selector step picks any submission.</p>
+</div>
+
+<!-- ============ 3. SUBMISSION FORMAT ============ -->
+<h2 id="format">Submission format (verified)</h2>
+<table>
+  <tr><th>Item</th><th>Requirement</th><th>Source</th></tr>
+  <tr><td>File type</td><td>Single-band GeoTIFF (.tif), float32</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">problem description</a></td></tr>
+  <tr><td>Coordinate system</td><td>EPSG:32611 (WGS 84 / UTM zone 11N)</td><td>same</td></tr>
+  <tr><td>Resolution and grid</td><td>100 m; same shape and transform as <code>training_features.tif</code></td><td>same</td></tr>
+  <tr><td>Values</td><td>Probabilities in [0, 1]. NaN is allowed outside the footprint only.</td><td>same</td></tr>
+  <tr><td>Count</td><td>Up to 3 submissions per week; one final submission chosen before the deadline</td><td><a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf">rules §3.4</a></td></tr>
+</table>
+
+<h3 id="error">The error "Predicted values must be in range [0, 1]"</h3>
+<p>The portal rejects a file when any finite cell is outside [0, 1]. Three things typically cause it:</p>
+<ul>
+  <li><b>Negative or >1 values</b> from a model that was not clipped or passed through a probability.</li>
+  <li><b>A nodata sentinel</b> such as <code>-3.4028234663852886e+38</code> left inside the footprint. The owner's site attributes the error to this (claim, <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/irregularities.md">IR-06</a>). It could not be checked here because the training file is absent.</li>
+  <li><b>NaN or a wrong grid</b> (for example a different transform or size).</li>
+</ul>
+<p>Fix: clip to [0, 1], write NaN outside the footprint, then run the validator. The validator is in <code>src/gems/submission.py</code> and rejects all three cases.</p>
+
+<h3 id="name">Unique name and comment</h3>
+<div class="grid2">
+  <div class="card">
+    <b>Name</b> — must be unique to you. Use a name that carries the method and a unique tag, for example <code>gems-56-corr-k25-2026-10-09</code>. Do not reuse a name seen in another repository (see the duplicate audit).
+  </div>
+  <div class="card">
+    <b>Comment</b> — short, plain, and true. Example: <code>clustering with k=25</code>. Describe the method in one line. The form's character limit is not verified here; keep the comment well under 140 characters.
+  </div>
+</div>
+
+<h3 id="rules">Rules: can I download and submit the TIF?</h3>
+<div class="banner warn" style="margin-top:6px">
+  <p style="margin:0;color:var(--ink)"><b>Short answer:</b> <b>Yes, for a TIF you generate yourself, from data you are entitled to use</b> — no clause of the official rules (all 7 chunks read) prohibits it. <b>No, for any TIF that someone else produced</b> (for example a sibling repository's file): it is third-party content, which our own rule forbids and which A.5 excludes unless disclosed and licensed.</p>
+  <ul style="margin-top:8px">
+    <li><b>A.4 (public elements):</b> "The elements of the submission that are designated as public will become publicly available… these elements must not include trade secrets or business-sensitive, proprietary, or otherwise confidential information." Public elements are licensed to DOE and may be posted.</li>
+    <li><b>A.5(1) (original work):</b> the submission must be "an original work by the competitor" and must not include third-party content "unless… disclosed by the competitor in the submission and… the competitor has acquired the necessary rights".</li>
+    <li><b>§3.2 (generative AI):</b> any generative-AI use must be disclosed in the narrative.</li>
+    <li><b>Not covered by the rules:</b> the terms of the training data itself. The data page is login-gated and its terms were not read here. Check them before downloading the training files.</li>
+  </ul>
+</div>
+
+<!-- ============ 4. SOURCES ============ -->
+<h2 id="sources">Verified sources</h2>
+<table>
+  <tr><th>Source</th><th>What it establishes</th><th>Status</th></tr>
+  <tr><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">DrivenData, problem description</a></td><td>Metric, α = 0.2, β = 0.8, 300 m kernel, format</td><td><span class="pill verified">fetched</span></td></tr>
+  <tr><td><a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf">NLR official rules (PDF)</a></td><td>Submission limits, GenAI disclosure, originality, data rights</td><td><span class="pill verified">fetched, all 7 chunks</span></td></tr>
+  <tr><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">DrivenData leaderboard</a></td><td>Public scores</td><td><span class="pill blocked">renders "Loading..."</span></td></tr>
+  <tr><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/data/">DrivenData data page</a></td><td>Training data</td><td><span class="pill blocked">login required</span></td></tr>
+  <tr><td><a href="https://doi.org/10.15121/1881483">INGENIOUS regional dataset (GDR 1391)</a></td><td>Label source; CC BY 4.0; candidate inputs</td><td><span class="pill verified">fetched page; not downloaded</span></td></tr>
+  <tr><td><a href="https://www.usgs.gov/programs/earthquake-hazards/faults">USGS Quaternary Fault and Fold Database</a></td><td>Catalogue; public domain</td><td><span class="pill verified">fetched</span></td></tr>
+  <tr><td><a href="https://www.sciencebase.gov/catalog/item/5888bf4fe4b05ccb964bab9d">USGS SGMC (ScienceBase)</a></td><td>Geologic map; 2017 release superseded by the 2026 update</td><td><span class="pill verified">fetched</span></td></tr>
+  <tr><td><a href="https://doi.org/10.5066/P93LGLVQ">USGS GeoDAWN magnetics</a></td><td>Airborne survey; CC0</td><td><span class="pill verified">fetched</span></td></tr>
+  <tr><td><a href="https://pangea.stanford.edu/ERE/pdf/IGAstandard/SGW/2025/Hermant.pdf">Hermant et al. 2025 (Stanford Geothermal Workshop)</a></td><td>Up to 400 m discrepancy, USGS vs deep-learning label</td><td><span class="pill neg">search snippet only</span></td></tr>
+</table>
+<p class="small">Full list with labels: <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/evidence.md">evidence.md</a>. Every claim that is not in this table is marked as a claim, not a fact.</p>
+
+<!-- ============ 5. CLAIM LABELS ============ -->
+<h2 id="labels">How numbers are labelled</h2>
+<ul>
+  <li><span class="pill blocked">HOLDOUT-DTI</span> — a score on our spatially blocked holdout, with evaluator version, number of withheld positives and a 95% CI. <b>None exists yet.</b></li>
+  <li><span class="pill verified">ORGANIZER-CONFIRMED</span> — copied from an organiser receipt. <b>None exists yet.</b></li>
+  <li><span class="pill claim">CLAIM</span> — reported by someone else and not verified here. Every leaderboard figure is in this class.</li>
+  <li><span class="pill neg">PROXY</span> — a measurement on stand-in data. Never a score.</li>
+</ul>
+
+<h2 id="irregularities">Irregularities</h2>
+<p>Fifteen irregularities are logged, with severity, how each was checked and a link for manual review. The most important are: the training data is login-walled (IR-01); the brief's file references do not exist in this repo (IR-02); the leaderboard figures conflict (IR-04); and the "0.2778" score is backed by no receipt (IR-05). Full list: <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/irregularities.md">irregularities.md</a>.</p>
+
+<h2 id="next">Remaining work and limitations</h2>
+<ul>
+  <li>Confirm with the organiser (not verifiable from the rules text alone) whether a derived raster from licensed training data may be posted publicly under A.4.</li>
+  <li>Obtain the training files (login), then compute a HOLDOUT-DTI with a 95% CI and run the leakage canary (AUC > 0.90 = leakage).</li>
+  <li>Run the DEM-crest test (USGS 3DEP) to close the corrections lane properly. The current result is a proxy.</li>
+  <li>Test hypothesis H1 (2 m temperature probes) on the holdout before using a weekly submission slot. Cap: 3 per week.</li>
+  <li>Consolidate the validator into the template's <code>audit_geotiff</code> and re-pin (IR-07).</li>
+  <li>Verify the leaderboard from a logged-in browser; the public page renders no data.</li>
+</ul>
+
+</main>
+
+<footer>
+  Generated from the repository <a href="https://github.com/buffedlizard55-lab/56GEMSDOE">buffedlizard55-lab/56GEMSDOE</a>. Not affiliated with DrivenData or DOE. Scores quoted here are CLAIMS unless labelled otherwise. Last checked 2026-10-09 (UTC).
+</footer>
+</body>
+</html>
