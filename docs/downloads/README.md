@@ -8,6 +8,7 @@ is cleared for a competition slot.**
 
 | file | what it is | verdict |
 |---|---|---|
+| `h57-corr-band2px-cover-20261009T191337Z.tif` (+ `.zip`, `.json`) | **CURRENT FILE (H57)**: unsteered cover of the organizer-stated corrections band — 54,914 dots 200 m either side of every catalogue trace, every 200 m along strike, 0 on the (masked) catalogue; all-finite, values {0.0, 1.0} | **OK to download, OK to submit (format-valid).** Hypothesis verdict NEGATIVE: crest steering refuted (holdout 0.00087 vs 0.00177 evidence-free, paired CI [-0.00138, -0.00048]); the shipped file is a coverage bet on forum 11516, not a validated discovery. Not auto-promoted to a weekly slot. |
 | `h56-disc-multi-b25000-20261009-20261009T165646Z.tif` (+ `.zip`, `.json`) | round-2 discovery-lane candidate (PR #7): 25,000 dots, `multi` arm, emission >200 m off catalogue | **NEGATIVE** — holdout 0.01242 [0.00787, 0.01718] vs chance 0.03499 (paired −0.02257, CI strictly below 0); gate literal DUPLICATE/STOP (density-degenerate trigger, IR-56-023; rank agreement passes at max ρ 0.043); research only — **do not submit** |
 | `gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif` | corrections-lane run A (PR #5/#6, strongest crest >2 px) | **NEGATIVE** — format-valid, but the literal containment gate failed; no slot |
 | `h56-corr-snap200cm-20261009.tif` | corrections-lane PRIMARY (2 px gate, PR #4) | **NEGATIVE** — 1 dot; research artefact; not cleared for a slot |

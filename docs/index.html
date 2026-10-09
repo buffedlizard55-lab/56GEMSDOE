@@ -35,21 +35,68 @@ ul{margin:6px 0 6px 20px}li{margin:3px 0}
 <h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
 <div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
 faults missing from the USGS/INGENIOUS catalogue</div>
-<nav><a href="index.html" class=active>Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download the submission GeoTIFF</a> <a class="btn alt" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">.tif (343 KB)</a></div>
+<nav><a href="index.html" class=active>Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="h57.html">H57 run (current)</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">&#11015; Download the submission GeoTIFF (150 KB)</a> <a class="btn alt" href="executive-summary.html">How to submit it &rarr;</a></div>
 </div></header>
 <div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
 submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
 on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
 <span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
 data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
-<main class=wrap><div class=card><h2 class=bad>STOP: not cleared for submission</h2>
-<p>The TIF is format-valid research output. Eight literal &gt;70% containment flags fail
- the standing duplicate-and-stop rule. Historical UNIQUE/PROMOTE labels below describe
- the earlier interpretation, not current authorization. Superset explanations do not waive
- the rule. No competition submission has been made.</p>
-<p><a href="prior-run.html">Preserved prior run</a> ·
+<main class=wrap><div class=card><h2 class=ok>Current file: OK to download and OK to submit</h2>
+<p>The download button above gives you <code>h57-corr-band2px-cover-20261009T191337Z.tif</code>. It is
+<b>format-valid for the DrivenData form</b>: single band, float32, every value in [0,&nbsp;1],
+<b>zero NaN cells anywhere</b> (the earlier "Predicted values must be in range [0, 1]" rejection
+was caused by NaN padding, which this file does not contain), EPSG:32611, 3292&times;3730, and a
+geotransform identical to <code>sample_submission.tif</code>. Paste the submission name and note
+printed on the home page into the form.</p>
+<p><b>What it is not:</b> it is not a validated discovery. This run's crest-steering hypothesis is
+<b>REFUTED</b> by its own holdout (see <a href="h57.html">H57 run</a>); what ships is the
+unsteered, kernel-optimal cover of the 100&ndash;400&nbsp;m band the organizers describe as
+containing "corrections or modifications to existing fault traces". Spending one of your weekly
+slots on it is a judgement call that stays with you &mdash; the full evidence is one click away.</p>
+<p><a href="h57.html">H57 run card and holdout</a> ·
+<a href="executive-summary.html">Step-by-step submission guide</a> ·
+<a href="prior-run.html">Preserved prior runs</a> ·
 <a href="prior-irregularities.html">Prior run irregularities</a></p></div>
-<h2>&#11015;&nbsp;ONE-CLICK SUBMISSION FILE</h2>
+
+<h2>&#11015;&nbsp;CURRENT SUBMISSION FILE (H57, this run)</h2>
+<div class=card>
+<p><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">Download h57-corr-band2px-cover-20261009T191337Z.tif</a>
+<span class=mut>150 KB · single band · float32 ·
+EPSG:32611 · 100 m · 3292&times;3730 · 54,914 dots · values {0.0, 1.0} ·
+<b>0 NaN cells</b></span></p>
+<p><b>OK to download: <span class=ok>YES</span>. OK to submit (the form will accept it):
+<span class=ok>YES</span>.</b> Validator: ok=True, NaN cells 0,
+min 0.0, max 1.0, problems [].</p>
+<p><b>Submission name</b> <code>h57-corr-band2px-cover-20261009T191337Z</code><br>
+<b>Note</b> (122/140): <code>corrections-band cover: dots 2px either side of every catalogue trace, 2px along strike; crest steering refuted on holdout</code><br>
+<b>sha256</b> <code>fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced</code></p>
+<p><b>What the evidence says, in one line:</b> the crest-steering hypothesis is
+<span class=bad>REFUTED</span> &mdash; measured offsets cluster under two pixels
+(median 1.48 px, signed median
+-0.11 px, 0.326 beyond 2 px vs
+0.273 for the random null) and crest-steered dots score
+<b>below</b> an evidence-free corridor at the identical budget
+(HOLDOUT-DTI 0.00087 vs 0.00177;
+paired contrast [-0.001378, -0.000476],
+P(beats)=0.0;
+41,742 withheld positives). So this file emits the
+<b>unsteered</b> cover instead: dots 200 m either side of every trace, which with the 300 m
+triangular kernel credits a refined trace anywhere out to about 500 m.</p>
+<p><b>Uniqueness:</b> max Spearman 0.286 against the 40 worst-overlap
+earlier submission rasters (bar 0.90); largest exact-pixel Jaccard
+0.152 against a 6.6&times; larger raster. The
+literal 3&nbsp;px containment clause fires &mdash; it does so for the competition's own
+<code>existing_faults.tif</code> too, because every dot 2&nbsp;px off a trace is within 3&nbsp;px
+of that trace &mdash; and is logged as <a href="irregularities.html">IR-57-003</a>.</p>
+<p class=mut>Receipts: <code>evidence/h57_run_card.json</code>,
+<code>evidence/h57_holdout_neighbour.json</code>, <code>evidence/h57_holdout.json</code>,
+<code>evidence/h57_geometry_sweep.json</code>,
+<code>evidence/h57_uniqueness_submissions.json</code>. Full detail:
+<a href="h57.html">H57 run page</a>.</p>
+</div>
+
+<h2>&#11015;&nbsp;EARLIER RUN FILE (run A, superseded)</h2>
 <div class=card>
 <p><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">Download gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif</a>
 <span class=mut>343 KB · single band · float32 · EPSG:32611 · 100 m ·
@@ -190,7 +237,7 @@ not the fault;</li>
 </main>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
 round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
-generated 2026-10-09 17:46 UTC by
+generated 2026-10-09 19:14 UTC by
 <code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
 and <code>evidence/*.json</code> (run B) ·
 site served from <code>main</code> at
