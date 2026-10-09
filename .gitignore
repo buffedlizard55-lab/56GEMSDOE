@@ -1,24 +1,39 @@
-# Competition inputs are never committed: the official data page requires participant access and redistribution terms are unverified.
-# Restore from the hash-pinned owner mirror with scripts/download_competition_data.sh; never commit source rasters.
+# --- competition inputs: never committed (login-gated; redistribution terms unverified) ---
+# Run A (this branch) reassembles them from the sha256-pinned bridge (data/README.md,
+# scripts/assemble_data_bridge.py); run B resolves them from the sandbox bridge as
+# recorded in data_manifest.json / registry/input_pins.json.
+data/*.tif
+data/bridge/*.part-*
+data/cache/
+data/reconstructed/
 data/raw/
 data/interim/
 data/external/
 data/grid/
-data/bridge/
-data/pilot/
-# Rasters and model outputs are kept out of Git (use external storage if they must be shared).
+
+# --- rasters, model outputs and archives stay out of Git ---
 *.tif
 *.tiff
 *.npy
 *.npz
 *.zip
-# The lane's own published deliverables are hosted on Pages: predictions and receipts, never organizer data.
+
+# --- the published deliverables are the exception: they are hosted on Pages ---
 !docs/downloads/*.tif
 !docs/downloads/*.zip
+!data/bridge/*.tif
+data/bridge/sample_submission.tif
+
+# --- receipts and derived tables are text/committed audit trail ---
 !evidence/*.npz
 !evidence/*.json.gz
-# Python / tooling
+
+# --- python / tooling ---
 __pycache__/
 .pytest_cache/
-.venv/
 *.pyc
+.venv/
+venv/
+
+# holdout arm rasters are intermediates (regenerate with scripts/holdout_corrections.py)
+data/cache/holdout_arms/

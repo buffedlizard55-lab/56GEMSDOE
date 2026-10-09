@@ -1,48 +1,133 @@
-<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Executive summary · how to submit</title><style>
-:root{--bg:#0d1117;--panel:#161b22;--ink:#e6edf3;--mut:#9198a1;--line:#262c36;--ok:#2ea043;--warn:#d29922;--bad:#f85149;--acc:#58a6ff}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-main{max-width:1100px;margin:0 auto;padding:26px 20px 90px}h1{font-size:26px;margin:0 0 4px}h2{font-size:20px;margin:32px 0 10px;padding-top:14px;border-top:1px solid var(--line)}h3{font-size:16px;margin:18px 0 6px}
-a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}.sub{color:var(--mut);margin:0 0 16px}
-.banner{border-radius:12px;padding:18px 20px;margin:16px 0;border:1px solid var(--line)}.banner.bad{background:rgba(248,81,73,.10);border-color:rgba(248,81,73,.45)}.banner.ok{background:rgba(46,160,67,.10);border-color:rgba(46,160,67,.45)}.banner.warn{background:rgba(210,153,34,.10);border-color:rgba(210,153,34,.45)}
-.banner .big{font-size:19px;font-weight:700}.banner p{margin:8px 0 0}.why{color:var(--mut)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
-.kv{display:flex;justify-content:space-between;gap:12px;padding:4px 0;border-bottom:1px dashed var(--line);font-variant-numeric:tabular-nums;font-size:13.5px}.kv:last-child{border-bottom:0}.kv b{font-weight:600;color:var(--mut)}.kv span{text-align:right;word-break:break-all}
-table.data{border-collapse:collapse;width:100%;margin:8px 0;font-variant-numeric:tabular-nums;font-size:13.5px}
-table.data th,table.data td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}table.data th{background:#1c2129;font-weight:600}
-.pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600;border:1px solid var(--line);margin-right:6px}
-.pill.bad{color:#ffb3ae;border-color:rgba(248,81,73,.5);background:rgba(248,81,73,.12)}.pill.ok{color:#7ee2a1;border-color:rgba(46,160,67,.5);background:rgba(46,160,67,.12)}.pill.warn{color:#e8c37a;border-color:rgba(210,153,34,.5);background:rgba(210,153,34,.12)}
-.dl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
-.btn{background:var(--acc);color:#04121f;border-radius:8px;padding:10px 16px;font-weight:700}.btn.ghost{background:transparent;color:var(--acc);border:1px solid var(--acc)}
-input.mono,code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px}
-input.mono{width:100%;background:#0b0f14;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:9px 10px}
-pre{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto}ul{margin:6px 0 6px 20px;padding:0}li{margin:4px 0}.muted{color:var(--mut)}
-nav{position:sticky;top:0;background:rgba(13,17,23,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:10px 0;z-index:5}
-nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:14px}
-.small{font-size:13px}.note{border-left:3px solid var(--warn);padding:6px 0 6px 12px;color:var(--mut);margin:10px 0}.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
-</style></head><body><nav><div class='wrap'><a href='index.html'><b>56GEMSDOE</b> · corrections lane</a><a href='executive-summary.html'>Executive summary</a><a href='submit.html'>Submission status &amp; conditional steps</a><a href='irregularities.html'>Irregularities</a><a href='research/hypotheses.md'>Ranked hypotheses</a><a href='https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/knowledge/sources.json'>Sources</a><a href='https://github.com/buffedlizard55-lab/56GEMSDOE'>repo</a></div></nav><main><h1>Executive summary</h1><p class='sub'>One page: what to download, how to file it, what this run proved, and what it rules out.</p><div class="banner bad"><div class="big">NO FILE IS SAFE TO SUBMIT</div>
-    <p class="why">Two historical raster artifacts remain in the repository for audit. The primary has one dot but was
-    built while the null-calibrated crest-strength floor was disabled; the calibrated decision gate accepts 0 of 21
-    corridors. The sensitivity file uses a 1 px threshold below the brief's ~2 px rule. Both are research-only and
-    must not be uploaded. No organizer submission receipt or score exists; no weekly slot has been used.</p>
-    <p><b>Deliverable conflict:</b> the brief also asks for a new unique TIF, but the lane's stop rule says to emit
-    nothing when calibrated offsets remain below about 2 px. The gate passes 0 of 21 corridors, so no new raster or
-    submission metadata was created; the existing files remain downloadable for audit only.</p></div>
-<h2>How to submit (when a future candidate is actually cleared)</h2><ol style='line-height:1.9'>
-<li><b>Do not submit either current artifact.</b> There is no approved file. The primary and sensitivity files are historical diagnostics only; no slot is recommended.</li>
-<li>Before any future upload, require a positive corrections-lane evidence gate, a spatially blocked HOLDOUT-DTI result with evaluator version, withheld-positive count and paired 95% CI, and a passing final registry comparison. Do not treat the existing DEM/magnetic holdout as validation of the ranked three-physics candidate.</li>
-<li>Require the shared writer and format gate to accept the official exterior convention: the official page says data outside the training bounds is null or NaN; the shared writer currently enforces all-finite output. Track upstream resolution at <a href='https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65'>GEMSDOE52 issue #65</a>. Do not patch only this repository.</li>
-<li>Then verify a single-band float32 GeoTIFF with values in [0,1], EPSG:32611, the exact 100 m bounds/transform, and null/NaN outside the data bounds. Use a unique name and a note of at most 140 characters.</li>
-<li>Only after all gates pass, sign in to the <a href='https://drivendata.org/competitions/306/'>competition portal</a>, upload the file, and preserve the organizer's receipt. A score is ORGANIZER-CONFIRMED only from that receipt.</li></ol>
-<h2>Why the current files are not submission-ready</h2>
-<p class="small">The historical local validator reported [0,1] values, one float32 band and EPSG:32611, but this proves only that the vendored all-finite local policy passed. The official format page requires data outside the training bounds to be null or NaN, and the sample uses NaN. The local <code>grid.py</code>, <code>submission_writer.py</code> and <code>gates.py</code> reject such values despite the gate's own documentation; the historical rasters therefore use finite 0.0 outside. This discrepancy is unresolved and has not been tested by an organizer upload. Upstream issue <a href="https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65">#65</a> requests a shared fix. See irregularities IR-56-013 and IR-56-014.</p>
-<h2>What this run established</h2>
-<table class='data'><thead><tr><th>claim</th><th>class</th><th>number</th></tr></thead><tbody><tr><td>Catalogue-to-evidence offset after null calibration</td><td>MEASURED</td><td>joint median 0.774 px over n=156; MAD 1.877 px; 0.3% of pixels corroborated by both families</td></tr><tr><td>Agreement between the two independent data families</td><td>MEASURED</td><td>Pearson r = 0.0223 &mdash; no shared displacement signal</td></tr><tr><td>Same measurement at 3 m LiDAR</td><td>MEASURED</td><td>median -0.021 px, 0.27% beyond 3 px, 0 of 13 segments &ge; 200 m</td></tr><tr><td>Corridors with a consistent &ge;2 px shift</td><td>MEASURED</td><td>0 of 21 under the decision gate (2 of 1273 ungated)</td></tr><tr><td>Historical DEM+mag snap vs jitter (catalogue holdout only)</td><td>HOLDOUT-DTI · gems52-pooled-hide-v1 · 48080 withheld positives · 95% CI</td><td>B_snap 0.00015661 [0.00000000, 0.00045357]; D_jitter 0.00020550 [0.00000261, 0.00050850]. Historical test; not the ranked three-physics candidate or an organizer score.</td></tr><tr><td>Organizer-confirmed score for anything in this repository</td><td>ORGANIZER-CONFIRMED</td><td>none &mdash; this run filed no submission</td></tr><tr><td>Current best cited in the standing brief</td><td>USER-REPORTED, not independently verified</td><td>0.3195 from the user's brief; no leaderboard page or submission receipt was authenticated in this review.</td></tr></tbody></table>
-<p class="note">The existing HOLDOUT-DTI receipt tests the older DEM/magnetic snapping rule against withheld catalogue segments, not the ranked three-physics candidate and not the organizer's genuinely unmapped faults. Its evaluator, 48,080 withheld positives, arm-level 95% CIs, and limitation are shown above. Treat it as historical local evidence, never as an organizer score.</p>
-<h2>Next actions in this corrections lane</h2>
-<ul>
-<li><b>Keep the finding negative.</b> The null-calibrated gate passes 0 of 21 corridors; do not emit evidence-defined correction dots from this result.</li>
-<li><b>Resolve the shared format-tool mismatch once upstream.</b> Do not privately fork the shared writer. Issue <a href="https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65">GEMSDOE52 #65</a> records the conflict between the official NaN/null exterior and the all-finite policy.</li>
-<li><b>Only resume candidate tests under a reset run budget.</b> The ranked three-physics displacement-consensus hypothesis is unvalidated; any holdout must use the shared evaluator, whole buffered segments, exact visible-fault masking and leakage canaries.</li>
-<li><b>Keep the LiDAR limitation visible.</b> The existing cache is sibling-derived 3 m pilot data, not the original regional 1 m DEM collection; it covers only a small subset of catalogue pixels.</li>
-</ul></main></html>
+<!doctype html><html lang=en><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Submission status · 56GEMSDOE</title><style>
+:root{--bg:#0f1420;--fg:#e8eaf0;--mut:#9aa3b5;--acc:#4da3ff;--ok:#3fd68f;--warn:#ffb454;--bad:#ff6b6b;--card:#171d2e;--line:#28304a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+header.top{background:linear-gradient(180deg,#131a2c,#0f1420);border-bottom:1px solid var(--line);padding:22px 0 18px}
+h1{font-size:24px;margin:0 0 4px}
+h2{font-size:19px;margin:28px 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px}
+h3{font-size:16px;margin:20px 0 6px}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+nav a{color:var(--mut);text-decoration:none;padding:5px 10px;border:1px solid var(--line);border-radius:16px;font-size:13px}
+nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
+.dlbtn{margin:14px 0}
+.btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:8px}
+.btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn:hover{filter:brightness(1.1)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.mut{color:var(--mut)}
+.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+code{background:#0a0e18;border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:13px}
+pre{background:#0a0e18;border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;font-size:12.5px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#131a2c}
+img{max-width:100%;border:1px solid var(--line);border-radius:8px}
+.values{background:#10182b;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;font-size:13.5px;color:var(--mut)}
+footer{border-top:1px solid var(--line);margin-top:34px;padding:18px 0 30px;color:var(--mut);font-size:13px}
+.tag{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:10px;padding:1px 8px;color:var(--mut);margin-right:5px}
+ul{margin:6px 0 6px 20px}li{margin:3px 0}
+</style></head><body>
+<header class=top><div class=wrap>
+<h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
+<div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
+faults missing from the USGS/INGENIOUS catalogue</div>
+<nav><a href="index.html">Home</a><a href="executive-summary.html" class=active>Submission status</a><a href="submit.html">Submission status & conditions</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download research GeoTIFF (audit only)</a> <a class="btn alt" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">.tif (343 KB)</a></div>
+</div></header>
+<div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
+submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
+on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
+<span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (local inputs; mirror provenance documented)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
+<main class=wrap><div class=card><h2 class=bad>STOP: no current file is cleared for submission</h2>
+<p><b>Safe to download: YES, for audit/research only. Safe to submit: NO.</b> PR #4 has a
+negative 0/21-corridor corrections result, PR #5/#6 has a format-conformant corrections TIF
+but the literal registry rule returns DUPLICATE/STOP, and PR #7's separate discovery result
+is negative and DUPLICATE/STOP. Superset or coverage-adjusted explanations do not waive a
+literal stop. No organizer submission or slot use is recorded.</p>
+<p><a href="submit.html">Full repository-wide status and conditional gates</a> ·
+<a href="prior-run.html">Preserved prior run</a> ·
+<a href="prior-irregularities.html">Prior run irregularities</a></p></div>
+<h2>Submission status &mdash; STOP</h2>
+<div class=card>
+<h3 class=bad>NO CURRENT FILE IS CLEARED FOR SUBMISSION</h3>
+<p><b>Safe to download: YES, for audit/research only. Safe to submit: NO.</b> This page is a
+status report, not instructions to upload one of the files below. No organizer submission
+receipt or score exists, and no weekly slot has been spent.</p>
+<h3>Published corrections artifact from PR #5/#6 — audit only</h3>
+<p><a href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">Download for audit: gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif</a>
+(6,504 dots; SHA-256 <code>08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7</code>). Its local mask-aware format check passes.
+Its result is <b>HOLDOUT-DTI</b> on simulated-corrections truth (`src/metrics.py`,
+26,813 withheld positives): A1 0.310486 [0.282121,
+0.337809]. This is not an organizer score and does not validate PR #9's
+three-physics candidate. The standing literal registry rule flags 8
+priors, so the protocol result is <b>DUPLICATE/STOP</b>; no slot is cleared.</p>
+<h3>PR #4 corrections run — negative</h3>
+<p>The null-calibrated decision gate qualifies <b>0 of
+21 corridors</b>. Its primary has one unsupported dot and
+its 14-dot sensitivity relaxes the approximately 2 px threshold. The historical HOLDOUT-DTI
+is 0.000157 [0.000000,
+0.000454], evaluator <code>gems52-pooled-hide-v1</code>,
+48,080 withheld positives; random jitter is
+0.000206 [0.000003,
+0.000508]. The marginal intervals overlap. These old files also
+write finite zeroes outside the official sample's NaN mask; their legacy all-finite local
+pass is not exact format conformance.</p>
+<h3>PR #7 discovery run — separate lane, negative</h3>
+<p>The discovery lane is not this corrections review. Its pre-registered holdout was below
+same-budget random and its literal registry rule returned DUPLICATE/STOP; see the separate
+receipt details below. Do not merge its result with the corrections evidence.</p>
+</div>
+
+<h2>Conditional future upload checklist &mdash; only after every gate passes</h2>
+<div class=card>
+<ol>
+<li>Resolve participant data terms and confirm input hashes against the logged-in official
+<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/data/">competition data page</a>;
+a public mirror hash is not organizer authentication.</li>
+<li>After the run budget is explicitly reset, preregister a corrections-only candidate and
+run feature-alone leakage canaries plus the shared blocked holdout. Report HOLDOUT-DTI with
+evaluator version, withheld-positive count and paired spatial-block 95% CI. A simulated or
+catalogue hide-and-recover result is not an organizer score.</li>
+<li>Apply the literal registry gate before and after placement. Any >70%-within-3-px trigger
+is DUPLICATE/STOP; do not waive it based on similarity diagnostics.</li>
+<li>Use a shared writer/gate path that matches the official grid and exterior mask; validate
+the exact bytes and SHA-256 locally. A local pass is not portal acceptance.</li>
+<li>Only if all gates pass and a separate weekly-slot selector approves, open the
+<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">official portal</a>,
+use a unique name and note of at most 140 characters, upload, and save the returned receipt.
+Only its score is ORGANIZER-CONFIRMED.</li>
+</ol>
+<p>Archived submission names and notes in old run cards are for provenance only. They are not
+approved for reuse or for a current upload.</p>
+</div>
+
+<h2>Round-2 discovery candidate &mdash; also NOT for submission</h2>
+<div class=card>
+<p><b>OK to submit: <span class=bad>NO</span>.</b> The second download on the
+<a href="index.html">home page</a>
+(<code>h56-disc-multi-b25000-20261009-20261009T165646Z.tif</code>, 25,000 dots) is format-validated
+research output: single band, float32, values exactly {0.0, 1.0}, EPSG:32611, shape and
+transform equal to the submission format, sha256 <code>dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296</code>.
+Two independent verdicts block it: HOLDOUT-DTI, evaluator <code>gems52-pooled-hide-v1</code>,
+48,080 withheld positives: candidate 0.01242
+[0.00787, 0.01718] vs uniform random
+0.03499 [0.03273, 0.03714]; paired
+-0.02257 [-0.02749, -0.01717] strictly below zero. The
+registry lane gate returned <b>DUPLICATE/STOP</b>
+(density-degenerate 3&nbsp;px trigger, IR-56-023). Its name, note and receipt all say
+NEGATIVE; no slot was spent. Full walk-through of the numbers:
+<a href="hypotheses.html">hypotheses (round-2 section)</a> ·
+<code>evidence/run_card_discovery_v1.json</code>.</p>
+</div>
+</main>
+<footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
+round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
+generated 2026-10-09 19:08 UTC by
+<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
+and <code>evidence/*.json</code> (run B) ·
+site served from <code>main</code> at
+<a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
+</body></html>

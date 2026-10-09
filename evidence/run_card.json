@@ -1,10 +1,8 @@
 {
  "lane": "corrections",
  "competition": "DrivenData GEMS Prize 306 (USGS quake-explorer fault delineation)",
- "run_utc": "2026-10-09T05:47:28Z",
- "commit": "a6ed351df164c8226b8c2344dd164ed0cf063b8f",
- "card_reviewed_utc": "2026-10-09T18:48:40Z",
- "card_kind": "receipt assembly/review only; no new scientific experiment was run",
+ "run_utc": "2026-10-09T16:49:44Z",
+ "commit": "994ff6a644eec8a238e251a84261fbb8db8f2599",
  "hypothesis": "The USGS/INGENIOUS catalogue is displaced from the geomorphic and magnetic lineations by more than ~2 pixels in places, so dots placed on the evidence-defined trace score where dots on the catalogue line cannot (known-fault pixels are excluded from the penalty terms).",
  "mechanism": "Active-quaternary slip expressed as a scarp in detrended elevation (crest of -d2z/dn2) and as a step in the magnetic gradient (ridge of |tmi_hg|), measured perpendicular to the trace strike within +-400 m.",
  "named_non_fault_process": "Slope-dependent scarp degradation and relaxation, which migrates a scarp's convex break downslope away from the fault trace without any registration error; plus the shading/curvature asymmetry of a DEM-derived field, and, on the estimator side, bilinear-interpolation curvature spikes at source gridlines. Each is why the lane requires two nulls, a strength gate calibrated on the null, and corridor-level agreement rather than any single per-pixel offset.",
@@ -130,37 +128,15 @@
     "fnw": 48071.498016128826
    }
   },
-  "paired_delta_vs_reference": {
-   "A_as_is": {
-    "delta": 4.7447962554677763e-05,
-    "ci95": [
-     0.0,
-     0.00011146770377698813
-    ]
-   },
-   "B_snap": {
-    "delta": -0.00010916118062233628,
-    "ci95": [
-     -0.000356824560051748,
-     2.2076478424284652e-06
-    ]
-   },
-   "D_jitter": {
-    "delta": -0.00015805309507082687,
-    "ci95": [
-     -0.00042387865024720383,
-     1.62101172648752e-05
-    ]
-   }
-  },
+  "paired_delta_vs_reference": {},
   "bootstrap": null,
   "limitation": "the withheld target is catalogue faults, not the organizer's new faults; see gems56/holdout.py docstring and IR-56-004",
-  "reading": "this historical hide-and-recover holdout withholds different catalogue segments; it is not a matched test of where the same visible trace should be corrected. The B_snap and D_jitter marginal 95% HOLDOUT-DTI intervals overlap; the receipt has no direct paired B_snap-versus-D_jitter interval, so it supplies no evidence that measured DEM/magnetic direction beats randomized-side placement"
+  "reading": "all arms are inside each other's intervals, and a random sub-pixel jitter scores the same as the evidence-based snap: the instrument cannot see a <=3 px lateral offset, so the holdout supplies no admissible evidence in favour of correcting"
  },
  "registry_comparison": {
   "shared_gate_verdict": {
    "tool": "gates.lane_uniqueness_report (vendored template, phase=dots, exact full eligible rank)",
-   "priors_checked": 485,
+   "priors_checked": 944,
    "max_spearman": 0.005134591433171967,
    "rank_threshold": 0.9,
    "rank_pass": true,
@@ -168,14 +144,14 @@
    "near_threshold": 0.7,
    "duplicate": true,
    "ok": false,
-   "offender_count": 105,
-   "sensitivity_arm_offender_count": 31,
-   "reading": "the shared gate FAILS the candidate on the proximity criterion, trivially: the primary raster has one dot, so 'all my dots are within 3 px of a prior' is true for 105 of 485 priors, most of them whole-footprint density layers. Reciprocal overlap is 0 of 485 above 0.70 and the reverse fraction peaks at 0.0008, so nothing is duplicated. The protocol says a trigger is a logged duplicate and a stop, so the artefacts are published as research output and no slot is claimed."
+   "offender_count": 263,
+   "sensitivity_arm_offender_count": 175,
+   "reading": "the shared gate FAILS the primary on the proximity criterion. The primary has 1 dot(s); the criterion is met against 263 of 944 priors (the sensitivity raster: 175). The primary's offenders carry 12,000 to 5,167,373 positive cells (median 88,988; measured from the receipt), so the criterion is met by dense layers rather than by a like-for-like duplicate. 36 priors could not be read onto the grid and were not compared. The reciprocal figure below comes from the one-pass screen over the full 944-raster corpus (evidence/registry_screen_v1.json). The protocol says a trigger is a logged duplicate and a stop, so the artefacts are published as research output and no slot is claimed."
   },
-  "corpus_files": 485,
-  "corpus_read_errors": 0,
-  "rule_as_written_triggers": 106,
-  "of_which_dense_layers": 22,
+  "corpus_files": 944,
+  "corpus_read_errors": 35,
+  "rule_as_written_triggers": 292,
+  "of_which_dense_layers": 141,
   "reciprocal_overlap_gt_070": 0,
   "surface_max_rank_correlation": 0.005134591433171967,
   "dots_max_rank_correlation": 0.005134591433171967,
@@ -216,7 +192,7 @@
  "verdict": "negative",
  "cleared_for_weekly_slot": false,
  "promote": false,
- "verdict_text": "Report the histogram, do not promote a correction: the null-calibrated gate qualifies 0 of 21 corridors at the >=2 px threshold; the historical 3 m pilot reports 0 of 13 segments displaced by >=200 m. The primary artifact has 1 dot(s), but historical files are research-only because the old builder disabled its null-strength floor and the shared writer's exterior convention is unresolved. The current builder emits no sub-threshold sensitivity arm. No weekly slot is recommended.",
+ "verdict_text": "Report the histogram, do not emit a correction: under the null-calibrated gate 0 of 21 catalogue corridors reach a consistent >=2 px offset, the 3 m LiDAR check finds 0 of 13 segments displaced by >=200 m, and the two data families do not even correlate in their offsets (r = 0.022). The primary raster therefore carries 1 dots -- the emptiness is the finding, and it is written through the real submission path so the format is proven, not asserted. The 1 px sensitivity raster is shipped for inspection of what the rule would have chosen and is labelled NEGATIVE in its own note. No slot is recommended; promotion is a separate selector decision.",
  "budget": {
   "experiments": 3,
   "extra_controls": 1,
@@ -228,41 +204,16 @@
   },
   "note": "the 2 h / 3 experiment stop-loss was reached; everything after it is packaging, including the estimator fix that all re-runs stem from (IR-56-009)"
  },
- "current_candidate_status": {
-  "ranked_candidate": "three-physics displacement consensus: DEM curvature + magnetic gradient + gravity gradient",
-  "validated": false,
-  "leakage_canary_run": false,
-  "reason": "historical holdout predates this hypothesis; three-experiment stop-loss is consumed"
- },
- "submission_clearance": {
-  "status": "RESEARCH-ONLY \u2014 NOT CLEARED FOR SUBMISSION",
-  "safe_to_download_for_audit": true,
-  "safe_to_submit": false,
-  "organizer_confirmed_score": null,
-  "weekly_slots_used": 0,
-  "deliverable_tension": {
-   "requested": "one unique downloadable submission GeoTIFF",
-   "lane_stop_condition": "if calibrated offsets cluster under approximately 2 pixels, report the negative and emit nothing from this lane",
-   "resolution": "the calibrated decision gate qualifies 0 of 21 corridors, so no new TIF or submission name/note was created; the requested file deliverable does not justify inventing a positive correction",
-   "existing_downloads": "historical primary and sensitivity rasters remain available for audit only and are not cleared for upload"
-  },
-  "status_record": "evidence/submission_status.json"
- },
  "reproduce": [
-  "bash scripts/download_competition_data.sh",
-  ".venv/bin/python scripts/prepare_data.py",
-  ".venv/bin/python scripts/make_manifest.py",
-  ".venv/bin/python tests/test_contracts.py",
-  ".venv/bin/python -m pytest -q",
-  ".venv/bin/python scripts/build_site.py"
- ],
- "historical_experiments_requiring_budget_reset": [
-  "scripts/measure_offsets.py",
-  "scripts/calibrate_gate.py",
-  "scripts/lidar_calibration.py",
-  "scripts/run_corrections_holdout.py",
-  "scripts/cluster_gate_control.py",
-  "scripts/build_corrections_submission.py",
-  "scripts/screen_registry.py"
+  "python tests/test_contracts.py",
+  "python scripts/validate_estimator.py",
+  "python scripts/measure_offsets.py",
+  "python scripts/calibrate_gate.py",
+  "python scripts/lidar_calibration.py",
+  "python scripts/run_corrections_holdout.py",
+  "python scripts/cluster_gate_control.py",
+  "python scripts/build_corrections_submission.py",
+  "python scripts/screen_registry.py",
+  "python scripts/build_site.py"
  ]
 }

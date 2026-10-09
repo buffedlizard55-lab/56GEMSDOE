@@ -6,6 +6,9 @@ import hashlib
 import json
 from pathlib import Path
 
+import numpy as np
+import rasterio
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -32,35 +35,59 @@ def test_mirror_pins_are_complete_and_consistent_with_input_registry():
     assert all(len(part["sha256"]) == 64 and len(part["blob"]) == 40 for part in features["parts"])
 
 
-def test_current_status_fails_closed_for_every_historical_artifact():
+def test_current_status_fails_closed_for_every_published_artifact():
     status = load_json("evidence/submission_status.json")
     assert status["safe_to_download_for_audit"] is True
     assert status["safe_to_submit"] is False
     assert "no new TIF" in status["deliverable_tension"]["resolution"]
     assert status["organizer_confirmed_score"] is None
     assert status["weekly_slots_used"] == 0
-    assert "NOT CLEARED" in status["status"]
+    assert "NO CURRENT FILE CLEARED" in status["status"]
+    assert len(status["artifacts"]) == 4
+    assert all(artifact["safe_to_submit"] is False for artifact in status["artifacts"].values())
     assert all(artifact["status"].endswith("not safe to submit")
                for artifact in status["artifacts"].values())
-    assert any(gate["gate"] == "feature-alone leakage canary" and gate["result"].startswith("NOT RUN")
+    assert any("three-physics" in gate["gate"] and gate["result"].startswith("NOT RUN")
                for gate in status["blocking_gates"])
 
 
-def test_historical_downloads_match_receipts_but_remain_audit_only():
+def test_published_downloads_match_receipts_and_sample_mask_but_remain_audit_only():
     status = load_json("evidence/submission_status.json")
     names = [artifact["submission_name"] for artifact in status["artifacts"].values()]
-    assert len(names) == len(set(names))  # distinct historical names, not approval to submit
+    assert len(names) == len(set(names))  # distinct archived names, not approval to submit
+    with rasterio.open(ROOT / "data/grid/sample_submission.tif") as sample:
+        template = sample.read(1)
+        valid = np.isfinite(template)
+        transform, crs, shape = sample.transform, sample.crs, sample.shape
     for artifact in status["artifacts"].values():
         raster = ROOT / artifact["file"]
-        receipt = json.loads(raster.with_suffix(".json").read_text())
+        receipt_path = ROOT / artifact["receipt_file"]
+        receipt = json.loads(receipt_path.read_text())
         digest = hashlib.sha256(raster.read_bytes()).hexdigest()
-        assert digest == artifact["sha256"] == receipt["sha256"]
+        if "raster" in receipt:
+            receipt_sha = receipt["raster"]["sha256"]
+        else:
+            receipt_sha = receipt["sha256"]
+        assert digest == artifact["sha256"] == receipt_sha
         assert artifact["status"].endswith("not safe to submit")
         audit = artifact["on_disk_audit"]
-        assert audit["sha256_matches_adjacent_receipt"] is True
-        assert audit["candidate_nan_pixels"] == 0
-        assert audit["sample_nan_exterior_pixels"] > 0
-        assert audit["exterior_behavior"].startswith("finite zero outside")
+        assert audit["sample_nan_exterior_pixels"] == int((~valid).sum())
+        assert audit.get("sha256_matches_adjacent_receipt") or audit.get("sha256_matches_recorded_run_card")
+        assert audit["candidate_nan_pixels_inside_sample"] == 0
+        with rasterio.open(raster) as ds:
+            field = ds.read(1)
+            assert ds.shape == shape and ds.transform == transform and ds.crs == crs
+            assert ds.count == 1 and ds.dtypes[0] == "float32"
+            assert np.isfinite(field[valid]).all()
+            assert np.all((field[valid] >= 0) & (field[valid] <= 1))
+            assert int((valid & ~np.isfinite(field)).sum()) == 0
+            if audit["exterior_behavior"].startswith("NaN outside"):
+                assert np.isnan(field[~valid]).all()
+                assert ds.nodata is not None and np.isnan(ds.nodata)
+            else:
+                assert np.isfinite(field[~valid]).all()
+                assert np.all(field[~valid] == 0)
+                assert ds.nodata is None
     assert status["safe_to_submit"] is False
 
 

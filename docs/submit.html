@@ -24,9 +24,9 @@ a{color:var(--link)}main{max-width:1040px;margin:28px auto;padding:0 20px 64px}h
 <main>
 <h1>Submission status and conditional instructions</h1>
 <div class="banner">
-  <strong>NO FILE IS SAFE TO SUBMIT</strong>
-  <p><b>Safe to download: yes, for audit only. Safe to submit: NO.</b> Do not upload either historical raster below. No correction is supported by the null-calibrated decision gate, the shared writer's exterior-mask policy conflicts with the official format, and the local uniqueness gate did not clear the primary artifact. No organizer submission receipt or score exists; no weekly slot has been used.</p>
-  <p><b>Deliverable conflict:</b> the brief asks for a new unique TIF, but the corrections-lane rule says to emit nothing when calibrated offsets remain below about 2 px. The gate qualifies 0 of 21 corridors, so no new raster or submission metadata was manufactured; only historical audit files remain downloadable.</p>
+  <strong>NO CURRENT FILE IS CLEARED FOR SUBMISSION</strong>
+  <p><b>Safe to download: yes, for audit/research only. Safe to submit: NO.</b> The four GeoTIFFs now published across this repository come from three distinct runs/lanes: PR #4 corrections (negative, including a format-mask mismatch), PR #5/#6 corrections (format-conformant but the literal registry stop rule fires), and PR #7 discovery (negative holdout and DUPLICATE/STOP). No organizer submission receipt or score exists; no weekly slot has been used.</p>
+  <p><b>Deliverable conflict:</b> this PR's corrections review created no new TIF and ran no new holdout. The PR #4 null-calibrated gate qualifies 0 of 21 corridors; the separate PR #5/#6 TIF is an earlier parallel-run artifact, not evidence from this review and not clearance to submit. Do not manufacture or promote a correction to satisfy the requested file deliverable.</p>
 </div>
 
 <h2>Why the current artifacts are not approved</h2>
@@ -39,20 +39,30 @@ a{color:var(--link)}main{max-width:1040px;margin:28px auto;padding:0 20px 64px}h
   </ul>
 </div>
 <div class="card">
+  <h3>Parallel corrections run A (PR #5/#6) — audit only; do not submit</h3>
+  <ul>
+    <li>File: <a href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif"><code>gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif</code></a>; 6,504 dots; SHA-256 <code>08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7</code>.</li>
+    <li>Local format and exact sample-mask conformance: PASS (single-band float32, NaN only outside, matching <code>nodata=nan</code>). This is not an organizer upload test.</li>
+    <li><b>HOLDOUT-DTI (simulated-corrections truth)</b>, evaluator <code>src/metrics.py</code>, 26,813 withheld positives: A1 = 0.310486 [0.282121, 0.337809]; not an organizer score and not a validation of the three-physics hypothesis in the ranked register.</li>
+    <li>The literal registry rule triggers on eight priors: <b>DUPLICATE/STOP</b>. Coverage-adjusted similarity diagnostics do not waive that stop. This file is not cleared for a slot.</li>
+    <li>Receipts: <a href="../evidence/corrections/run_card.json"><code>evidence/corrections/run_card.json</code></a> and <a href="../evidence/corrections/registry_check.json"><code>evidence/corrections/registry_check.json</code></a>.</li>
+  </ul>
+</div>
+<div class="card">
   <h3>Sub-threshold sensitivity diagnostic — not offered as a submission</h3>
   <ul>
     <li>File: <code>downloads/h56-corr-snap100cm-20261009.tif</code>; 14 dots; SHA-256 <code>e3285854e73ae4ba3fce8faea64940fdc4bee3b702eb52d2530a67fb60195196</code>.</li>
     <li>Its 1 px threshold is below the brief's approximately 2-pixel correction bar. It is retained in the repository for historical audit only and must not be uploaded or promoted.</li>
   </ul>
 </div>
-<p>The historical local format gate reported single-band float32 data, EPSG:32611, values in [0,1], and the expected grid shape. That is not proof of organizer acceptance. The official page requires data outside the training bounds to be null or NaN; the sample submission uses NaN there. The shared writer and gate reject NaN across the entire raster, so the historical files use finite zeros outside. No upload test has resolved this mismatch. The shared-template issue is <a href="https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65">GEMSDOE52 #65</a>. We will not privately fork the shared template.</p>
+<p>The official page requires data outside the training bounds to be null or NaN; the sample submission uses NaN there. The PR #4 primary/sensitivity and PR #7 discovery TIFs instead use finite zeroes outside, so their older all-finite local pass is not exact sample-mask conformance. The separate PR #5/#6 run-A file does use NaN outside and passes the current local mask-aware validator. A legacy <code>src/gems56</code> writer/gate still enforces all-finite output, while the separate <code>src/submission_io</code> path is mask-aware; keep the tool-path distinction explicit. The analogous upstream shared-template issue <a href="https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65">GEMSDOE52 #65</a> was checked OPEN on 2026-10-09. No private fork was created, and no local validator result is organizer acceptance.</p>
 
 <h2>What must pass before any future upload</h2>
 <ol>
   <li><b>Scientific gate:</b> a calibrated, segment-level displacement consistent across independent evidence, exceeding approximately two 100 m pixels. Under the current receipts, 0 of 21 corridors qualifies, so this gate fails.</li>
   <li><b>Holdout gate:</b> validate the newly selected hypothesis using the shared pooled holdout, whole buffered segments, pixel-exact visible-fault masking, and leakage canaries. Label every value HOLDOUT-DTI with evaluator version, withheld-positive count, and a paired spatial-block 95% CI. A catalogue hide-and-recover result is not evidence of organizer scoring or of new-fault discovery.</li>
   <li><b>Uniqueness gate:</b> compare the pre-placement and final rasters against the registered corpus. Log and stop on a duplicate trigger; do not bypass an inconvenient result.</li>
-  <li><b>Format gate:</b> single-band float32; finite probabilities in [0,1] within the eligible data bounds; EPSG:32611; 100 m resolution; exact dimensions, bounds, and transform; null/NaN outside the provided data bounds. The shared writer/gate mismatch must be fixed once upstream and tested before this can pass.</li>
+  <li><b>Format gate:</b> single-band float32; finite probabilities in [0,1] within eligible data bounds; EPSG:32611; 100 m resolution; exact dimensions, bounds, and transform; null/NaN outside. The PR #5/#6 mask-aware path passes locally, but the legacy all-finite path remains inconsistent; agree and regression-test the shared source before relying on a future build. Portal acceptance remains untested.</li>
   <li><b>Governance:</b> check the participant data terms and competition rules, use a unique name and a note of at most 140 characters, and keep the weekly-slot selection separate. Do not use a slot for an unvalidated research artifact.</li>
 </ol>
 
@@ -65,7 +75,7 @@ a{color:var(--link)}main{max-width:1040px;margin:28px auto;padding:0 20px 64px}h
 </ol>
 
 <h2>Current evidence and sources</h2>
-<p>Historical HOLDOUT-DTI: evaluator <code>gems52-pooled-hide-v1</code>, 48,080 withheld catalogue positives. Evidence-based snap: 0.00015661 [0.00000000, 0.00045357]; random jitter control: 0.00020550 [0.00000261, 0.00050850]. These marginal 95% intervals overlap; a paired B_snap-versus-D_jitter interval is not in the historical receipt. This was a local catalogue holdout, not an organizer score, and it does not validate the new three-physics hypothesis. See <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/holdout_corrections_v1.json">the receipt</a> and <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/submission_status.json">the current status record</a>.</p>
+<p><b>PR #4 HOLDOUT-DTI:</b> evaluator <code>gems52-pooled-hide-v1</code>, 48,080 withheld catalogue positives. Evidence-based snap: 0.00015661 [0.00000000, 0.00045357]; random jitter control: 0.00020550 [0.00000261, 0.00050850]. These marginal 95% intervals overlap; this is a local catalogue hide-and-recover result, not an organizer score. <b>PR #5/#6 HOLDOUT-DTI:</b> simulated-corrections truth, evaluator <code>src/metrics.py</code>, 26,813 withheld positives; A1 0.310486 [0.282121, 0.337809]. This validates that separate simulated mechanism only, not the top three-physics candidate or organizer labels. The PR #7 discovery result is separately negative (see the home page and its receipts). No new holdout was run in PR #9. See the <a href="../evidence/submission_status.json">repository-wide status record</a>.</p>
 <ul>
   <li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Official problem description, metric, and submission format</a></li>
   <li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/data/">Competition data page (login required)</a></li>

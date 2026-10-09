@@ -1,223 +1,206 @@
-<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>56GEMSDOE · corrections lane</title><style>
-:root{--bg:#0d1117;--panel:#161b22;--ink:#e6edf3;--mut:#9198a1;--line:#262c36;--ok:#2ea043;--warn:#d29922;--bad:#f85149;--acc:#58a6ff}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-main{max-width:1100px;margin:0 auto;padding:26px 20px 90px}h1{font-size:26px;margin:0 0 4px}h2{font-size:20px;margin:32px 0 10px;padding-top:14px;border-top:1px solid var(--line)}h3{font-size:16px;margin:18px 0 6px}
-a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}.sub{color:var(--mut);margin:0 0 16px}
-.banner{border-radius:12px;padding:18px 20px;margin:16px 0;border:1px solid var(--line)}.banner.bad{background:rgba(248,81,73,.10);border-color:rgba(248,81,73,.45)}.banner.ok{background:rgba(46,160,67,.10);border-color:rgba(46,160,67,.45)}.banner.warn{background:rgba(210,153,34,.10);border-color:rgba(210,153,34,.45)}
-.banner .big{font-size:19px;font-weight:700}.banner p{margin:8px 0 0}.why{color:var(--mut)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
-.kv{display:flex;justify-content:space-between;gap:12px;padding:4px 0;border-bottom:1px dashed var(--line);font-variant-numeric:tabular-nums;font-size:13.5px}.kv:last-child{border-bottom:0}.kv b{font-weight:600;color:var(--mut)}.kv span{text-align:right;word-break:break-all}
-table.data{border-collapse:collapse;width:100%;margin:8px 0;font-variant-numeric:tabular-nums;font-size:13.5px}
-table.data th,table.data td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}table.data th{background:#1c2129;font-weight:600}
-.pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600;border:1px solid var(--line);margin-right:6px}
-.pill.bad{color:#ffb3ae;border-color:rgba(248,81,73,.5);background:rgba(248,81,73,.12)}.pill.ok{color:#7ee2a1;border-color:rgba(46,160,67,.5);background:rgba(46,160,67,.12)}.pill.warn{color:#e8c37a;border-color:rgba(210,153,34,.5);background:rgba(210,153,34,.12)}
-.dl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
-.btn{background:var(--acc);color:#04121f;border-radius:8px;padding:10px 16px;font-weight:700}.btn.ghost{background:transparent;color:var(--acc);border:1px solid var(--acc)}
-input.mono,code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px}
-input.mono{width:100%;background:#0b0f14;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:9px 10px}
-pre{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto}ul{margin:6px 0 6px 20px;padding:0}li{margin:4px 0}.muted{color:var(--mut)}
-nav{position:sticky;top:0;background:rgba(13,17,23,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:10px 0;z-index:5}
-nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:14px}
-.small{font-size:13px}.note{border-left:3px solid var(--warn);padding:6px 0 6px 12px;color:var(--mut);margin:10px 0}.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
-</style></head><body><nav><div class='wrap'><a href='index.html'><b>56GEMSDOE</b> · corrections lane</a><a href='executive-summary.html'>Executive summary</a><a href='submit.html'>Submission status &amp; conditional steps</a><a href='irregularities.html'>Irregularities</a><a href='research/hypotheses.md'>Ranked hypotheses</a><a href='https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/knowledge/sources.json'>Sources</a><a href='https://github.com/buffedlizard55-lab/56GEMSDOE'>repo</a></div></nav><main><h1>How far is the fault catalogue from the evidence?</h1><p class='sub'>GEMS Prize (DrivenData 306). Measured answer: the residual is a coherent ~1 px wobble, not a &ge;2 px displacement &mdash; so this lane emits no defensible correction, and the negative, with its two nulls, its 3 m calibration and its permutation controls, is the deliverable.</p><p class='small muted'>Status reviewed 2026-10-09. The measurements displayed below are historical receipts from the earlier run (recorded measurement commit <code>a6ed351df164c8226b8c2344dd164ed0cf063b8f</code>); this review restored and verified inputs, corrected metadata/site copy and did not run new experiments. Evidence classes are explicit: MEASURED, HOLDOUT-DTI (local evaluator), USER-REPORTED, and ORGANIZER-CONFIRMED (none).</p>
-
-<div class="banner bad">
-  <div class="big">RESEARCH-ONLY — NOT CLEARED FOR SUBMISSION</div>
-  <p>The calibrated decision gate qualifies <b>0 of 21</b> corridors. The null-calibrated
-  joint median is <b>0.774 px</b> (n=156) against a
-  random-traceless-point median |offset| of <b>1.323 px</b>; the DEM/magnetic offset
-  correlation is r=0.022. The cached 3 m sibling-derived LiDAR check is
-  limited to two pilot tiles and reports <b>0 of 13</b> segments
-  with |median offset| &ge;200 m. These results do not support a correction.</p>
-  <p class="why"><b>Safe to download: YES, for audit only. Safe to submit: NO.</b> The historical primary contains 1 dot(s), but its build
-  disabled the null-calibrated height floor; the decision gate rejects every corridor. The 1 px sensitivity artifact is below the brief&#x27;s threshold. Both historical files use finite zeroes outside the sample's NaN exterior,
-  and the shared writer/gate reject the public null/NaN convention (upstream issue
-  <a href="https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65">GEMSDOE52 #65</a>). They are retained for audit only;
-  no upload, score, or weekly-slot recommendation is made.</p>
-  <p class="small"><b>Deliverable conflict:</b> the brief asks for a new unique TIF, but its corrections-lane stop rule
-  says to emit nothing below the calibrated ~2 px threshold. The gate qualifies 0 of 21 corridors, so no new raster
-  or submission metadata was manufactured; the existing downloads are historical audit files only.</p>
+<!doctype html><html lang=en><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Home · 56GEMSDOE</title><style>
+:root{--bg:#0f1420;--fg:#e8eaf0;--mut:#9aa3b5;--acc:#4da3ff;--ok:#3fd68f;--warn:#ffb454;--bad:#ff6b6b;--card:#171d2e;--line:#28304a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+header.top{background:linear-gradient(180deg,#131a2c,#0f1420);border-bottom:1px solid var(--line);padding:22px 0 18px}
+h1{font-size:24px;margin:0 0 4px}
+h2{font-size:19px;margin:28px 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px}
+h3{font-size:16px;margin:20px 0 6px}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+nav a{color:var(--mut);text-decoration:none;padding:5px 10px;border:1px solid var(--line);border-radius:16px;font-size:13px}
+nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
+.dlbtn{margin:14px 0}
+.btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:8px}
+.btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn:hover{filter:brightness(1.1)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.mut{color:var(--mut)}
+.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+code{background:#0a0e18;border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:13px}
+pre{background:#0a0e18;border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;font-size:12.5px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#131a2c}
+img{max-width:100%;border:1px solid var(--line);border-radius:8px}
+.values{background:#10182b;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;font-size:13.5px;color:var(--mut)}
+footer{border-top:1px solid var(--line);margin-top:34px;padding:18px 0 30px;color:var(--mut);font-size:13px}
+.tag{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:10px;padding:1px 8px;color:var(--mut);margin-right:5px}
+ul{margin:6px 0 6px 20px}li{margin:3px 0}
+</style></head><body>
+<header class=top><div class=wrap>
+<h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
+<div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
+faults missing from the USGS/INGENIOUS catalogue</div>
+<nav><a href="index.html" class=active>Home</a><a href="executive-summary.html">Submission status</a><a href="submit.html">Submission status & conditions</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download research GeoTIFF (audit only)</a> <a class="btn alt" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">.tif (343 KB)</a></div>
+</div></header>
+<div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
+submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
+on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
+<span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (local inputs; mirror provenance documented)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
+<main class=wrap><div class=card><h2 class=bad>STOP: no current file is cleared for submission</h2>
+<p><b>Safe to download: YES, for audit/research only. Safe to submit: NO.</b> PR #4 has a
+negative 0/21-corridor corrections result, PR #5/#6 has a format-conformant corrections TIF
+but the literal registry rule returns DUPLICATE/STOP, and PR #7's separate discovery result
+is negative and DUPLICATE/STOP. Superset or coverage-adjusted explanations do not waive a
+literal stop. No organizer submission or slot use is recorded.</p>
+<p><a href="submit.html">Full repository-wide status and conditional gates</a> ·
+<a href="prior-run.html">Preserved prior run</a> ·
+<a href="prior-irregularities.html">Prior run irregularities</a></p></div>
+<h2>&#11015;&nbsp;CORRECTIONS RUN A — AUDIT DOWNLOAD ONLY</h2>
+<div class=card>
+<p><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">Download for audit: gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif</a>
+<span class=mut>343 KB · single band · float32 · EPSG:32611 · 100 m ·
+3292&times;3730 · 6,504 predicted pixels · every value in [0, 1] · NaN only outside the
+scored footprint · nodata tag <code>nan</code> (the official sample's own format)</span></p>
+<p><b>sha256:</b> <code>08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7</code></p>
+<p><b>Archived run name (not approved for reuse):</b> <code>GEMSDOE56-CORR-CRESTGT2PX</code><br>
+<b>Archived note (for provenance only; do not paste into a submission form)</b>
+(137/140 characters):<br><code>GEMSDOE56 corrections: 6504 dots on LiDAR-calibrated DEM-scarp crest where catalogue offset &gt;2px; 0 on-catalogue; HOLDOUT-DTI(sim) 0.3105</code></p>
+<p><b>Format status:</b> <span class=ok>PASS</span> &mdash; <code>scripts/validate_submission.py</code>
+exit 0 and <code>python -m src.submission_io validate-conformant</code> exit 0
+(no NaN inside the footprint, every value in [0,1], CRS/shape/transform match
+<code>sample_submission.tif</code>, template conformance, GDAL_NODATA=<code>nan</code>).</p>
+<p><b>Standing literal uniqueness verdict:</b> <span class=bad>DUPLICATE/STOP</span> — the &gt;70%-within-3-px rule flags 8 priors. Coverage-adjusted diagnostics (412 unique pixel contents; max Spearman 0.0429, max Jaccard 0.091) do not waive the protocol stop.</p>
+<p><b>Evidence status:</b> <span class=warn>HOLDOUT-DTI (simulated-corrections truth; evaluator <code>src/metrics.py</code>; 26,813 withheld positives)</span>:
+A1 lane 0.310486 [0.282121, 0.337809]; A0 masked control 0.000000 [0.000000, 0.000000]; A4 random control 0.011743 [0.010007, 0.013591] &mdash; see <a href="research.html">research</a>.</p>
+<p class=mut><b>Safe to download: YES, for audit only. Safe to submit: NO.</b> The local
+format pass and simulated-truth holdout are not organizer evidence; the literal registry rule
+requires STOP. Do not upload or spend a slot. See <a href="submit.html">submission status and
+conditional gates</a>.</p>
 </div>
-<h2>Historical artifacts &mdash; research/audit only</h2><div class='grid'>
-<div class="card">
-  <h3>primary arm &mdash; 1-dot historical diagnostic; not cleared by the null-calibrated decision gate</h3>
-  <p><span class="pill bad">NOT SAFE TO SUBMIT</span><span class="pill warn">research artifact only · 1 dots</span></p>
-  <div class="kv"><b>file</b><span class="mono">h56-corr-snap200cm-20261009.tif</span></div>
-  <div class="kv"><b>validator</b><span>historical local all-finite gate: PASS (not organizer acceptance)</span></div>
-  <div class="kv"><b>values present</b><span>0.0, 1.0</span></div>
-  <div class="kv"><b>sha256</b><span class="mono">65635a536d5195532691dbe0&hellip;</span></div>
-  <div class="kv"><b>size</b><span>55772 B</span></div>
-  <div class="kv"><b>pipeline</b><span>qualified_pixels=2074 &rarr; gates=1996 &rarr; gate=2 &rarr; gate=2 &rarr; thinning=1</span></div>
-  <div class="dl">
-    <a class="btn" href="downloads/h56-corr-snap200cm-20261009.tif" download>Download for audit only</a><a class="btn ghost" href="downloads/h56-corr-snap200cm-20261009.zip" download>.zip</a>
-    <a class="btn ghost" href="downloads/h56-corr-snap200cm-20261009.json">historical receipt</a>
-  </div>
-  <p class="small muted">Historical filename/name/note are shown in the receipt for audit only. Do not paste them into the submission form.</p>
-  <p class="small">Historical diagnostic only. Its original build bypassed the null-calibrated crest-strength floor; the calibrated decision receipt qualifies 0 corridors, so this dot is not an approved correction.</p>
-</div>
-<div class="card">
-  <h3>sensitivity arm &mdash; historical sub-threshold diagnostic; not a submission candidate</h3>
-  <p><span class="pill bad">NOT SAFE TO SUBMIT</span><span class="pill warn">research artifact only · 14 dots</span></p>
-  <div class="kv"><b>file</b><span class="mono">h56-corr-snap100cm-20261009.tif</span></div>
-  <div class="kv"><b>validator</b><span>historical local all-finite gate: PASS (not organizer acceptance)</span></div>
-  <div class="kv"><b>values present</b><span>0.0, 1.0</span></div>
-  <div class="kv"><b>sha256</b><span class="mono">e3285854e73ae4ba3fce8fae&hellip;</span></div>
-  <div class="kv"><b>size</b><span>55844 B</span></div>
-  <div class="kv"><b>pipeline</b><span>qualified_pixels=5846 &rarr; gates=5612 &rarr; gate=30 &rarr; gate=30 &rarr; thinning=14</span></div>
-  <div class="dl">
-    <span class='small muted'>Not offered as a download; retained only as a historical repo artifact.</span>
-    <a class="btn ghost" href="downloads/h56-corr-snap100cm-20261009.json">historical receipt</a>
-  </div>
-  <p class="small muted">Historical filename/name/note are shown in the receipt for audit only. Do not paste them into the submission form.</p>
-  <p class="small">Historical sub-threshold sensitivity diagnostic only. A 1 px gate is below the brief's ~2 px correction threshold and must not be submitted or promoted.</p>
-</div></div>
-<p class="small muted">The files pass only the historical vendored all-finite local check. That local result does not
-    establish exact organizer format acceptance. The primary's one dot came from a build whose code path explicitly
-    bypassed the null-calibrated strength floor; the current builder now requires the recorded calibration thresholds.
-    The active lane finding remains negative: <b>no evidence-based corrected-trace dots are approved</b>.</p>
-<h2>1 &middot; What was measured</h2>
-<p>For every catalogue pixel of <code>existing_faults.tif</code>
-    (60894 cells inside the 5165840-cell
-    footprint) we walk a line perpendicular to the local trace strike, &plusmn;400 m at 25 m sampling, and
-    locate the nearest <em>crest</em> of the DEM-curvature scarp (<code>det_elev</code>, the maximum of
-    <code>-d&sup2;z/dn&sup2;</code>) and the nearest <em>ridge</em> of the magnetic gradient
-    (<code>|tmi_hg|</code>), with <code>|iso_grav_anom_hg|</code> kept as an independent corroboration
-    channel. Strike comes from a 5&times;5 structure tensor of the catalogue itself; the eigenvector sign is
-    canonicalised so that a trace cannot place dots on both sides. A crest is believed only if it is an
-    interior local maximum with full smoothing support, clears 25% of the strongest convex break in its own
-    transect, and &mdash; for the gated numbers &mdash; exceeds the 90th percentile of crest heights measured
-    at points that have no fault anywhere (17.57 curvature units DEM,
-    94.10 magnetic).</p>
-    <p class="small muted">Coverage: 60756 pixels have a usable strike,
-    59805 transects are complete, a DEM crest was found on
-    44390 and a magnetic ridge on 40063; both on
-    29557 (48.5% of the catalogue). The
-    correlation between the DEM offset and the magnetic offset is
-    <b>r = 0.022</b> &mdash; the two datasets do not agree on any displacement,
-    which is the single most informative number on this page.</p>
-<h3>Offset histograms, in 100 m pixels</h3>
-<table class='data'><thead><tr><th>population</th><th>n</th><th>median</th><th>mean</th><th>MAD</th><th>&ge;1 px</th><th>&ge;2 px</th><th>&ge;3 px</th></tr></thead><tbody><tr><td>catalogue, ungated DEM</td><td>44390</td><td>-0.113</td><td>-0.085</td><td>~0.421*</td><td>67.3%</td><td>32.6%</td><td>7.2%</td></tr><tr><td>catalogue, ungated joint</td><td>7239</td><td>-0.382</td><td>-0.118</td><td>~0.401*</td><td>70.3%</td><td>31.9%</td><td>5.9%</td></tr><tr><td><b>gated DEM</b></td><td>3187</td><td>-0.103</td><td>-0.056</td><td>2.074</td><td>81.5%</td><td>53.5%</td><td>15.7%</td></tr><tr><td><b>gated magnetic</b></td><td>5297</td><td>0.030</td><td>0.016</td><td>1.926</td><td>74.2%</td><td>47.9%</td><td>23.4%</td></tr><tr><td><b>gated joint</b> (both families, same side)</td><td>156</td><td>0.774</td><td>0.137</td><td>1.877</td><td>86.5%</td><td>52.6%</td><td>12.8%</td></tr><tr><td>null: random traceless points, |offset|</td><td>47939</td><td>1.323</td><td>1.407</td><td>0.735</td><td>62.1%</td><td>27.7%</td><td>5.9%</td></tr><tr><td>null: catalogue points, random direction, |offset|</td><td>46861</td><td>1.394</td><td>1.462</td><td>0.745</td><td>64.7%</td><td>30.0%</td><td>6.3%</td></tr><tr><td>null: |offset| of the magnetic detector</td><td>37780</td><td>1.802</td><td>1.866</td><td>0.945</td><td>71.9%</td><td>44.6%</td><td>20.2%</td></tr></tbody></table>
-<p class="note"><b>Read the nulls before the catalogue rows.</b> The estimator returns a median
-    |offset| of 1.323 px at points chosen &ge;5 px away from any fault, and
-    1.394 px on catalogue pixels sampled in a random direction instead of
-    across the strike. Any claim of a displacement smaller than about half a pixel is inside that floor: the
-    raw, uncalibrated catalogue median of 1.476 px is the noise of the
-    instrument, not a property of the faults. (Logging this is IR-56-007 &mdash; the first pass of this
-    experiment looked like a small positive result and was not one.)</p>
-<p class="small muted">The detector's own accuracy, measured on synthetic scarps with a
-    closed-form crest position (<code>evidence/estimator_validation.json</code>): detection is complete for
-    |offset| &le; 2 px, the scatter is 0.0 px, and there is a constant placement bias of
-    0.329 px (max
-    0.462 px) that depends on scarp width, not on the offset. So
-    a real 2 px displacement would measure 1.5&ndash;2.5 px &mdash; it would not measure 0.0, which is what we
-    see &mdash; but no absolute sub-pixel claim is made anywhere in this repository.</p>
-<h2>2 &middot; Corridors: is any <em>trace</em> displaced?</h2>
-<p>A single pixel agreeing with itself is not a displaced map line. We group catalogue pixels
-    into 8-connected components and require, per component: &ge;12 usable pixels, &ge;75% putting the
-    displacement on the same side in both families, &ge;60% of pixels corroborated within 1 px, a median joint
-    offset &ge; 2 px, and a robust z &ge; 3 with the standard error floored at the LiDAR-measured precision of
-    the estimator (1.296 px &mdash; without the floor a four-pixel corridor
-    with a collapsed MAD reached z = 60.6, IR-56-008).</p>
-<table class='data'><thead><tr><th>population</th><th>components</th><th>qualifying</th><th>their pixels</th><th>their length</th></tr></thead><tbody><tr><td>ungated, no SE floor (exploration)</td><td>1273</td><td>2</td><td>25</td><td>2500.0 m</td></tr><tr><td><b>null-calibrated, SE-floored (decision)</b></td><td>21</td><td>0</td><td>0</td><td>0 m</td></tr></tbody></table>
-<p class='small muted'>No component passes the decision gate, so the corridor list is empty; the exploration row above is kept visible because a reader should see what the gate removed.</p>
-<h2>3 &middot; LiDAR calibration, where the crest is unambiguous</h2>
-<table class='data'><thead><tr><th>quantity</th><th>value</th><th>reading</th></tr></thead><tbody><tr><td>cached 3 m tiles</td><td>EPSG:26911, 3338&times;3338 px at 3 m</td><td>Sibling receipt attributes the 3 m tiles to USGS 3DEP 1 m sources; this review verified cache hashes, not the raw 1 m tiles</td></tr><tr><td>catalogue pixels under them</td><td>552 (0.906%)</td><td>the honest limit of this check: two 10 km tiles, not the survey</td></tr><tr><td>pooled 3 m offsets</td><td>n=366, median -0.021 px, MAD 0.664 px</td><td>the same detector, run where the scarp is resolved</td></tr><tr><td>fraction &ge;2 px / &ge;3 px</td><td>7.9% / 0.27%</td><td>historical 3 m offset distribution; only a corridor-level calibrated gate can authorize a correction</td></tr><tr><td>segments at 3 m</td><td>n=13, median |segment median| 16.8 m</td><td>corridor medians measured directly on 3 m data</td></tr><tr><td>segments &ge;200 m, or z&ge;3</td><td>0, 0 (max z 2.68)</td><td>no segment is displaced by two pixels at 3 m resolution</td></tr><tr><td>coarse vs fine agreement</td><td>bias 17.9 m, RMS 180.9 m</td><td>a 100 m offset predicts its own 3 m counterpart to worse than one full pixel</td></tr></tbody></table>
-<p class="note">That last row is a limit on the instrument, stated rather than buried: the RMS
-    disagreement between the coarse and fine measurements (180.9 m) is
-    larger than a competition cell, so a per-pixel coarse-grid offset carries almost no information about where
-    the 3 m crest is. This lane may therefore speak about distributions, correlations and corridor medians &mdash;
-    never about the correction owed to one individual pixel. That is why the emission rule demands a corridor.</p>
-<h2>4 &middot; Historical shared blocked holdout</h2>
-<p class='note'>This existing E2 receipt tests the older DEM/magnetic snapping rule against withheld catalogue segments. It does not validate the ranked three-physics candidate or organizer new-fault discovery. No new holdout or feature-alone leakage canary was run in this review because the recorded three-experiment/two-hour stop-loss is consumed.</p>
-<table class='data'><thead><tr><th>arm</th><th>what it is</th><th>HOLDOUT-DTI · gems52-pooled-hide-v1 · 48080 withheld positives</th><th>95% CI</th><th>&Delta; vs reference</th><th>paired 95% CI</th><th>TPw</th><th>FPw</th><th>FNw</th></tr></thead><tbody><tr><td><code>A_as_is</code></td><td>the visible catalogue line in each fold</td><td>0.00000000</td><td>[0.00000000, 0.00000000]</td><td>0.00004745</td><td>[0.00000000, 0.00011147]</td><td>0.0</td><td>0</td><td>48080</td></tr><tr><td><code>B_snap</code></td><td>historical DEM/magnetic snap rule; not the current three-physics candidate</td><td>0.00015661</td><td>[0.00000000, 0.00045357]</td><td>-0.00010916</td><td>[-0.00035682, 0.00000221]</td><td>6.5</td><td>14120</td><td>48074</td></tr><tr><td><code>C_snap_sub</code></td><td>the historical 1-to-&lt;2 px sub-threshold offset band</td><td>0.00004745</td><td>[0.00000000, 0.00011147]</td><td>reference</td><td></td><td>1.9</td><td>7878</td><td>48078</td></tr><tr><td><code>D_jitter</code></td><td>control: same measured offset magnitudes as B_snap, random side sign</td><td>0.00020550</td><td>[0.00000261, 0.00050850]</td><td>-0.00015805</td><td>[-0.00042388, 0.00001621]</td><td>8.5</td><td>14531</td><td>48071</td></tr></tbody></table>
-<p class="small muted">Historical HOLDOUT-DTI evaluator gems52-pooled-hide-v1 (vendored template),
-    4 folds, hide mode, buffer 4 px,
-    48080 withheld catalogue positives, &alpha; 0.2 / &beta; 0.8, 300 m triangular
-    kernel. Visible catalogue pixels were masked pixel-exactly. This is catalogue hide-and-recover, not a test of
-    the organizer's unmapped faults or the ranked three-physics candidate.</p>
-    <p class="note">For the historical comparison, B_snap is 0.00015661
-    [0.00000000, 0.00045357] and D_jitter is
-    0.00020550 [0.00000261,
-    0.00050850]. Their marginal 95% intervals overlap; this gives no evidence that
-    the measured DEM/magnetic direction beats randomized-side placement. This small-score historical instrument
-    does not license a correction or an organizer score.</p>
-<h2>5 &middot; Control on the cluster rule &mdash; and what it changes</h2>
-<p>The emission rule also requires 3 of 9 neighbouring
-        candidate pixels, which is our operational reading of &quot;consistent&quot;. That is only evidence if a
-        coherent offset produces more neighbour-agreement than an incoherent one, so we tested it against two
-        nulls built from the same 5612 candidate pixels:</p>
-        <table class='data'><thead><tr><th>null</th><th>what it randomises</th><th>mean &plusmn; sd</th><th>p95</th><th>max of 250 draws</th><th>observed</th><th>one-sided p</th></tr></thead><tbody><tr><td>['label permutation', "which pixel gets which offset; magnitudes, signs and the detector's own placement bias are preserved exactly"]</td><td>152.6 &plusmn; 15.5</td><td>177</td><td>193</td><td><b>680</b></td><td>&lt; 0.004</td></tr><tr><td>['sign flip', 'each pixel keeps its offset and re-draws its side &mdash; not neutral here, because a bias of b pushes a flipped dot 2b away from its true mirror image']</td><td>170.8 &plusmn; 14.2</td><td>194</td><td>211</td><td><b>680</b></td><td>&lt; 0.004</td></tr></tbody></table>
-        <p class="note"><b>This is the one place where the corrected instrument changed the science, and it is
-        not a win for the hypothesis.</b> The sub-2 px agreement between the DEM crest and the magnetic ridge
-        is genuinely coherent along the traces: 680 surviving pixels where reassigning the same offsets yields
-        153. Something real is displacing the geomorphic lineation from the
-        catalogue by about a pixel in places. What kills the emission is scale and independence: the coherence
-        lives at 0.77 px (median joint offset), which is
-        <b>below the 2 px bar the brief sets and below the estimator's own noise floor of
-        1.32 px</b>, and at 3 m resolution not one of
-        13 segments reaches 200 m. A coherent 1 px wobble is not a correctable registration
-        error, and the holdout cannot even see one (arm D vs B). So we report the coherence as a finding about
-        the evidence and the catalogue, and we still emit nothing that we would defend.</p>
-<h2>6 &middot; Uniqueness against every earlier raster</h2>
-<div class="banner bad"><div class="big">
-      Shared lane gate on the final dots: <span class="pill bad">
-      duplicate = True, ok = False</span>
-      &nbsp;485 priors, 0 read errors</div>
-      <p class="why">The template's own gate (<code>gates.lane_uniqueness_report</code>, phase
-      <code>dots</code>, full exact rank over
-      5165840 eligible rank cells, 270
-      distinct decoded priors) reports max Spearman &rho; = <b>0.0051</b> against a
-      0.90 threshold (pass), and directed &le;3 px dot proximity = <b>1.000</b>
-      against a 0.70 threshold (<b>fail</b>, 105 offending priors). The rank test
-      passes by a mile; the proximity test fails for the arithmetic reason given below, and the protocol says a
-      proximity trigger is logged as a duplicate and the lane stops. Both of our rasters are therefore
-      <b>not eligible for a submission slot by this run's own gate</b>, and we are not arguing our way past it:
-      we are reporting the gate's verdict and the reason it fires, so a selector can decide with the numbers
-      visible.</p></div>
-<p>We enumerated the git trees of the sibling repositories and downloaded every single-band,
-    grid-aligned <code>.tif</code> between 80 KB and 2.6 MB under their submission/registry paths:
-    <b>485 rasters, 0 read errors</b>, scored in one pass
-    by exact directed &le;3 px dot proximity in both directions
-    (<code>evidence/registry_screen_v1_rows.jsonl</code>). That is the dot-level view; the earlier session in
-    this repo built the hash-level view (<code>docs/research/registry-index.json</code>: 944 sibling TIFs,
-    920 on this grid, 432 sharing a hash with another file). The two are complementary &mdash; a hash match
-    would catch a literal copy, a proximity match catches a re-derivation &mdash; and neither finds a duplicate
-    of these rasters in the reciprocal direction.</p>
-    <table class='data'><thead><tr><th>prior</th><th>its dots</th><th>share of my dots within 3 px</th><th>share of its dots within 3 px of mine</th><th>reciprocal min</th></tr></thead><tbody><tr><td><code>GEMSDOE10__docs_downloads_gems10-h16-continuation-20260927T065521077735Z-3&hellip;</code></td><td>310042</td><td>92.9%</td><td>0.05%</td><td>0.05%</td></tr><tr><td><code>GEMSDOE10__docs_downloads_gems10-h25-ctx-ridge-20260927T232947704150Z-6452&hellip;</code></td><td>174232</td><td>92.9%</td><td>0.03%</td><td>0.03%</td></tr><tr><td><code>GEMSDOE22__docs_downloads_gems22-h23-a-dti-optimal-emission-6pct-20261002-&hellip;</code></td><td>335879</td><td>92.9%</td><td>0.01%</td><td>0.01%</td></tr><tr><td><code>GEMSDOE22__docs_downloads_gems22-h23-a-dti-optimal-emission-6pct-20261002-&hellip;</code></td><td>335879</td><td>92.9%</td><td>0.01%</td><td>0.01%</td></tr><tr><td><code>GEMSDOE22__docs_downloads_gems22-h23-b-dti-optimal-emission-10pct-20261002&hellip;</code></td><td>516738</td><td>92.9%</td><td>0.01%</td><td>0.01%</td></tr></tbody></table>
-    <p class="note">Literal rule compliance, reported honestly: 106 of
-    485 priors trigger &quot;&gt;70% of my dots within 3 px of one registry
-    raster&quot; &mdash; and 22 of those are whole-footprint plausibility masks
-    with 310042+ dotted cells, against which the rule is vacuous for any non-empty
-    submission. Priors with reciprocal overlap &gt; 0.70: <b>0</b>. The trigger
-    is logged as IR-56-006 rather than quietly resolved. Per candidate: <code>h56-corr-snap100cm-20261</code>: 31 of 485 priors (max 100%); <code>h56-corr-snap200cm-20261</code>: 105 of 485 priors (max 100%); <code>max</code>: 106 of 485 priors (max 100%). The forward rule is
-    especially weak for a sparse raster &mdash; with 1 dot in the primary file, &quot;100% of my
-    dots near a prior&quot; means one dot happens to be close, which is why the reverse and reciprocal columns
-    are the ones to read: <b>0.0008</b> is the most that any prior's dots fall near ours. The emission rule's
-    structural constraint is only that the historical builder avoids placing a dot on a visible catalogue pixel;
-    this does not establish uniqueness. The primary remains uncleared because the directed proximity rule triggered.</p>
-    <p class="small muted">Full receipts: <code>evidence/lane_uniqueness_h56-corr-snap200cm-20261009.json</code> and
-    <code>&hellip;h56-corr-snap100cm-20261009.json</code> (historical 485-row detail), plus the one-pass corpus scan <code>evidence/registry_screen_v1_rows.jsonl</code>.</p>
-<h2>7 &middot; Ranked corrections-lane hypotheses</h2>
-<p>Five distinct candidates and their layers, physical signatures, named alternatives, novelty,
-    qualitative expected effect and cost are recorded in the <a href="research/hypotheses.md">hypothesis register</a>.
-    The leading candidate is three-physics displacement consensus (DEM curvature + magnetic gradient + gravity
-    gradient). It is <b>not validated</b>: the receipts here cover the older DEM/magnetic method, and the stop-loss
-    prevents silently treating a new mechanism as tested. No numeric DTI projection is made. The historical local
-    holdout below is not a new-fault score and does not clear a weekly slot.</p>
-    <p class="small muted">All five remain research hypotheses. Native 1 m LiDAR is blocked in this sandbox; the
-    existing cache is a sibling-derived 3 m pilot, not the original 1 m product.</p>
-<h2>8 &middot; Inputs and reproduction</h2>
-<table class='data'><thead><tr><th>input</th><th>sha256 recomputed here (first 24)</th><th>bytes</th><th>matches the pin</th></tr></thead><tbody><tr><td><code>catalogue</code> &mdash; <span class='mono'>data/grid/existing_faults.tif</span></td><td><span class='mono'>7ba308ccdc4418b31a178f4f&hellip;</span></td><td>425,830</td><td>YES</td></tr><tr><td><code>sample</code> &mdash; <span class='mono'>data/grid/sample_submission.tif</span></td><td><span class='mono'>2176d08e485aa2cd2860ce8d&hellip;</span></td><td>1,599,597</td><td>YES</td></tr><tr><td><code>features</code> &mdash; <span class='mono'>data/training_features.tif</span></td><td><span class='mono'>4371c82e3b8339b807bdffcf&hellip;</span></td><td>418,912,844</td><td>YES</td></tr></tbody></table>
-<p class='small muted'>SHA-256 equality confirms byte identity with the owner-maintained public mirror pins; it does not authenticate these files as direct organizer downloads or resolve licensing/redistribution terms. Confirm those on the login-gated competition data page. Summary: 3 of 3 competition inputs currently match their owner-maintained mirror pins; this does not authenticate organizer provenance. The optional LiDAR cache is sibling-derived and separately hash-pinned. Check the login-gated data page for terms before use or redistribution.</p>
-<table class='data'><thead><tr><th>grid</th><th>value</th></tr></thead><tbody><tr><td>shape / cell</td><td>3730 &times; 3292 at 100 m</td></tr><tr><td>CRS</td><td>32611</td></tr><tr><td>transform</td><td>[100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0]</td></tr><tr><td>analysis-eligible cells</td><td>5,164,300 eligible cells of 12,279,160 grid cells; sample-submission finite mask AND every feature band valid, so both the evidence profile and the score are defined at every emitted pixel (template convention)</td></tr><tr><td>catalogue positives</td><td>60894</td></tr><tr><td>feature nodata sentinel</td><td>-3.402823e+38 (finite float32 sentinel; 57.9% of feature band 1)</td></tr></tbody></table>
-<pre>bash scripts/download_competition_data.sh           # pinned public mirrors; writes only ignored data/
-python scripts/prepare_data.py                     # recompute grid facts from verified bytes
-python scripts/make_manifest.py                    # current presence, hashes, and provenance caveats
-python tests/test_contracts.py                     # non-experimental code/contract tests
-python scripts/build_site.py                       # regenerate these pages from receipts
 
-# The historical E1/E2/E3 experimental budget is already consumed. Do not rerun
-# measure_offsets.py, calibrate_gate.py, lidar_calibration.py, run_corrections_holdout.py,
-# build_corrections_submission.py, or screen_registry.py unless a new run budget is explicitly reset.</pre>
-<p class='small muted'>Official: <a href='https://drivendata.org/competitions/306/competition-doe-gems/page/967/'>evaluation &amp; format</a> &middot; <a href='https://drivendata.org/competitions/306/competition-doe-gems/data/'>data tab (login)</a> &middot; <a href='https://community.drivendata.org/t/11516'>staff on known-fault masking</a> &middot; every claim with its access status in <a href='https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/knowledge/sources.json'>knowledge/sources.json</a>.</p></main></html>
+
+<h2>&#11015;&nbsp;ROUND-2 DISCOVERY CANDIDATE (PR #7) &mdash; download for review only</h2>
+<div class=card>
+<p><a class="btn" href="downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif">Download h56-disc-multi-b25000-20261009-20261009T165646Z.tif</a>
+<span class=mut>66 KB · single band · float32 · EPSG:32611 ·
+100 m · 3292&times;3730 · 25,000 dots · measured distinct values {0.0, 1.0} ·
+0 NaN cells</span></p>
+<p><b>OK to download: yes.</b> <b>OK to submit: <span class=bad>NO</span>.</b>
+The pre-registered holdout verdict is <b>NEGATIVE</b> and the registry lane gate returned
+<b>DUPLICATE/STOP</b> on the literal 3&nbsp;px clause (density-degenerate trigger, IR-56-023: it
+tracks grid coverage while the rank-agreement test passes at max &rho; 0.043 vs the 0.90 bar)
+&mdash; nothing is promoted and no slot was spent.</p>
+<p><b>HOLDOUT-DTI</b> of the shipped arm <code>multi@25,000</code>,
+evaluator <code>gems52-pooled-hide-v1</code>,
+48,080 withheld positives:
+<b>0.01242</b> [0.00787,
+0.01718] vs <b>uniform-random 0.03499</b>
+[0.03273, 0.03714] at the same budget; paired difference -0.02257
+[-0.02749, -0.01717] &mdash; strictly below chance; canaries
+&le; 0.567 (limit 0.90). Receipts:
+<code>evidence/build_discovery_v1.json</code>, <code>evidence/run_card_discovery_v1.json</code>.</p>
+<p><b>submission name</b> <code>h56-disc-multi-b25000-20261009-20261009T165646Z</code><br>
+<b>note</b> (115/140): <code>h56 discovery multi k=25000: step-lineament dots &gt;200 m off catalogue; NEGATIVE holdout, research only, do not slot</code><br>
+<b>sha256</b> <code>dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296</code> · validator ok:
+True</p>
+</div>
+
+<h2>Two corrections runs, one repository &mdash; plus a discovery run</h2>
+<p>This repository has run the corrections lane <b>twice</b>, in two parallel sessions.
+Both runs measured the same catalogue against the same evidence; they gate different
+questions and reached opposite verdicts. Both are reported in full &mdash; the disagreement
+is the finding.</p>
+<div class=grid>
+<div class=card><h3>Run A &mdash; PR #5/#6 corrections (branch <code>arena/b71ede8d-56gemsdoe</code>) &mdash; <span class=bad>protocol verdict NEGATIVE / NOT CLEARED</span></h3>
+<p>Question: <em>is the catalogue on the MAIN scarp?</em> For 28 of 125 well-sampled records
+(22.4%) the strongest, LiDAR-confirmed DEM-scarp crest sits consistently &gt; 2&nbsp;px
+(200&ndash;340&nbsp;m) from the catalogue line &rarr; <b>6,504 dots</b> emitted on the
+evidence-defined traces, 0 on the catalogue. HOLDOUT-DTI(sim; evaluator <code>src/metrics.py</code>,
+26,813 withheld positives): A1 0.310486
+[0.282121, 0.337809], A0 masked control 0.000000
+[0.000000, 0.000000], A4 random control 0.011743
+[0.010007, 0.013591]. Literal containment gate failed; no slot is cleared.
+<b>The audit download above is this run's historical file; it is not cleared for a slot.</b></p></div>
+<div class=card><h3>Run B &mdash; merged PR #4 (branch <code>arena/1d3dbc39-56gemsdoe</code>) &mdash; <span class=warn>NEGATIVE, no slot recommended</span></h3>
+<p>Question: <em>is the catalogue displaced from A crest by &ge; 2&nbsp;px?</em> No:
+null-calibrated median offset -0.103&nbsp;px (DEM) /
+0.030&nbsp;px (magnetic), below the estimator's own noise floor
+(1.32&nbsp;px); <b>0 of 21
+corridors</b> reach a consistent &ge; 2&nbsp;px offset; 3&nbsp;m LiDAR: 0 of
+13 segments displaced by &ge; 200&nbsp;m. Their primary raster carries
+<b>1 dot</b> &mdash; the emptiness is their finding. Their two
+files pass the legacy all-finite local format gate and are safe to download for audit, but
+<b>not cleared for a slot</b> (their uniqueness gate returned <code>ok:false</code> on the
+proximity criterion at 1-dot count, IR-56-006). Direct mask audit also found finite zeroes
+outside where the official sample uses NaN (IR-56-013). Details: <a href="prior-run.html">Prior run</a>.</p></div>
+<div class=card><h3>Run C &mdash; this PR #7 (branch <code>arena/858a492d-56gemsdoe</code>) &mdash; <span class=bad>discovery lane: NEGATIVE twice</span></h3>
+<p>Question: <em>do off-catalogue step/tilt lineaments recover catalogue-missing faults?</em>
+Five hypotheses pre-registered (H6&ndash;H10, <code>docs/research/hypotheses-20261009.md</code>);
+the top three were evaluated using HOLDOUT-DTI (<code>gems52-pooled-hide-v1</code>, 48,080 withheld positives).
+Pick <code>multi@25000</code> 0.01242
+[0.00787, 0.01718]
+vs uniform-random 0.03499
+[0.03273, 0.03714] &mdash; paired -0.02257
+[-0.02749, -0.01717],
+canaries clean. Registry gate: surface PASS, dots
+DUPLICATE/STOP (density-degenerate trigger, IR-56-023).
+Their published research TIF is the second download above &mdash; the receipt and front page
+label it NEGATIVE / do not submit, and the literal gate is DUPLICATE/STOP. 0 slots spent.</p></div>
+</div>
+<p class=mut>Reconciliation: the two runs agree on the measurement &mdash; the catalogue sits
+within ~1&nbsp;px of <em>some</em> crest (run A's nearest-crest reading matches run B's
+negative). They differ on the decision rule: run B gates on null-calibrated corridor
+consistency with a crest-strength gate and DEM+mag concordance (very conservative &rarr;
+0 corridors); run A gates on per-record strongest-crest consistency (median offset
+&gt; 2&nbsp;px, sign agreement &ge; 0.70, &ge; 8 transects) with the crest identity
+calibrated on 1&nbsp;m LiDAR (MAD 0.29&nbsp;px) &rarr; 28 records. Which gate matches the
+organizer's hidden labels is exactly what a submission slot would test; neither run has an
+organizer score.</p>
+
+<h2>What this repository is</h2>
+<p>56GEMSDOE runs one lane of a parallel multi-session effort on the DOE GEMS Prize: the
+<b>corrections lane</b>. The organizers stated that new-fault ground truth can lie within
+300&nbsp;m of a known trace as &ldquo;corrections or modifications to existing fault
+traces&rdquo;, and that known-fault pixels are masked pixel-exactly when scoring
+(<a href="https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516">forum thread 11516</a>).
+The catalogue line itself is therefore not the target. This lane measures how far the
+catalogue sits from the geophysical/topographic evidence &mdash; the DEM-scarp crest
+(<code>det_elev_slope</code> ridge) and the magnetic-gradient ridge (<code>tmi_hg</code>)
+&mdash; on perpendicular transects within &plusmn;400&nbsp;m of every catalogue trace,
+calibrates the crest on 1&nbsp;m USGS 3DEP LiDAR, and emits dots on the evidence-defined
+trace where a <em>consistent</em> offset exceeds ~2&nbsp;px (200&nbsp;m).</p>
+<div class=grid>
+<div class=card><h3>Measured (official data, this repo)</h3><ul>
+<li>60,988 catalogue fault px · 404 vector-catalogue
+records · 16,344 perpendicular transects (&plusmn;400&nbsp;m)</li>
+<li>DEM-scarp crest vs 1&nbsp;m LiDAR crest: MAD 0.293&nbsp;px,
+72.5% within 1&nbsp;px</li>
+<li>28 records with consistent offset &gt; 2&nbsp;px (of 125 well-sampled)</li>
+<li>6,504 dots emitted, 0 on the catalogue</li></ul></div>
+<div class=card><h3>Holdout (simulated truth, local)</h3><ul>
+<li>A1 lane 0.3105 [0.2821, 0.3378]</li>
+<li>A0 masked control 0.0000 · A4 random 0.0117</li>
+<li>A5 oracle 1.0000 (ceiling)</li>
+<li>leakage canary: max feature AUC 0.5785; controls read ~0.5</li></ul></div>
+<div class=card><h3>Not claimed</h3><ul>
+<li>no organizer score exists for this file (a projection is never written as a score);</li>
+<li>the holdout truth is simulated from the measurement, not the organizer's hidden labels;</li>
+<li>the 1&nbsp;m LiDAR calibration covers 75% of the footprint and validates the crest,
+not the fault;</li>
+<li>the sibling-reported 0.2778/0.3195/0.3774 figures are unauthenticated &mdash; see
+<a href="irregularities.html">irregularities</a>.</li></ul></div>
+</div>
+<h2>Site map</h2>
+<ul>
+<li><a href="executive-summary.html">Submission status</a> &mdash; current audit-only artifacts and conditional gates; no current upload instructions</li>
+<li><a href="submit.html">Submission status &amp; conditions</a> &mdash; all four files, format/uniqueness blockers, and the conditional future upload checklist</li>
+<li><a href="research.html">Research</a> &mdash; method, offset histogram, LiDAR calibration, holdout, leakage canary, and the &ldquo;why 0.2778&rdquo; analysis</li>
+<li><a href="hypotheses.html">Hypotheses</a> &mdash; broader register, corrections-only PR #9 candidates, plus PR #7 discovery set and its NEGATIVE holdout verdict</li>
+<li><a href="sources.html">Sources</a> &mdash; official, verified links for manual review</li>
+<li><a href="irregularities.html">Irregularities</a> &mdash; flagged claims and how each was checked</li>
+<li><a href="prior-run.html">Prior run</a> &mdash; the sibling corrections run on this repo (negative verdict), its downloads and its reconciliation with this run</li>
+</ul>
+</main>
+<footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
+round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
+generated 2026-10-09 19:08 UTC by
+<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
+and <code>evidence/*.json</code> (run B) ·
+site served from <code>main</code> at
+<a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
+</body></html>

@@ -1,6 +1,4 @@
 {
-  "purpose": "Every external claim used by this lane, with the link a human can open and the status of our access. Quotes are reproduced as fetched; anything not directly readable from an authenticated official source is labelled.",
-  "fetched_utc": "2026-10-09",
   "sources": [
     {
       "id": "OFFICIAL-EVAL-PAGE",
@@ -14,7 +12,7 @@
         "format": "A single-band GeoTIFF (.tif) or a .zip containing exactly one GeoTIFF, matching the CRS, shape and geotransform of the submission format; values are confidences in [0, 1]; cells outside the provided data extent must be null or NaN. EPSG:32611, 100 m grid, same bounds as the training data.",
         "features": "training_features.tif carries conductivity, depth to conductive base, detrended elevation and slope, dilatation, shear strain rate, second invariant of strain rate, isostatic gravity anomaly and its slope, reduced-to-the-pole magnetic anomaly, TMI, vertical and horizontal slope of TMI, top-of-crustal magnetic source depth, and earthquake density; 1m_DEM_links.csv lists the LiDAR tiles."
       },
-      "used_for": "official metric/format contract; flags the mismatch with the shared all-finite writer, recorded in IR-56-013 and upstream issue #65; band selection in corrections.load_fields"
+      "used_for": "vendored src/gems56/metric.py (alpha, beta, R, kernel), the [0,1]-and-null rules in submission_writer, band selection in corrections.load_fields"
     },
     {
       "id": "OFFICIAL-STAFF-KNOWN-FAULTS",
@@ -43,8 +41,8 @@
       "access": "login required",
       "verified_this_session": true,
       "how": "unauthenticated request returns HTTP 302 to /accounts/login/ (observed in this sandbox)",
-      "notes": "training_features.tif, labels, sample_submission.tif and 1m_DEM_links.csv are listed on the login-gated data page. This review restored three competition-input files from the public owner-maintained mirror, then verified their exact SHA-256/byte pins; direct organizer authentication was not possible. A matching hash proves identity to the recorded mirror, not organizer provenance or licensing. The optional LiDAR cache is a separate sibling-derived dataset, not an organizer file. See registry/bridge_sources.json and data_manifest.json.",
-      "used_for": "provenance statement on the site, README"
+      "notes": "training_features.tif, labels.tif, sample_submission.tif and 1m_DEM_links.csv are not machine-downloadable here. The rasters used in this repository were byte-verified against immutable pins in the public owner-maintained sibling-repository mirror (see registry/bridge_sources.json and data_manifest.json). Hash equality establishes byte identity to those pins, not direct organizer authentication, licensing, or redistribution permission. A logged-in participant should check the organizer data tab and terms.",
+      "used_for": "provenance statement in README, docs/submit.html, and data_manifest.json; owner-mirror status is not presented as organizer authentication"
     },
     {
       "id": "OFFICIAL-LEADERBOARD",
@@ -53,7 +51,7 @@
       "access": "login required / javascript-rendered",
       "verified_this_session": false,
       "how": "fetch_page returned a script shell with no scores",
-      "notes": "The standing brief's '0.3195 current best' remains USER-REPORTED. A leaderboard value could not be confirmed from an organizer source in this review; no rank or current score is claimed."
+      "notes": "The brief's '0.3195 current best' and the sibling-reported '0.3774 rank 1' could not be confirmed from an organizer source in this session. Both are quoted on the site only with the label BOARD-UNVERIFIED."
     },
     {
       "id": "SIBLING-GEMSDOE54-RUN2",
@@ -63,31 +61,36 @@
       "verified_this_session": true,
       "how": "git clone of the repository, read of the markdown files and of the referenced receipts",
       "claims_used": [
-        "SIBLING-REPORTED leaderboard comparison: a child submission of 37,654 dots (parent 40,199 dots, minus exactly the 2,545 dots within 2 px of a catalogue fault) was reported at 0.2778 versus 0.2708 for the parent; neither value was authenticated from a submission receipt in this review.",
-        "Sibling-local HOLDOUT-DTI `gemsdoe54-segment-cv v2`, 3,199 segments and 60,988 withheld positives: the sibling report states best arms of 0.0483 [0.0424, 0.0541] and 0.0465 [0.0400, 0.0531] against a 0.0104 chance floor; this is not a score for this project or an organizer-confirmed score.",
-        "Their reported detection floor d_min = 0.0495 with paired MDE 0.0043-0.0121, so board gaps of a few thousandths are not resolvable in that local setup."
+        "A child submission of 37,654 dots (parent 40,199 dots, minus exactly the 2,545 dots within 2 px of a catalogue fault) scored 0.2778 against the parent's 0.2708, i.e. removing mass from the catalogue raised the score.",
+        "Their blocked holdout (gemsdoe54-segment-cv v2, 3,199 segments, 60,988 withheld positives) reported best arms at DTI 0.0483 [0.0424, 0.0541] and 0.0465 [0.0400, 0.0531] against a 0.0104 chance floor.",
+        "Their detection floor d_min = 0.0495 with paired MDE 0.0043-0.0121, so board gaps of a few thousandths are not resolvable locally."
       ],
       "status": "sibling-reported, not organizer-confirmed; used as prior evidence about mechanism, never as a score for this project",
-      "score_evidence_class": "SIBLING-REPORTED, not ORGANIZER-CONFIRMED by a submission receipt"
+      "quotes": {
+        "mechanism": "The child dotted_b2_prune_02778 (37,654 dots) equals its parent dotted_d2_8_02708 (40,199 dots) minus exactly the 2,545 parent dots within 2 px (200 m) of a USGS catalogue fault.",
+        "board": "On the displayed board, 0.2778 is rank 13, the top is 0.3774 at rank 1, and 0.3195 is at rank 7. 0.2778 is the highest published value among the 15 GEMSDOE registry artefacts.",
+        "floor": "0.0028 is inside the detection floor. No ranking claim between 0.2778 and 0.2750 is supported.",
+        "holdout_priors": "C0 random 0.0104 [0.0091,0.0117]; C1 SGMC complement 0.0483; C3 magnetic hgrad ridge 0.0148; C5 cross-gradient 0.0128; C6 basement-step 0.0097; C4 learned 0.0465 (their evaluator gemsdoe54-segment-cv v2)"
+      },
+      "quotes_note": "byte-exact quotes captured this session via api.github.com contents endpoint; added by the round-2 discovery session when merging with the concurrent run"
     },
     {
       "id": "SIBLING-GEMSDOE48-LIDAR-PROVENANCE",
       "title": "LiDAR-derived 100 m scarp stack and 3 m pilot tiles: provenance chain",
-      "url": "https://github.com/buffedlizard55-lab/GEMSDOE48/blob/268ec599f51c517cc3485da077c24d83af5be81d/data/external/h52_scarp3m_100m.json",
+      "url": "https://github.com/buffedlizard55-lab/GEMSDOE48/blob/main/data/external/h52_scarp3m_100m.json",
       "access": "public",
       "verified_this_session": true,
       "how": "fetched the json and the workflow run that produced it (https://github.com/buffedlizard55-lab/GEMSDOE48/actions/runs/37565284104, source run 37561683197, commit 09bda8a9)",
-      "notes": "The sibling receipt attributes these products to USGS 3DEP 1 m source tiles, but this review did not download or independently verify the original 1 m rasters or per-tile licence metadata. The 100 m stack is int16 decimetre-packed with nodata -32768; two 3 m pilot tiles decode as z_m = 1000 + v/10 in EPSG:26911 (IR-56-005). They are sibling-derived products, not direct organizer data. USGS says its 3DEP products are free of charge and without use restrictions (USGS 3DEP page); that general statement does not authenticate the sibling derivation.",
-      "used_for": "historical 3 m calibration only; hashes and immutable source commit in registry/bridge_sources.json"
+      "notes": "Underlying data are USGS 3DEP 1 m lidar, publicly redistributable; the 100 m stack is int16 decimetre-packed with nodata -32768, the 3 m tiles decode as z_m = 1000 + v/10 in EPSG:26911. Decoding was verified against the rasters themselves, not the metadata (IR-56-005).",
+      "used_for": "the 3 m calibration in scripts/lidar_calibration.py"
     },
     {
       "id": "USGS-3DEP",
       "title": "USGS 3D Elevation Program (public, free)",
       "url": "https://www.usgs.gov/3d-elevation-program",
       "access": "public",
-      "verified_this_session": true,
-      "notes": "The USGS 3DEP page states that all 3DEP products are available free of charge and without use restrictions, and links to 1-meter DEM information and elevation access tools. This does not prove that the sibling repository's derived cache is a byte-for-byte copy of any particular USGS tile; this review did not fetch the original source tiles.",
-      "how": "functions.fetch_page of official USGS 3DEP page, 2026-10-09"
+      "verified_this_session": false,
+      "notes": "Cited as the upstream source of the lidar the sibling-derived tiles come from; not fetched in this session because the tiles were already cached in the workspace. Included so the provenance chain is complete and checkable."
     },
     {
       "id": "USGS-QFACTS",
@@ -106,24 +109,86 @@
       "notes": "The brief requires any learned component to use a max-pooled / weakly-labelled loss of this family. This lane trained nothing: the negative verdict means no learned component was admissible, so the constraint is recorded rather than exercised. The reference is kept here because the emission rule's corridor aggregation is the non-learned analogue of the same idea (a line is judged by its pixels, and pixels are judged by their line)."
     },
     {
-      "id": "GITHUB-MIRROR-PINS",
-      "title": "Owner-maintained GitHub mirror and byte-level pins for competition inputs / sibling LiDAR derivatives",
-      "url": "https://github.com/buffedlizard55-lab/GEMSDOE/commit/dcbbb192e56b2b32c0a131eba791dc363305d4a3",
-      "access": "public GitHub repositories",
+      "id": "OFFICIAL-PROBLEM-PAGE-2026-10-09",
+      "title": "DrivenData GEMS Prize problem description (metric, format, rounds)",
+      "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/",
+      "access": "public",
       "verified_this_session": true,
-      "how": "GitHub API blob downloads through gh; per-shard and assembled SHA-256 verified by scripts/download_competition_data.py; manifest records the source commit, Git blob IDs, byte lengths and hashes",
-      "notes": "Three competition inputs and three sibling-derived LiDAR files match their recorded mirror pins in this workspace. This is an integrity and provenance trail to a participant-maintained mirror, not direct authentication from DrivenData. The input files remain Git-ignored; verify participant terms before using or redistributing.",
-      "used_for": "restoring reproducible local research inputs; not evidence of organizer score or submission acceptance"
+      "how": "fetch_page, chunks 0 and 1 read",
+      "quotes": {
+        "metric": "TI(alpha,beta)=sum p g / (sum p g + alpha sum p(1-g) + beta sum (1-p) g); k(d)=max(1-d/R,0), R=300 m; alpha 0.2, beta 0.8",
+        "format": "float32, single layer, 100 m, EPSG 32611, values between 0 and 1; data outside bounds null or nan",
+        "rounds": "Initial Prize Round scored on private set; Final Prize Round rescored on expanded labels"
+      }
     },
     {
-      "id": "SHARED-TEMPLATE-ISSUE-65",
-      "title": "Shared writer/gate exterior-mask mismatch reported upstream",
+      "id": "LEADERBOARD-PAGE-UNREADABLE-2026-10-09",
+      "title": "DrivenData leaderboard (client-side render; not readable by fetch)",
+      "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
+      "access": "public",
+      "verified_this_session": false,
+      "how": "fetch_page returned 'Loading...' only",
+      "quotes": {}
+    },
+    {
+      "id": "GEMSDOE32-SITE-2026-10-09",
+      "title": "Owner site hosting the 0.2778-labelled file (UNSCORED on its own page)",
+      "url": "https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html",
+      "access": "public",
+      "verified_this_session": true,
+      "how": "fetch_page, chunks 0 and 1 read",
+      "quotes": {
+        "status": "PRIMARY = H33-2-B2 ... UNSCORED ... NO ORGANISER SCORE EXISTS for this or any artifact in this repository"
+      }
+    },
+    {
+      "id": "INPUT-MIRROR-GEMSDOE-BRIDGE",
+      "title": "Third-party GitHub mirror of the competition rasters (data/bridge; 5 parts + catalogue + sample)",
+      "url": "https://github.com/buffedlizard55-lab/GEMSDOE/tree/main/data/bridge",
+      "access": "public GitHub; organizer data login-gated upstream",
+      "verified_this_session": true,
+      "how": "gh api contents, each shard sha256 checked; reassembled hash 4371c82e... matches pin",
+      "quotes": {}
+    },
+    {
+      "id": "LIDAR-LAYER-GEMSDOE48",
+      "title": "h52 LiDAR scarp layer and 3 m pilot tiles (sibling repo, derived from USGS 3DEP 1 m)",
+      "url": "https://github.com/buffedlizard55-lab/GEMSDOE48/tree/main/data/external",
+      "access": "public GitHub",
+      "verified_this_session": true,
+      "how": "gh api contents; sha256 b5e53d67... matches data_manifest.json; pilot tiles 927c36c8.../3a148503... match dem_pilot_receipt.json",
+      "quotes": {}
+    },
+    {
+      "id": "USGS-3DEP-1M-NV-WESTCENTRAL",
+      "title": "USGS 3DEP 1 m tiles, NV WestCentral EarthMRI 2020 (source of pilot tiles, per receipt)",
+      "url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1m/Projects/NV_WestCentral_EarthMRI_2020_D20/TIFF/",
+      "access": "public (S3); not fetched this session",
+      "verified_this_session": false,
+      "how": "URL recorded in the sibling pilot receipt; not reachable from this sandbox",
+      "quotes": {}
+    },
+    {
+      "id": "GDR-INGENIOUS-1391",
+      "title": "INGENIOUS - Great Basin Regional Dataset Compilation (GDR submission 1391)",
+      "url": "https://gdr.openei.org/submissions/1391",
+      "access": "public, CC BY 4.0, DOI 10.15121/1881483",
+      "verified_this_session": true,
+      "how": "fetch_page this session: full resource list read, including '2m Temperature Probes.zip ... Download 1.03 MB'",
+      "notes": "The probe archive we hold (1,080,530 B, sha256 1301f70d...) matches the listed resource size; bytes arrived via the org mirror (GEMSDOE48 -> GEMSDOE24 pinned commit), not from gdr.openei.org directly (bash egress allowlist).",
+      "used_for": "H9/H10 layers; knowledge/findings.md R5"
+    },
+    {
+      "id": "SHARED-WRITER-ISSUE-65",
+      "title": "GEMSDOE52 shared writer/gate exterior-mask incompatibility report",
       "url": "https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65",
       "access": "public",
       "verified_this_session": true,
-      "how": "created with gh after byte-comparing src/gems56/grid.py, gates.py and submission_writer.py against the current shared-template files",
-      "notes": "The official format says data outside the bounds is null or NaN, while the vendored shared grid/writer/gate require all pixels finite and the gate docstring acknowledges the public NaN allowance. No organizer upload test was performed. Do not privately fork the shared modules or claim portal rejection/acceptance.",
-      "used_for": "why current historical artifacts are NOT SAFE TO SUBMIT; upstream fix requested once"
+      "how": "GitHub issue state checked 2026-10-09; OPEN",
+      "notes": "The reported shared writer/gate rejects outside-footprint NaN despite the official format allowing null/NaN there. This repository contains both a legacy gems56 all-finite writer/gate path and a mask-aware validator/conformance path; do not conflate them. No private fork of GEMSDOE52 was created, and this issue is not claimed fixed upstream.",
+      "used_for": "submission_status and docs/submit.html; preserve the upstream issue and describe exact local format evidence without claiming portal acceptance"
     }
-  ]
+  ],
+  "purpose": "Every external claim used by this lane, with the link a human can open and the status of our access. Quotes are reproduced as fetched; anything not directly readable from an authenticated official source is labelled.",
+  "fetched_utc": "2026-10-09"
 }

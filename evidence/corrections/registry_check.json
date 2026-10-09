@@ -1,0 +1,340 @@
+{
+ "thresholds": {
+  "spearman_max": 0.9,
+  "containment_max": 0.7,
+  "jaccard_3px_max": 0.5,
+  "mutual_containment_max": 0.5,
+  "kernel_px": 3,
+  "sparse_support_fraction": 0.05
+ },
+ "n_registry_rasters": 976,
+ "n_unique_pixel_content": 412,
+ "n_sparse_dot_rasters": 309,
+ "n_dense_rasters": 102,
+ "n_lane_dots": 6504,
+ "n_surface_dots": 57904,
+ "worst": {
+  "spearman_dots": 0.0429,
+  "spearman_dots_path": "7GEMSDOE/downloads/gems7-halo15-gbt-v1-90fb7dc0fc1f.tif",
+  "spearman_surface": 0.1086,
+  "spearman_surface_path": "7GEMSDOE/downloads/gems7-halo15-gbt-v1-90fb7dc0fc1f.tif",
+  "jaccard_3px": 0.0908,
+  "jaccard_3px_path": "GEMSDOE43/docs/downloads/gems43-sup01-hgb21-sep40-n40000-20261006-bc2e4e9a8d6f-nan.tif",
+  "containment": 0.9989,
+  "containment_path": "13GEMSDOE/docs/downloads/13gems_20261001_r13-lattice-s5_v2_nan-outside.tif",
+  "rev_containment": 0.0462,
+  "rev_containment_path": "GEMSDOE2/data/evidence/seghold/train_labels.tif"
+ },
+ "literal_containment_flags": [
+  {
+   "path": "13GEMSDOE/docs/downloads/13gems_20261001_r13-lattice-s5_v2_nan-outside.tif",
+   "containment": 0.9989,
+   "rev_containment": 0.0098,
+   "jaccard_3px": 0.0314,
+   "mass_ratio": 31.8,
+   "registry_dots": 206895,
+   "note": "one-directional subset of a much larger habitat/superset emission - not a re-issue (Jaccard and reverse containment are small)"
+  },
+  {
+   "path": "13GEMSDOE/docs/downloads/archive/13gems-toporef-holdoutref.tif",
+   "containment": 0.8233,
+   "rev_containment": 0.0196,
+   "jaccard_3px": 0.0216,
+   "mass_ratio": 37.9,
+   "registry_dots": 246469,
+   "note": "one-directional subset of a much larger habitat/superset emission - not a re-issue (Jaccard and reverse containment are small)"
+  },
+  {
+   "path": "13GEMSDOE/docs/downloads/13gems_20261001_r14-union-tips10-lat6_nan-outside.tif",
+   "containment": 0.8075,
+   "rev_containment": 0.018,
+   "jaccard_3px": 0.0271,
+   "mass_ratio": 29.6,
+   "registry_dots": 192231,
+   "note": "one-directional subset of a much larger habitat/superset emission - not a re-issue (Jaccard and reverse containment are small)"
+  },
+  {
+   "path": "5GEMSDOE/data/evidence/leaderboard_anchor/pindrop-v4-discovery-37f9d5b855.tif",
+   "containment": 0.7425,
+   "rev_containment": 0.0096,
+   "jaccard_3px": 0.0308,
+   "mass_ratio": 23.8,
+   "registry_dots": 155021,
+   "note": "one-directional subset of a much larger habitat/superset emission - not a re-issue (Jaccard and reverse containment are small)"
+  },
+  {
+   "path": "5GEMSDOE/data/evidence/leaderboard_anchor/pindrop-v4-nodes-f347b70daa.tif",
+   "containment": 0.7362,
+   "rev_containment": 0.0099,
+   "jaccard_3px": 0.0305,
+   "mass_ratio": 23.8,
+   "registry_dots": 155021,
+   "note": "one-directional subset of a much larger habitat/superset emission - not a re-issue (Jaccard and reverse containment are small)"
+  },
+  {
+   "path": "GEMSDOE50/docs/downloads/gemsdoe50-h59-topo-lineament-scatter-180k-20261007T170212Z-allfinite.tif",
+   "containment": 0.7139,
+   "rev_containment": 0.0107,
+   "jaccard_3px": 0.0255,
+   "mass_ratio": 27.7,
+   "registry_dots": 180000,
+   "note": "one-directional subset of a much larger habitat/superset emission - not a re-issue (Jaccard and reverse containment are small)"
+  },
+  {
+   "path": "GEMSDOE23/docs/downloads/gemsdoe23-h30-arrangement-matched-habitat-20261002-0d4e02e8-allfinite.tif",
+   "containment": 0.7089,
+   "rev_containment": 0.0169,
+   "jaccard_3px": 0.0494,
+   "mass_ratio": 14.1,
+   "registry_dots": 91533,
+   "note": "one-directional subset of a much larger habitat/superset emission - not a re-issue (Jaccard and reverse containment are small)"
+  },
+  {
+   "path": "GEMSDOE37/docs/downloads/gemsdoe37-h6-physics-dotted-80k-20261005T055000Z-0bef9211631c.tif",
+   "containment": 0.7089,
+   "rev_containment": 0.0234,
+   "jaccard_3px": 0.0563,
+   "mass_ratio": 12.3,
+   "registry_dots": 80000,
+   "note": "one-directional subset of a much larger habitat/superset emission - not a re-issue (Jaccard and reverse containment are small)"
+  }
+ ],
+ "n_literal_flags": 8,
+ "duplicates": [],
+ "n_duplicates": 0,
+ "top10_by_containment": [
+  {
+   "path": "13GEMSDOE/docs/downloads/13gems_20261001_r13-lattice-s5_v2_nan-outside.tif",
+   "sha256": "b4570b406efec198eb2f4d142ad8d0d6184b14b66f2f52b5c4d697f0647dc9b2",
+   "spearman_dots": -0.0001,
+   "spearman_surface": 0.0006,
+   "kind": "sparse",
+   "n_reg": 206895,
+   "containment": 0.9989,
+   "rev_containment": 0.0098,
+   "jaccard_3px": 0.0314,
+   "surface_containment": 0.9997,
+   "mass_ratio": 31.8
+  },
+  {
+   "path": "13GEMSDOE/docs/downloads/archive/13gems-toporef-holdoutref.tif",
+   "sha256": "88976dc5b2504838b193d41b718df95eb1e237b870b94a6443dc3bee65e98e06",
+   "spearman_dots": 0.0003,
+   "spearman_surface": -0.0037,
+   "kind": "sparse",
+   "n_reg": 246469,
+   "containment": 0.8233,
+   "rev_containment": 0.0196,
+   "jaccard_3px": 0.0216,
+   "surface_containment": 0.7416,
+   "mass_ratio": 37.9
+  },
+  {
+   "path": "13GEMSDOE/docs/downloads/13gems_20261001_r14-union-tips10-lat6_nan-outside.tif",
+   "sha256": "c9d1398e464603350e464fff7213a8a5e380f1ccf505e263a685607970ae28ef",
+   "spearman_dots": 0.0043,
+   "spearman_surface": 0.0129,
+   "kind": "sparse",
+   "n_reg": 192231,
+   "containment": 0.8075,
+   "rev_containment": 0.018,
+   "jaccard_3px": 0.0271,
+   "surface_containment": 0.7966,
+   "mass_ratio": 29.6
+  },
+  {
+   "path": "5GEMSDOE/data/evidence/leaderboard_anchor/pindrop-v4-discovery-37f9d5b855.tif",
+   "sha256": "37f9d5b855ee1b6c302cb81cdae1414db94db427f5dc9da3538474df37cf1cad",
+   "spearman_dots": 0.0008,
+   "spearman_surface": 0.0003,
+   "kind": "sparse",
+   "n_reg": 155021,
+   "containment": 0.7425,
+   "rev_containment": 0.0096,
+   "jaccard_3px": 0.0308,
+   "surface_containment": 0.733,
+   "mass_ratio": 23.8
+  },
+  {
+   "path": "5GEMSDOE/data/evidence/leaderboard_anchor/pindrop-v4-nodes-f347b70daa.tif",
+   "sha256": "f347b70daa95170bfc967b1c0b6bbf951496c2b74764a7102848ad6178829aca",
+   "spearman_dots": -0.0002,
+   "spearman_surface": -0.0009,
+   "kind": "sparse",
+   "n_reg": 155021,
+   "containment": 0.7362,
+   "rev_containment": 0.0099,
+   "jaccard_3px": 0.0305,
+   "surface_containment": 0.73,
+   "mass_ratio": 23.8
+  },
+  {
+   "path": "GEMSDOE50/docs/downloads/gemsdoe50-h59-topo-lineament-scatter-180k-20261007T170212Z-allfinite.tif",
+   "sha256": "ad9750be86acf6b8c253dcd8f1ee6487c2ea8327a582a8c9e6a765d16037d319",
+   "spearman_dots": 0.0019,
+   "spearman_surface": 0.0018,
+   "kind": "sparse",
+   "n_reg": 180000,
+   "containment": 0.7139,
+   "rev_containment": 0.0107,
+   "jaccard_3px": 0.0255,
+   "surface_containment": 0.6405,
+   "mass_ratio": 27.7
+  },
+  {
+   "path": "GEMSDOE23/docs/downloads/gemsdoe23-h30-arrangement-matched-habitat-20261002-0d4e02e8-allfinite.tif",
+   "sha256": "d07cbb6f69076e76f1a8a4806ddc5639421bc9a59b10d80a09b9fb423bb99427",
+   "spearman_dots": 0.0038,
+   "spearman_surface": 0.0027,
+   "kind": "sparse",
+   "n_reg": 91533,
+   "containment": 0.7089,
+   "rev_containment": 0.0169,
+   "jaccard_3px": 0.0494,
+   "surface_containment": 0.4858,
+   "mass_ratio": 14.1
+  },
+  {
+   "path": "GEMSDOE37/docs/downloads/gemsdoe37-h6-physics-dotted-80k-20261005T055000Z-0bef9211631c.tif",
+   "sha256": "ce749a992baec603460dfeddd068758855cb8b12978268e6ef94f6e23ffd9ee7",
+   "spearman_dots": 0.0096,
+   "spearman_surface": 0.021,
+   "kind": "sparse",
+   "n_reg": 80000,
+   "containment": 0.7089,
+   "rev_containment": 0.0234,
+   "jaccard_3px": 0.0563,
+   "surface_containment": 0.6197,
+   "mass_ratio": 12.3
+  },
+  {
+   "path": "12GEMSDOE/docs/downloads/12GEMSDOE_r7-nms3-dem10-scarp_0c9199f14e62.tif",
+   "sha256": "0c9199f14e625d7b2539a0a045803b74d6494ce568d185abecc193fe7e93c6f2",
+   "spearman_dots": 0.0063,
+   "spearman_surface": 0.0136,
+   "kind": "sparse",
+   "n_reg": 103347,
+   "containment": 0.698,
+   "rev_containment": 0.0229,
+   "jaccard_3px": 0.0431,
+   "surface_containment": 0.6011,
+   "mass_ratio": 15.9
+  },
+  {
+   "path": "12GEMSDOE/docs/downloads/12GEMSDOE_r6-nms3-h28-texture_8721329b55c7.tif",
+   "sha256": "8721329b55c72635803cca27414f3d0ffe4705f48285de0dc7c29d6fd3eb90d3",
+   "spearman_dots": 0.0061,
+   "spearman_surface": 0.016,
+   "kind": "sparse",
+   "n_reg": 103347,
+   "containment": 0.6714,
+   "rev_containment": 0.023,
+   "jaccard_3px": 0.0414,
+   "surface_containment": 0.5949,
+   "mass_ratio": 15.9
+  }
+ ],
+ "top10_by_correlation": [
+  {
+   "path": "7GEMSDOE/downloads/gems7-halo15-gbt-v1-90fb7dc0fc1f.tif",
+   "sha256": "90fb7dc0fc1f6e7d3dbb20927417c6af7d110ca41167329d792c75c145f75b6a",
+   "spearman_dots": 0.0429,
+   "spearman_surface": 0.1086,
+   "kind": "dense",
+   "n_reg": 1828699
+  },
+  {
+   "path": "GEMSDOE2/data/evidence/runs/turbo-simple-20260925T041759Z/submission.tif",
+   "sha256": "5fb100d14c20fe925fda8af8acf77df933bf9df3b5a03c039fed6d28d0953db9",
+   "spearman_dots": 0.0347,
+   "spearman_surface": 0.0903,
+   "kind": "dense",
+   "n_reg": 5167373
+  },
+  {
+   "path": "17GEMSDOE/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+   "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+   "spearman_dots": 0.0341,
+   "spearman_surface": 0.0878,
+   "kind": "dense",
+   "n_reg": 5167373
+  },
+  {
+   "path": "7GEMSDOE/downloads/gems7-strike30x3-v2-2b06d45c5b57.tif",
+   "sha256": "2b06d45c5b5726be60ed7f953accda58919999a99b442bb87410377e0c4c034a",
+   "spearman_dots": 0.0281,
+   "spearman_surface": 0.0578,
+   "kind": "dense",
+   "n_reg": 575055
+  },
+  {
+   "path": "GEMSDOE53/docs/submissions/gems53-s3-bands-top_q0p02-20261009-e67cda00.tif",
+   "sha256": "e746ae6f8028f619bc7ab2a3f848afaf12953a2fa37fe09cb9b1f38060fdb79c",
+   "spearman_dots": 0.0049,
+   "spearman_surface": 0.0485,
+   "kind": "sparse",
+   "n_reg": 103348,
+   "containment": 0.1779,
+   "rev_containment": 0.024,
+   "jaccard_3px": 0.0106,
+   "surface_containment": 0.1995,
+   "mass_ratio": 15.9
+  },
+  {
+   "path": "17GEMSDOE/docs/downloads/17GEMSDOE_D-supervised-expression_86125863_20260930T034153Z.tif",
+   "sha256": "8612586354611df8602a2b0bad8a7916946d1bc0bc32f63e39f1fffbcccced8d",
+   "spearman_dots": 0.0105,
+   "spearman_surface": 0.0461,
+   "kind": "sparse",
+   "n_reg": 170401,
+   "containment": 0.2641,
+   "rev_containment": 0.0299,
+   "jaccard_3px": 0.0098,
+   "surface_containment": 0.2565,
+   "mass_ratio": 26.2
+  },
+  {
+   "path": "12GEMSDOE/docs/downloads/12GEMSDOE_multiphysics_submission_06ca61e5.tif",
+   "sha256": "06ca61e5c6a3e55eaf40228d97054a35af1187be9c98e0ef95d996f9919efc6b",
+   "spearman_dots": 0.0065,
+   "spearman_surface": 0.0452,
+   "kind": "sparse",
+   "n_reg": 224173,
+   "containment": 0.4697,
+   "rev_containment": 0.0306,
+   "jaccard_3px": 0.0134,
+   "surface_containment": 0.4075,
+   "mass_ratio": 34.5
+  },
+  {
+   "path": "GEMSDOE52/docs/downloads/gems52-r4-B_only-37654px-b-only-research.tif",
+   "sha256": "c6b9351fe45dde5559d3b7ee09c7e8f28d137fa03f7dde95ef3b8fbdf71245e0",
+   "spearman_dots": 0.0201,
+   "spearman_surface": 0.0449,
+   "kind": "sparse",
+   "n_reg": 37654,
+   "containment": 0.1691,
+   "rev_containment": 0.0448,
+   "jaccard_3px": 0.0255,
+   "surface_containment": 0.1314,
+   "mass_ratio": 5.8
+  },
+  {
+   "path": "8GEMSDOE/docs/downloads/submission.tif",
+   "sha256": "b83ea0e7074882ceee31de89695281c00ade51f26a0a7048f628f60058755356",
+   "spearman_dots": 0.0156,
+   "spearman_surface": 0.0443,
+   "kind": "dense",
+   "n_reg": 427862
+  },
+  {
+   "path": "GEMSDOE2/data/evidence/seghold/eval_labels.tif",
+   "sha256": "1729f3571ebf25668e84c08cb5e8c4fed375ae0910e5037e95bddcca7f0253a2",
+   "spearman_dots": 0.0235,
+   "spearman_surface": 0.0439,
+   "kind": "dense",
+   "n_reg": 324488
+  }
+ ],
+ "verdict": "UNIQUE - no prior re-issued (literal containment flags logged and investigated below)"
+}

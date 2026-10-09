@@ -1,111 +1,217 @@
 {
   "as_of_date_utc": "2026-10-09",
-  "status": "RESEARCH-ONLY \u2014 NOT CLEARED FOR SUBMISSION",
+  "status": "RESEARCH-ONLY — NO CURRENT FILE CLEARED FOR SUBMISSION",
+  "scope": "Repository-wide inventory after integrating corrections PR #4, corrections PR #5/#6, and discovery PR #7; lane/run receipts remain separate.",
+  "safe_to_download_for_audit": true,
   "safe_to_submit": false,
-  "download_status": "Existing historical rasters are directly downloadable for audit/research inspection only; neither is approved for competition upload.",
+  "download_status": "All four published GeoTIFFs are downloadable for audit/research inspection only. None is cleared for a competition upload.",
   "organizer_confirmed_score": null,
   "weekly_slots_used": 0,
-  "decision": "Do not emit or promote a correction from this lane. The calibrated decision gate qualifies 0 of 21 corridors; the 1-dot primary artifact was built with the crest-height/null gate disabled, and the 14-dot sensitivity artifact relaxes the lane's approximately 2-pixel rule. The existing artifacts are retained only as historical diagnostics.",
+  "run_budget": {
+    "new_experiments_this_review": 0,
+    "historical_experiment_count": 3,
+    "stop_loss": "three experiments or two hours; recorded E1/E2/E3 are treated as consumed",
+    "feature_stack": "present and SHA-256 verified against the owner-maintained bridge pins; this is not direct organizer authentication",
+    "new_holdout_performed": false
+  },
+  "decision": "Do not upload or promote any currently published raster. PR #4's null-calibrated corrections gate found 0 of 21 qualifying corridors; PR #5/#6's strongest-crest file is format-conformant but fails the standing literal registry stop rule; PR #7's discovery candidate is negative on its pre-registered HOLDOUT-DTI comparison and also returns DUPLICATE/STOP. No new PR #9 raster, experiment, holdout, organizer score, or slot use occurred.",
   "artifacts": {
-    "primary": {
+    "corrections_pr5_pr6_run_a": {
+      "lane": "corrections",
+      "run": "PR #5/#6 strongest-crest corrections output; distinct from the PR #4 null-calibrated run",
+      "file": "docs/downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif",
+      "receipt_file": "evidence/corrections/run_card.json",
+      "submission_name": "GEMSDOE56-CORR-CRESTGT2PX",
+      "note": "GEMSDOE56 corrections: 6504 dots on LiDAR-calibrated DEM-scarp crest where catalogue offset >2px; 0 on-catalogue; HOLDOUT-DTI(sim) 0.3105",
+      "dots": 6504,
+      "sha256": "08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7",
+      "local_format_gate": "PASS: local validator and exact sample-mask conformance receipt report no NaN inside, NaN outside, and matching nodata tag; local pass is not organizer acceptance",
+      "literal_uniqueness_gate": "DUPLICATE/STOP under the standing literal >70%-within-3-px rule; eight containment flags. Coverage-adjusted diagnostics do not waive the stop rule.",
+      "holdout_dti": {
+        "evidence_class": "HOLDOUT-DTI (simulated-corrections truth; not organizer score)",
+        "evaluator_version": "src/metrics.py, alpha=0.2, beta=0.8, 300 m triangular kernel with known-fault masking model",
+        "withheld_positive_count": 26813,
+        "A1_lane": {
+          "dti": 0.3104862039086027,
+          "ci95": [0.282121, 0.337809]
+        },
+        "A0_masked_control_dti": 0.0,
+        "A4_random_control": {
+          "dti": 0.011742973567132674,
+          "ci95": [0.010007, 0.013591]
+        },
+        "receipt": "evidence/corrections/run_card.json"
+      },
+      "on_disk_audit": {
+        "shape": [3730, 3292],
+        "bands": 1,
+        "dtype": "float32",
+        "crs": "EPSG:32611",
+        "transform_matches_sample": true,
+        "value_range": [0.0, 1.0],
+        "sample_nan_exterior_pixels": 7111787,
+        "candidate_nan_pixels_inside_sample": 0,
+        "candidate_finite_exterior_pixels": 0,
+        "nodata": "nan",
+        "exterior_behavior": "NaN outside the sample's valid data extent",
+        "sha256_matches_recorded_run_card": true,
+        "organizer_acceptance": "not tested"
+      },
+      "safe_to_submit": false,
+      "status": "format-valid research artifact; not safe to submit"
+    },
+    "corrections_pr4_primary": {
+      "lane": "corrections",
+      "run": "PR #4 null-calibrated corridor gate",
       "file": "docs/downloads/h56-corr-snap200cm-20261009.tif",
+      "receipt_file": "docs/downloads/h56-corr-snap200cm-20261009.json",
       "submission_name": "h56-corr-snap200cm-20261009",
       "dots": 1,
       "sha256": "65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b",
-      "local_format_gate": "PASSED under the vendored all-finite policy; this is not organizer acceptance or proof of exact format compatibility",
-      "status": "historical diagnostic only; not safe to submit",
+      "local_format_gate": "PASS only under the legacy all-finite export policy; it does not match the official sample's NaN exterior mask",
+      "scientific_gate": "FAIL / negative: the calibrated decision receipt qualifies 0 of 21 corridors; this old one-dot file was built with the null-strength floor disabled",
+      "registry_gate": "DUPLICATE/STOP: the literal directed proximity trigger fired for 105 of 485 priors; reciprocal overlaps over threshold were zero",
       "on_disk_audit": {
-        "shape": [
-          3730,
-          3292
-        ],
+        "shape": [3730, 3292],
         "bands": 1,
         "dtype": "float32",
         "crs": "EPSG:32611",
         "transform_matches_sample": true,
-        "value_range": [
-          0.0,
-          1.0
-        ],
-        "local_vendored_format_gate": "PASSED; local check is not organizer acceptance",
-        "sha256_matches_adjacent_receipt": true,
+        "value_range": [0.0, 1.0],
         "sample_nan_exterior_pixels": 7111787,
-        "candidate_nan_pixels": 0,
-        "candidate_nonzero_pixels_outside_sample": 0,
-        "exterior_behavior": "finite zero outside the sample data extent; the official sample uses NaN there",
-        "nonzero_pixels": 1
-      }
+        "candidate_nan_pixels_inside_sample": 0,
+        "candidate_finite_exterior_pixels": 7111787,
+        "nodata": null,
+        "exterior_behavior": "finite zero outside the sample's valid data extent; not the official sample's NaN mask",
+        "sha256_matches_adjacent_receipt": true,
+        "organizer_acceptance": "not tested"
+      },
+      "safe_to_submit": false,
+      "status": "historical primary diagnostic; not safe to submit"
     },
-    "sensitivity": {
+    "corrections_pr4_sensitivity": {
+      "lane": "corrections",
+      "run": "PR #4 sub-threshold sensitivity diagnostic",
       "file": "docs/downloads/h56-corr-snap100cm-20261009.tif",
+      "receipt_file": "docs/downloads/h56-corr-snap100cm-20261009.json",
       "submission_name": "h56-corr-snap100cm-20261009",
       "dots": 14,
       "sha256": "e3285854e73ae4ba3fce8faea64940fdc4bee3b702eb52d2530a67fb60195196",
-      "local_format_gate": "PASSED under the vendored all-finite policy; this is not organizer acceptance or proof of exact format compatibility",
-      "status": "historical sub-threshold sensitivity diagnostic only; not safe to submit",
+      "local_format_gate": "PASS only under the legacy all-finite export policy; it does not match the official sample's NaN exterior mask",
+      "scientific_gate": "FAIL / below the approximately 2-pixel correction threshold; research sensitivity only",
       "on_disk_audit": {
-        "shape": [
-          3730,
-          3292
-        ],
+        "shape": [3730, 3292],
         "bands": 1,
         "dtype": "float32",
         "crs": "EPSG:32611",
         "transform_matches_sample": true,
-        "value_range": [
-          0.0,
-          1.0
-        ],
-        "local_vendored_format_gate": "PASSED; local check is not organizer acceptance",
-        "sha256_matches_adjacent_receipt": true,
+        "value_range": [0.0, 1.0],
         "sample_nan_exterior_pixels": 7111787,
-        "candidate_nan_pixels": 0,
-        "candidate_nonzero_pixels_outside_sample": 0,
-        "exterior_behavior": "finite zero outside the sample data extent; the official sample uses NaN there",
-        "nonzero_pixels": 14
-      }
+        "candidate_nan_pixels_inside_sample": 0,
+        "candidate_finite_exterior_pixels": 7111787,
+        "nodata": null,
+        "exterior_behavior": "finite zero outside the sample's valid data extent; not the official sample's NaN mask",
+        "sha256_matches_adjacent_receipt": true,
+        "organizer_acceptance": "not tested"
+      },
+      "safe_to_submit": false,
+      "status": "historical sub-threshold sensitivity diagnostic; not safe to submit"
+    },
+    "discovery_pr7_round2": {
+      "lane": "discovery; not corrections",
+      "run": "PR #7 pre-registered round-2 discovery arm",
+      "file": "docs/downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif",
+      "receipt_file": "docs/downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.json",
+      "submission_name": "h56-disc-multi-b25000-20261009-20261009T165646Z",
+      "dots": 25000,
+      "sha256": "dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296",
+      "local_format_gate": "PASS for the local grid/range validator; no claim of organizer acceptance",
+      "holdout_dti": {
+        "evidence_class": "HOLDOUT-DTI (blocked hide-and-recover; not organizer score)",
+        "evaluator_version": "gems52-pooled-hide-v1, alpha=0.2, beta=0.8, 300 m triangular kernel",
+        "withheld_positive_count": 48080,
+        "candidate": {
+          "dti": 0.012423943839880595,
+          "ci95": [0.00787, 0.01718]
+        },
+        "uniform_random_same_budget_dti": 0.03499,
+        "paired_difference_vs_random": {
+          "dti": -0.02257,
+          "ci95": [-0.027492898281269933, -0.017173763746695627]
+        },
+        "verdict": "NEGATIVE: paired interval is below zero"
+      },
+      "registry_gate": "DUPLICATE/STOP on the literal rule; no policy override",
+      "on_disk_audit": {
+        "shape": [3730, 3292],
+        "bands": 1,
+        "dtype": "float32",
+        "crs": "EPSG:32611",
+        "transform_matches_sample": true,
+        "value_range": [0.0, 1.0],
+        "sample_nan_exterior_pixels": 7111787,
+        "candidate_nan_pixels_inside_sample": 0,
+        "candidate_finite_exterior_pixels": 7111787,
+        "nodata": null,
+        "exterior_behavior": "finite zero outside the sample's valid data extent; not the official sample's NaN mask",
+        "sha256_matches_adjacent_receipt": true,
+        "organizer_acceptance": "not tested"
+      },
+      "safe_to_submit": false,
+      "status": "negative discovery research artifact; not safe to submit"
     }
   },
   "blocking_gates": [
     {
-      "gate": "scientific positive-evidence rule",
-      "result": "FAIL / negative finding",
-      "evidence": "evidence/calibration_v1.json reports 0 of 21 corridors passing the null-calibrated decision gate; evidence/lidar_calibration_v1.json reports no 3 m segment displaced by >=200 m"
+      "gate": "PR #4 corrections scientific decision",
+      "result": "FAIL / negative",
+      "evidence": "evidence/calibration_v1.json: 0 of 21 calibrated corridors qualify; evidence/lidar_calibration_v1.json: 0 of 13 tested 3 m segments are displaced by at least 200 m"
     },
     {
-      "gate": "spatially blocked holdout",
-      "result": "NO PROMOTION",
-      "evidence": "Historical HOLDOUT-DTI `gems52-pooled-hide-v1`, 48,080 withheld positives: B_snap 0.00015661 [0.00000000, 0.00045357] and D_jitter 0.00020550 [0.00000261, 0.00050850] (arm-level marginal 95% CIs). These intervals overlap; this holdout is not new-fault discovery."
+      "gate": "PR #5/#6 corrections registry rule",
+      "result": "DUPLICATE/STOP under the literal >70%-within-3-px rule",
+      "evidence": "evidence/corrections/registry_check.json records eight literal containment flags. Jaccard, reverse-containment, Spearman, and superset explanations are diagnostic only and do not waive the standing rule."
     },
     {
-      "gate": "feature-alone leakage canary",
-      "result": "NOT RUN for the ranked three-physics candidate",
-      "evidence": "the historical DEM/magnetic holdout receipt predates the current hypothesis register and does not report per-feature AUCs; this review did not run an additional experiment because the recorded three-experiment stop-loss is consumed"
+      "gate": "PR #7 discovery holdout and registry rules",
+      "result": "FAIL / negative; no promotion",
+      "evidence": "HOLDOUT-DTI gems52-pooled-hide-v1, 48,080 withheld positives: multi@25,000 is 0.01242 [0.00787, 0.01718] vs same-budget random 0.03499; paired difference -0.02257 [-0.02749, -0.01717]. The separate literal registry gate is DUPLICATE/STOP."
     },
     {
-      "gate": "registry uniqueness",
-      "result": "FAIL AS WRITTEN; report, do not bypass",
-      "evidence": "the directed <=3 px rule triggered for the one-dot primary against 105 of 485 priors; reciprocal overlap was 0 of 485. This gate did not clear the candidate"
+      "gate": "PR #4 exterior-mask conformance",
+      "result": "FAIL under the official sample's exact mask convention; legacy local all-finite gate is not equivalent",
+      "evidence": "The two PR #4 rasters use finite zeroes in 7,111,787 pixels where sample_submission.tif is NaN. Local all-finite validation does not prove portal acceptance. PR #5/#6 run A has a separate mask-aware local conformance receipt."
     },
     {
-      "gate": "official raster exterior semantics",
-      "result": "UNRESOLVED",
-      "evidence": "historical rasters fill the exterior with 0.0; the official sample uses NaN outside the data extent. The shared gems52 writer/grid/gate reject outside NaN despite documenting the public allowance. No organizer upload test exists. Upstream issue: https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65"
+      "gate": "ranked three-physics candidate feature-alone leakage canary and holdout",
+      "result": "NOT RUN; do not infer from other runs",
+      "evidence": "The candidate remains unvalidated. The recorded E1/E2/E3 experiment stop-loss is treated as consumed; this review added no experiment."
+    },
+    {
+      "gate": "official source/licensing confirmation",
+      "result": "HUMAN REVIEW REQUIRED",
+      "evidence": "Input files match owner-maintained mirror pins but were not directly authenticated against the login-gated organizer data tab; licensing/redistribution terms were not resolved in this sandbox."
+    },
+    {
+      "gate": "organizer receipt",
+      "result": "NONE",
+      "evidence": "No competition submission was made; no organizer score or score receipt exists."
     }
   ],
-  "provenance_note": "No new holdout run, feature-alone leakage canary, or positive correction was produced in this review. The existing receipts are historical project evidence and are not organizer scores. Input byte hashes are pinned to public owner-maintained mirrors, not directly authenticated organizer downloads.",
-  "next_step": "The recorded three-experiment/two-hour stop-loss is consumed. Wait for the shared template to resolve issue #65 and for a new run budget to be explicitly reset; only then preregister the top candidate, run the shared holdout plus per-feature leakage canaries, and reassess. Do not spend a weekly slot.",
+  "provenance_note": "The competition data tab requires participant access. The local inputs were restored from owner-maintained public GitHub mirrors and hash-verified against pinned commits/shards. Hash equality proves byte identity to those pins, not direct organizer authentication, licensing, or redistribution permission. The native 1 m USGS tile coverage is not verified; the LiDAR cache is sibling-derived.",
   "shared_template": {
-    "defect": "shared grid/writer/gate require all-finite raster values despite the official null/NaN exterior convention and the gate docstring",
+    "defect": "A legacy src/gems56 grid/writer/gate path enforces an all-finite export policy that conflicts with the official null/NaN exterior convention. A separate mask-aware validation/conformance path is present and passes the PR #5/#6 run-A raster; do not conflate the paths.",
     "upstream_issue": "https://github.com/buffedlizard55-lab/GEMSDOE52/issues/65",
+    "upstream_issue_status_checked_utc": "2026-10-09",
+    "upstream_issue_status": "OPEN",
     "local_private_fork_created": false,
     "organizer_upload_test_performed": false
   },
   "deliverable_tension": {
-    "requested": "one unique downloadable submission GeoTIFF",
-    "lane_stop_condition": "if calibrated offsets cluster under approximately 2 pixels, report the negative and emit nothing from this lane",
-    "resolution": "the calibrated decision gate qualifies 0 of 21 corridors, so no new TIF or submission name/note was created; the requested file deliverable does not justify inventing a positive correction",
-    "existing_downloads": "historical primary and sensitivity rasters remain available for audit only and are not cleared for upload"
+    "requested": "one new, unique, downloadable corrections TIF",
+    "lane_stop_condition": "when calibrated offsets remain under approximately two pixels, report the negative and emit nothing; the literal registry rule also requires a stop on its trigger",
+    "resolution": "PR #9 created no new TIF and ran no new holdout. Existing downloads from the separate PR #4, PR #5/#6, and PR #7 runs are retained for audit only; their existence is not evidence that this review found a supported correction or that any file is cleared for upload.",
+    "status": "explicitly NOT CLEARED for every current download"
   },
-  "safe_to_download_for_audit": true
+  "next_step": "Do not use a weekly slot or run another holdout in the consumed three-experiment/two-hour budget. The feature stack has now been downloaded and hash-verified, but wait for an explicit budget reset, complete the human source/license check, preregister the corrections candidate, and then run its feature-alone leakage canaries and shared blocked holdout before reassessing."
 }
