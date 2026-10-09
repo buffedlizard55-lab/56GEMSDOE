@@ -1,0 +1,146 @@
+<!doctype html><html lang=en><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Irregularities · 56GEMSDOE</title><style>
+:root{--bg:#0f1420;--fg:#e8eaf0;--mut:#9aa3b5;--acc:#4da3ff;--ok:#3fd68f;--warn:#ffb454;--bad:#ff6b6b;--card:#171d2e;--line:#28304a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+header.top{background:linear-gradient(180deg,#131a2c,#0f1420);border-bottom:1px solid var(--line);padding:22px 0 18px}
+h1{font-size:24px;margin:0 0 4px}
+h2{font-size:19px;margin:28px 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px}
+h3{font-size:16px;margin:20px 0 6px}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+nav a{color:var(--mut);text-decoration:none;padding:5px 10px;border:1px solid var(--line);border-radius:16px;font-size:13px}
+nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
+.dlbtn{margin:14px 0}
+.btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:8px}
+.btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn:hover{filter:brightness(1.1)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.mut{color:var(--mut)}
+.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+code{background:#0a0e18;border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:13px}
+pre{background:#0a0e18;border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;font-size:12.5px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#131a2c}
+img{max-width:100%;border:1px solid var(--line);border-radius:8px}
+.values{background:#10182b;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;font-size:13.5px;color:var(--mut)}
+footer{border-top:1px solid var(--line);margin-top:34px;padding:18px 0 30px;color:var(--mut);font-size:13px}
+.tag{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:10px;padding:1px 8px;color:var(--mut);margin-right:5px}
+ul{margin:6px 0 6px 20px}li{margin:3px 0}
+</style></head><body><div style='border:1px solid #d29922;background:rgba(210,153,34,.09);padding:10px 14px;border-radius:10px;margin:14px 0'><b>Archived page from the parallel discovery round-2 run (PR&nbsp;#7), preserved here so both round-2 records stay readable.</b> The repository's current front page is <a href='index.html'>index.html</a>, which carries this lane's submission-ready rasters and cross-links the discovery run's verdicts. Original file name at merge time: <code>docs/irregularities.html</code>. Content is otherwise byte-as-merged; the two edits we did make are logged as IR-56-029 (this banner) and IR-56-030 (one sibling-repo link made unambiguous).</div>
+<header class=top><div class=wrap>
+<h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
+<div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
+faults missing from the USGS/INGENIOUS catalogue</div>
+<nav><a href="index.html">Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html" class=active>Irregularities</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download the submission GeoTIFF</a> <a class="btn alt" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">.tif (343 KB)</a></div>
+</div></header>
+<div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
+submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
+on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
+<span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
+data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
+<main class=wrap><div class=card><h2 class=bad>STOP: not cleared for submission</h2>
+<p>The TIF is format-valid research output. Eight literal &gt;70% containment flags fail
+ the standing duplicate-and-stop rule. Historical UNIQUE/PROMOTE labels below describe
+ the earlier interpretation, not current authorization. Superset explanations do not waive
+ the rule. No competition submission has been made.</p>
+<p><a href="prior-run.html">Preserved prior run</a> ·
+<a href="prior-irregularities.html">Prior run irregularities</a></p></div>
+<h2>Irregularities &mdash; flagged, and how each was checked</h2>
+<div class=card><h3>IR-56-01: the 0.2778 attached to <code>h33-h33-2-b2</code> is user-reported and unsupported</h3>
+<p>The brief asks why <code>h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros</code> &ldquo;got the
+highest score (0.2778)&rdquo;. Checked against the sibling's own pages: the GEMSDOE32 site and
+README label that artifact <b>UNSCORED</b>, give a <b>modelled projection of 0.2747</b>, and
+state that no organizer score exists for it; <code>docs/score-ledger.csv</code> marks all
+sibling scores user-reported; the GEMSDOE51 audit (that file lives in the <b>sibling</b> repository, not this one: <a href="https://github.com/buffedlizard55-lab/GEMSDOE51/blob/main/evidence/score_attribution_audit.json"><code>GEMSDOE51/evidence/score_attribution_audit.json</code></a>, 3,357 bytes at its main tip, checked 2026-10-09)
+calls the 0.2778 attribution &ldquo;unsupported and contradicted&rdquo;. <b>What is defensible:</b>
+the mechanism the file embodies (catalogue-pruned dotted emission at the metric's break-even
+bar &mdash; see <a href="research.html">research &sect;8</a>). <b>What is not:</b> any claim that
+this exact file scored 0.2778, or any causal geological story for a public score.</p></div>
+<div class=card><h3>IR-56-02: &ldquo;0.3195 is the highest score right now&rdquo; is stale; 0.3774 is unverifiable here</h3>
+<p>The verified leaderboard snapshot stored by GEMSDOE32 (2026-10-04,
+<code>registry/leaderboard_snapshot_2026-10-04.json</code>) has #1 nchuzhoy <b>0.3262</b>,
+#2 kinghorton42 0.3222, #3 DARD 0.3195. GEMSDOE51's one-time official-page check on 2026-10-08
+found 0.3195 was not the page high. The brief's newer figure (0.3774, 2026-10-09) cannot be
+checked from this sandbox: drivendata.org is not reachable (egress allowlist). It is recorded
+as <b>user-supplied, unverified</b>. Check the
+<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">official leaderboard</a>
+directly; this site does not monitor it (DrivenData ToS).</p></div>
+<div class=card><h3>IR-56-03: the portal error <code>"Predicted values must be in range [0, 1]"</code></h3>
+<p>A previous attempt from this project was rejected with this message. Two mechanisms produce
+it (measured by the GEMSDOE32 sibling on the official rasters): (1) writing the feature stack's
+float32 nodata sentinel <code>-3.4028234663852886e+38</code> through unchanged &mdash;
+7,113,308 cells carry it, 3,061 inside the submission footprint; (2) NaN inside the footprint.
+This session's file: every template-valid pixel finite in [0,&nbsp;1], NaN only where the
+official sample is NaN, nodata tag <code>nan</code> &mdash; both the repository validator and
+the template-conformance gate pass (receipts in <code>evidence/corrections/run_card.json</code>).</p></div>
+<div class=card><h3>IR-56-04: sibling scores are unauthenticated</h3>
+<p>Every score in the sibling score ledger (0.1922&hellip;0.2778 family, and the 0.2708 base)
+is owner-reported; none carries an organizer receipt. They are used here only as
+<b>mechanism evidence</b> (the emission-side break-even), never as targets.</p></div>
+<div class=card><h3>IR-56-05: holdout truth is simulated, not the organizer's</h3>
+<p>The HOLDOUT-DTI numbers come from a simulated corrections truth (the measured crest lines
+of withheld records). They validate the emission machinery and the controls; they are not
+organizer scores and are labelled as such everywhere they appear.</p></div>
+<div class=card><h3>IR-56-06: LiDAR calibration covers 75% of the footprint</h3>
+<p>The 1 m calibration product (706 of 716 official 3DEP tiles) covers 3,892,964 grid cells
+(75% of the 5,167,373-px footprint); 10 edge tiles failed in the sibling's CI. Calibration
+statistics are computed on covered transects only and labelled with n.</p></div>
+<div class=card><h3>IR-56-07: the literal 70%-containment uniqueness test fires on 8 habitat
+rasters; the investigation shows they are supersets, not re-issues</h3>
+<p>The lane protocol's literal test (&ldquo;more than 70% of your dots fall within 3 px of one
+registry raster's dots &rarr; log it as a duplicate and stop&rdquo;) fires on
+8 sparse registry rasters (containment up to
+0.9989). Investigated with the discriminating statistics
+(the sibling GEMSDOE51 gate's own): every one of them is a <b>habitat/superset emission
+12&ndash;38&times; larger</b> than this lane's 6,504 dots (13GEMSDOE lattice / toporef /
+union-tips, 5GEMSDOE pindrop-v4 discovery/nodes, GEMSDOE50 topo-lineament-scatter,
+GEMSDOE23 arrangement-matched-habitat, GEMSDOE37 h6-physics-dotted-80k), and for every one of
+them the 3&nbsp;px Jaccard is &le; 0.0908 and the reverse
+containment is &le; 0.0462 (globally; &le; 0.023 among the
+flagged eight) &mdash; this lane's dot set is a small subset of their habitat, not a re-issue. Against every prior <b>submission of comparable
+construction</b> (the 37,654&ndash;44,090-dot h33 family, incl. the 0.2778-attributed file),
+containment is &le; 0.334 and Jaccard &le; 0.052. Spearman rank correlation is at most
+0.0429 (dots) / 0.1086
+(surface) against all 412 unique registry rasters &mdash; far below the
+0.90 threshold. <b>Determination: UNIQUE &mdash; no prior is re-issued and this raster is not
+a re-issue of any prior.</b> The flags are logged with full numbers in
+<code>evidence/corrections/registry_check.json</code>; the protocol requires a stop on those flags.
+A literal reading that treats &ldquo;inside a big habitat lattice&rdquo; as duplication would
+condemn every small precise emission (including the prior best itself) &mdash; the
+mass-ratio/Jaccard analysis is diagnostic only and does not override the rule.</p></div>
+
+<h2>Round-2 discovery run (PR #7) &mdash; its five entries</h2>
+<div class=card><h3>IR-56-019: Band 6 'tc' description is ambiguous and the data are magnitude-like</h3>
+<p>evidence/grid.json's own band inventory says band 6 is 'tc - Tilt angle or total curvature - magnetic field derivative for edge detection'. Measured this session: values span 2.95-88.57 with NO sign change (p1 7.72, p50 18.48, p99 29.10), so the classic tilt-angle zero-crossing rule cannot be applied literally -- either the band is total curvature (&gt;=0) or it is a magnitude of tilt. A hypothesis written as 'zero contour of tc' would be wrong on the bytes.</p>
+<p><b>Checked / why it matters:</b> read of data/training_features.tif band 6 (this session, scripts of E1); evidence/grid.json band_descriptions</p>
+<p class=mut>Done: H8 in docs/research/hypotheses-20261009.md is written as proximity to LOW tc rather than a signed zero crossing, and the ambiguity is carried in the hypothesis text. · source: read of data/training_features.tif band 6 (this session, scripts of E1); evidence/grid.json band_descriptions</p></div>
+<div class=card><h3>IR-56-020: Footprint-edge fake features in the shared transforms (scarp_step / hessian_line / gradient_magnitude / rank01)</h3>
+<p>The transforms zero-fill outside the footprint before differencing or smoothing. Measured on the real footprint: scarp_step on iso_grav_anom returns median 5.28 on the 23,600-cell rim band vs 0.47 in the interior (p99 29.6 vs 2.1), and 56.5% of the top-25,000 cells of the ranked field landed on that rim band -- i.e. the data edge itself was the strongest 'fault'. A second-order effect: rank01 pushed NaN-within-valid cells into the top histogram bin (rank ~1.0), so edge-masking a transform without fixing rank01 would have re-created the same artefact. This defect invalidated the first E1 run (evidence/holdout_discovery_v0_prefx.json): every physics arm scored below the chance control while emitting mostly on the rim.</p>
+<p><b>Checked / why it matters:</b> tests/test_transform_edges.py (6 tests); the rim-vs-interior measurement printed in this session's log; re-run receipt evidence/holdout_discovery_v1.json</p>
+<p class=mut>Done: Fixed ONCE in the shared template src/gems56/transform.py (allowed by the protocol, no private fork): scarp_step now requires full two-sided + persistence support inside the footprint; hessian_line masks a 3-sigma edge band; gradient_magnitude masks cells at distance &lt;2 px from the complement; rank01 excludes NaN-inside-valid from the ranking and keeps them NaN. Six regression tests added in tests/test_transform_edges.py (each fails pre-fix). E1 re-run with identical pre-registered design; the pre-fix receipt is preserved as evidence/holdout_discovery_v0_prefx.json. · source: tests/test_transform_edges.py (6 tests); the rim-vs-interior measurement printed in this session's log; re-run receipt evidence/holdout_discovery_v1.json</p></div>
+<div class=card><h3>IR-56-021: registry/input_pins.json referenced a fetch script that did not exist</h3>
+<p>registry/input_pins.json told the reader that 'scripts/fetch_inputs.sh' assembles the feature stack end to end, but no such file existed in this repository (measured: scripts/ directory listing, this session). The standing brief also names scripts/download_competition_data.sh as the one-command data step; that file did not exist either. A reviewer following either instruction got 'No such file'.</p>
+<p><b>Checked / why it matters:</b> bash -n on both scripts; the run of prepare_data.py after assembly (evidence/grid.json, pin_match true for all three official inputs)</p>
+<p class=mut>Done: Created scripts/download_competition_data.sh (route A: verify official files placed in data/raw/; route B: assemble from the pinned owner bridge with BOTH the owner-manifest shard hashes and our own sha256 pins verified before use; then scripts/prepare_data.py) and scripts/fetch_inputs.sh as the alias the pins name. Both bash -n clean; route B was exercised end to end in this session (all pins OK). · source: bash -n on both scripts; the run of prepare_data.py after assembly (evidence/grid.json, pin_match true for all three official inputs)</p></div>
+<div class=card><h3>IR-56-022: docs/downloads/README.md claimed the downloads folder was empty while four deliverables sat in it</h3>
+<p>The folder README still carried the round-0 text 'Currently empty, on purpose. No file has been produced from this repository' while the directory contained two corrections-lane .tif/.zip/.json sets (published by the previous session). Stale prose next to a download button is exactly the kind of thing that makes a reader distrust an otherwise auditable page.</p>
+<p><b>Checked / why it matters:</b> directory listing vs README text, this session</p>
+<p class=mut>Done: README rewritten to list what is published, with the verdict of each file and the five rules a file must satisfy before being added. · source: directory listing vs README text, this session</p></div>
+<div class=card><h3>IR-56-023: lane-uniqueness gate, 3 px proximity clause</h3>
+<p>On the round-2 dots-phase gate (evidence/lane_gate_discovery_v2.json) the literal brief rule '&gt;70% of my dots within 3 px of ONE registry raster's dots' fires against 22 informative (non-probe) priors, and the coverage-adjusted policy agrees (DUPLICATE/STOP both). The trigger is density-degenerate: for every one of the 22, near_frac is within +/-0.03 of that prior's own 3 px halo coverage of the eligible grid (e.g. 0.887 vs 0.861, 0.740 vs 0.759, 0.700 vs 0.735), i.e. the clause is satisfied by any dot set whatever, exactly as IR-56-006 showed the same clause is vacuous at 1-dot counts against near-universal priors. The agreement tests pass: max Spearman 0.043 on the dots and 0.193 on the surface vs the 0.90 bar, zero identical hashes, and the screen's reciprocal &gt;0.70 count is 0.</p>
+<p><b>Checked / why it matters:</b> Read literally, a raster whose 3 px halo covers &gt;=70% of the grid makes the '&gt;70% of my dots near it' clause unfailable for ANY candidate, so a STOP verdict carries no information about lane drift at that density; the mirror-image defect (IR-56-006) makes the same clause unfailable in the other direction at tiny dot counts.</p>
+<p class=mut>Done: Protocol executed as written: the verdict DUPLICATE/STOP is logged, nothing is promoted, and the candidate was already NEGATIVE on the holdout. The defect is reported rather than argued around; both directions are shown side by side in the receipt (surface PASS, dots STOP). No gate code was modified to change the outcome. · source: scripts/lane_gate_discovery.py (E3), first full 960-prior run</p></div>
+<p class=mut>Full machine-readable log (both runs, <code>evidence/irregularities.json</code>, 23 entries): IR-56-001&hellip;013 round 1, IR-56-014&hellip;018 the concurrent corrections session, IR-56-019&hellip;023 this round-2 discovery run.</p>
+</main>
+<footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
+round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
+generated 2026-10-09 17:46 UTC by
+<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
+and <code>evidence/*.json</code> (run B) ·
+site served from <code>main</code> at
+<a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
+</body></html>

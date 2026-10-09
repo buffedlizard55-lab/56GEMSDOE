@@ -5,9 +5,67 @@ from the USGS/INGENIOUS catalogue** and ship them as a legal GeoTIFF.
 Site: **https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html**
 (one-click submission download at the top; submission guide on *Make a submission*).
 
+> ## Round 2 - submission desk (this branch; receipts stamped 16:29Z → 17:26Z): the submission the brief asks for, and the measurement that says what it is worth
+>
+> **Two validated GeoTIFFs are published and one click from a submission form** —
+> [`h56-magpack-37k-20261009.tif`](docs/downloads/h56-magpack-37k-20261009.tif)
+> (37,654 dots, `mag_ridge|packed`, min 2.24 px off the catalogue,
+> sha256 `62824bcab55d…`) and
+> [`h56-quota-37k-20261009.tif`](docs/downloads/h56-quota-37k-20261009.tif) (30,800 dots,
+> `QUOTA|packed|weighted`). Both are single band float32, EPSG:32611, 100 m, 3730×3292, values in [0, 1],
+> zero NaN, no nodata tag — re-read from disk after writing
+> ([receipts](docs/downloads/checks-h56-magpack-37k-20261009.json)), so the portal error
+> `Predicted values must be in range [0, 1]` cannot come from these files. **Downloading is safe.**
+>
+> **Submitting is a different question, and the answer is no this round.** On the shared blocked holdout
+> (`gems52-pooled-hide-v1`, 4 folds, 36,335 withheld
+> positive pixels) our best arm reaches **0.0387**
+> [0.0348, 0.0424] where the group's filed sibling surface reaches
+> **0.0900** [0.0811, 0.0988] at the same budget on the same folds (our arm read from `evidence/quota_union_v1.json`, the incumbent from `evidence/field_holdout_v1.json`; both receipts print 0.0387 for our arm).
+> Verdict on the run card: **negative**, `promote: false`, no weekly slot claimed. Six hypotheses were tested;
+> five were rejected on measurement and one (packing vs top-K) is **not resolvable on this instrument** and is
+> reported as a null, not a win: [`docs/research/hypotheses-round2.md`](docs/research/hypotheses-round2.md).
+>
+> **Why the group's best file scores what it scores** — measured, not narrated. The
+> 37,654-dot file claimed at 0.2778 (USER-REPORTED) is a strict subset
+> of the 44,090-dot file claimed at 0.2600: the
+> 6,436 deleted cells are *exactly* the dots within 2 px of a catalogue pixel
+> (the survivor's distance floor is 2.24 px). The whole difference is one
+> prune, because known-fault pixels are deleted from the truth. Inverting the published formula on those two
+> numbers (DERIVED, never a projection) gives T = 5,223 credit,
+> 0.139 per dot, and |G| ≈ 12,783–18,294
+> hidden pixels; perfect placement at that mass would score 0.825.
+>
+> **The instrument is inverted for that decision, and that is the round's most useful finding.** The same folds
+> score the *unpruned* sibling file at 0.0900 and its pruned, higher-scoring-live
+> twin at 0.0038 — the opposite sign — because the withheld truth *is* the
+> catalogue. So no near-catalogue policy was chosen from hide-DTI here (IR-56-004, IR-56-011).
+>
+> **Unique.** 868 sibling rasters from the whole account mirror were screened at
+> ≤3 px dot proximity in both directions: **0** exceed the 0.70 duplicate rule. The
+> shared lane gate on the disclosed top-40 adversarial subset returns
+> ok=true / duplicate=false for both files
+> ([`evidence/lane_uniqueness2_summary.json`](evidence/lane_uniqueness2_summary.json)). 56
+> files trip the *one-way* criterion and all of them are dense artefacts — the largest is a 5-pixel lattice
+> probe (IR-56-025 after the PR #7 merge; drafted as 015 before ids were reconciled), which is why the
+> reciprocal direction is the criterion.
+>
+> **Run card:** [`docs/research/run-card-round2.json`](docs/research/run-card-round2.json)
+> (= [`evidence/run_card_round2.json`](evidence/run_card_round2.json)) · site generator:
+> `scripts/build_round2.py` · budget: 4 experiments against a stop-loss of 3 (the card says so and why),
+> 2 h clock met. Round 1 (the lane's assigned measurement) is preserved at
+> [`docs/lane1-corrections.html`](docs/lane1-corrections.html).
+>
+> *(Both round-2 runs of this lane ended negative on their own shared holdout; neither
+> claims a weekly slot, and neither has an organizer-confirmed score. The two records are kept
+> side by side: this page's front-end is `docs/index.html`, that run's preserved pages are
+> `docs/discovery-*.html` and `docs/{hypotheses,research,sources,prior-run}.html`.)*
+
+---
+
 > **Arena Core Values (quoted in the brief):** Maximize P(Win). Own the Outcome.
 
-> **Bottom line of the round-2 (discovery) run (2026-10-09):** five new hypotheses were
+> ## Round 2 - discovery run (already on `main` via PR #7): **Bottom line:** five new hypotheses were
 > pre-registered (`docs/research/hypotheses-20261009.md`), the missing probe layer was obtained
 > (3,800 INGENOUS points), `scripts/download_competition_data.sh` now rebuilds every input from
 > the hash-pinned bridge, and the top-three hypotheses were validated on the shared 4-fold blocked

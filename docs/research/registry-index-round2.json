@@ -1,0 +1,25 @@
+{
+ "generated_utc": "2026-10-09T18:55:01Z",
+ "files": [
+  {
+   "name": "h56-magpack-37k-20261009",
+   "sha256": "62824bcab55d97427b035a004d90c2aaf088acb30c66aeb2a355f5022cc6efb2",
+   "bytes": 154019,
+   "dots": 37654,
+   "validator_ok": true,
+   "note": "h56-r2 mag-ridge packed 2.8px, >=2px off catalogue, 37,654 dots; holdout 0.0387 vs 0.0900 incumbent; not cleared for a slot"
+  },
+  {
+   "name": "h56-quota-37k-20261009",
+   "sha256": "62b309d93e9a3665520ff0f55c0683dc8458e9d60813fa7fc9a5f2fc995d0ee6",
+   "bytes": 138144,
+   "dots": 30800,
+   "validator_ok": true,
+   "note": "h56-r2 quota union, 6 channels, 2.8px packed, 30,800 dots off catalogue; holdout 0.0359; negative verdict, not cleared"
+  }
+ ],
+ "screen": {
+  "corpus_files": 868,
+  "over_070_reciprocal": 0
+ }
+}

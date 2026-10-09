@@ -1,0 +1,62 @@
+{
+ "assumption": "the deleted dots carried zero true-positive credit (they sit within 2 px of a masked catalogue pixel); T is shared between the two files",
+ "evidence_class": "DERIVED (arithmetic on user-reported scores + measured dot counts)",
+ "not": "an organizer statement about the label set; never a score",
+ "inputs": {
+  "base": {
+   "score": 0.26,
+   "dots": 44090,
+   "mass": 44090.0,
+   "values": [
+    1.0
+   ],
+   "d_catalogue_px": {
+    "min": 1.0,
+    "p50": 15.0,
+    "max": 219.27152117865194,
+    "frac_le_2": 0.1459741437967793
+   }
+  },
+  "pruned": {
+   "score": 0.2778,
+   "dots": 37654,
+   "mass": 37654.0,
+   "values": [
+    1.0
+   ],
+   "d_catalogue_px": {
+    "min": 2.23606797749979,
+    "p50": 19.6468827043885,
+    "max": 219.27152117865194,
+    "frac_le_2": 0.0
+   }
+  }
+ },
+ "subset_check": {
+  "pruned_inside_base": 37654,
+  "base": 44090,
+  "pruned": 37654,
+  "deleted": 6436,
+  "reading": "the pruned file's dot set is a strict subset of the base file's: the two files differ ONLY by the near-catalogue deletion"
+ },
+ "solution": {
+  "deleted_pixels": 6436,
+  "D_base": 20089.0,
+  "D_pruned": 18801.8,
+  "T_credit": 5223.1,
+  "credit_per_dot": 0.1387,
+  "hidden_truth_pixels_G": {
+   "lo": 12783,
+   "hi": 18294
+  },
+  "recall_of_hidden": {
+   "lo": 0.286,
+   "hi": 1.0
+  },
+  "ceiling_at_this_mass_if_perfect": {
+   "formula": "T=G, F=N-G: DTI = G/(0.2(G+F)+0.8G)",
+   "value": 0.825
+  },
+  "reading": "the hidden scored set is ~10^4 px, the same order as the emitted dot count, so the family already reaches a large fraction of it: the remaining headroom is per-dot credit (placement), not budget"
+ }
+}
