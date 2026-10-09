@@ -1,12 +1,20 @@
 # Competition inputs are never committed: they are login-gated and licence-restricted.
+# They are resolved from the sandbox bridge as symlinks (see data_manifest.json for pins).
 data/raw/
 data/interim/
 data/external/
+data/grid/
 # Rasters and model outputs are kept out of Git (use external storage if they must be shared).
 *.tif
 *.tiff
 *.npy
 *.npz
+*.zip
+# The lane's own published deliverables are hosted on Pages: predictions and receipts, never organizer data.
+!docs/downloads/*.tif
+!docs/downloads/*.zip
+!evidence/*.npz
+!evidence/*.json.gz
 # Python / tooling
 __pycache__/
 .pytest_cache/

@@ -1,0 +1,219 @@
+{
+ "lane": "corrections",
+ "competition": "DrivenData GEMS Prize 306 (USGS quake-explorer fault delineation)",
+ "run_utc": "2026-10-09T05:47:28Z",
+ "commit": "a6ed351df164c8226b8c2344dd164ed0cf063b8f",
+ "hypothesis": "The USGS/INGENIOUS catalogue is displaced from the geomorphic and magnetic lineations by more than ~2 pixels in places, so dots placed on the evidence-defined trace score where dots on the catalogue line cannot (known-fault pixels are excluded from the penalty terms).",
+ "mechanism": "Active-quaternary slip expressed as a scarp in detrended elevation (crest of -d2z/dn2) and as a step in the magnetic gradient (ridge of |tmi_hg|), measured perpendicular to the trace strike within +-400 m.",
+ "named_non_fault_process": "Slope-dependent scarp degradation and relaxation, which migrates a scarp's convex break downslope away from the fault trace without any registration error; plus the shading/curvature asymmetry of a DEM-derived field, and, on the estimator side, bilinear-interpolation curvature spikes at source gridlines. Each is why the lane requires two nulls, a strength gate calibrated on the null, and corridor-level agreement rather than any single per-pixel offset.",
+ "measurements": {
+  "offsets_ungated_px": {
+   "dem_median": -0.11314796634889474,
+   "dem_n": 44390,
+   "joint_median": -0.3824233359803283,
+   "joint_n": 7239,
+   "abs_offset_median_px": 1.4757114074181301,
+   "dem_mag_correlation_r": 0.02233471267813126,
+   "both_families_agreeing_fraction": 0.12104339102081765
+  },
+  "offsets_null_calibrated_px": {
+   "dem_median": -0.10336448793692654,
+   "dem_n": 3187,
+   "mag_median": 0.02988210086131843,
+   "mag_n": 5297,
+   "joint_median": 0.7735278550045412,
+   "joint_n": 156,
+   "joint_mad": 1.8771643351107046,
+   "null_random_abs_median": 1.3232876860504166,
+   "null_rotated_abs_median": 1.3936437306796836,
+   "strength_gate": {
+    "dem_min_hgt": 17.57184561400475,
+    "mag_min_hgt": 94.10431282987766,
+    "rule": "a crest is only believed when its convexity height exceeds the 90th percentile of the same statistic measured at random traceless points",
+    "note": "units: dem = m per cell^2 of curvature, mag = |tmi_hg| units"
+   }
+  },
+  "corridors": {
+   "decision_gate": {
+    "components": 21,
+    "qualifying": 0,
+    "qualifying_pixels": 0,
+    "qualifying_length_m": 0,
+    "sigma_floor_px": 1.296
+   },
+   "ungated_exploration": {
+    "components_evaluated": 1273,
+    "qualifying": 2,
+    "joint_median_px": -2.340092050268823
+   }
+  },
+  "lidar_3m": {
+   "coverage_fraction_of_catalogue": 0.009064932505665584,
+   "pooled_median_px": -0.020532070869259747,
+   "pooled_mad_px": 0.6640383807807138,
+   "frac_ge_3px": 0.00273224043715847,
+   "segments": 13,
+   "segments_ge_200m": 0,
+   "segments_z_ge_3": 0,
+   "max_z": 2.6775347929655466,
+   "coarse_vs_fine_rms_m": 180.8517481924266
+  },
+  "instrument": {
+   "detection_complete_within_2px": true,
+   "placement_bias_px": 0.3285,
+   "max_abs_placement_bias_px": 0.4622
+  },
+  "permutation_control_on_cluster_rule": {
+   "real_survivors": 680,
+   "permutation_null_mean": 152.592,
+   "permutation_null_sd": 15.479015981094273,
+   "permutation_null_max": 193,
+   "signflip_null_mean": 170.788,
+   "signflip_note": "not neutral: a constant placement bias b displaces a flipped dot by 2b",
+   "one_sided_p_permutation": 0.0,
+   "reading": "coherence of the sub-2px residual is real (p<0.004 vs both nulls) but the effect size is ~1 px, under the brief's 2 px bar and under the estimator's own 1.32 px noise floor, and it does not appear at 3 m on any segment",
+   "interpretation": "the survivors are more spatially coherent than a reassignment of the same offsets would produce -- a necessary, not sufficient, condition for a real correction; read together with the corridor gate, which is the sufficient one"
+  }
+ },
+ "holdout_dti": {
+  "evidence_class": "HOLDOUT-DTI",
+  "evaluator_version": "gems52-pooled-hide-v1",
+  "protocol": {
+   "folds": 4,
+   "mode": "hide",
+   "buffer_px": 4,
+   "rule": "whole 8-connected catalogue components withheld; visible catalogue masked pixel-exactly; prevalence-matched truth",
+   "prevalence": null
+  },
+  "withheld_positive_pixels": 48080,
+  "arms": {
+   "A_as_is": {
+    "dti": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "tpw": 0.0,
+    "fpw": 0.0,
+    "fnw": 48080.0
+   },
+   "B_snap": {
+    "dti": 0.00015660914317701405,
+    "ci95": [
+     0.0,
+     0.00045357384313326045
+    ],
+    "tpw": 6.466291280169486,
+    "fpw": 14120.333333333332,
+    "fnw": 48073.53370871983
+   },
+   "C_snap_sub": {
+    "dti": 4.7447962554677763e-05,
+    "ci95": [
+     0.0,
+     0.00011146770377698813
+    ],
+    "tpw": 1.8998123067514103,
+    "fpw": 7877.666666666666,
+    "fnw": 48078.10018769324
+   },
+   "D_jitter": {
+    "dti": 0.00020550105762550465,
+    "ci95": [
+     2.6074210302486136e-06,
+     0.0005084996249930672
+    ],
+    "tpw": 8.501983871172097,
+    "fpw": 14531.354831700748,
+    "fnw": 48071.498016128826
+   }
+  },
+  "paired_delta_vs_reference": {},
+  "bootstrap": null,
+  "limitation": "the withheld target is catalogue faults, not the organizer's new faults; see gems56/holdout.py docstring and IR-56-004",
+  "reading": "all arms are inside each other's intervals, and a random sub-pixel jitter scores the same as the evidence-based snap: the instrument cannot see a <=3 px lateral offset, so the holdout supplies no admissible evidence in favour of correcting"
+ },
+ "registry_comparison": {
+  "shared_gate_verdict": {
+   "tool": "gates.lane_uniqueness_report (vendored template, phase=dots, exact full eligible rank)",
+   "priors_checked": 485,
+   "max_spearman": 0.005134591433171967,
+   "rank_threshold": 0.9,
+   "rank_pass": true,
+   "directed_near3px_fraction": 1.0,
+   "near_threshold": 0.7,
+   "duplicate": true,
+   "ok": false,
+   "offender_count": 105,
+   "sensitivity_arm_offender_count": 31,
+   "reading": "the shared gate FAILS the candidate on the proximity criterion, trivially: the primary raster has one dot, so 'all my dots are within 3 px of a prior' is true for 105 of 485 priors, most of them whole-footprint density layers. Reciprocal overlap is 0 of 485 above 0.70 and the reverse fraction peaks at 0.0008, so nothing is duplicated. The protocol says a trigger is a logged duplicate and a stop, so the artefacts are published as research output and no slot is claimed."
+  },
+  "corpus_files": 485,
+  "corpus_read_errors": 0,
+  "rule_as_written_triggers": 106,
+  "of_which_dense_layers": 22,
+  "reciprocal_overlap_gt_070": 0,
+  "surface_max_rank_correlation": 0.005134591433171967,
+  "dots_max_rank_correlation": 0.005134591433171967,
+  "note": "the >70%-within-3px duplicate rule fires against whole-footprint plausibility masks for any non-empty raster, so it is reported with both directions rather than claimed as a pass (IR-56-006); the structural guarantee is that no dot is ever placed on a catalogue pixel"
+ },
+ "artefacts": {
+  "primary": {
+   "name": "h56-corr-snap200cm-20261009",
+   "note": "h56 corrections lane, PRIMARY arm: dots on the evidence crest >= 200 m off catalogue, DEM+mag concordant; 1 dots; NEGATIVE",
+   "note_chars": 122,
+   "file": "docs/downloads/h56-corr-snap200cm-20261009.tif",
+   "sha256": "65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b",
+   "bytes": 55772,
+   "dots": 1,
+   "validator_ok": true,
+   "validator_problems": [],
+   "values_present": [
+    0.0,
+    1.0
+   ]
+  },
+  "sensitivity": {
+   "name": "h56-corr-snap100cm-20261009",
+   "note": "h56 corrections lane, sensitivity arm: dots on the evidence crest >= 100 m off catalogue, DEM+mag concordant; 14 dots; NEGATIVE",
+   "note_chars": 127,
+   "file": "docs/downloads/h56-corr-snap100cm-20261009.tif",
+   "sha256": "e3285854e73ae4ba3fce8faea64940fdc4bee3b702eb52d2530a67fb60195196",
+   "bytes": 55844,
+   "dots": 14,
+   "validator_ok": true,
+   "validator_problems": [],
+   "values_present": [
+    0.0,
+    1.0
+   ]
+  }
+ },
+ "verdict": "negative",
+ "cleared_for_weekly_slot": false,
+ "promote": false,
+ "verdict_text": "Report the histogram, do not emit a correction: under the null-calibrated gate 0 of 21 catalogue corridors reach a consistent >=2 px offset, the 3 m LiDAR check finds 0 of 13 segments displaced by >=200 m, and the two data families do not even correlate in their offsets (r = 0.022). The primary raster therefore carries 1 dots -- the emptiness is the finding, and it is written through the real submission path so the format is proven, not asserted. The 1 px sensitivity raster is shipped for inspection of what the rule would have chosen and is labelled NEGATIVE in its own note. No slot is recommended; promotion is a separate selector decision.",
+ "budget": {
+  "experiments": 3,
+  "extra_controls": 1,
+  "script_seconds": {
+   "measure": null,
+   "calibration": 76.1,
+   "lidar": 72.4,
+   "holdout": 116.6
+  },
+  "note": "the 2 h / 3 experiment stop-loss was reached; everything after it is packaging, including the estimator fix that all re-runs stem from (IR-56-009)"
+ },
+ "reproduce": [
+  "python tests/test_contracts.py",
+  "python scripts/validate_estimator.py",
+  "python scripts/measure_offsets.py",
+  "python scripts/calibrate_gate.py",
+  "python scripts/lidar_calibration.py",
+  "python scripts/run_corrections_holdout.py",
+  "python scripts/cluster_gate_control.py",
+  "python scripts/build_corrections_submission.py",
+  "python scripts/screen_registry.py",
+  "python scripts/build_site.py"
+ ]
+}
