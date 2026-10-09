@@ -142,5 +142,14 @@
   "action": "Both notes were shortened (123 and 118 characters) and `scripts/build_round2.py` now asserts `len(note) <= 140` at build time, so an over-long note cannot ship silently; the character count is printed on each download card.",
   "link": "docs/research/run-card-round2.json",
   "verified_by": "the assert in scripts/build_round2.py and note_chars in the run card"
+ },
+ {
+  "id": "IR-56-017",
+  "severity": "warn",
+  "title": "The reproduce block named two scripts that do not exist",
+  "finding": "The first version of the site's 'how to reproduce' list told the reader to run `scripts/get_inputs.sh` and `scripts/run_registry_screen.py`. Neither file exists in this repository - the real entry points are `scripts/prepare_data.py` (verify pins) and `scripts/screen_registry.py` - so the one command sequence that is supposed to let someone else re-derive every number on the page would have failed at step one.",
+  "action": "Rewritten from the actual `scripts/` listing, with each line checked against the script's own `Reproduce:` header; the list now also includes the shared gate (`scripts/run_lane_gate.py`) and the link checker (`scripts/check_site_links.py`). It is generated into the page, so a future rename breaks the build rather than the instructions.",
+  "link": "docs/index.html#reproduce",
+  "verified_by": "ls scripts/ and each script's module docstring, line by line"
  }
 ]

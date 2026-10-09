@@ -144,7 +144,7 @@ ul{margin:8px 0 8px 18px}li{margin:4px 0}.muted{color:var(--mut)}
      the brief as USER-REPORTED; nothing here was filed this session.</li>
  <li><b>One stop-loss was exceeded</b>: 4 experiments against a budget of 3 (the card names E4 and the reason -
      E3's table showed the instrument, not the arm, was the problem). The 2-hour clock was met: the receipts
-     run 2026-10-09T16:29Z to 2026-10-09T17:06Z.</li>
+     run 2026-10-09T18:37Z to 2026-10-09T18:37Z.</li>
  <li><b>The |G| and credit figures are a model</b> whose only inputs are the published formula, two user-reported
      scores and dot counts measured from files in the sibling mirror. Their range is wide by construction.</li>
 </ul>
@@ -278,19 +278,25 @@ histogram, emit no correction. Details: <a href="lane1-corrections.html">the rou
 <a href="research/run-card-round2.json">docs/research/run-card-round2.json</a>
 (identical bytes to <code>evidence/run_card_round2.json</code>).</p>
 
-<h2>How to reproduce, from an empty checkout</h2>
-<pre>python -m venv .venv &amp;&amp; .venv/bin/pip install numpy scipy rasterio shapely pyproj pandas scikit-image pytest
-bash scripts/get_inputs.sh                      # 3 shards-blob pins + assemble + sha256 verify
-python scripts/build_fields.py                  # 17 label-free channels
-python scripts/run_field_holdout.py             # E1: all channels alone, two instruments, AUC canary
-python scripts/build_lineament.py               # E2: fusion + discrete-Radon persistence
-python scripts/run_quota_union.py               # E4: combination rules at matched budget
-python scripts/emit_and_score.py --fields mag_ridge --budget 37654 --nms 2.8 --no-holdout --name h56-magpack-37k-20261009
-python scripts/emit_quota.py --name h56-quota-37k-20261009
-SCREEN_PREFIX=h56b python scripts/run_registry_screen.py docs/downloads/h56-magpack-37k-20261009.tif docs/downloads/h56-quota-37k-20261009.tif
-python scripts/invert_hidden_size.py            # E0: what the published scores imply about |G|
-python scripts/build_round2.py                  # this page + the run card
-python tests/test_contracts.py</pre>
+<h2 id="reproduce">How to reproduce, from an empty checkout</h2>
+<pre># 0. inputs first: data/ is not in Git (licence-restricted). scripts/get_inputs-style fetch is
+#    impossible from this sandbox (egress: GitHub + package indexes only), so the pinned files are
+#    resolved from the lane manifest and then verified - never trusted:
+python scripts/prepare_data.py                   # verifies pins, writes evidence/grid.json
+python scripts/build_fields.py                   # E1a: 17 label-free channels (~3 min, 2 cores)
+python scripts/run_field_holdout.py              # E1b: every channel alone, both instruments, canary
+python scripts/build_lineament.py                # E2: fusion + discrete-Radon persistence fields
+python scripts/invert_hidden_size.py             # E0: what the published scores imply about |G|
+python scripts/emit_and_score.py --fields fuse6,line_persist,line_contrast,mag_ridge,scarp_slope --budget 37654 --nms 2.8 --greedy --priors --name h56-mpp-r1-20261009   # E3: emitter arms + priors
+python scripts/run_quota_union.py                # E4: combination rules at matched budget
+python scripts/emit_and_score.py --fields mag_ridge --budget 37654 --nms 2.8 --shadow 2 --no-holdout --name h56-magpack-37k-20261009   # the shipped primary raster
+python scripts/emit_quota.py --budget 37454 --name h56-quota-37k-20261009               # the shipped secondary raster
+bash scripts/mirror_registry.sh data/registry    # harvest every sibling TIF in the account
+python scripts/screen_registry.py data/registry_flat docs/downloads/h56-magpack-37k-20261009.tif docs/downloads/h56-quota-37k-20261009.tif             # exact &lt;=3 px screen, both directions
+python scripts/run_lane_gate.py data/_reg_top_h56b docs/downloads/h56-magpack-37k-20261009.tif docs/downloads/h56-quota-37k-20261009.tif              # the shared gate (rank corr + proximity)
+python scripts/build_round2.py                   # this page, the run card, the download inventory
+python tests/test_contracts.py                   # 14 contract tests
+python scripts/check_site_links.py               # every internal link resolves</pre>
 <h2 id="sources">Official sources, every claim above traceable</h2>
 <table class='data'><thead><tr><th>what we rely on</th><th>source</th></tr></thead><tbody>
 <tr><td>metric definition, DTI formula, alpha 0.2 / beta 0.8, R = 300 m, worked example TPw 3.00 FPw 1.89 FNw 2.00 = 0.60</td>

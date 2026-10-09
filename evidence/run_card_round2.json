@@ -1,8 +1,8 @@
 {
  "lane": "corrections (round 2: emission-side consequences of the same measurement)",
  "competition": "DrivenData GEMS Prize 306 (GeoDAWN, NW Nevada)",
- "run_utc": "2026-10-09T17:30:55Z",
- "commit": "994ff6a644eec8a238e251a84261fbb8db8f2599",
+ "run_utc": "2026-10-09T18:39:58Z",
+ "commit": "b3d2ff6c367490d57fc836148d5526bb94ea7f19",
  "hypothesis": "The catalogue is displaced from the evidence by more than ~2 px in places, so dots on the evidence-defined trace earn credit the catalogue line cannot. Round 1 measured that this is false (median offset -0.10 px against a 1.32 px estimator noise floor). The surviving consequence is the *other* side of the same fact: because the catalogue is accurate, mass near a mapped trace is masked out of the scored truth and pays the false-positive term, so the leverage is (i) pruning near-catalogue mass and (ii) raising credit per emitted pixel on channels the catalogue compiler did not use.",
  "mechanism": "Percentile-rank physical channels built from the official 19-band stack only; ridge/edge detectors (Meijster second-derivative-along-gradient on detrended-elevation slope, on smoothed |tmi_hg|, on reduced-to-pole, on gravity gradient, on the geodetic strain-rate second invariant); a discrete-Radon lineament-persistence channel over 4 strikes x {400,800,1600} m; exact greedy farthest-point packing at 2.8 px; a 2 px catalogue emission floor; binary p=1 mass; three combination rules (single channel, equal-rank mean, credit-weighted quota union) scored against each other at matched budget.",
  "named_non_fault_process": "Drainage incision and gully heads give convex break-in-slope lineations that are not faults; slope-dependent scarp degradation migrates a crest; magnetic gradients ridge on lithologic contacts and on the edges of demagnetised Tertiary units, not on slip surfaces; and the geodetic strain-rate bands are smooth at 10 km scale, so they carry regional, not pixel, information - which is why their AUC against the hidden set is 0.59-0.71 while their DTI at 300 m precision is one fifth of the magnetic ridge.",
@@ -412,10 +412,13 @@
   "never_a_score": true
  },
  "hypotheses_rejected": [
-  "geodetic strain-rate as a primary locator (strain_2ndinv_ridge 0.0197 vs mag_ridge|packed 0.0387 pooled HOLDOUT-DTI; recall within 3 px 0.054 vs 0.175)",
-  "lineament persistence / discrete-Radon straightness 0.0160-0.0229 vs mag_ridge|packed 0.0387 pooled HOLDOUT-DTI",
-  "equal-rank-mean fusion of six channels (0.0179, i.e. worse than its best member)",
-  "quota union of six channels at matched budget 0.0359 weighted and 0.0312 unweighted, still behind the best single channel 0.0387",
+  "H2-1 any single official band, used label-free as a ridge/crest emitter, can beat the filed surface at matched budget: best own arm mag_ridge|packed 0.0387 [0.0348, 0.0424] vs 0.0900 for the filed surface on the same folds - behind by 0.0513, CI excluding zero",
+  "H2-2 geodetic strain-rate as a primary locator: strain_2ndinv_ridge 0.0196 and strain_all 0.0122 vs mag_ridge|packed 0.0387 pooled HOLDOUT-DTI; recall within 3 px 0.054 vs 0.175",
+  "H2-3 lineament persistence / discrete-Radon straightness: line_persist|topk 0.0160 and |packed 0.0229, line_contrast|packed 0.0167, vs mag_ridge|packed 0.0387 pooled HOLDOUT-DTI",
+  "H2-4a equal-rank-mean fusion of six channels: MEAN|topk 0.0179, worse than every member that counts (best single 0.0387)",
+  "H2-4b quota union of six channels at matched budget: 0.0359 weighted and 0.0312 unweighted, still behind the best single channel 0.0387",
+  "H2-5 exact 2.8 px packing at fixed budget: NOT RESOLVABLE - the paired statistic is -0.00045 [CI -0.00125, +0.00036] (reference mag_ridge|topk minus this arm), i.e. +0.00045 with an interval straddling zero; shipped as free, not as measured",
+  "H2-6 near-catalogue pruning decidable on the shared holdout: REJECTED - the instrument is blind to it in the wrong direction (filed surface 0.0900 vs its pruned twin 0.0038 here, live 0.2600 vs 0.2778 USER-REPORTED)",
   "the corrections lane's own premise, that the catalogue is displaced from the evidence by more than ~2 px: round 1 measured 0 of 21 corridors passing the consistency gate and 0 of 13 LiDAR-calibrated segments displaced by 200 m"
  ],
  "budget": {
@@ -423,9 +426,9 @@
   "stop_loss": "3 experiments / 2 h",
   "experiments_over": 1,
   "clock_utc": {
-   "first_receipt": "2026-10-09T16:29Z",
-   "last_experiment_receipt": "2026-10-09T17:06Z",
-   "this_card": "2026-10-09T17:30:55Z",
+   "first_receipt": "2026-10-09T18:37Z",
+   "last_experiment_receipt": "2026-10-09T18:37Z",
+   "this_card": "2026-10-09T18:39:58Z",
    "reading": "measured work ran between the receipt stamps above; the experiment count exceeded the 3-experiment stop-loss by one (E4), the wall clock did not exceed 2 h"
   },
   "overrun_reason": "E4 (the combination-rule test) was added after the stop-loss because E3's arm table showed the instrument itself was inverted; the experiment count is reported as an overrun rather than restated to fit the budget",

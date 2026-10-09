@@ -183,6 +183,8 @@ def main() -> int:
                    key=lambda k: e3["ranking"][k], default="mag_ridge|packed")
     sol = inv["solution"]
     pd4 = e4["pooled"]["paired_differences"]          # E4: delta = reference (mag_ridge|topk) - arm
+    r37 = {k: v["37654"]["recall_within_3px"] for k, v in ev1["instruments"]["hide"]["per_budget"].items()
+           if "37654" in v}
     pd3 = e3.get("pooled", {}).get("paired_differences", {})   # E3: delta = PRIOR_base_44090 - arm
     need_rows = []
     Gmid = 0.5 * (sol["hidden_truth_pixels_G"]["lo"] + sol["hidden_truth_pixels_G"]["hi"])
@@ -376,14 +378,34 @@ def main() -> int:
                                                    "hidden_truth_pixels_G", "ceiling_at_this_mass_if_perfect")},
                            never_a_score=True),
         hypotheses_rejected=[
-            "geodetic strain-rate as a primary locator (strain_2ndinv_ridge 0.0197 vs mag_ridge|packed 0.0387 "
-            "pooled HOLDOUT-DTI; recall within 3 px 0.054 vs 0.175)",
-            "lineament persistence / discrete-Radon straightness "
-            f"0.0160-0.0229 vs mag_ridge|packed {t3['mag_ridge|packed']['dti']:.4f} pooled HOLDOUT-DTI",
-            "equal-rank-mean fusion of six channels (0.0179, i.e. worse than its best member)",
-            f"quota union of six channels at matched budget {e4['table']['QUOTA|packed|weighted']['dti']:.4f} "
-            f"weighted and {e4['table']['QUOTA|packed']['dti']:.4f} unweighted, still behind the best single "
-            f"channel {e4['table'][e4['best_arm']]['dti']:.4f}",
+            "H2-1 any single official band, used label-free as a ridge/crest emitter, can beat the filed "
+            f"surface at matched budget: best own arm {e4['best_arm']} {e4['table'][e4['best_arm']]['dti']:.4f} "
+            f"[{e4['table'][e4['best_arm']]['ci95'][0]:.4f}, {e4['table'][e4['best_arm']]['ci95'][1]:.4f}] vs "
+            f"{hide['PRIOR_base_44090']['dti']:.4f} for the filed surface on the same folds - behind by "
+            f"{hide['PRIOR_base_44090']['dti'] - e4['table'][e4['best_arm']]['dti']:.4f}, CI excluding zero",
+            "H2-2 geodetic strain-rate as a primary locator: strain_2ndinv_ridge "
+            f"{hide['strain_2ndinv_ridge']['dti']:.4f} and strain_all {hide['strain_all']['dti']:.4f} vs "
+            f"mag_ridge|packed {t3['mag_ridge|packed']['dti']:.4f} pooled HOLDOUT-DTI; recall within 3 px "
+            f"{r37['strain_2ndinv_ridge']:.3f} vs {t3['mag_ridge|packed']['recall3']:.3f}",
+            "H2-3 lineament persistence / discrete-Radon straightness: line_persist|topk "
+            f"{t3['line_persist|topk']['dti']:.4f} and |packed {t3['line_persist|packed']['dti']:.4f}, "
+            f"line_contrast|packed {t3['line_contrast|packed']['dti']:.4f}, vs mag_ridge|packed "
+            f"{t3['mag_ridge|packed']['dti']:.4f} pooled HOLDOUT-DTI",
+            f"H2-4a equal-rank-mean fusion of six channels: MEAN|topk {e4['table']['MEAN|topk']['dti']:.4f}, "
+            f"worse than every member that counts (best single {e4['table'][e4['best_arm']]['dti']:.4f})",
+            f"H2-4b quota union of six channels at matched budget: "
+            f"{e4['table']['QUOTA|packed|weighted']['dti']:.4f} weighted and "
+            f"{e4['table']['QUOTA|packed']['dti']:.4f} unweighted, still behind the best single channel "
+            f"{e4['table'][e4['best_arm']]['dti']:.4f}",
+            f"H2-5 exact 2.8 px packing at fixed budget: NOT RESOLVABLE - the paired statistic is "
+            f"{pd4['mag_ridge|packed']['delta']:+.5f} [CI {pd4['mag_ridge|packed']['ci95'][0]:+.5f}, "
+            f"{pd4['mag_ridge|packed']['ci95'][1]:+.5f}] (reference mag_ridge|topk minus this arm), i.e. "
+            f"{t3['mag_ridge|packed']['dti'] - t3['mag_ridge|topk']['dti']:+.5f} with an interval straddling "
+            f"zero; shipped as free, not as measured",
+            f"H2-6 near-catalogue pruning decidable on the shared holdout: REJECTED - the instrument is blind "
+            f"to it in the wrong direction (filed surface {t3['PRIOR_base_44090']['dti']:.4f} vs its pruned "
+            f"twin {t3['PRIOR_pruned_37654']['dti']:.4f} here, live 0.2600 vs "
+            f"{inv['inputs']['pruned']['score']:.4f} USER-REPORTED)",
             "the corrections lane's own premise, that the catalogue is displaced from the evidence by more than "
             "~2 px: round 1 measured 0 of 21 corridors passing the consistency gate and 0 of 13 LiDAR-calibrated "
             "segments displaced by 200 m"],
@@ -451,18 +473,30 @@ def main() -> int:
   <div><b>{hide['PRIOR_base_44090']['dti']:.4f}</b><span>incumbent on the same folds</span></div>
 </div>"""
 
-    REPRO = "\n".join(['python -m venv .venv && .venv/bin/pip install numpy scipy rasterio shapely pyproj pandas scikit-image pytest',
-                        'bash scripts/get_inputs.sh                      # 3 shards-blob pins + assemble + sha256 verify',
-                        'python scripts/build_fields.py                  # 17 label-free channels',
-                        'python scripts/run_field_holdout.py             # E1: all channels alone, two instruments, AUC canary',
-                        'python scripts/build_lineament.py               # E2: fusion + discrete-Radon persistence',
-                        'python scripts/run_quota_union.py               # E4: combination rules at matched budget',
-                        f'python scripts/emit_and_score.py --fields mag_ridge --budget {prim["dots"]} --nms 2.8 --no-holdout --name {NAME_PRIMARY}',
-                        f'python scripts/emit_quota.py --name {NAME_SECONDARY}',
-                        f'SCREEN_PREFIX=h56b python scripts/run_registry_screen.py docs/downloads/{NAME_PRIMARY}.tif docs/downloads/{NAME_SECONDARY}.tif',
-                        'python scripts/invert_hidden_size.py            # E0: what the published scores imply about |G|',
-                        'python scripts/build_round2.py                  # this page + the run card',
-                        'python tests/test_contracts.py'])
+    REPRO = "\n".join([
+        '# 0. inputs first: data/ is not in Git (licence-restricted). scripts/get_inputs-style fetch is',
+        '#    impossible from this sandbox (egress: GitHub + package indexes only), so the pinned files are',
+        '#    resolved from the lane manifest and then verified - never trusted:',
+        'python scripts/prepare_data.py                   # verifies pins, writes evidence/grid.json',
+        'python scripts/build_fields.py                   # E1a: 17 label-free channels (~3 min, 2 cores)',
+        'python scripts/run_field_holdout.py              # E1b: every channel alone, both instruments, canary',
+        'python scripts/build_lineament.py                # E2: fusion + discrete-Radon persistence fields',
+        'python scripts/invert_hidden_size.py             # E0: what the published scores imply about |G|',
+        'python scripts/emit_and_score.py --fields fuse6,line_persist,line_contrast,mag_ridge,scarp_slope '
+        '--budget 37654 --nms 2.8 --greedy --priors --name h56-mpp-r1-20261009   # E3: emitter arms + priors',
+        'python scripts/run_quota_union.py                # E4: combination rules at matched budget',
+        f'python scripts/emit_and_score.py --fields mag_ridge --budget {prim["dots"]} --nms 2.8 --shadow 2 '
+        f'--no-holdout --name {NAME_PRIMARY}   # the shipped primary raster',
+        f'python scripts/emit_quota.py --budget {sec.get("pack_stats", {}).get("considered", 37654)} '
+        f'--name {NAME_SECONDARY}               # the shipped secondary raster',
+        'bash scripts/mirror_registry.sh data/registry    # harvest every sibling TIF in the account',
+        f'python scripts/screen_registry.py data/registry_flat docs/downloads/{NAME_PRIMARY}.tif '
+        f'docs/downloads/{NAME_SECONDARY}.tif             # exact <=3 px screen, both directions',
+        f'python scripts/run_lane_gate.py data/_reg_top_h56b docs/downloads/{NAME_PRIMARY}.tif '
+        f'docs/downloads/{NAME_SECONDARY}.tif              # the shared gate (rank corr + proximity)',
+        'python scripts/build_round2.py                   # this page, the run card, the download inventory',
+        'python tests/test_contracts.py                   # 14 contract tests',
+        'python scripts/check_site_links.py               # every internal link resolves'])
     body = f"""
 <h2>Why the group's best file scored {inv['inputs']['pruned']['score']:.4f}, and what beating it takes</h2>
 <p>We were asked to explain the top result and to beat it. The explanation is a measurement, not a story. The
@@ -592,7 +626,7 @@ histogram, emit no correction. Details: <a href="lane1-corrections.html">the rou
 <a href="research/run-card-round2.json">docs/research/run-card-round2.json</a>
 (identical bytes to <code>evidence/run_card_round2.json</code>).</p>
 
-<h2>How to reproduce, from an empty checkout</h2>
+<h2 id="reproduce">How to reproduce, from an empty checkout</h2>
 <pre>{esc(REPRO)}</pre>
 """
 
@@ -619,7 +653,6 @@ histogram, emit no correction. Details: <a href="lane1-corrections.html">the rou
 
     # ---- docs/research/hypotheses-round2.md, generated so the numbers cannot drift ------------------
     lad = ev1["instruments"]["hide"]["per_budget"]
-    r37 = {k: v["37654"]["recall_within_3px"] for k, v in lad.items() if "37654" in v}
     t3 = e3.get("table", {})
     pruned_score = inv["inputs"]["pruned"]["score"]
     ALPHA, BETA = 0.2, 0.8
