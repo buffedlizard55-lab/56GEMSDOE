@@ -102,6 +102,7 @@ data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</spa
 <p><a href="prior-run.html">Preserved prior run</a> ·
 <a href="prior-irregularities.html">Prior run irregularities</a></p></div>{body}</main>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
+round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
 generated {dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} by
 <code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
 and <code>evidence/*.json</code> (run B) ·
@@ -157,6 +158,16 @@ def main():
         gate_b = card_b["registry_comparison"]["shared_gate_verdict"]
         art_b = card_b["artefacts"]
 
+    # round-2 discovery run (PR #7, arena/858a492d): receipts live in the evidence/ root
+    def opt(name):
+        p = EVB / name
+        return json.loads(p.read_text()) if p.exists() else None
+    hold2 = opt("holdout_discovery_v1.json")
+    bld2 = opt("build_discovery_v1.json")
+    gate2 = opt("lane_gate_discovery_v2.json")
+    scr2 = opt("registry_screen_v2.json")
+    rcard2 = opt("run_card_discovery_v1.json")
+
     tifs = sorted((out / "downloads").glob("gems56-corr-*-nan.tif"))
     tif = tifs[-1] if tifs else None
     sha = card["raster"]["sha256"]
@@ -181,6 +192,39 @@ def main():
     a5 = hold["arms"]["A5_oracle"]
 
     # ---------------------------------------------------------------- index --
+    # ---- round-2 discovery candidate card (PR #7): receipts optional, guarded --------------
+    disc_html = ""
+    if bld2 and hold2:
+        rec2 = bld2["receipt"]
+        tif2 = Path(rec2["file"]).name
+        vs2 = hold2["pick_rule"]["paired_vs_random"]
+        glit = gate2.get("verdict_literal") if gate2 else "n/a"
+        disc_html = f"""
+<h2>&#11015;&nbsp;ROUND-2 DISCOVERY CANDIDATE (PR #7) &mdash; download for review only</h2>
+<div class=card>
+<p><a class="btn" href="downloads/{esc(tif2)}">Download {esc(tif2)}</a>
+<span class=mut>{rec2['bytes']/1024:.0f} KB · single band · float32 · EPSG:32611 ·
+100 m · 3292&times;3730 · {bld2['dots']:,} dots · measured distinct values {{0.0, 1.0}} ·
+0 NaN cells</span></p>
+<p><b>OK to download: yes.</b> <b>OK to submit: <span class=bad>NO</span>.</b>
+The pre-registered holdout verdict is <b>NEGATIVE</b> and the registry lane gate returned
+<b>{esc(glit)}</b> on the literal 3&nbsp;px clause (density-degenerate trigger, IR-56-023: it
+tracks grid coverage while the rank-agreement test passes at max &rho; 0.043 vs the 0.90 bar)
+&mdash; nothing is promoted and no slot was spent.</p>
+<p><b>HOLDOUT-DTI</b> of the shipped arm <code>{esc(bld2['arm'])}@{bld2['budget']:,}</code>:
+<b>{fmt(bld2['holdout_dti'],5)}</b> [{fmt(bld2['holdout_ci95'][0],5)},
+{fmt(bld2['holdout_ci95'][1],5)}] vs <b>uniform-random {fmt(bld2['chance_dti'],5)}</b> at the
+same budget; paired difference {fmt(vs2['delta'],5)}
+[{fmt(vs2['ci95'][0],5)}, {fmt(vs2['ci95'][1],5)}] &mdash; strictly below chance; canaries
+&le; {fmt(hold2['canary_max_new_fields'],3)} (limit 0.90). Receipts:
+<code>evidence/build_discovery_v1.json</code>, <code>evidence/run_card_discovery_v1.json</code>.</p>
+<p><b>submission name</b> <code>{esc(bld2['name'])}</code><br>
+<b>note</b> ({bld2['note_chars']}/140): <code>{esc(bld2['note'])}</code><br>
+<b>sha256</b> <code>{esc(rec2['sha256'])}</code> · validator ok:
+{esc(rec2['validator']['ok'])}</p>
+</div>
+"""
+
     idx = f"""
 <h2>&#11015;&nbsp;ONE-CLICK SUBMISSION FILE</h2>
 <div class=card>
@@ -206,7 +250,8 @@ standing protocol requires a stop, not a submission &mdash; the full reasoning i
 <a href="executive-summary.html">Make a submission</a>.</p>
 </div>
 
-<h2>Two runs, one repository</h2>
+{disc_html}
+<h2>Two corrections runs, one repository &mdash; plus a discovery run</h2>
 <p>This repository has run the corrections lane <b>twice</b>, in two parallel sessions.
 Both runs measured the same catalogue against the same evidence; they gate different
 questions and reached opposite verdicts. Both are reported in full &mdash; the disagreement
@@ -231,6 +276,17 @@ corridors</b> reach a consistent &ge; 2&nbsp;px offset; 3&nbsp;m LiDAR: 0 of
 files are format-valid and safe to download but <b>not cleared for a slot</b> (their
 uniqueness gate returned <code>ok:false</code> on the proximity criterion at 1-dot count,
 IR-56-006). Details: <a href="prior-run.html">Prior run</a>.</p></div>
+<div class=card><h3>Run C &mdash; this PR #7 (branch <code>arena/858a492d-56gemsdoe</code>) &mdash; <span class=bad>discovery lane: NEGATIVE twice</span></h3>
+<p>Question: <em>do off-catalogue step/tilt lineaments recover catalogue-missing faults?</em>
+Five hypotheses pre-registered (H6&ndash;H10, <code>docs/research/hypotheses-20261009.md</code>);
+the top three validated on the shared 4-fold blocked holdout (48,080 withheld positives):
+pick <code>multi@25000</code> {fmt(hold2['pick_rule']['new_arms_at_primary']['multi@25000'],5)}
+vs uniform-random {fmt(bld2['chance_dti'],5)} &mdash; paired {fmt(hold2['pick_rule']['paired_vs_random']['delta'],5)}
+[{fmt(hold2['pick_rule']['paired_vs_random']['ci95'][0],5)}, {fmt(hold2['pick_rule']['paired_vs_random']['ci95'][1],5)}],
+canaries clean. Registry gate: surface PASS, dots
+{esc(gate2.get('verdict_literal') if gate2 else '?')} (density-degenerate trigger, IR-56-023).
+Their unique TIF is the second download above &mdash; labelled NEGATIVE / do not submit in
+its name, note and receipt. 0 slots spent.</p></div>
 </div>
 <p class=mut>Reconciliation: the two runs agree on the measurement &mdash; the catalogue sits
 within ~1&nbsp;px of <em>some</em> crest (run A's nearest-crest reading matches run B's
@@ -279,7 +335,7 @@ not the fault;</li>
 <ul>
 <li><a href="executive-summary.html">Make a submission</a> &mdash; exactly how to download and submit, and the honest caveats</li>
 <li><a href="research.html">Research</a> &mdash; method, offset histogram, LiDAR calibration, holdout, leakage canary, and the &ldquo;why 0.2778&rdquo; analysis</li>
-<li><a href="hypotheses.html">Hypotheses</a> &mdash; five ranked geological hypotheses (expected DTI vs cost)</li>
+<li><a href="hypotheses.html">Hypotheses</a> &mdash; the concurrent run's five ranked geological hypotheses, plus the round-2 discovery set H6&ndash;H10 and its NEGATIVE holdout verdict</li>
 <li><a href="sources.html">Sources</a> &mdash; official, verified links for manual review</li>
 <li><a href="irregularities.html">Irregularities</a> &mdash; flagged claims and how each was checked</li>
 <li><a href="prior-run.html">Prior run</a> &mdash; the sibling corrections run on this repo (negative verdict), its downloads and its reconciliation with this run</li>
@@ -355,6 +411,26 @@ contains the value for doing nothing (0.00000) and for jittering dots at random
 rasters write 0.0 (not NaN) outside the data footprint (IR-56-013). They are safe to
 download for inspection; they are <b>not cleared for a weekly slot</b>. Details and
 downloads: <a href="prior-run.html">Prior run</a>.</p>
+</div>
+"""
+    if bld2 and hold2:
+        rec2 = bld2["receipt"]
+        exe += f"""
+<h2>Round-2 discovery candidate &mdash; also NOT for submission</h2>
+<div class=card>
+<p><b>OK to submit: <span class=bad>NO</span>.</b> The second download on the
+<a href="index.html">home page</a>
+(<code>{esc(Path(rec2['file']).name)}</code>, {bld2['dots']:,} dots) is format-validated
+research output: single band, float32, values exactly {{0.0, 1.0}}, EPSG:32611, shape and
+transform equal to the submission format, sha256 <code>{esc(rec2['sha256'])}</code>.
+Two independent verdicts block it: the pre-registered holdout rule failed (HOLDOUT-DTI
+{fmt(bld2['holdout_dti'],5)} vs chance {fmt(bld2['chance_dti'],5)}, paired
+{fmt(hold2['pick_rule']['paired_vs_random']['delta'],5)}, CI strictly below zero), and the
+registry lane gate returned <b>{esc(gate2.get('verdict_literal') if gate2 else 'n/a')}</b>
+(density-degenerate 3&nbsp;px trigger, IR-56-023). Its name, note and receipt all say
+NEGATIVE; no slot was spent. Full walk-through of the numbers:
+<a href="hypotheses.html">hypotheses (round-2 section)</a> ·
+<code>evidence/run_card_discovery_v1.json</code>.</p>
 </div>
 """
     (out / "executive-summary.html").write_text(page("Make a submission", "executive-summary.html", exe))
@@ -640,6 +716,53 @@ largest untapped pool (genuinely new faults) but carries lithology false-positiv
 H3 is the most goal-aligned but the coarsest data. H4 is cheap but indirect. H5 is the
 weakest signal at the official resolution.</p>
 """
+    # round-2 discovery set (PR #7): pre-registered H6-H10 + the E1 verdict, appended to the
+    # concurrent run's five hypotheses above -- two sessions, two hypothesis sets, both shown.
+    if hold2 and bld2:
+        pr2 = hold2["pick_rule"]
+        sc2 = hold2["pooled"]["scores"]
+        hyp += f"""
+<h2>Round-2 discovery run (PR #7): five more hypotheses, H6&ndash;H10 &mdash; validated NEGATIVE</h2>
+<p>The concurrent session on this repo pre-registered its own set
+(<a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/research/hypotheses-20261009.md"><code>docs/research/hypotheses-20261009.md</code></a>,
+ranked prior &times; cost &divide; danger) and spent its three-experiment budget testing the
+top three on the same blocked instrument (E1, <code>evidence/holdout_discovery_v1.json</code>,
+evaluator <code>gems52-pooled-hide-v1</code>, 4 folds, 48,080 withheld positives, budgets
+8k/15k/25k/37,654, six arms including a <i>measured</i> chance floor):</p>
+<table>
+<tr><th>#</th><th>hypothesis</th><th>mechanism / named non-fault process</th><th>status from E1</th></tr>
+<tr><td>H6</td><td><b>iso-gravity steps are fault-reactivated boundaries</b></td>
+<td>isostatic residual steps &rarr; potential-field edges; non-fault: erosional terrace edges</td>
+<td>best {fmt(sc2['iso_step@25000']['dti'],5)} vs chance {fmt(sc2['random@25000']['dti'],5)} &mdash; <span class=bad>below chance, NEGATIVE</span></td></tr>
+<tr><td>H7</td><td><b>basement topography &times; conductors concordance</b></td>
+<td>weak contact made conductive by fluids; non-fault: intrusions &amp; alteration halos</td>
+<td>best {fmt(sc2['bc_step@25000']['dti'],5)} &mdash; <span class=bad>below chance, NEGATIVE</span></td></tr>
+<tr><td>H8</td><td><b>tilt-low lineaments beneath cover</b></td>
+<td>basin-fill depocentres; non-fault: channel &amp; fan morphology</td>
+<td>best {fmt(sc2['tilt_r@37654']['dti'],5)} &mdash; <span class=bad>~0, NEGATIVE (channel/fan stands)</span></td></tr>
+<tr><td>H9</td><td><b>INGENOUS 2 m probes gate on structural proximity</b></td>
+<td>measured surface-temperature steps; non-fault: soil moisture &amp; albedo</td>
+<td>probe layer obtained (3,800 pts) &mdash; not tested (budget stop)</td></tr>
+<tr><td>H10</td><td><b>probe&times;structure coincidence hotspots</b></td>
+<td>fluid pathways without catalogue faults; non-fault: anthropogenic site effects</td>
+<td>not tested (budget stop)</td></tr>
+</table>
+<p><b>The headline:</b> the pre-registered pick <code>{esc(pr2['candidate'])}</code> scored
+{fmt(bld2['holdout_dti'],5)} [{fmt(bld2['holdout_ci95'][0],5)}, {fmt(bld2['holdout_ci95'][1],5)}]
+while <b>uniform-random emission at the same budget scored {fmt(bld2['chance_dti'],5)}</b>;
+paired {fmt(pr2['paired_vs_random']['delta'],5)}
+[{fmt(pr2['paired_vs_random']['ci95'][0],5)}, {fmt(pr2['paired_vs_random']['ci95'][1],5)}] &mdash;
+strictly below chance. Leakage canaries &le; {fmt(hold2['canary_max_new_fields'],3)} (limit 0.90),
+so this is not leakage: the step/tilt signatures locate <em>mapped</em> structure, and once the
+catalogue &plusmn;200 m is excluded (the mechanism behind the sibling 0.2708&rarr;0.2778
+deletion, <a href="research.html">research &sect;8</a>) there is nothing left for them to find.
+Verdict by the pre-registered rule: <b>NEGATIVE</b>; the shipped TIF (second download on the
+<a href="index.html">home page</a>) carries the verdict in its name, note and receipt
+(<code>evidence/run_card_discovery_v1.json</code>). One instrument defect found en route &mdash;
+the zero-filled rim put 56.5% of <code>iso_step</code>'s top-25,000 cells on the data edge
+(IR-56-020) &mdash; was fixed once in <code>src/gems56/transform.py</code> with six regression
+tests; the negative survived the re-run unchanged.</p>
+"""
     (out / "hypotheses.html").write_text(page("Hypotheses", "hypotheses.html", hyp))
 
     # ------------------------------------------------------------- sources --
@@ -662,6 +785,8 @@ weakest signal at the official resolution.</p>
 <tr><td>Hermant, Kiersnowski &amp; Bellanger, Stanford Geothermal Workshop 2025</td><td><a href="https://pangea.stanford.edu/ERE/pdfs/StanfordGeothermalWorkshop/2025/Hermant.pdf">pangea.stanford.edu (SGW 2025)</a></td><td>USGS-to-refined trace discrepancies up to 400 m</td></tr>
 <tr><td>USGS field response, 2020 Mw 6.5 Monte Cristo rupture (SRL 92(2A) 823&ndash;829)</td><td><a href="https://pubs.usgs.gov/publication/srl-92-2A">pubs.usgs.gov/publication/srl-92-2A</a></td><td>rupture on largely unmapped Candelaria fault, inside the footprint</td></tr>
 <tr><td>Sibling repositories (this project's parallel lanes; scores user-reported)</td><td><a href="https://github.com/buffedlizard55-lab">github.com/buffedlizard55-lab</a> (GEMSDOE, GEMSDOE32, GEMSDOE51, 7GEMSDOE, GEMSDOE48, ...)</td><td>template tooling, cached rasters, registry</td></tr>
+<tr><td>GEMSDOE54 <code>RUN2-SUMMARY.md</code> (sibling run log; byte-exact quotes in <code>knowledge/sources.json</code>)</td><td><a href="https://github.com/buffedlizard55-lab/GEMSDOE54/blob/main/RUN2-SUMMARY.md">github.com/buffedlizard55-lab/GEMSDOE54/blob/main/RUN2-SUMMARY.md</a></td><td>the 0.2708&rarr;0.2778 mechanism (delete 2,545 dots within 200 m of catalogue), board-rank and detection-floor caveats, holdout priors</td></tr>
+<tr><td>INGENIOUS / GDR 1391 2 m temperature probes (CC BY 4.0, DOI 10.15121/1881483)</td><td><a href="https://gdr.openei.org/submissions/1391">gdr.openei.org/submissions/1391</a></td><td>round-2 H9/H10 layer (3,800 points obtained via the org's hash-pinned mirror)</td></tr>
 </table>
 <p class=mut>Data provenance chain (sha256 pins, naming-drift table, DEM tile URLs) is in
 <code>data/README.md</code> (adapted from the GEMSDOE template). External data policy: free,
@@ -735,6 +860,23 @@ A literal reading that treats &ldquo;inside a big habitat lattice&rdquo; as dupl
 condemn every small precise emission (including the prior best itself) &mdash; the
 mass-ratio/Jaccard analysis is diagnostic only and does not override the rule.</p></div>
 """
+    # round-2 (PR #7) entries from the machine-readable log -- both runs flag, neither hides
+    if isinstance(irr_b, list) and bld2:
+        new_irr = [i for i in irr_b if i.get("id") in
+                   {"IR-56-019", "IR-56-020", "IR-56-021", "IR-56-022", "IR-56-023"}]
+        irr += "\n<h2>Round-2 discovery run (PR #7) &mdash; its five entries</h2>\n"
+        for i in new_irr:
+            title = i.get("title") or i.get("area") or ""
+            body = i.get("finding") or i.get("what") or ""
+            check = i.get("verified_by") or i.get("why_it_matters") or ""
+            irr += (f"<div class=card><h3>{esc(i.get('id'))}: {esc(title)}</h3>\n"
+                    f"<p>{esc(body)}</p>\n<p><b>Checked / why it matters:</b> {esc(check)}</p>\n"
+                    f"<p class=mut>Done: {esc(i.get('action', ''))} · source: "
+                    f"{esc(i.get('verified_by') or i.get('found_by') or '')}</p></div>\n")
+        irr += ("<p class=mut>Full machine-readable log (both runs, "
+                "<code>evidence/irregularities.json</code>, 23 entries): IR-56-001&hellip;013 "
+                "round 1, IR-56-014&hellip;018 the concurrent corrections session, "
+                "IR-56-019&hellip;023 this round-2 discovery run.</p>\n")
     (out / "irregularities.html").write_text(page("Irregularities", "irregularities.html", irr))
 
     print(f"site written to {out}/")

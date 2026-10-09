@@ -73,7 +73,32 @@ standing protocol requires a stop, not a submission &mdash; the full reasoning i
 <a href="executive-summary.html">Make a submission</a>.</p>
 </div>
 
-<h2>Two runs, one repository</h2>
+
+<h2>&#11015;&nbsp;ROUND-2 DISCOVERY CANDIDATE (PR #7) &mdash; download for review only</h2>
+<div class=card>
+<p><a class="btn" href="downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif">Download h56-disc-multi-b25000-20261009-20261009T165646Z.tif</a>
+<span class=mut>66 KB · single band · float32 · EPSG:32611 ·
+100 m · 3292&times;3730 · 25,000 dots · measured distinct values {0.0, 1.0} ·
+0 NaN cells</span></p>
+<p><b>OK to download: yes.</b> <b>OK to submit: <span class=bad>NO</span>.</b>
+The pre-registered holdout verdict is <b>NEGATIVE</b> and the registry lane gate returned
+<b>DUPLICATE/STOP</b> on the literal 3&nbsp;px clause (density-degenerate trigger, IR-56-023: it
+tracks grid coverage while the rank-agreement test passes at max &rho; 0.043 vs the 0.90 bar)
+&mdash; nothing is promoted and no slot was spent.</p>
+<p><b>HOLDOUT-DTI</b> of the shipped arm <code>multi@25,000</code>:
+<b>0.01242</b> [0.00787,
+0.01718] vs <b>uniform-random 0.03499</b> at the
+same budget; paired difference -0.02257
+[-0.02749, -0.01717] &mdash; strictly below chance; canaries
+&le; 0.567 (limit 0.90). Receipts:
+<code>evidence/build_discovery_v1.json</code>, <code>evidence/run_card_discovery_v1.json</code>.</p>
+<p><b>submission name</b> <code>h56-disc-multi-b25000-20261009-20261009T165646Z</code><br>
+<b>note</b> (115/140): <code>h56 discovery multi k=25000: step-lineament dots &gt;200 m off catalogue; NEGATIVE holdout, research only, do not slot</code><br>
+<b>sha256</b> <code>dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296</code> · validator ok:
+True</p>
+</div>
+
+<h2>Two corrections runs, one repository &mdash; plus a discovery run</h2>
 <p>This repository has run the corrections lane <b>twice</b>, in two parallel sessions.
 Both runs measured the same catalogue against the same evidence; they gate different
 questions and reached opposite verdicts. Both are reported in full &mdash; the disagreement
@@ -98,6 +123,17 @@ corridors</b> reach a consistent &ge; 2&nbsp;px offset; 3&nbsp;m LiDAR: 0 of
 files are format-valid and safe to download but <b>not cleared for a slot</b> (their
 uniqueness gate returned <code>ok:false</code> on the proximity criterion at 1-dot count,
 IR-56-006). Details: <a href="prior-run.html">Prior run</a>.</p></div>
+<div class=card><h3>Run C &mdash; this PR #7 (branch <code>arena/858a492d-56gemsdoe</code>) &mdash; <span class=bad>discovery lane: NEGATIVE twice</span></h3>
+<p>Question: <em>do off-catalogue step/tilt lineaments recover catalogue-missing faults?</em>
+Five hypotheses pre-registered (H6&ndash;H10, <code>docs/research/hypotheses-20261009.md</code>);
+the top three validated on the shared 4-fold blocked holdout (48,080 withheld positives):
+pick <code>multi@25000</code> 0.01242
+vs uniform-random 0.03499 &mdash; paired -0.02257
+[-0.02749, -0.01717],
+canaries clean. Registry gate: surface PASS, dots
+DUPLICATE/STOP (density-degenerate trigger, IR-56-023).
+Their unique TIF is the second download above &mdash; labelled NEGATIVE / do not submit in
+its name, note and receipt. 0 slots spent.</p></div>
 </div>
 <p class=mut>Reconciliation: the two runs agree on the measurement &mdash; the catalogue sits
 within ~1&nbsp;px of <em>some</em> crest (run A's nearest-crest reading matches run B's
@@ -146,14 +182,15 @@ not the fault;</li>
 <ul>
 <li><a href="executive-summary.html">Make a submission</a> &mdash; exactly how to download and submit, and the honest caveats</li>
 <li><a href="research.html">Research</a> &mdash; method, offset histogram, LiDAR calibration, holdout, leakage canary, and the &ldquo;why 0.2778&rdquo; analysis</li>
-<li><a href="hypotheses.html">Hypotheses</a> &mdash; five ranked geological hypotheses (expected DTI vs cost)</li>
+<li><a href="hypotheses.html">Hypotheses</a> &mdash; the concurrent run's five ranked geological hypotheses, plus the round-2 discovery set H6&ndash;H10 and its NEGATIVE holdout verdict</li>
 <li><a href="sources.html">Sources</a> &mdash; official, verified links for manual review</li>
 <li><a href="irregularities.html">Irregularities</a> &mdash; flagged claims and how each was checked</li>
 <li><a href="prior-run.html">Prior run</a> &mdash; the sibling corrections run on this repo (negative verdict), its downloads and its reconciliation with this run</li>
 </ul>
 </main>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
-generated 2026-10-09 16:50 UTC by
+round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
+generated 2026-10-09 17:46 UTC by
 <code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
 and <code>evidence/*.json</code> (run B) ·
 site served from <code>main</code> at

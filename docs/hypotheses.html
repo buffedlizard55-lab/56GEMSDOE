@@ -101,9 +101,51 @@ in the hidden label set, and it is the only one with a completed holdout. H2 add
 largest untapped pool (genuinely new faults) but carries lithology false-positive risk.
 H3 is the most goal-aligned but the coarsest data. H4 is cheap but indirect. H5 is the
 weakest signal at the official resolution.</p>
+
+<h2>Round-2 discovery run (PR #7): five more hypotheses, H6&ndash;H10 &mdash; validated NEGATIVE</h2>
+<p>The concurrent session on this repo pre-registered its own set
+(<a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/docs/research/hypotheses-20261009.md"><code>docs/research/hypotheses-20261009.md</code></a>,
+ranked prior &times; cost &divide; danger) and spent its three-experiment budget testing the
+top three on the same blocked instrument (E1, <code>evidence/holdout_discovery_v1.json</code>,
+evaluator <code>gems52-pooled-hide-v1</code>, 4 folds, 48,080 withheld positives, budgets
+8k/15k/25k/37,654, six arms including a <i>measured</i> chance floor):</p>
+<table>
+<tr><th>#</th><th>hypothesis</th><th>mechanism / named non-fault process</th><th>status from E1</th></tr>
+<tr><td>H6</td><td><b>iso-gravity steps are fault-reactivated boundaries</b></td>
+<td>isostatic residual steps &rarr; potential-field edges; non-fault: erosional terrace edges</td>
+<td>best 0.00716 vs chance 0.03499 &mdash; <span class=bad>below chance, NEGATIVE</span></td></tr>
+<tr><td>H7</td><td><b>basement topography &times; conductors concordance</b></td>
+<td>weak contact made conductive by fluids; non-fault: intrusions &amp; alteration halos</td>
+<td>best 0.00523 &mdash; <span class=bad>below chance, NEGATIVE</span></td></tr>
+<tr><td>H8</td><td><b>tilt-low lineaments beneath cover</b></td>
+<td>basin-fill depocentres; non-fault: channel &amp; fan morphology</td>
+<td>best 0.00020 &mdash; <span class=bad>~0, NEGATIVE (channel/fan stands)</span></td></tr>
+<tr><td>H9</td><td><b>INGENOUS 2 m probes gate on structural proximity</b></td>
+<td>measured surface-temperature steps; non-fault: soil moisture &amp; albedo</td>
+<td>probe layer obtained (3,800 pts) &mdash; not tested (budget stop)</td></tr>
+<tr><td>H10</td><td><b>probe&times;structure coincidence hotspots</b></td>
+<td>fluid pathways without catalogue faults; non-fault: anthropogenic site effects</td>
+<td>not tested (budget stop)</td></tr>
+</table>
+<p><b>The headline:</b> the pre-registered pick <code>multi@25000</code> scored
+0.01242 [0.00787, 0.01718]
+while <b>uniform-random emission at the same budget scored 0.03499</b>;
+paired -0.02257
+[-0.02749, -0.01717] &mdash;
+strictly below chance. Leakage canaries &le; 0.567 (limit 0.90),
+so this is not leakage: the step/tilt signatures locate <em>mapped</em> structure, and once the
+catalogue &plusmn;200 m is excluded (the mechanism behind the sibling 0.2708&rarr;0.2778
+deletion, <a href="research.html">research &sect;8</a>) there is nothing left for them to find.
+Verdict by the pre-registered rule: <b>NEGATIVE</b>; the shipped TIF (second download on the
+<a href="index.html">home page</a>) carries the verdict in its name, note and receipt
+(<code>evidence/run_card_discovery_v1.json</code>). One instrument defect found en route &mdash;
+the zero-filled rim put 56.5% of <code>iso_step</code>'s top-25,000 cells on the data edge
+(IR-56-020) &mdash; was fixed once in <code>src/gems56/transform.py</code> with six regression
+tests; the negative survived the re-run unchanged.</p>
 </main>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
-generated 2026-10-09 16:50 UTC by
+round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
+generated 2026-10-09 17:46 UTC by
 <code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
 and <code>evidence/*.json</code> (run B) ·
 site served from <code>main</code> at

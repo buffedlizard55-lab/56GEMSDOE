@@ -116,9 +116,27 @@ rasters write 0.0 (not NaN) outside the data footprint (IR-56-013). They are saf
 download for inspection; they are <b>not cleared for a weekly slot</b>. Details and
 downloads: <a href="prior-run.html">Prior run</a>.</p>
 </div>
+
+<h2>Round-2 discovery candidate &mdash; also NOT for submission</h2>
+<div class=card>
+<p><b>OK to submit: <span class=bad>NO</span>.</b> The second download on the
+<a href="index.html">home page</a>
+(<code>h56-disc-multi-b25000-20261009-20261009T165646Z.tif</code>, 25,000 dots) is format-validated
+research output: single band, float32, values exactly {0.0, 1.0}, EPSG:32611, shape and
+transform equal to the submission format, sha256 <code>dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296</code>.
+Two independent verdicts block it: the pre-registered holdout rule failed (HOLDOUT-DTI
+0.01242 vs chance 0.03499, paired
+-0.02257, CI strictly below zero), and the
+registry lane gate returned <b>DUPLICATE/STOP</b>
+(density-degenerate 3&nbsp;px trigger, IR-56-023). Its name, note and receipt all say
+NEGATIVE; no slot was spent. Full walk-through of the numbers:
+<a href="hypotheses.html">hypotheses (round-2 section)</a> ·
+<code>evidence/run_card_discovery_v1.json</code>.</p>
+</div>
 </main>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
-generated 2026-10-09 16:50 UTC by
+round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
+generated 2026-10-09 17:46 UTC by
 <code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
 and <code>evidence/*.json</code> (run B) ·
 site served from <code>main</code> at
