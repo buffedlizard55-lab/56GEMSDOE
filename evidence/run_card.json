@@ -1,8 +1,8 @@
 {
  "lane": "corrections",
  "competition": "DrivenData GEMS Prize 306 (USGS quake-explorer fault delineation)",
- "run_utc": "2026-10-09T05:47:28Z",
- "commit": "a6ed351df164c8226b8c2344dd164ed0cf063b8f",
+ "run_utc": "2026-10-09T16:49:44Z",
+ "commit": "994ff6a644eec8a238e251a84261fbb8db8f2599",
  "hypothesis": "The USGS/INGENIOUS catalogue is displaced from the geomorphic and magnetic lineations by more than ~2 pixels in places, so dots placed on the evidence-defined trace score where dots on the catalogue line cannot (known-fault pixels are excluded from the penalty terms).",
  "mechanism": "Active-quaternary slip expressed as a scarp in detrended elevation (crest of -d2z/dn2) and as a step in the magnetic gradient (ridge of |tmi_hg|), measured perpendicular to the trace strike within +-400 m.",
  "named_non_fault_process": "Slope-dependent scarp degradation and relaxation, which migrates a scarp's convex break downslope away from the fault trace without any registration error; plus the shading/curvature asymmetry of a DEM-derived field, and, on the estimator side, bilinear-interpolation curvature spikes at source gridlines. Each is why the lane requires two nulls, a strength gate calibrated on the null, and corridor-level agreement rather than any single per-pixel offset.",
@@ -136,7 +136,7 @@
  "registry_comparison": {
   "shared_gate_verdict": {
    "tool": "gates.lane_uniqueness_report (vendored template, phase=dots, exact full eligible rank)",
-   "priors_checked": 485,
+   "priors_checked": 944,
    "max_spearman": 0.005134591433171967,
    "rank_threshold": 0.9,
    "rank_pass": true,
@@ -144,14 +144,14 @@
    "near_threshold": 0.7,
    "duplicate": true,
    "ok": false,
-   "offender_count": 105,
-   "sensitivity_arm_offender_count": 31,
-   "reading": "the shared gate FAILS the candidate on the proximity criterion, trivially: the primary raster has one dot, so 'all my dots are within 3 px of a prior' is true for 105 of 485 priors, most of them whole-footprint density layers. Reciprocal overlap is 0 of 485 above 0.70 and the reverse fraction peaks at 0.0008, so nothing is duplicated. The protocol says a trigger is a logged duplicate and a stop, so the artefacts are published as research output and no slot is claimed."
+   "offender_count": 263,
+   "sensitivity_arm_offender_count": 175,
+   "reading": "the shared gate FAILS the primary on the proximity criterion. The primary has 1 dot(s); the criterion is met against 263 of 944 priors (the sensitivity raster: 175). The primary's offenders carry 12,000 to 5,167,373 positive cells (median 88,988; measured from the receipt), so the criterion is met by dense layers rather than by a like-for-like duplicate. 36 priors could not be read onto the grid and were not compared. The reciprocal figure below comes from the one-pass screen over the full 944-raster corpus (evidence/registry_screen_v1.json). The protocol says a trigger is a logged duplicate and a stop, so the artefacts are published as research output and no slot is claimed."
   },
-  "corpus_files": 485,
-  "corpus_read_errors": 0,
-  "rule_as_written_triggers": 106,
-  "of_which_dense_layers": 22,
+  "corpus_files": 944,
+  "corpus_read_errors": 35,
+  "rule_as_written_triggers": 292,
+  "of_which_dense_layers": 141,
   "reciprocal_overlap_gt_070": 0,
   "surface_max_rank_correlation": 0.005134591433171967,
   "dots_max_rank_correlation": 0.005134591433171967,

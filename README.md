@@ -224,3 +224,14 @@ The registry check needs the harvested sibling rasters (outside this repo; see
    file is unique; the flags are logged with full numbers in
    `evidence/corrections/registry_check.json` and on `docs/irregularities.html` so the
    selector can veto with the complete record.
+
+### Concurrent integration (PR #6)
+
+The updated prior-run full-corpus audit, fail-closed registry check, session brief,
+and leader analysis from PR #6 are preserved. See
+[prior-run report](docs/prior-run.html),
+[session brief](docs/brief/2026-10-09-session-prompt.md), and
+[leader analysis](docs/research/leader-analysis-2026-10-09.md).
+`scripts/build_site.py` builds the combined report; `scripts/build_prior_site.py`
+is the preserved prior generator (it writes the same docs paths, so use only in a
+separate checkout when reproducing the old presentation).

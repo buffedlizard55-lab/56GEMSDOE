@@ -20,7 +20,7 @@ pre{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:12
 nav{position:sticky;top:0;background:rgba(13,17,23,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:10px 0;z-index:5}
 nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:14px}
 .small{font-size:13px}.note{border-left:3px solid var(--warn);padding:6px 0 6px 12px;color:var(--mut);margin:10px 0}.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
-</style></head><body><div style="padding:20px;background:#302515;color:white">Archived PR #4 report — <a href="index.html">current combined report</a>. No submission slot is cleared.</div><nav><div class='wrap'><a href='index.html'><b>56GEMSDOE</b> · corrections lane</a><a href='executive-summary.html'>Executive summary &amp; how to submit</a><a href='irregularities.html'>Irregularities (this run)</a><a href='submit.html'>Submission how-to (prior session)</a><a href='evidence.md'>Source table (prior)</a><a href='irregularities.md'>Prior flag list</a><a href='research/hypotheses.md'>Ranked hypotheses</a><a href='https://github.com/buffedlizard55-lab/56GEMSDOE'>repo</a></div></nav><main><h1>How far is the fault catalogue from the evidence?</h1><p class='sub'>GEMS Prize (DrivenData 306). Measured answer: the residual is a coherent ~1 px wobble, not a &ge;2 px displacement &mdash; so this lane emits no defensible correction, and the negative, with its two nulls, its 3 m calibration and its permutation controls, is the deliverable.</p><p class='small muted'>built 2026-10-09 05:36 UTC from <code>evidence/</code> at commit <code>5718133</code>. Every number is read from a receipt at build time; none is typed. Evidence class is stated on each figure: MEASURED (this workspace), HOLDOUT-DTI (our evaluator, withhold-and-recover), ORGANIZER-CONFIRMED (a submission receipt &mdash; there are none), BOARD-UNVERIFIED (a number we could not read from an official source).</p>
+</style></head><body><nav><div class='wrap'><a href='index.html'><b>56GEMSDOE</b> · corrections lane</a><a href='executive-summary.html'>Executive summary &amp; how to submit</a><a href='irregularities.html'>Irregularities (this run)</a><a href='submit.html'>Submission how-to (prior session)</a><a href='evidence.md'>Source table (prior)</a><a href='irregularities.md'>Prior flag list</a><a href='research/hypotheses.md'>Ranked hypotheses</a><a href='https://github.com/buffedlizard55-lab/56GEMSDOE'>repo</a></div></nav><main><h1>How far is the fault catalogue from the evidence?</h1><p class='sub'>GEMS Prize (DrivenData 306). Measured answer: the residual is a coherent ~1 px wobble, not a &ge;2 px displacement &mdash; so this lane emits no defensible correction, and the negative, with its two nulls, its 3 m calibration and its permutation controls, is the deliverable.</p><p class='small muted'>built 2026-10-09 16:28 UTC from <code>evidence/</code> at commit <code>994ff6a</code>. Every number is read from a receipt at build time; none is typed. Evidence class is stated on each figure: MEASURED (this workspace), HOLDOUT-DTI (our evaluator, withhold-and-recover), ORGANIZER-CONFIRMED (a submission receipt &mdash; there are none), BOARD-UNVERIFIED (a number we could not read from an official source).</p>
 
 <div class="banner bad">
   <div class="big">Corrections lane: NEGATIVE &mdash; no corridor survives the calibrated test, so there is nothing to correct</div>
@@ -51,7 +51,7 @@ nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;fl
 <h2>Downloads</h2><div class='grid'>
 <div class="card">
   <h3>primary arm &mdash; the brief&#x27;s rule as written: emit only where a consistent offset exceeds ~2 px (200 m)</h3>
-  <p><span class="pill ok">OK to download</span><span class="pill bad">NOT cleared for a slot</span>
+  <p><span class="pill ok">OK to download (format-valid)</span><span class="pill bad">DO NOT submit: lane stopped as duplicate</span>
      <span class="pill warn">1 dots</span></p>
   <div class="kv"><b>file</b><span class="mono">h56-corr-snap200cm-20261009.tif</span></div>
   <div class="kv"><b>validator</b><span>PASSED, no problems</span></div>
@@ -68,11 +68,11 @@ nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;fl
   <input class="mono" readonly value="h56-corr-snap200cm-20261009">
   <p class="small muted">Note (122 chars, limit 140):</p>
   <input class="mono" readonly value="h56 corrections lane, PRIMARY arm: dots on the evidence crest &gt;= 200 m off catalogue, DEM+mag concordant; 1 dots; NEGATIVE">
-  <p class="small">1 dot(s) from 2 corridor(s). Every step of the pipeline is visible in the receipt: 2074 qualified px, 1996 inside the footprint and off the catalogue, 2 with corroborating neighbours, 2 inside a corridor that passed the consistency test, 1 after 200 m along-strike thinning.</p>
+  <p class="small">1 dots on 2 corridor(s) that passed the corridor-consistency rule; not cleared for a slot by this run</p>
 </div>
 <div class="card">
   <h3>sensitivity arm &mdash; same rule with the bar relaxed to 1 px, to show what the rule would have chosen</h3>
-  <p><span class="pill ok">OK to download</span><span class="pill bad">NOT cleared for a slot</span>
+  <p><span class="pill ok">OK to download (format-valid)</span><span class="pill bad">DO NOT submit: lane stopped as duplicate</span>
      <span class="pill warn">14 dots</span></p>
   <div class="kv"><b>file</b><span class="mono">h56-corr-snap100cm-20261009.tif</span></div>
   <div class="kv"><b>validator</b><span>PASSED, no problems</span></div>
@@ -89,7 +89,7 @@ nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;fl
   <input class="mono" readonly value="h56-corr-snap100cm-20261009">
   <p class="small muted">Note (127 chars, limit 140):</p>
   <input class="mono" readonly value="h56 corrections lane, sensitivity arm: dots on the evidence crest &gt;= 100 m off catalogue, DEM+mag concordant; 14 dots; NEGATIVE">
-  <p class="small">14 dot(s) from 6 corridor(s). Every step of the pipeline is visible in the receipt: 5846 qualified px, 5612 inside the footprint and off the catalogue, 30 with corroborating neighbours, 30 inside a corridor that passed the consistency test, 14 after 200 m along-strike thinning.</p>
+  <p class="small">14 dots on 6 corridor(s) that passed the corridor-consistency rule; not cleared for a slot by this run</p>
 </div></div>
 <p class="small muted">The primary raster contains <b>1</b> dot, and that dot
     is <b>not believed by the lane that produced it</b>: it comes from a corridor that passes the consistency
@@ -190,13 +190,13 @@ nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;fl
 <div class="banner bad"><div class="big">
       Shared lane gate on the final dots: <span class="pill bad">
       duplicate = True, ok = False</span>
-      &nbsp;485 priors, 0 read errors</div>
+      &nbsp;944 priors, 36 read errors</div>
       <p class="why">The template's own gate (<code>gates.lane_uniqueness_report</code>, phase
       <code>dots</code>, full exact rank over
-      5165840 eligible rank cells, 270
+      5165840 eligible rank cells, 449
       distinct decoded priors) reports max Spearman &rho; = <b>0.0051</b> against a
       0.90 threshold (pass), and directed &le;3 px dot proximity = <b>1.000</b>
-      against a 0.70 threshold (<b>fail</b>, 105 offending priors). The rank test
+      against a 0.70 threshold (<b>fail</b>, 263 offending priors). The rank test
       passes by a mile; the proximity test fails for the arithmetic reason given below, and the protocol says a
       proximity trigger is logged as a duplicate and the lane stops. Both of our rasters are therefore
       <b>not eligible for a submission slot by this run's own gate</b>, and we are not arguing our way past it:
@@ -204,27 +204,27 @@ nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;fl
       visible.</p></div>
 <p>We enumerated the git trees of the sibling repositories and downloaded every single-band,
     grid-aligned <code>.tif</code> between 80 KB and 2.6 MB under their submission/registry paths:
-    <b>485 rasters, 0 read errors</b>, scored in one pass
+    <b>944 rasters, 35 read errors</b>, scored in one pass
     by exact directed &le;3 px dot proximity in both directions
     (<code>evidence/registry_screen_v1_rows.jsonl</code>). That is the dot-level view; the earlier session in
     this repo built the hash-level view (<code>docs/research/registry-index.json</code>: 944 sibling TIFs,
     920 on this grid, 432 sharing a hash with another file). The two are complementary &mdash; a hash match
     would catch a literal copy, a proximity match catches a re-derivation &mdash; and neither finds a duplicate
     of these rasters in the reciprocal direction.</p>
-    <table class='data'><thead><tr><th>prior</th><th>its dots</th><th>share of my dots within 3 px</th><th>share of its dots within 3 px of mine</th><th>reciprocal min</th></tr></thead><tbody><tr><td><code>GEMSDOE10__docs_downloads_gems10-h16-continuation-20260927T065521077735Z-3&hellip;</code></td><td>310042</td><td>92.9%</td><td>0.05%</td><td>0.05%</td></tr><tr><td><code>GEMSDOE10__docs_downloads_gems10-h25-ctx-ridge-20260927T232947704150Z-6452&hellip;</code></td><td>174232</td><td>92.9%</td><td>0.03%</td><td>0.03%</td></tr><tr><td><code>GEMSDOE22__docs_downloads_gems22-h23-a-dti-optimal-emission-6pct-20261002-&hellip;</code></td><td>335879</td><td>92.9%</td><td>0.01%</td><td>0.01%</td></tr><tr><td><code>GEMSDOE22__docs_downloads_gems22-h23-a-dti-optimal-emission-6pct-20261002-&hellip;</code></td><td>335879</td><td>92.9%</td><td>0.01%</td><td>0.01%</td></tr><tr><td><code>GEMSDOE22__docs_downloads_gems22-h23-b-dti-optimal-emission-10pct-20261002&hellip;</code></td><td>516738</td><td>92.9%</td><td>0.01%</td><td>0.01%</td></tr></tbody></table>
-    <p class="note">Literal rule compliance, reported honestly: 106 of
-    485 priors trigger &quot;&gt;70% of my dots within 3 px of one registry
-    raster&quot; &mdash; and 22 of those are whole-footprint plausibility masks
-    with 310042+ dotted cells, against which the rule is vacuous for any non-empty
+    <table class='data'><thead><tr><th>prior</th><th>its dots</th><th>share of my dots within 3 px</th><th>share of its dots within 3 px of mine</th><th>reciprocal min</th></tr></thead><tbody><tr><td><code>11GEMSDOE__docs__downloads__gems-structural-area06-v1.tif&hellip;</code></td><td>343526</td><td>100.0%</td><td>0.04%</td><td>0.04%</td></tr><tr><td><code>12GEMSDOE__docs__downloads__12GEMSDOE_multiphysics_submission_06ca61e5.tif&hellip;</code></td><td>105188</td><td>100.0%</td><td>0.09%</td><td>0.09%</td></tr><tr><td><code>12GEMSDOE__docs__downloads__12GEMSDOE_r5-nms3-trace_055e9aac96b8.tif&hellip;</code></td><td>103347</td><td>71.4%</td><td>0.01%</td><td>0.01%</td></tr><tr><td><code>12GEMSDOE__docs__downloads__12GEMSDOE_r5-nms3-trace_055e9aac96b8_allfinite&hellip;</code></td><td>103347</td><td>71.4%</td><td>0.01%</td><td>0.01%</td></tr><tr><td><code>12GEMSDOE__docs__downloads__12GEMSDOE_r6-nms3-h28-texture_8721329b55c7.tif&hellip;</code></td><td>103347</td><td>71.4%</td><td>0.01%</td><td>0.01%</td></tr></tbody></table>
+    <p class="note">Literal rule compliance, reported honestly: 292 of
+    944 priors trigger &quot;&gt;70% of my dots within 3 px of one registry
+    raster&quot; &mdash; and 141 of those are whole-footprint plausibility masks
+    with 343526+ dotted cells, against which the rule is vacuous for any non-empty
     submission. Priors with reciprocal overlap &gt; 0.70: <b>0</b>. The trigger
-    is logged as IR-56-006 rather than quietly resolved. Per candidate: <code>h56-corr-snap100cm-20261</code>: 31 of 485 priors (max 100%); <code>h56-corr-snap200cm-20261</code>: 105 of 485 priors (max 100%); <code>max</code>: 106 of 485 priors (max 100%). The forward rule is
+    is logged as IR-56-006 rather than quietly resolved. Per candidate: <code>h56-corr-snap100cm-20261</code>: 182 of 944 priors (max 100%); <code>h56-corr-snap200cm-20261</code>: 270 of 944 priors (max 100%); <code>max</code>: 292 of 944 priors (max 100%). The forward rule is
     especially weak for a sparse raster &mdash; with 1 dot in the primary file, &quot;100% of my
     dots near a prior&quot; means one dot happens to be close, which is why the reverse and reciprocal columns
     are the ones to read: <b>0.0008</b> is the most that any prior's dots fall near ours. The emission rule's
     harder guarantee is structural anyway: a dot is never placed on a catalogue pixel, which is the one thing
     every earlier submission in this competition is made of.</p>
     <p class="small muted">Full receipts: <code>evidence/lane_uniqueness_h56-corr-snap200cm-20261009.json</code> and
-    <code>&hellip;h56-corr-snap100cm-20261009.json</code> (per-prior detail, 485 rows each) and the one-pass corpus scan
+    <code>&hellip;h56-corr-snap100cm-20261009.json</code> (per-prior detail, one row per registry raster) and the one-pass corpus scan
     <code>evidence/registry_screen_v1_rows.jsonl</code>.</p>
 <h2>7 &middot; Hypotheses, ranked by expected gain per cost</h2>
 <table class='data'><thead><tr><th>#</th><th>hypothesis</th><th>mechanism, and the named non-fault process</th><th>cost</th><th>status from this run</th></tr></thead><tbody><tr><td>H1</td><td>The catalogue is systematically displaced by &ge;2 px from the geomorphic lineation, so dots on the evidence crest earn credit that dots on the line cannot.</td><td>Active slip expressed as a scarp. Competing process that would fake it: slope-dependent scarp degradation (a scarp migrates downslope as it relaxes) and the shading asymmetry of a hillshade-derived curvature field.</td><td>1 experiment, ~150 s</td><td><b>Refuted</b>: gated medians -0.103 / 0.030 px, DEM-vs-magnetic r = 0.022, 0/21 corridors.</td></tr><tr><td>H2</td><td>The mean is zero but the tail is real: pixels where both families agree on a &ge;2 px shift are a mis-drawn segment and can be dotted profitably.</td><td>Localised slip or a mapper's step-over. Competing process: a crest picked on the wrong side of the trace at a bend &mdash; the null shows this is common, {n:.0f}% of traceless points produce a &ge;1 px &quot;offset&quot;.</td><td>same experiment</td><td><b>Half true, and not emittable</b>: the tail's structure is real (680 coherent survivors vs 153 under label permutation, p &lt; 0.004) &mdash; but it sits at 0.77 px, under both the 2 px bar and the 1.32 px noise floor, and its holdout DTI is 0.00016 [0.00000, 0.00045], which random jitter matches.</td></tr><tr><td>H3</td><td>Offsets can <em>sharpen</em> the catalogue (snap the line to the crest) so that any downstream learner or fusion improves.</td><td>Registration error in a published map. Competing process: the map is itself partly interpreted from the same DEM, in which case snapping is circular.</td><td>1 experiment, 115 s</td><td><b>Not admissible here</b>: the hide-and-recover instrument is blind to &le;3 px shifts, so the claim can be neither supported nor refuted locally. Left for a lane with a shifted-label instrument, which the organizer does not ship.</td></tr><tr><td>H4</td><td>Because catalogue pixels earn nothing, a lane's only scoreable output is mass placed <em>off</em> the traces; corrections therefore matter mainly as a gate on other lanes' ideas.</td><td>Scoring geometry, not geology: staff confirm known-fault pixels are excluded from the penalty terms, and a sibling measured 0.2708 &rarr; 0.2778 from deleting exactly the catalogue-adjacent dots.</td><td>free (already measured)</td><td><b>Confirmed and used</b>: it is why this lane never emits on a catalogue pixel, and why the sensitivity arm is labelled NEGATIVE in its own filename.</td></tr><tr><td>H5</td><td>A residual, sub-pixel systematic exists and would matter to a finer grid or a future 30 m release.</td><td>Slow, distributed deformation; competing process: geoid/vertical-datum offsets in the DEM's own ties.</td><td>would need new inputs</td><td><b>Not testable at 100 m</b>: the estimator's own precision floor is 0.46 px of placement bias plus 0.735 px of noise, so a 0.3 px systematic is unresolvable here. Recorded as a question for a 1 m/LiDAR-native lane.</td></tr></tbody></table>

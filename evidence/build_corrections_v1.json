@@ -14,6 +14,9 @@
    "name": "h56-corr-snap200cm-20261009",
    "note": "h56 corrections lane, PRIMARY arm: dots on the evidence crest >= 200 m off catalogue, DEM+mag concordant; 1 dots; NEGATIVE",
    "note_chars": 122,
+   "dots": 1,
+   "cleared_for_weekly_slot": false,
+   "verdict": "1 dots on 2 corridor(s) that passed the corridor-consistency rule; not cleared for a slot by this run",
    "file": "docs/downloads/h56-corr-snap200cm-20261009.tif",
    "sha256": "65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b",
    "bytes": 55772,
@@ -81,33 +84,36 @@
     "corridors_evaluated": 1273
    },
    "lane": {
-    "priors_checked": 485,
+    "priors_checked": 944,
     "surface_max_rho": 0.005134591433171967,
     "dots_max_rho": 0.005134591433171967,
     "dots_max_near3px": 1.0,
     "duplicate": true,
-    "offender_count": 105,
-    "error_count": 0
+    "offender_count": 263,
+    "error_count": 36
    },
    "offenders": [
-    "GEMSDOE10__docs_downloads_gems10-h16-continuation-20260927T065521077735Z-3431b83c7c.tif",
-    "GEMSDOE10__docs_downloads_gems10-h25-ctx-ridge-20260927T232947704150Z-6452ae1d00.tif",
-    "GEMSDOE22__docs_downloads_gems22-h23-a-dti-optimal-emission-6pct-20261002-e2ec4b49-allfinite.tif",
-    "GEMSDOE22__docs_downloads_gems22-h23-a-dti-optimal-emission-6pct-20261002-e2ec4b49-nan.tif",
-    "GEMSDOE22__docs_downloads_gems22-h23-b-dti-optimal-emission-10pct-20261002-86176698-allfinite.tif",
-    "GEMSDOE22__docs_downloads_gems22-h23-b-dti-optimal-emission-10pct-20261002-86176698-nan.tif",
-    "GEMSDOE23__docs_downloads_gemsdoe23-h24-dispersed-habitat-20261002-ada8df14-allfinite.tif",
-    "GEMSDOE23__docs_downloads_gemsdoe23-h24-dispersed-habitat-20261002-ada8df14-nan.tif",
-    "GEMSDOE23__docs_downloads_gemsdoe23-h29-dealiased-habitat-20261002-7bf9fac6-allfinite.tif",
-    "GEMSDOE23__docs_downloads_gemsdoe23-h29-dealiased-habitat-20261002-7bf9fac6-nan.tif",
-    "GEMSDOE23__docs_downloads_gemsdoe23-h30-arrangement-matched-habitat-20261002-0d4e02e8-allfinite.tif",
-    "GEMSDOE23__docs_downloads_gemsdoe23-h30-arrangement-matched-habitat-20261002-0d4e02e8-nan.tif"
+    "11GEMSDOE__docs__downloads__gems-structural-area06-v1.tif",
+    "12GEMSDOE__docs__downloads__12GEMSDOE_multiphysics_submission_06ca61e5.tif",
+    "12GEMSDOE__docs__downloads__12GEMSDOE_r5-nms3-trace_055e9aac96b8.tif",
+    "12GEMSDOE__docs__downloads__12GEMSDOE_r5-nms3-trace_055e9aac96b8_allfinite.tif",
+    "12GEMSDOE__docs__downloads__12GEMSDOE_r6-nms3-h28-texture_8721329b55c7.tif",
+    "12GEMSDOE__docs__downloads__12GEMSDOE_r6-nms3-h28-texture_8721329b55c7_allfinite.tif",
+    "12GEMSDOE__docs__downloads__12GEMSDOE_r7-nms3-dem10-scarp_0c9199f14e62.tif",
+    "12GEMSDOE__docs__downloads__12GEMSDOE_r7-nms3-dem10-scarp_0c9199f14e62_allfinite.tif",
+    "13GEMSDOE__docs__downloads__13gems_20261001_r11-greedy-mp_v2_nan-outside.tif",
+    "13GEMSDOE__docs__downloads__13gems_20261001_r11-greedy-mp_v2_zerofill.tif",
+    "13GEMSDOE__docs__downloads__13gems_20261001_r13-lattice-s5_v2_nan-outside.tif",
+    "13GEMSDOE__docs__downloads__13gems_20261001_r13-lattice-s5_v2_zerofill.tif"
    ]
   },
   "sensitivity": {
    "name": "h56-corr-snap100cm-20261009",
    "note": "h56 corrections lane, sensitivity arm: dots on the evidence crest >= 100 m off catalogue, DEM+mag concordant; 14 dots; NEGATIVE",
    "note_chars": 127,
+   "dots": 14,
+   "cleared_for_weekly_slot": false,
+   "verdict": "14 dots on 6 corridor(s) that passed the corridor-consistency rule; not cleared for a slot by this run",
    "file": "docs/downloads/h56-corr-snap100cm-20261009.tif",
    "sha256": "e3285854e73ae4ba3fce8faea64940fdc4bee3b702eb52d2530a67fb60195196",
    "bytes": 55844,
@@ -259,29 +265,30 @@
     "corridors_evaluated": 1273
    },
    "lane": {
-    "priors_checked": 485,
+    "priors_checked": 944,
     "surface_max_rho": 0.006059874406178202,
     "dots_max_rho": 0.006059874406178202,
     "dots_max_near3px": 1.0,
     "duplicate": true,
-    "offender_count": 31,
-    "error_count": 0
+    "offender_count": 175,
+    "error_count": 36
    },
    "offenders": [
-    "GEMSDOE10__docs_downloads_gems10-h16-continuation-20260927T065521077735Z-3431b83c7c.tif",
-    "GEMSDOE10__docs_downloads_gems10-h25-ctx-ridge-20260927T232947704150Z-6452ae1d00.tif",
-    "GEMSDOE10__docs_downloads_gems10-h28-dotted-ridge-20260928T020256236880Z-6452ae1d00.tif",
-    "GEMSDOE22__docs_downloads_gems22-h23-a-dti-optimal-emission-6pct-20261002-e2ec4b49-allfinite.tif",
-    "GEMSDOE22__docs_downloads_gems22-h23-a-dti-optimal-emission-6pct-20261002-e2ec4b49-nan.tif",
-    "GEMSDOE22__docs_downloads_gems22-h23-b-dti-optimal-emission-10pct-20261002-86176698-allfinite.tif",
-    "GEMSDOE22__docs_downloads_gems22-h23-b-dti-optimal-emission-10pct-20261002-86176698-nan.tif",
-    "GEMSDOE23__docs_downloads_gemsdoe23-h30-arrangement-matched-habitat-20261002-0d4e02e8-allfinite.tif",
-    "GEMSDOE23__docs_downloads_gemsdoe23-h30-arrangement-matched-habitat-20261002-0d4e02e8-nan.tif",
-    "GEMSDOE29__docs_downloads_gemsdoe29-repo-c0-habitat-emission-20261003-a4d439b07426-nan.tif",
-    "GEMSDOE30__docs_downloads_gemsdoe30-edge-hybrid-80k-02845bd4-20261003T234340Z-allfinite.tif",
-    "GEMSDOE30__docs_downloads_gemsdoe30-edge-hybrid-80k-02845bd4-nan.tif"
+    "11GEMSDOE__docs__downloads__gems-structural-area06-v1.tif",
+    "12GEMSDOE__docs__downloads__12GEMSDOE_multiphysics_submission_06ca61e5.tif",
+    "12GEMSDOE__docs__downloads__12GEMSDOE_r5-nms3-trace_055e9aac96b8.tif",
+    "12GEMSDOE__docs__downloads__12GEMSDOE_r5-nms3-trace_055e9aac96b8_allfinite.tif",
+    "12GEMSDOE__docs__downloads__12GEMSDOE_r6-nms3-h28-texture_8721329b55c7.tif",
+    "12GEMSDOE__docs__downloads__12GEMSDOE_r6-nms3-h28-texture_8721329b55c7_allfinite.tif",
+    "12GEMSDOE__docs__downloads__12GEMSDOE_r7-nms3-dem10-scarp_0c9199f14e62.tif",
+    "12GEMSDOE__docs__downloads__12GEMSDOE_r7-nms3-dem10-scarp_0c9199f14e62_allfinite.tif",
+    "13GEMSDOE__docs__downloads__13gems_20261001_r11-greedy-mp_v2_nan-outside.tif",
+    "13GEMSDOE__docs__downloads__13gems_20261001_r11-greedy-mp_v2_zerofill.tif",
+    "13GEMSDOE__docs__downloads__13gems_20261001_r13-lattice-s5_v2_nan-outside.tif",
+    "13GEMSDOE__docs__downloads__13gems_20261001_r13-lattice-s5_v2_zerofill.tif"
    ]
   }
  },
- "priors_in_registry": 485
+ "priors_in_registry": 944,
+ "built_utc": "2026-10-09 16:28 UTC"
 }

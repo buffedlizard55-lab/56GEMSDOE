@@ -377,6 +377,7 @@
     "strike_deg": 154.312,
     "joint_mad": 0.056,
     "joint_se": 0.052,
+    "joint_se_raw": 0.052,
     "z": 60.561,
     "qualifies": false
    },
@@ -397,6 +398,7 @@
     "strike_deg": 147.212,
     "joint_mad": 0.05,
     "joint_se": 0.035,
+    "joint_se_raw": 0.035,
     "z": 87.85,
     "qualifies": false
    },
@@ -417,6 +419,7 @@
     "strike_deg": 147.316,
     "joint_mad": 0.738,
     "joint_se": 0.685,
+    "joint_se_raw": 0.685,
     "z": 4.258,
     "qualifies": false
    },
@@ -437,6 +440,7 @@
     "strike_deg": 137.614,
     "joint_mad": 0.687,
     "joint_se": 0.425,
+    "joint_se_raw": 0.425,
     "z": 6.765,
     "qualifies": false
    },
@@ -457,6 +461,7 @@
     "strike_deg": 152.02,
     "joint_mad": 0.517,
     "joint_se": 0.43,
+    "joint_se_raw": 0.43,
     "z": 6.68,
     "qualifies": false
    },
@@ -477,6 +482,7 @@
     "strike_deg": 133.717,
     "joint_mad": 0.476,
     "joint_se": 0.28,
+    "joint_se_raw": 0.28,
     "z": 10.173,
     "qualifies": false
    },
@@ -497,6 +503,7 @@
     "strike_deg": 154.259,
     "joint_mad": 0.139,
     "joint_se": 0.129,
+    "joint_se_raw": 0.129,
     "z": 22.052,
     "qualifies": false
    },
@@ -517,6 +524,7 @@
     "strike_deg": 9.435,
     "joint_mad": 0.225,
     "joint_se": 0.187,
+    "joint_se_raw": 0.187,
     "z": 15.136,
     "qualifies": false
    },
@@ -537,6 +545,7 @@
     "strike_deg": 135.0,
     "joint_mad": 0.148,
     "joint_se": 0.097,
+    "joint_se_raw": 0.097,
     "z": 29.06,
     "qualifies": false
    },
@@ -557,6 +566,7 @@
     "strike_deg": 36.06,
     "joint_mad": 0.234,
     "joint_se": 0.218,
+    "joint_se_raw": 0.218,
     "z": 12.762,
     "qualifies": false
    },
@@ -577,6 +587,7 @@
     "strike_deg": 169.688,
     "joint_mad": 0.348,
     "joint_se": 0.323,
+    "joint_se_raw": 0.323,
     "z": 8.578,
     "qualifies": false
    },
@@ -597,6 +608,7 @@
     "strike_deg": 166.093,
     "joint_mad": 0.106,
     "joint_se": 0.088,
+    "joint_se_raw": 0.088,
     "z": 30.875,
     "qualifies": false
    },
@@ -617,6 +629,7 @@
     "strike_deg": 13.954,
     "joint_mad": 0.173,
     "joint_se": 0.161,
+    "joint_se_raw": 0.161,
     "z": 16.636,
     "qualifies": false
    },
@@ -637,6 +650,7 @@
     "strike_deg": 143.817,
     "joint_mad": 0.234,
     "joint_se": 0.177,
+    "joint_se_raw": 0.177,
     "z": 14.97,
     "qualifies": false
    },
@@ -657,6 +671,7 @@
     "strike_deg": 8.252,
     "joint_mad": 0.272,
     "joint_se": 0.226,
+    "joint_se_raw": 0.226,
     "z": 11.612,
     "qualifies": false
    },
@@ -677,6 +692,7 @@
     "strike_deg": 171.379,
     "joint_mad": 0.234,
     "joint_se": 0.195,
+    "joint_se_raw": 0.195,
     "z": 13.354,
     "qualifies": false
    },
@@ -697,6 +713,7 @@
     "strike_deg": 153.781,
     "joint_mad": 0.587,
     "joint_se": 0.412,
+    "joint_se_raw": 0.412,
     "z": 6.269,
     "qualifies": false
    },
@@ -717,6 +734,7 @@
     "strike_deg": 122.145,
     "joint_mad": 0.4,
     "joint_se": 0.372,
+    "joint_se_raw": 0.372,
     "z": 6.935,
     "qualifies": false
    },
@@ -737,6 +755,7 @@
     "strike_deg": 107.328,
     "joint_mad": 0.332,
     "joint_se": 0.308,
+    "joint_se_raw": 0.308,
     "z": 8.315,
     "qualifies": false
    },
@@ -757,6 +776,7 @@
     "strike_deg": 162.177,
     "joint_mad": 0.647,
     "joint_se": 0.38,
+    "joint_se_raw": 0.38,
     "z": 6.698,
     "qualifies": false
    },
@@ -777,6 +797,7 @@
     "strike_deg": 125.493,
     "joint_mad": 0.213,
     "joint_se": 0.161,
+    "joint_se_raw": 0.161,
     "z": 15.715,
     "qualifies": false
    },
@@ -797,6 +818,7 @@
     "strike_deg": 34.51,
     "joint_mad": 0.253,
     "joint_se": 0.192,
+    "joint_se_raw": 0.192,
     "z": 13.165,
     "qualifies": false
    },
@@ -817,6 +839,7 @@
     "strike_deg": 89.276,
     "joint_mad": 0.242,
     "joint_se": 0.201,
+    "joint_se_raw": 0.201,
     "z": 12.535,
     "qualifies": false
    },
@@ -837,6 +860,7 @@
     "strike_deg": 14.856,
     "joint_mad": 0.261,
     "joint_se": 0.198,
+    "joint_se_raw": 0.198,
     "z": 12.727,
     "qualifies": false
    },
@@ -857,6 +881,7 @@
     "strike_deg": 77.582,
     "joint_mad": 0.408,
     "joint_se": 0.268,
+    "joint_se_raw": 0.268,
     "z": 9.35,
     "qualifies": false
    }

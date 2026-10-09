@@ -49,7 +49,7 @@
   "title": "The duplicate-submission rule as written is vacuous against dense rasters",
   "severity": "bad",
   "finding": "The lane protocol says: if >70% of my dots lie within 3 px of one registry raster's dots, log a duplicate and stop. Sibling repos publish whole-footprint plausibility masks (5,167,373 and 4,830,583 dotted cells). Against those, ANY non-empty submission is 100% contained, so the rule fires on every candidate in the corpus, including files that are not submissions at all. The reverse overlap for the same pairs was 0.01-0.12%. The authoritative run confirms it: gates.lane_uniqueness_report on the final primary dots returns max Spearman 0.0051 (pass, threshold 0.90) but directed <=3px proximity 1.000 against a 0.70 threshold, duplicate=true, ok=false, 105 offending priors -- because the raster carries a single dot. The sensitivity raster (14 dots) triggers 31 priors on the same criterion and 0 in the reciprocal direction.",
-  "action": "Both directions plus the reciprocal minimum are computed for all 485 rasters (evidence/registry_screen_v1_rows.jsonl), the trigger is reported with the prior's dot count so a reader can see which priors are density masks, and the site does not claim a clean uniqueness pass. The rule's *intent* -- do not resubmit someone's raster -- is additionally served by the emission rule never placing a dot on a catalogue pixel. The gate's own verdict is published on the site banner and in the run card as a failure, and no slot is claimed for either raster.",
+  "action": "Both directions plus the reciprocal minimum are computed for all 485 rasters (evidence/registry_screen_v1_rows.jsonl), the trigger is reported with the prior's dot count so a reader can see which priors are density masks, and the site does not claim a clean uniqueness pass. The rule's *intent* -- do not resubmit someone's raster -- is additionally served by the emission rule never placing a dot on a catalogue pixel. The gate's own verdict is published on the site banner and in the run card as a failure, and no slot is claimed for either raster. [2026-10-09 update: re-run on the full 944-raster corpus (scripts/screen_registry.py, evidence/registry_screen_v1.json): the forward rule triggers for 292 of 944 (candidate, prior) pairs across both rasters, 141 of them dense layers; reciprocal overlap above 0.70 is 0 and the reverse fraction peaks at 0.0011. The rule as written is still the stop condition, so the lane stops as a duplicate; the rule itself is flagged for a protocol-level fix.]",
   "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/registry_screen_v1.json",
   "verified_by": "scripts/screen_registry.py over /home/user/_reg"
  },
@@ -115,5 +115,50 @@
   "action": "Measured the consequence rather than assuming it: under DTI, FPw sums only over prediction pixels with p > 0, so 0 and null outside are arithmetically identical, and both are inside [0,1], which is what the upload range check enforces. Kept the template behaviour so this lane's file is byte-comparable with the sibling submissions that already uploaded, published the exact difference on the site instead of claiming compliance, and recorded the flip: writing out[~valid]=nan with nodata=nan in submission_writer (one edit, shared tool) if DrivenData ever rejects a 0-filled exterior. A reviewer with an account should confirm which convention the platform's validator prefers.",
   "link": "https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/src/gems56/submission_writer.py",
   "verified_by": "independent rasterio read of both rasters and of the sample: non-null-outside-footprint count 12,218,172, sample NaN count 7,111,787"
+ },
+ {
+  "id": "IR-56-014",
+  "title": "Input data directory was absent at session start, although the manifest and README describe it as present",
+  "severity": "bad",
+  "finding": "At the start of the 2026-10-09 session data/ did not exist: prepare_data.py failed, and the manifest's 'present_in_repo' claims could not be re-verified locally. The three pinned competition inputs and the LiDAR layer were re-fetched from the owner's public sibling repo buffedlizard55-lab/GEMSDOE (data/bridge) and buffedlizard55-lab/GEMSDOE48 (data/external), and each sha256 was re-measured: existing_faults 7ba308cc…, sample_submission 2176d08e…, training_features 4371c82e… (after reassembling 5 parts, each part hash checked), h52_scarp3m_100m b5e53d67….",
+  "action": "All hashes match registry/input_pins.json and data_manifest.json. data/ is git-ignored and was not committed. The source is a third-party mirror of a login-gated organizer data tab, not an organizer source: a licence review is required before any redistribution. Flagged for the user.",
+  "link": "https://www.drivendata.org/competitions/306/competition-doe-gems/data/",
+  "verified_by": "sha256sum on the bytes in data/ (this session)"
+ },
+ {
+  "id": "IR-56-015",
+  "title": "Uniqueness gate silently checked zero priors and wrote empty receipts",
+  "severity": "bad",
+  "finding": "build_corrections_submission.py globs /home/user/_reg/*.tif. That directory does not exist in this sandbox, so the gate ran with priors_checked=0 and overwrote evidence/lane_uniqueness_*.json with {} (and changed build_corrections_v1.json). The overwrite was caught in the diff and the committed receipts were restored from git before any conclusion was drawn.",
+  "action": "Fixed: the script now raises when fewer than 944 indexed priors are present (fail-closed). Added scripts/mirror_registry_corpus.py, which rebuilds the flat corpus from docs/research/registry-index.json with a sha256 check per file (944/944 copied, see evidence/registry_corpus_mirror.json). The uniqueness gate was then re-run against the full corpus; its result is recorded in the run card.",
+  "link": "https://github.com/buffedlizard55-lab/GEMSDOE",
+  "verified_by": "git diff before and after; registry_corpus_mirror.json"
+ },
+ {
+  "id": "IR-56-016",
+  "title": "The 0.2778 figure has no readable receipt; leaderboard values conflict",
+  "severity": "bad",
+  "finding": "The GEMSDOE32 page that hosts the 0.2778 file says the file is UNSCORED and that no organizer score exists for it; its own projection is 0.2747 and is labelled a model. The page also reports a leader of 0.3262 (read 2026-10-04), while the brief quotes 0.3774 and 0.3195. The DrivenData leaderboard renders client-side and returned only 'Loading...' to our fetch.",
+  "action": "Every such figure is labelled USER-REPORTED or CLAIM (site) in docs/research/leader-analysis-2026-10-09.md. None is used as an input. A manual check of the official leaderboard is needed before any of them is cited as fact.",
+  "link": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
+  "verified_by": "fetch of the GEMSDOE32 page and the DrivenData leaderboard page (this session)"
+ },
+ {
+  "id": "IR-56-017",
+  "title": "The stored session brief is a near-verbatim record, not a byte copy",
+  "severity": "info",
+  "finding": "docs/brief/2026-10-09-session-prompt.md reproduces the prompt in order, but abbreviates the long per-site score table and flattens link wrappers.",
+  "action": "Fidelity statement added to the file header. The original message is the authority for the score table.",
+  "link": "docs/brief/2026-10-09-session-prompt.md",
+  "verified_by": "manual comparison"
+ },
+ {
+  "id": "IR-56-018",
+  "title": "Under the official metric, a 14-dot file cannot beat 0.2778 unless the hidden positive set is under ~558 pixels",
+  "severity": "warn",
+  "finding": "DTI ≤ T_max/(0.2·T_max + 0.8·|G|) with T_max = min(|G|, S·K), K = 9.3803 (sum of the triangular kernel over the 29-cell disc). For S = 14 this gives 0.0129 at |G| = 12,691 and 0.0027 at |G| = 60,988. The hidden |G| is not published.",
+  "action": "Recorded as the main negative result of the lane. Recommendation: do not spend a weekly slot on this lane's file. Leader route requires dense recall-weighted emission, which is outside this lane's method paragraph.",
+  "link": "https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/",
+  "verified_by": "gems56.metric.OFFSETS, formula from the official page (DERIVED)"
  }
 ]
