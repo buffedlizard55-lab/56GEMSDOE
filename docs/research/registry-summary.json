@@ -1,0 +1,108 @@
+{
+  "files": 944,
+  "readable": 944,
+  "unreadable": 0,
+  "on_reference_grid": 920,
+  "off_grid": 24,
+  "distinct_sha256": 651,
+  "files_sharing_a_hash_with_another": 432,
+  "duplicate_groups": 139,
+  "largest_duplicate_groups": [
+    [
+      "5GEMSDOE/data/bridge/existing_faults.tif",
+      "6GEMSDOE/data/bridge/existing_faults.tif",
+      "6GEMSDOE/data/labels.tif",
+      "GEMSDOE/data/bridge/existing_faults.tif",
+      "GEMSDOE10/data/labels.tif",
+      "GEMSDOE2/data/bridge/existing_faults.tif",
+      "..."
+    ],
+    [
+      "5GEMSDOE/data/bridge/example_submission.tif",
+      "6GEMSDOE/data/bridge/example_submission.tif",
+      "6GEMSDOE/data/sample_submission.tif",
+      "GEMSDOE/data/bridge/example_submission.tif",
+      "GEMSDOE10/data/sample_submission.tif",
+      "GEMSDOE2/data/bridge/example_submission.tif",
+      "..."
+    ],
+    [
+      "19GEMSDOE/docs/downloads/gems19-h19-5-powerlaw-budget-multiline-corroborated-20260930-e27054cf-nan.tif",
+      "19GEMSDOE/submissions/gems19-h19-5-powerlaw-budget-multiline-corroborated-20260930-e27054cf-nan.tif",
+      "GEMSDOE22/assets/lb_anchors/lb_anchor_h19-5_0.1922.tif",
+      "GEMSDOE22/docs/downloads/gems19-h19-5-powerlaw-budget-multiline-corroborated-20260930-e27054cf-nan.tif",
+      "GEMSDOE23/docs/downloads/gems19-h19-5-powerlaw-budget-multiline-corroborated-20260930-e27054cf-nan.tif",
+      "GEMSDOE24/docs/downloads/gems24-h24-0-mirror-h19-5-group-best-20261002-e27054cf-nan.tif",
+      "..."
+    ],
+    [
+      "5GEMSDOE/data/evidence/baseline/submission.tif",
+      "5GEMSDOE/data/evidence/baseline_rerun/submission.tif",
+      "GEMSDOE/data/evidence/baseline/submission.tif",
+      "GEMSDOE/data/evidence/baseline_rerun/submission.tif",
+      "GEMSDOE2/data/evidence/baseline/submission.tif",
+      "GEMSDOE2/data/evidence/baseline_rerun/submission.tif",
+      "..."
+    ],
+    [
+      "5GEMSDOE/data/evidence/leaderboard_anchor/gemsdoe-ens12-adopted-7f00890a.tif",
+      "5GEMSDOE/data/evidence/runs/ens12-adopted-floor0.1-w0/submission.tif",
+      "7GEMSDOE/external/scored/gemsdoe1-ens12-7f00890a.tif",
+      "GEMSDOE/data/evidence/runs/ens12-adopted-floor0.1-w0/submission.tif",
+      "GEMSDOE2/data/evidence/runs/ens12-adopted-floor0.1-w0/submission.tif",
+      "GEMSDOE2/docs/gemsdoe2-recall-arm-7f00890a.tif",
+      "..."
+    ],
+    [
+      "19GEMSDOE/docs/downloads/gems19-h19-4-multiline-corroborated-openness-thermal-pop-20260930-691e4dfa-nan.tif",
+      "19GEMSDOE/submissions/gems19-h19-4-multiline-corroborated-openness-thermal-pop-20260930-691e4dfa-nan.tif",
+      "GEMSDOE21/docs/downloads/gems21-h19-4-reference-20260930-691e4dfa.tif",
+      "GEMSDOE22/assets/lb_anchors/lb_anchor_h19-4_0.1894.tif",
+      "GEMSDOE22/docs/downloads/gems19-h19-4-multiline-corroborated-openness-thermal-pop-20260930-691e4dfa-nan.tif",
+      "GEMSDOE24/inputs/gems19-h19-4-multiline-corroborated-openness-thermal-pop-20260930-691e4dfa-nan.tif"
+    ],
+    [
+      "19GEMSDOE/docs/downloads/gems19-h19-5-powerlaw-budget-multiline-corroborated-20260930-e27054cf-allfinite.tif",
+      "19GEMSDOE/submissions/gems19-h19-5-powerlaw-budget-multiline-corroborated-20260930-e27054cf-allfinite.tif",
+      "GEMSDOE22/docs/downloads/gems19-h19-5-powerlaw-budget-multiline-corroborated-20260930-e27054cf-allfinite.tif",
+      "GEMSDOE24/docs/downloads/gems24-h24-0-mirror-h19-5-group-best-20261002-e27054cf-allfinite.tif",
+      "GEMSDOE24/docs/downloads/gems24-reference-h19-5-20261002-80d47e1ab2ee-allfinite.tif",
+      "GEMSDOE24/inputs/gems19-h19-5-powerlaw-budget-multiline-corroborated-20260930-e27054cf-allfinite.tif"
+    ],
+    [
+      "19GEMSDOE/evidence/ci/derived_sgmc_faults_100m_u8.tif",
+      "20GEMSDOE/evidence/ci/derived_sgmc_faults_100m_u8.tif",
+      "GEMSDOE22/assets/external/derived_sgmc_faults_100m_u8.tif",
+      "GEMSDOE22/evidence/ci/derived_sgmc_faults_100m_u8.tif",
+      "GEMSDOE24/data/external/derived_sgmc_faults_100m_u8.tif",
+      "GEMSDOE48/data/official/derived_sgmc_faults_100m.tif"
+    ],
+    [
+      "5GEMSDOE/data/evidence/proxy/proxy_catalogue.tif",
+      "8GEMSDOE/data/proxy/proxy_catalogue_sgmc.tif",
+      "GEMSDOE/data/evidence/proxy/proxy_catalogue.tif",
+      "GEMSDOE2/data/evidence/proxy/proxy_catalogue.tif",
+      "GEMSDOE3/legacy/data/evidence/proxy/proxy_catalogue.tif",
+      "GEMSDOE4/data/evidence/proxy/proxy_catalogue.tif"
+    ],
+    [
+      "5GEMSDOE/data/fixture/fixture_features_int16.tif",
+      "7GEMSDOE/tests/fixture/fixture_features_int16.tif",
+      "GEMSDOE/data/fixture/fixture_features_int16.tif",
+      "GEMSDOE2/data/fixture/fixture_features_int16.tif",
+      "GEMSDOE3/legacy/data/fixture/fixture_features_int16.tif",
+      "GEMSDOE4/data/fixture/fixture_features_int16.tif"
+    ]
+  ],
+  "dtypes": {
+    "float32": 857,
+    "uint8": 58,
+    "int8": 20,
+    "int16": 9
+  },
+  "crs": {
+    "EPSG:32611": 942,
+    "EPSG:26911": 2
+  },
+  "note": "on_reference_grid counts EPSG:32611, 3292x3730, 100 m, origin (243350, 4508550). Files off-grid cannot be a direct submission for this competition."
+}

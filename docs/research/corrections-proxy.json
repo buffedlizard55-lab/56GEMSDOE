@@ -1,0 +1,145 @@
+{
+  "script": "scripts/corrections_proxy.py",
+  "grid": {
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ]
+  },
+  "catalogue_proxy_px": 59065,
+  "evidence_proxy_px": 82151,
+  "evidence_px_within_r_of_catalogue": {
+    "0": 3681,
+    "1": 10794,
+    "2": 16238,
+    "3": 20173,
+    "4": 22668
+  },
+  "evidence_px_farther_than_4px": 59483,
+  "catalogue_px_within_r_of_evidence": {
+    "0": 3681,
+    "1": 10692,
+    "2": 16001,
+    "3": 19721,
+    "4": 22007
+  },
+  "catalogue_px_with_evidence_within_4px": 22007,
+  "nearest_displacement_magnitude_px": {
+    "mean": 1.5445775255041876,
+    "median": 1.4142135623730951,
+    "share_le_1px": 0.4858454128231926,
+    "share_le_2px": 0.7270868360067251
+  },
+  "top_displacements_dy_dx": [
+    [
+      [
+        0,
+        -1
+      ],
+      3695
+    ],
+    [
+      [
+        0,
+        0
+      ],
+      3681
+    ],
+    [
+      [
+        0,
+        -2
+      ],
+      1429
+    ],
+    [
+      [
+        0,
+        1
+      ],
+      1314
+    ],
+    [
+      [
+        1,
+        0
+      ],
+      1102
+    ],
+    [
+      [
+        -1,
+        -1
+      ],
+      930
+    ],
+    [
+      [
+        0,
+        2
+      ],
+      922
+    ],
+    [
+      [
+        -1,
+        0
+      ],
+      900
+    ],
+    [
+      [
+        1,
+        1
+      ],
+      557
+    ],
+    [
+      [
+        1,
+        -1
+      ],
+      547
+    ],
+    [
+      [
+        -1,
+        -2
+      ],
+      475
+    ],
+    [
+      [
+        -1,
+        1
+      ],
+      433
+    ]
+  ],
+  "local_test": {
+    "block_px": 50,
+    "min_pairs_per_block": 30,
+    "blocks_tested": 306,
+    "block_mean_magnitude_px": {
+      "median": 0.7747363716895426,
+      "p90": 1.4825814079686208,
+      "max": 2.7974145219016413
+    },
+    "blocks_over_2px": 8
+  },
+  "protocol_threshold_px": 2.0,
+  "verdict": "offsets cluster under 2 px in this proxy -> corrections lane emits NOTHING (proxy only; DEM-crest test still BLOCKED)",
+  "limitations": [
+    "SGMC is a 1:50,000-1:1,000,000 compilation; its positional error is far larger than 100 m, so this is not a sub-pixel test.",
+    "SGMC source used by the owner mirror is the 2017 release; USGS says it is superseded by DOI 10.5066/P1A3DQZK (2026).",
+    "Nearest-pixel displacement is biased toward 0 for rasterised lines; treat it as an order-of-magnitude check.",
+    "Not a DEM-crest or magnetic-ridge measurement; no LiDAR calibration was possible."
+  ]
+}

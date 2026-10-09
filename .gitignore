@@ -1,0 +1,14 @@
+# Competition inputs are never committed: they are login-gated and licence-restricted.
+data/raw/
+data/interim/
+data/external/
+# Rasters and model outputs are kept out of Git (use external storage if they must be shared).
+*.tif
+*.tiff
+*.npy
+*.npz
+# Python / tooling
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
