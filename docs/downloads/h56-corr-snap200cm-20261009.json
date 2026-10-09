@@ -1,0 +1,122 @@
+{
+  "file": "h56-corr-snap200cm-20261009.tif",
+  "sha256": "65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b",
+  "bytes": 55772,
+  "submission_name": "h56-corr-snap200cm-20261009",
+  "note": "h56 corrections lane, PRIMARY arm: dots on the evidence crest >= 200 m off catalogue, DEM+mag concordant; 1 dots; NEGATIVE",
+  "note_chars": 122,
+  "validator": {
+    "path": "/home/user/56GEMSDOE/docs/downloads/h56-corr-snap200cm-20261009.tif",
+    "bytes": 55772,
+    "sha256": "65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b",
+    "bands": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "ref_bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "nodata": null,
+    "blocksize": [
+      256,
+      256
+    ],
+    "fixture_grid": false,
+    "has_validity_mask": false,
+    "nan_pixels": 0,
+    "infinity_pixels": 0,
+    "n_nan": 0,
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 8.143879881572502e-08,
+    "n_nonzero": 1,
+    "mass": 1.0,
+    "mass_outside_footprint": 0,
+    "problems": [],
+    "ok": true,
+    "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+  },
+  "zip_file": "h56-corr-snap200cm-20261009.zip",
+  "zip_sha256": "6a391551f1c581e8ebd4a2a548fc9f56ceffa89696ae858551ecba9682b96f7f",
+  "approved_for_weekly_slot": false,
+  "promoted": false,
+  "submission_slots_used": 0,
+  "status": "research-only; local format validation is not organizer acceptance",
+  "metadata": {
+    "arm": "primary",
+    "offset_gate_px": 2.0,
+    "counts": {
+      "qualified_pixels": 2074,
+      "after_target_gates": 1996,
+      "after_cluster_gate": 2,
+      "qualifying_corridors": 2,
+      "after_corridor_gate": 2,
+      "after_thinning": 1,
+      "corridors": [
+        {
+          "comp": 766,
+          "n_usable": 12,
+          "n_component": 18,
+          "dem_med": -2.0488570742808445,
+          "dem_mad": 0.7496161710135225,
+          "dem_iqr": 2.192739307559741,
+          "dem_sign_pos": 0.25,
+          "dem_sign_consistency": 0.75,
+          "mag_sign_consistency": 0.8333333333333334,
+          "joint_med": -2.4770563333595668,
+          "joint_n": 8,
+          "corroborated_frac": 0.6666666666666666,
+          "length_m": 1200.0,
+          "strike_deg": 161.9091339111328,
+          "joint_mad": 0.6536551462440057,
+          "joint_se": 0.4582051942088828,
+          "joint_se_raw": 0.4294145709700637,
+          "z": 5.405997934258132,
+          "qualifies": true
+        },
+        {
+          "comp": 2743,
+          "n_usable": 13,
+          "n_component": 21,
+          "dem_med": -2.2459913856552944,
+          "dem_mad": 0.3688506605702657,
+          "dem_iqr": 0.7695344736710783,
+          "dem_sign_pos": 0.0,
+          "dem_sign_consistency": 1.0,
+          "mag_sign_consistency": 0.7692307692307693,
+          "joint_med": -2.203127767178079,
+          "joint_n": 10,
+          "corroborated_frac": 0.7692307692307693,
+          "length_m": 1300.0,
+          "strike_deg": 26.801362991333008,
+          "joint_mad": 0.2366050352426763,
+          "joint_se": 0.40983118475782193,
+          "joint_se_raw": 0.13902633317063712,
+          "z": 5.3756957721017615,
+          "qualifies": true
+        }
+      ],
+      "corridors_evaluated": 1273
+    },
+    "holdout_dti_arm": "B_snap/C_snap_sub",
+    "cleared_for_weekly_slot": false
+  }
+}

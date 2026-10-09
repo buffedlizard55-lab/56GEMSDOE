@@ -1,1 +1,136 @@
-# 56GEMSDOE
+# 56GEMSDOE — GEMS Prize (DrivenData 306), **corrections lane**
+
+Live site: **https://buffedlizard55-lab.github.io/56GEMSDOE/** · downloadable rasters in
+[`docs/downloads/`](docs/downloads/) · all receipts in [`evidence/`](evidence/)
+
+> **Bottom line of the first run (2026-10-09):** the USGS/INGENIOUS fault catalogue is *not* displaced from the
+> geomorphic and magnetic lineations by more than ~2 pixels anywhere we can show. Null-calibrated, the median
+> catalogue-to-crest offset is **−0.10 px** (DEM) and **+0.03 px** (magnetic) against an estimator noise floor of
+> **1.32 px**, the two datasets' offsets correlate at **r = 0.022**, **0 of 21** catalogue corridors pass the
+> consistency test, and at 3 m LiDAR resolution **0 of 13** segments is displaced by 200 m. The one positive
+> structure — the sub-pixel residual is spatially coherent beyond a label permutation (p < 0.004) — is real but
+> is a ~1 px wobble, not a correctable displacement, so the lane **emits no defensible correction**: the primary
+> raster carries **1 dot** and its own receipt says we do not believe it. The deliverable is the negative result
+> — histograms, two nulls, a 3 m calibration, a corridor table, a shared blocked holdout and two permutation
+> controls. Both rasters are format-valid and safe to download; **neither is cleared for a weekly submission
+> slot**, and the shared uniqueness gate returns `ok: false` on its proximity criterion (it fires trivially at
+> this dot count — 105 of 485 priors, none reciprocally — and is reported as a failure rather than argued
+> around; IR-56-006). Numbers, links and caveats: [the site](https://buffedlizard55-lab.github.io/56GEMSDOE/).
+
+---
+
+## Standing project brief (the assignment, verbatim as recorded)
+
+Reproduced from the session record of the instruction this repository was created to execute. The
+original message text was not preserved byte-for-byte in the workspace, so this is the recorded
+brief — every requirement below is active, and nothing here is summarised away.
+
+> Autonomously build `56GEMSDOE` into a DrivenData "GEMS Prize" (competition 306) project that beats the
+> current best 0.3195, and produce ONE unique, validated, downloadable submission GeoTIFF.
+>
+> **Assigned lane (parallel-run protocol, must stay inside it): Corrections lane** — measure how far the
+> GeoDAWN/USGS catalogue sits from the evidence: sample perpendicular transects within ±400 m of every
+> catalogue trace, locate the nearest crest of the DEM-curvature scarp and of the magnetic gradient ridge,
+> publish the offset histogram, calibrate on 1 m LiDAR tiles where the crest is unambiguous. Where a
+> consistent offset exceeds ~2 pixels, emit dots on the evidence-defined trace instead of the catalogue
+> line. Any learned component uses a registration- and omission-tolerant loss (Mnih & Hinton, ICML 2012).
+> If offsets cluster under 2 pixels, report that as the result and emit nothing from this lane. Output the
+> standard validated GeoTIFF, uniqueness-checked against every earlier raster.
+>
+> **Site/deliverable requirements:** easy one-click downloadable `.tif` on the page with an OBVIOUS statement
+> whether it is safe to download and submit; executive-summary subpage explaining exactly how to submit;
+> unique submission name + ≤140-char note; GitHub Pages site (clean UI, official verified links, audit
+> tables); repo README contains the full user prompt as the standing project brief; 3–5 new geological
+> hypotheses ranked by expected DTI gain/cost, top candidate validated on the spatially-blocked holdout
+> before any slot is spent; all findings stored for reuse; PR created and merged to `main`; multi-pass
+> self-review; flag irregularities; no hallucination (every claim backed by a tool call this turn).
+
+### Standing constraints (also verbatim, also active)
+
+- MUST generate a UNIQUE TIF submission; never copy a previous submission except for learning. It must be
+  obvious whether it is OK to download and submit.
+- Submission raster values MUST be in `[0, 1]`. A past download failed the DrivenData upload with
+  `Predicted values must be in range [0, 1]`; the site must not offer a raster that triggers this.
+- The submission form accepts a single-band GeoTIFF (`.tif`) or a `.zip` with one GeoTIFF; it must match the
+  submission format's CRS, shape and geotransform; an optional short note is accepted.
+- Every number is labelled **HOLDOUT-DTI** (our evaluator version, withheld positives, 95% CI) or
+  **ORGANIZER-CONFIRMED** (from a submission-page receipt). A projection is never written as a score.
+- Run only this lane. Drift check before placement *and* on the final dots: rank-correlation with any
+  registry raster > 0.90, or > 70% of dots within 3 px of one registry raster's dots ⇒ log as duplicate and
+  stop.
+- Reuse the template's cached feature stack, `evaluate_holdout.py` and `submission_writer.py`; holdout =
+  hide-and-recover (withhold whole fault segments with a buffer, derive catalogue features only from visible
+  faults, mask visible faults pixel-exactly, pooled DTI α 0.2 / β 0.8 / 300 m triangular kernel). Fix shared
+  tools once in the template, never keep a private fork.
+- Leakage canary: each feature alone on holdout; AUC > 0.90 is leakage until proven otherwise.
+- End with one JSON run card (hypothesis; mechanism; named non-fault process; holdout DTI + CI;
+  correlation/overlap vs registry; raster sha256; validator output; submission name + ≤140-char note; verdict
+  promote/negative). Negative results are deliverables.
+- Budget: stop after 3 experiments or 2 hours. Do **not** pick submissions for real slots — promotion is a
+  separate selector step within the weekly cap.
+- Only free, official, publicly verifiable data sources; provide links for manual review; no manual input
+  from the user; flag irregularities; verify line by line; no hallucinations.
+- Core values: *Maximize P(Win)* and *Own the Outcome*.
+
+---
+
+## What this repository is
+
+A single lane of a multi-agent attack on the same competition, built to be auditable rather than impressive.
+
+| path | what it is |
+|---|---|
+| `src/gems56/` | 10 modules vendored **byte-identically** from the shared template (grid, metric, holdout, evaluate_holdout, gates, submission_writer, features, …) plus this lane's `corrections.py` and `lane_inputs.py` |
+| `scripts/` | the seven numbered experiments and the site builder, each self-documenting and re-runnable |
+| `evidence/` | one JSON receipt per measurement, written by the code that produced it; `irregularities.json` |
+| `registry/input_pins.json` | sha256 + byte count of every official input, so a reviewer can confirm we measured the real rasters |
+| `knowledge/sources.json` | every external claim with its link, its access status, and what was actually read |
+| `tests/test_contracts.py` | 10 contract tests on the vendored metric and on the lane's detector |
+| `docs/` | the GitHub Pages site and the downloadable rasters |
+
+### Data provenance
+
+The competition data tab is behind a login, so the feature stack was assembled from hash-pinned copies in
+the sibling repository bridge and verified against `registry/input_pins.json` (`pin_match: true` for
+`training_features.tif` 418,912,844 B `4371c82e…`, `existing_faults.tif` `7ba308cc…`,
+`sample_submission.tif` `2176d08e…`). The grid is `(3730, 3292)` cells, EPSG:32611, transform
+`(100, 0, 243350, 0, -100, 4508550)`, 5,164,300 usable cells, catalogue prevalence 1.179%.
+**A logged-in human should confirm those three hashes against the data tab** — that is the one link in the
+chain this sandbox cannot close by itself (IR-56-003).
+
+## How to run it
+
+```bash
+python -m venv .venv && .venv/bin/pip install numpy scipy rasterio shapely pyproj pandas
+.venv/bin/python scripts/prepare_data.py                    # grid, footprint, catalogue stats
+.venv/bin/python scripts/measure_offsets.py                 # E1  offsets + corridor table
+.venv/bin/python scripts/lidar_calibration.py               # E1b/E1c nulls, strength gate, 3 m calibration
+.venv/bin/python scripts/run_corrections_holdout.py         # E2  shared blocked holdout, 4 arms
+.venv/bin/python scripts/cluster_gate_control.py            #     sign-flip permutation control
+.venv/bin/python scripts/build_corrections_submission.py    # E3  the rasters + receipts
+.venv/bin/python scripts/screen_registry.py                 #     uniqueness vs the harvested corpus
+.venv/bin/python tests/test_contracts.py                    #     contract tests
+.venv/bin/python scripts/build_site.py                      #     docs/*.html, from the receipts
+```
+
+Everything is deterministic: fixed seeds, no network at run time beyond the pinned inputs, and every script
+writes its own receipt.
+
+## Reading order for a reviewer
+
+1. [`docs/executive-summary.html`](docs/executive-summary.html) — what to download and how to file it.
+2. [`docs/index.html`](docs/index.html) — the measurement, with both nulls next to every histogram.
+3. [`docs/irregularities.html`](docs/irregularities.html) — 12 logged irregularities, including the three
+   estimator defects that a test caught and that changed the answer.
+4. [`evidence/`](evidence/) — the receipts the pages are generated from.
+
+## Honest limits of this run
+
+* The holdout cannot adjudicate this lane (IR-56-004): a ≤3 px lateral shift is invisible to an instrument
+  that hides whole catalogue segments. Snapping scored 0.00012, jitter 0.00011, no snapping 0.00000.
+* The 3 m LiDAR check covers 0.9% of catalogue pixels (two cached tiles); the corridor-level negative is
+  therefore partly an extrapolation, stated as such in the receipt.
+* The crest locator has a measured, shape-dependent placement bias of +0.2 to +0.5 px
+  (`evidence/estimator_validation.json`). Nothing here rests on an absolute sub-pixel offset.
+* Board scores could not be read from an organizer source in this session; every number on the site carries
+  an evidence class and none of them is a claimed ranking.

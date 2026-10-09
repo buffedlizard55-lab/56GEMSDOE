@@ -1,0 +1,9 @@
+# large inputs are symlinked from the sandbox cache, never committed
+data/training_features.tif
+data/external/*.tif
+# the registry corpus lives outside the repo
+/home/user/_reg*
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/

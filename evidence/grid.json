@@ -1,0 +1,163 @@
+{
+ "class": "measured on this machine from the bytes on disk",
+ "inputs": {
+  "catalogue": {
+   "path": "data/grid/existing_faults.tif",
+   "bytes": 425830,
+   "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+   "role": "the competition fault catalogue (USGS quaternary faults + INGENIOUS), rasterised on the 100 m grid; 60,988 positive cells; int8; nodata -1. THIS is the object the corrections lane measures.",
+   "provenance": "owner mirror of https://www.drivendata.org/competitions/306/competition-doe-gems/data/ existing_faults.tif; committed in this repo, verified at build time by scripts/prepare_data.py",
+   "pin_match": true
+  },
+  "sample": {
+   "path": "data/grid/sample_submission.tif",
+   "bytes": 1599597,
+   "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+   "role": "the organizer's sample submission, used by the format gate as the CRS/shape/transform reference",
+   "provenance": "owner mirror of example_submission.tif from the same data tab (dropbox mirror URL recorded in GEMSDOE data/bridge/manifest.json)",
+   "pin_match": true
+  },
+  "features": {
+   "path": "data/training_features.tif",
+   "bytes": 418912844,
+   "sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+   "role": "official 19-band GeoDAWN numerical feature stack, 100 m, EPSG:32611",
+   "provenance": "assembled from shards on 2026-10-09T04:24Z; every shard hash matched the owner manifest before assembly",
+   "pin_match": true
+  },
+  "lidar_scarp": {
+   "path": "data/external/h52_scarp3m_100m.tif",
+   "bytes": 43839078,
+   "sha256": "b5e53d67c3a7d3d1ca44ae04ae1e84d8574857da3fcd5e34ba47276d6c04b923",
+   "role": "LiDAR calibration layer: int16, 7 bands, value/SCALE encodings (h_all m, strike_at deg, facing_at, cover fraction), built by GEMSDOE48 from 700 USGS 3DEP 1 m tiles (NV WestCentral EarthMRI 2020) resampled to 3 m and aggregated to the competition grid",
+   "provenance": "buffedlizard55-lab/GEMSDOE48@main data/external/h52_scarp3m_100m.tif, fetched through api.github.com blobs on 2026-10-09T04:27Z",
+   "pin_match": "no pin (large stack: pinned via shard hashes)"
+  }
+ },
+ "grid": {
+  "shape": [
+   3730,
+   3292
+  ],
+  "crs": "32611",
+  "transform": [
+   100.0,
+   0.0,
+   243350.0,
+   0.0,
+   -100.0,
+   4508550.0
+  ],
+  "dtype": "float32",
+  "nodata": "nan",
+  "count": 1,
+  "transform_matches_template": true,
+  "shape_matches_template": true
+ },
+ "footprint_sample": {
+  "cells": 5167373,
+  "of": 12279160,
+  "rule": "sample_submission.tif finite mask (the organizer's own null convention)",
+  "nan_cells": 7111787
+ },
+ "catalogue": {
+  "dtype": "int8",
+  "nodata": "-1.0",
+  "values": [
+   -1,
+   0,
+   1
+  ],
+  "positive_cells": 60988,
+  "positive_in_footprint": 60988,
+  "prevalence": 0.011802515514169385,
+  "positive_in_used_footprint": 60894,
+  "prevalence_in_used_footprint": 0.011791336676800341
+ },
+ "sample_submission_forensics": {
+  "unique_finite_values": [
+   0.0,
+   1.0
+  ],
+  "positive_cells": 60988,
+  "nan_cells": 7111787,
+  "cell_for_cell_equal_to_catalogue": true,
+  "note": "MEASURED: the shipped sample submission is not an all-zero raster; it is the catalogue mask (NaN outside the footprint). Independently reproduces the GEMSDOE54 audit claim; logged as irregularity IR-56-001."
+ },
+ "bands": {
+  "det_elev": {
+   "band": 12,
+   "description": "det_elev - Detrended elevation - topography with regional trends removed",
+   "nan_fraction": 0.579299235452588
+  },
+  "tmi_hg": {
+   "band": 3,
+   "description": "tmi_hg - Total magnetic intensity horizontal gradient - rate of change in horizontal direction",
+   "nan_fraction": 0.579299235452588
+  },
+  "tmi": {
+   "band": 14,
+   "description": "tmi - Total magnetic intensity - total strength of magnetic field",
+   "nan_fraction": 0.579299235452588
+  },
+  "iso_grav_anom_hg": {
+   "band": 18,
+   "description": "iso_grav_anom_hg - Isostatic gravity anomaly horizontal gradient - horizontal rate of change",
+   "nan_fraction": 0.579299235452588
+  },
+  "det_elev_slope": {
+   "band": 19,
+   "description": "det_elev_slope - Detrended elevation slope - gradient of elevation after detrending",
+   "nan_fraction": 0.579299235452588
+  }
+ },
+ "band_descriptions": {
+  "1": "mag_anom - Magnetic anomaly - deviation from expected Earth's magnetic field",
+  "2": "rtp - Reduced to pole magnetic data - magnetic anomaly corrected for latitude effects",
+  "3": "tmi_hg - Total magnetic intensity horizontal gradient - rate of change in horizontal direction",
+  "4": "geod_2ndinv - Geodetic second invariant - measure of strain rate tensor magnitude",
+  "5": "iso_grav_anom_slope - Isostatic gravity anomaly slope - gradient of gravity after isostatic correction",
+  "6": "tc - Tilt angle or total curvature - magnetic field derivative for edge detection",
+  "7": "geod_shearrate - Geodetic shear rate - rate of angular deformation from GPS/InSAR",
+  "8": "geod_dilaterate - Geodetic dilatation rate - rate of volumetric strain (expansion/contraction)",
+  "9": "tmi_vg - Total magnetic intensity vertical gradient - rate of change in vertical direction",
+  "10": "deq_n100a15 - Distance to earthquake (n=100km radius, a=15\u00b0 azimuth parameters)",
+  "11": "iso_grav_anom_vg - Isostatic gravity anomaly vertical gradient - vertical rate of change",
+  "12": "det_elev - Detrended elevation - topography with regional trends removed",
+  "13": "iso_grav_anom - Isostatic gravity anomaly - gravity after compensating for topographic mass",
+  "14": "tmi - Total magnetic intensity - total strength of magnetic field",
+  "15": "depth_to_base_surf - Depth to basement surface - thickness of sedimentary cover",
+  "16": "ieq_n100a15 - Earthquake intensity or density (n=100km radius, a=15\u00b0 parameters)",
+  "17": "cond_surf - Conductivity surface - electrical conductivity of subsurface",
+  "18": "iso_grav_anom_hg - Isostatic gravity anomaly horizontal gradient - horizontal rate of change",
+  "19": "det_elev_slope - Detrended elevation slope - gradient of elevation after detrending"
+ },
+ "sentinel": {
+  "value": -3.4028234663852886e+38,
+  "detail": "nodata is stored as the float32 min-sentinel, which np.isfinite() accepts as valid data; every reader in this repo masks it with grid.SENTINEL_LIMIT instead",
+  "fraction_band1": 0.579299235452588
+ },
+ "footprint_features_all19": {
+  "cells": 5165840,
+  "rule": "intersection over all 19 bands"
+ },
+ "footprint_used": {
+  "cells": 5164300,
+  "rule": "sample-submission finite mask AND every feature band valid, so both the evidence profile and the score are defined at every emitted pixel (template convention)"
+ },
+ "footprint_catalogue": {
+  "nodata_cells": 7111787
+ },
+ "lidar": {
+  "cells_with_cover": 3809325,
+  "fraction_of_footprint": 0.7376265902445637,
+  "h_all_percentiles": [
+   2.190000057220459,
+   11.90999984741211,
+   20.31999969482422,
+   46.940279922498654
+  ],
+  "catalogue_pixels_with_cover": 47400,
+  "note": "h_all > 0 means the 3 m detector found a line-persistent step in that cell"
+ }
+}
