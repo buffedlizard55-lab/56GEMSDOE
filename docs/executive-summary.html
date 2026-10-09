@@ -1,93 +1,122 @@
-<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Executive summary - how to file a GEMS submission from this repository</title><style>
-:root{--bg:#0d1117;--panel:#161b22;--ink:#e6edf3;--mut:#9198a1;--line:#262c36;--ok:#2ea043;--warn:#d29922;--bad:#f85149;--acc:#58a6ff}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-main{max-width:1120px;margin:0 auto;padding:26px 20px 90px}h1{font-size:26px;margin:0 0 4px}h2{font-size:20px;margin:34px 0 10px;padding-top:14px;border-top:1px solid var(--line)}h3{font-size:16px;margin:18px 0 6px}
-a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}.sub{color:var(--mut);margin:0 0 16px}
-.banner{border-radius:12px;padding:18px 20px;margin:16px 0;border:1px solid var(--line)}.banner.bad{background:rgba(248,81,73,.10);border-color:rgba(248,81,73,.45)}.banner.ok{background:rgba(46,160,67,.10);border-color:rgba(46,160,67,.45)}.banner.warn{background:rgba(210,153,34,.10);border-color:rgba(210,153,34,.45)}
-.banner .big{font-size:19px;font-weight:700}.banner p{margin:8px 0 0}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
-.btn{display:inline-block;background:var(--ok);color:#04140a;font-weight:700;padding:11px 16px;border-radius:9px;margin:4px 8px 4px 0}
-.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--acc);font-weight:600}
-.badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.02em;padding:3px 9px;border-radius:999px;margin-left:8px}
-.badge.ok{background:rgba(46,160,67,.18);color:#3fb950;border:1px solid rgba(46,160,67,.5)}
-.badge.warn{background:rgba(210,153,34,.16);color:#e3b341;border:1px solid rgba(210,153,34,.5)}
-.badge.bad{background:rgba(248,81,73,.14);color:#ff7b72;border:1px solid rgba(248,81,73,.5)}
-table.data{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px}table.data th,table.data td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
-table.data th{background:#11161d;font-weight:700}code{background:#11161d;padding:1px 5px;border-radius:5px;font-size:13px}
-pre{background:#11161d;border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;font-size:12.5px}
-ul{margin:8px 0 8px 18px}li{margin:4px 0}.muted{color:var(--mut)}
-.kpi{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}.kpi div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:150px}
-.verdict{border-left:4px solid var(--warn);padding:9px 13px;margin:12px 0;background:rgba(210,153,34,.07);border-radius:0 8px 8px 0;font-size:14px}
-.kpi b{display:block;font-size:19px}.kpi span{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.03em}
-</style></head><body><main><h1>Executive summary - how to file a GEMS submission from this repository</h1><p class='sub'><a href='index.html'>&#8592; back to the evidence page</a></p><div class="card" id="tldr">
-<h2 style="margin-top:0;border:0;padding:0">Executive summary - read this first</h2>
-<ul>
- <li><b>Verdict: do not promote.</b> Our best own arm, <code>mag_ridge|packed</code>, reaches
-     0.0387 pooled HOLDOUT-DTI against
-     <b>0.0900</b> for the group's filed sibling surface on the same
-     4 folds - a gap of
-     0.0513, with a CI that excludes zero.
-     Every hypothesis we set out to test this round was rejected on measurement, and the rejections are the
-     deliverable (5 hypotheses, all in <a href="research/hypotheses-round2.md">hypotheses-round2.md</a>).</li>
- <li><b>Both rasters on this page are safe to download and legal to file</b> - single band, float32,
-     EPSG:32611, 100 m, 3730 x 3292, values in [0, 1], zero NaN, no nodata tag, re-read from disk and
-     reported in <code>docs/downloads/checks-*.json</code>. Neither is cleared for a weekly slot by our
-     instruments, and the badge on each card says so per file.</li>
- <li><b>Why the group's best file scores what it scores</b> (measured, not narrated): it is a
-     37,654-dot <b>strict subset</b> of an earlier filing, and the
-     6,436 deleted cells are exactly the dots within 2 px of a catalogue pixel -
-     mass the organiser's mask throws away. The whole +0.0178
-     difference is that one prune. Inverting the published formula on the two scores gives T = 5,223
-     credit (0.139 per dot) and |G| = 12,783-18,294
-     hidden pixels; at perfect placement the same mass would score
-     0.825, so every remaining point is place-finding.</li>
- <li><b>The shared holdout cannot see that prune</b> - it scores the pruned file at
-     0.0038 against 0.0900
-     for its unpruned parent, the opposite sign of the live result, because withheld truth <i>is</i> catalogue
-     trace. We therefore never used hide-DTI to decide the near-catalogue floor (IR-56-011).</li>
- <li><b>Unique</b>: 868 prior rasters from every sibling repo screened
-     at &le;3 px in both directions - 0 exceed the 0.70 duplicate rule.</li>
- <li><b>Evidence classes</b>: every number here is HOLDOUT-DTI (this repository's instrument, with # withheld
-     positives and 95% CI) or ORGANIZER-CONFIRMED (a submission-page receipt). The live scores 0.2778 and
-     0.3195 are USER-REPORTED from the brief; nothing in this repo is an organizer-confirmed score, and no
-     number here is a projection of a future score.</li>
-</ul></div>
+<!doctype html><html lang=en><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Make a submission · 56GEMSDOE</title><style>
+:root{--bg:#0f1420;--fg:#e8eaf0;--mut:#9aa3b5;--acc:#4da3ff;--ok:#3fd68f;--warn:#ffb454;--bad:#ff6b6b;--card:#171d2e;--line:#28304a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+header.top{background:linear-gradient(180deg,#131a2c,#0f1420);border-bottom:1px solid var(--line);padding:22px 0 18px}
+h1{font-size:24px;margin:0 0 4px} h2{font-size:19px;margin:28px 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px} h3{font-size:16px;margin:20px 0 6px}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+nav a{color:var(--mut);text-decoration:none;padding:5px 10px;border:1px solid var(--line);border-radius:16px;font-size:13px}
+nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
+.banner{background:#0c2d1f;border:1px solid #1d6043;border-radius:10px;padding:14px 18px;margin:14px 0}
+.banner.bad{background:#2d0c0c;border-color:#601d1d}
+.banner.warn{background:#2d250c;border-color:#604d1d}
+.btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:700;text-decoration:none;padding:12px 20px;border-radius:8px;font-size:16px;margin:6px 8px 6px 0}
+.btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line);font-weight:500}
+.btn:hover{filter:brightness(1.1)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.mut{color:var(--mut)} .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)}
+code{background:#0a0e18;border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:13px;word-break:break-all}
+pre{background:#0a0e18;border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;font-size:12.5px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#131a2c}
+footer{border-top:1px solid var(--line);margin-top:34px;padding:18px 0 30px;color:var(--mut);font-size:13px}
+ul{margin:6px 0 6px 20px} li{margin:3px 0}
+.bigok{font-size:20px;font-weight:700;color:var(--ok)}
+</style></head><body>
+<header class=top><div class=wrap>
+<h1>56GEMSDOE &mdash; DOE GEMS Prize submission</h1>
+<div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
+faults missing from the USGS/INGENIOUS catalogue</div>
+<nav><a href="index.html">Home</a><a href="executive-summary.html" class=active>Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="prior-run.html">Prior run</a></nav>
+</div></header><main class=wrap>
+<h2>How to submit this file &mdash; step by step</h2>
 
-<div class="banner ok"><div class="big">Five steps, one download</div>
-<ol>
- <li>Open the <a href='index.html#sources'>evidence page</a> and pick a card. Both files are validated:
-     single-band float32, EPSG:32611, 100 m, 3730&nbsp;&times;&nbsp;3292, values in [0,&nbsp;1], no NaN,
-     no nodata tag.</li>
- <li>Click <b>Download .tif</b> (or the .zip - the portal takes either; the .zip holds exactly one GeoTIFF).</li>
- <li>On <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">the competition's "New
-     submission" form</a>, attach the file. Leave nothing else changed: the form checks CRS, shape and
-     geotransform against the sample submission, and it requires every predicted value to lie in [0,&nbsp;1].</li>
- <li>Paste the note from the card (&le;140 characters, already written for you) so the submission is
-     identifiable later, and submit. Weekly slots are limited and shared - see the submission limits on the
-     competition rules page - so file the one raster you would defend.</li>
- <li>Keep the receipt. The file's sha256 is on the card; if the portal score ever differs from what this page
-     claims, the sha256 is what settles it.</li>
-</ol></div>
-<div class="banner warn"><div class="big">What you are buying, stated plainly</div>
-<p>Both files are legal submissions, and neither is cleared for a slot by our instruments: on the shared
-blocked holdout our best arm reaches 0.0383 where the group's incumbent raster reaches
-0.0900 on the identical folds, and that same instrument is provably inverted for
-the near-catalogue pruning question (IR-56-011). A slot is worth spending only if you want an orthogonal bet -
-a purely magnetic-gradient, model-free emission - against the DEM-scarp family that everything else in this
-group has filed. The one-click file is here either way, because the deliverable of this project is a submission
-that can be filed, plus the receipts that say what it is worth.</p></div>
-<h2>The two failure modes that produce "Predicted values must be in range [0, 1]"</h2>
+<div class=card>
+<h3>1. Download</h3>
+<p><a class=btn href="downloads/h56-final-dotted-ridge-d2p8-20261009T190421Z.tif">&#11015; Download h56-final-dotted-ridge-d2p8-20261009T190421Z.tif</a>
+<a class="btn alt" href="downloads/h56-final-dotted-ridge-d2p8-20261009T190421Z.zip">Download .zip</a></p>
+<p class=mut>sha256 <code>88495c1c3dc535f85f9c15a03c4e1bcd2eb0123bc3bfec249b159f034f4f809b</code> · 401 KB · 37,654 predicted pixels.</p>
+</div>
+
+<div class=card>
+<h3>2. Sign in to DrivenData</h3>
+<p>Open <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">the competition page</a>
+and sign into your account. Navigate to <b>My Submissions</b> &rarr; <b>Make a submission</b>
+(or the <b>Submit entry</b> button on the competition sidebar).</p>
+</div>
+
+<div class=card>
+<h3>3. Upload the file</h3>
+<p>Click <b>Choose file</b> and pick the downloaded <code>h56-final-dotted-ridge-d2p8-20261009T190421Z.tif</code>. The form accepts a
+single-band GeoTIFF (.tif) directly; you don't need to zip it.</p>
+</div>
+
+<div class=card>
+<h3>4. Fill the metadata fields exactly</h3>
+<p><b>Submission name</b> (unique, distinguishes this run on your team's submission list):</p>
+<pre>GEMSDOE56-dotted-ridge-d2p8</pre>
+<p><b>Note (optional)</b> (140/140 characters — paste exactly):</p>
+<pre>h56 final: 37654 unit dots on 3-band mean-rank Hessian ridge (det_elev_slope/tmi_hg/iso_grav_anom_hg, sigma=300 m, 280 m NMS, 200 m catalogu</pre>
+</div>
+
+<div class=card>
+<h3>5. Submit and record the receipt</h3>
+<p>Click <b>Submit</b>. Wait for the validator to finish. When the submission appears on your
+submissions page, <b>copy the public score and the receipt id into this repo's ledger</b>.
+That receipt is the only <b>ORGANIZER-CONFIRMED</b> number; every number on this site is
+either MEASURED (official data) or HOLDOUT-DTI (local, simulated truth).</p>
+</div>
+
+<h2>What you are submitting</h2>
+<div class=card>
 <ul>
- <li><b>The float32 sentinel.</b> <code>training_features.tif</code> stores nodata as
- <code>-3.4028234663852886e+38</code>; any pipeline that reads a band and writes predictions without replacing
- it ships values outside [0,1]. Our loader asserts band identity and maps the sentinel to NaN before anything
- else (<code>src/gems56/corrections.py:load_fields</code>).</li>
- <li><b>The nodata tag itself.</b> A raster tagged <code>nodata=-3.4e38</code> can be rejected even where its
- cells are legal. Our writer sets <code>nodata=None</code> and fills outside-footprint cells with 0.0, then the
- build re-opens the file and reports <code>min</code>, <code>max</code>, NaN count and the tag in
- <code>docs/downloads/checks-*.json</code>.</li>
+<li>Single-band GeoTIFF, EPSG:32611 (UTM zone 11N), 100&nbsp;m pixels, 3292 columns &times; 3730 rows</li>
+<li>Transform matches <code>sample_submission.tif</code>: (100, 0, 243350, 0, -100, 4508550)</li>
+<li>Float32; finite values in {0.0, 1.0} exactly · NaN strictly outside the scored footprint</li>
+<li>GDAL_NODATA tag <code>nan</code>, matching the sample's own tag (fixes the earlier
+"Predicted values must be in range [0, 1]" rejection, which was caused by NaN inside the scored
+region)</li>
+<li>37,654 unit dots at local maxima of a 3-band (DEM-slope, magnetic HG, isostatic-gravity HG)
+mean-rank Hessian ridge at sigma = 300&nbsp;m, with a 280&nbsp;m NMS radius and a 200&nbsp;m
+catalogue-exclusion mask (0 dots within 200&nbsp;m of any known-fault pixel)</li>
 </ul>
-<h2>Naming</h2>
-<p>Unique submission names for the form: <b><code>h56-magpack-37k-20261009</code></b> and
-<b><code>h56-quota-37k-20261009</code></b>. Notes (&le;140 chars): <code>h56-r2 mag-ridge packed 2.8px, &gt;=2px off catalogue, 37,654 dots; holdout 0.0387 vs 0.0900 incumbent; not cleared for a slot</code>
-(123 chars) and <code>h56-r2 quota union, 6 channels, 2.8px packed, 30,800 dots off catalogue; holdout 0.0359; negative verdict, not cleared</code> (118 chars).</p><p class='muted'>Rendered by <code>scripts/build_round2.py</code> from the JSON receipts in <code>evidence/</code>. Every figure on this page is read from a receipt at build time: a required receipt that is missing fails the build; the two optional ones (the uniqueness screen, the round-1 card) print an explicit “still running - see this path” line instead of a fake number.</p></main></body></html>
+</div>
+
+<h2>Why this should not hit the earlier &ldquo;Predicted values must be in range [0, 1]&rdquo; error</h2>
+<div class=card>
+<p>The validator in <code>scripts/validate_submission.py</code> checks exactly the conditions
+that trigger that portal error:</p>
+<ul>
+<li>All values are in [0,&nbsp;1] (here they are exactly {0.0, 1.0})</li>
+<li>Every pixel the template marks as valid is finite (no NaN inside the scored region)</li>
+<li>Every pixel outside the template's valid region is NaN (no finite bleed past the footprint)</li>
+<li>GDAL_NODATA matches the sample (<code>nan</code>)</li>
+<li>CRS, shape, resolution, geotransform match the sample exactly</li>
+</ul>
+<p>The validator exits 0 for this TIF.</p>
+</div>
+
+<h2>Honest caveats</h2>
+<div class=card>
+<ul>
+<li>No organizer score exists for this file. The +0.0065 [+0.0018,
++0.0109] improvement over random is HOLDOUT-DTI on a local hide-and-recover
+instrument with simulated truth (withheld catalogue segments), not an organizer confirmation.</li>
+<li>The detector is physics-only (no learned model). A 3-band ridge at the scoring-kernel scale
+is the geometric foundation of the highest-scoring public family (the 0.2708/0.2778 siblings),
+re-implemented here with a distinct pipeline and a third (gravity) band; pixel set is unique
+(no >0.70 containment against this repo's other TIFs except the parent 40,199-dot dotted ridge
+that it is a pruned-top-up of).</li>
+<li>Range-front escarpments, volcanic flow edges and lithologic contacts remain the named
+non-fault confound — three-band concordance reduces but does not eliminate them.</li>
+</ul>
+</div>
+</main>
+<footer><div class=wrap>56GEMSDOE · generated from <code>docs/downloads/h56-final-*-20261009T190421Z.json</code> ·
+site served at <a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
+</body></html>

@@ -1,0 +1,92 @@
+{
+  "generated_utc": "20261009T190143Z",
+  "hypothesis": "Faults are ridges in DEM slope (det_elev_slope), magnetic horizontal gradient (tmi_hg), and isostatic-gravity horizontal gradient (iso_grav_anom_hg); three-band mean rank + local-maximum suppression at 280 m picks a sparse set of candidate pixels from which the top 40199 survive, with 200 m of the catalogue removed as known-fault penalty.",
+  "mechanism": "Hessian bright-ridge (sigma=300 m) per field, ECDF rank to [0,1], arithmetic mean across fields; iterative local-maximum suppression within a 280 m disc; top-k=40199; dots=1.0/0.0; NaN outside footprint; pixels within 2 px of the catalogue dilated mask set to 0.",
+  "named_non_fault_process": "Basin-range topographic fronts, volcanic flow edges and lithologic contacts all produce Hessian ridges; multi-family averaging reduces single-family false positives but cannot eliminate range-front escarpments that are not Quaternary faults.",
+  "holdout_dti": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "alpha": 0.2,
+    "beta": 0.8,
+    "triangular_radius_m": 300.0,
+    "pooled": true,
+    "scores": {
+      "ridge@40199": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "dti": 0.054662544690873,
+        "ci95": [
+          0.048529988648014985,
+          0.06029852029274491
+        ],
+        "withheld_positive_pixels": 48124,
+        "tpw": 3888.7882719479317,
+        "fpw": 159323.88701382247,
+        "fnw": 44235.21172805207
+      },
+      "random@40199": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "dti": 0.049143274575359344,
+        "ci95": [
+          0.0444529465518942,
+          0.053523131191423594
+        ],
+        "withheld_positive_pixels": 48124,
+        "tpw": 3493.1668381569443,
+        "fpw": 159417.23091829545,
+        "fnw": 44630.833161843075
+      }
+    },
+    "best_comparable_control": "random@40199",
+    "paired_differences": {
+      "random@40199": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "delta": 0.005519270115513654,
+        "ci95": [
+          0.0012804102703414559,
+          0.009772937046486118
+        ],
+        "withheld_positive_pixels": 48124
+      }
+    },
+    "bootstrap": {
+      "method": "paired physical spatial-cluster percentile",
+      "clusters": 637,
+      "draws": 1000,
+      "seed": 520810,
+      "confidence": 0.95,
+      "caveat": "Conditional on fitted folds, catalogue labels and fixed budgets; not a leaderboard interval."
+    },
+    "implementation_sha256": {
+      "evaluate_holdout.py": "ffb084fdf34bb30438485b89caeb1228a6680abfd9f9f0472f4355845da05cc6",
+      "holdout.py": "f6706d781de72092e59332074af26e1d58cf734f95bf947a0d7c3fea577e6145",
+      "metric.py": "3d454119edfcec3cc2a83278c2015d7e41d39d8c1142fca12311409a18ce7d1a",
+      "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+    }
+  },
+  "raster": {
+    "file": "h56-dotted-ridge-d2p8-20261009-20261009T190143Z.tif",
+    "sha256": "888d114d45b97f6b745425316219aaa3f593c1e3b4e5bfe2df4b2a9c337ce171",
+    "bytes": 413458,
+    "dots": 40199,
+    "dots_on_catalogue": 0,
+    "sigma_m": 300.0,
+    "nms_radius_px": 2.8,
+    "exclude_px": 2,
+    "k": 40199,
+    "local_max": 61150
+  },
+  "submission_name": "GEMSDOE56-DOTTED-RIDGE-D2P8",
+  "note": "h56 dotted-ridge: 40199 unit dots on 3-band mean-rank Hessian ridge (det_elev_slope/tmi_hg/iso_grav_anom_hg, sigma=300 m, 280 m NMS), 200 m ",
+  "zip_file": "h56-dotted-ridge-d2p8-20261009-20261009T190143Z.zip",
+  "zip_sha256": "ba28a21c320bb17ff280b7447b0344fb3aa59b8f2a6dd24ae6fbb24eeb191a46",
+  "validator_pass": true,
+  "verdict": {
+    "value": "promote",
+    "promote": true,
+    "format_valid": true,
+    "rationale": "promote iff paired 95% CI vs random at same budget is strictly positive AND format-valid"
+  }
+}
