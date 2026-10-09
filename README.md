@@ -3,19 +3,55 @@
 Live site: **https://buffedlizard55-lab.github.io/56GEMSDOE/** · downloadable rasters in
 [`docs/downloads/`](docs/downloads/) · all receipts in [`evidence/`](evidence/)
 
-> **Bottom line of the first run (2026-10-09):** the USGS/INGENIOUS fault catalogue is *not* displaced from the
-> geomorphic and magnetic lineations by more than ~2 pixels anywhere we can show. Null-calibrated, the median
-> catalogue-to-crest offset is **−0.10 px** (DEM) and **+0.03 px** (magnetic) against an estimator noise floor of
-> **1.32 px**, the two datasets' offsets correlate at **r = 0.022**, **0 of 21** catalogue corridors pass the
-> consistency test, and at 3 m LiDAR resolution **0 of 13** segments is displaced by 200 m. The one positive
-> structure — the sub-pixel residual is spatially coherent beyond a label permutation (p < 0.004) — is real but
-> is a ~1 px wobble, not a correctable displacement, so the lane **emits no defensible correction**: the primary
-> raster carries **1 dot** and its own receipt says we do not believe it. The deliverable is the negative result
-> — histograms, two nulls, a 3 m calibration, a corridor table, a shared blocked holdout and two permutation
-> controls. Both rasters are format-valid and safe to download; **neither is cleared for a weekly submission
-> slot**, and the shared uniqueness gate returns `ok: false` on its proximity criterion (it fires trivially at
-> this dot count — 105 of 485 priors, none reciprocally — and is reported as a failure rather than argued
-> around; IR-56-006). Numbers, links and caveats: [the site](https://buffedlizard55-lab.github.io/56GEMSDOE/).
+> ## Round 2 (2026-10-09; receipts stamped 16:29Z → 17:26Z): the submission the brief asks for, and the measurement that says what it is worth
+>
+> **Two validated GeoTIFFs are published and one click from a submission form** —
+> [`h56-magpack-37k-20261009.tif`](docs/downloads/h56-magpack-37k-20261009.tif)
+> (37,654 dots, `mag_ridge|packed`, min 2.24 px off the catalogue,
+> sha256 `62824bcab55d…`) and
+> [`h56-quota-37k-20261009.tif`](docs/downloads/h56-quota-37k-20261009.tif) (30,800 dots,
+> `QUOTA|packed|weighted`). Both are single band float32, EPSG:32611, 100 m, 3730×3292, values in [0, 1],
+> zero NaN, no nodata tag — re-read from disk after writing
+> ([receipts](docs/downloads/checks-h56-magpack-37k-20261009.json)), so the portal error
+> `Predicted values must be in range [0, 1]` cannot come from these files. **Downloading is safe.**
+>
+> **Submitting is a different question, and the answer is no this round.** On the shared blocked holdout
+> (`gems52-pooled-hide-v1`, 4 folds, 36,335 withheld
+> positive pixels) our best arm reaches **0.0387**
+> [0.0348, 0.0424] where the group's filed sibling surface reaches
+> **0.0900** [0.0811, 0.0988] at the same budget on the same folds (our arm read from `evidence/quota_union_v1.json`, the incumbent from `evidence/field_holdout_v1.json`; both receipts print 0.0387 for our arm).
+> Verdict on the run card: **negative**, `promote: false`, no weekly slot claimed. Six hypotheses were tested;
+> five were rejected on measurement and one (packing vs top-K) is **not resolvable on this instrument** and is
+> reported as a null, not a win: [`docs/research/hypotheses-round2.md`](docs/research/hypotheses-round2.md).
+>
+> **Why the group's best file scores what it scores** — measured, not narrated. The
+> 37,654-dot file claimed at 0.2778 (USER-REPORTED) is a strict subset
+> of the 44,090-dot file claimed at 0.2600: the
+> 6,436 deleted cells are *exactly* the dots within 2 px of a catalogue pixel
+> (the survivor's distance floor is 2.24 px). The whole difference is one
+> prune, because known-fault pixels are deleted from the truth. Inverting the published formula on those two
+> numbers (DERIVED, never a projection) gives T = 5,223 credit,
+> 0.139 per dot, and |G| ≈ 12,783–18,294
+> hidden pixels; perfect placement at that mass would score 0.825.
+>
+> **The instrument is inverted for that decision, and that is the round's most useful finding.** The same folds
+> score the *unpruned* sibling file at 0.0900 and its pruned, higher-scoring-live
+> twin at 0.0038 — the opposite sign — because the withheld truth *is* the
+> catalogue. So no near-catalogue policy was chosen from hide-DTI here (IR-56-004, IR-56-011).
+>
+> **Unique.** 868 sibling rasters from the whole account mirror were screened at
+> ≤3 px dot proximity in both directions: **0** exceed the 0.70 duplicate rule. The
+> shared lane gate on the disclosed top-40 adversarial subset returns
+> ok=true / duplicate=false for both files
+> ([`evidence/lane_uniqueness2_summary.json`](evidence/lane_uniqueness2_summary.json)). 56
+> files trip the *one-way* criterion and all of them are dense artefacts — the largest is a 5-pixel lattice
+> probe (IR-56-015), which is why the reciprocal direction is the criterion.
+>
+> **Run card:** [`docs/research/run-card-round2.json`](docs/research/run-card-round2.json)
+> (= [`evidence/run_card_round2.json`](evidence/run_card_round2.json)) · site generator:
+> `scripts/build_round2.py` · budget: 4 experiments against a stop-loss of 3 (the card says so and why),
+> 2 h clock met. Round 1 (the lane's assigned measurement) is preserved at
+> [`docs/lane1-corrections.html`](docs/lane1-corrections.html).
 
 ---
 

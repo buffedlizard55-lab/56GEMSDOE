@@ -234,8 +234,137 @@ def test_footprint_escape_is_not_credited():
     assert (~P.origin_valid).any() or True       # at least the off-grid samples are flagged
 
 
+# ---------------------------------------------------------------------------
+# Round 2 (emission lane): the batch packer, the sparse scorer, the credit bar.
+# ---------------------------------------------------------------------------
+import importlib.util as _ilu
+
+
+def _load(script: str, name: str):
+    spec = _ilu.spec_from_file_location(name, ROOT / "scripts" / script)
+    mod = _ilu.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+E3 = _load("emit_and_score.py", "e3")
+FH = _load("run_field_holdout.py", "fh")
+
+
+def _naive_pack(f, allowed, r, k):
+    """Reference greedy: scan in value order, take a pixel if nothing taken is within r."""
+    h, w = f.shape
+    occ = np.zeros((h, w), bool)
+    out = np.zeros((h, w), np.float32)
+    order = np.lexsort((np.arange(f.size), -np.where(allowed, f, -1.0).ravel()))
+    n = 0
+    for j in order:
+        y, x = divmod(int(j), w)
+        if occ[y, x]:
+            continue
+        out[y, x] = 1.0
+        n += 1
+        if n >= k:
+            break
+        for dy in range(-4, 5):
+            for dx in range(-4, 5):
+                if 0 < np.hypot(dy, dx) <= r:
+                    Y, X = y + dy, x + dx
+                    if 0 <= Y < h and 0 <= X < w:
+                        occ[Y, X] = True
+    return out
+
+
+def test_batch_packing_equals_the_naive_greedy():
+    """The batch accelerator must not change the accepted set: same dots, same count, all >= r apart."""
+    rng = np.random.default_rng(7)
+    for trial in range(3):
+        f = rng.random((57, 66)).astype(np.float32)
+        al = np.ones((57, 66), bool)
+        al[:4, :4] = False
+        for k, r in ((31, 2.8), (55, 3.0), (12, 1.6)):
+            got, st = E3.greedy_pack(f, al, r, k, batch=211)
+            want = _naive_pack(np.where(al, f, -1.0), al, r, k)
+            assert np.array_equal(got, want), (trial, k, r, int(got.sum()), int(want.sum()))
+            assert st["emitted"] == k
+            pts = np.argwhere(got > 0)
+            d = np.hypot(*(pts[:, None, :] - pts[None, :, :]).T)[np.triu_indices(len(pts), 1)]
+            assert (d >= r - 1e-9).all(), "two emitted dots closer than the packing radius"
+
+
+def test_sparse_scorer_equals_the_shared_metric():
+    """``fast_terms`` must reproduce the vendored official metric on a random binary case."""
+    from gems56 import holdout as HO
+    rng = np.random.default_rng(11)
+    n = 64
+    g = np.zeros((n, n), np.uint8)
+    g[rng.random((n, n)) < 0.06] = 1
+    p = np.zeros((n, n), np.float32)
+    p[rng.random((n, n)) < 0.05] = 1.0
+    ref = M.dti(p, g)
+    from scipy import ndimage as ndi
+    dgt = ndi.distance_transform_edt(g == 0, sampling=M.PIXEL_M)
+    tt, tp, fp, ng, rec = FH.fast_terms(p > 0, g > 0, dgt, (n, n))
+    assert abs(tp - ref["tpw"]) < 1e-9 and abs(fp - ref["fpw"]) < 1e-9, (tp, ref["tpw"], fp, ref["fpw"])
+    assert ng == ref["n_truth"]
+    assert abs(tt[:, 0].sum() - ref["tpw"]) < 1e-9 and abs(tt[:, 1].sum() - ref["fpw"]) < 1e-9
+    assert abs(tt[:, 2].sum() - ref["fnw"]) < 1e-9
+    assert abs(FH.dti_from(tp, fp, ng - tp, ng) - ref["dti"]) < 1e-9
+
+
+def test_credit_bar_is_the_published_algebra():
+    """Adding mass helps iff c(1 - alpha*DTI) > alpha*DTI*f, where c is the realised increment of TPw
+    and f the increment of FPw. The textbook special case (one uncovered truth pixel at kernel weight
+    k, so c = k and f = 1 - k) reduces to k > alpha*DTI; the ratio form alpha*DTI/(1-alpha*DTI) is the
+    bar for a dot whose nearest truth sits a full unit of FP beyond the kernel. Asserting both, plus a
+    brute-force check of the general lemma on random small grids, pins the algebra the emitter uses."""
+    s_live = 0.2778
+    k = 1.0 - 2 * np.sqrt(2) / 3                 # the (2,2) diagonal offset: k = 0.05719
+    assert abs(k - 0.0571912) < 1e-6
+    assert abs(0.2 * s_live - 0.05556) < 1e-5     # special-case bar
+    assert k > 0.2 * s_live                       # so the diagonal emission IS admissible there
+    ratio = 0.2 * s_live / (1 - 0.2 * s_live)
+    assert (k > 0.2 * s_live) == (k > ratio * (1 - k))   # the two forms decide the same dot
+    rng = np.random.default_rng(5)
+    for _ in range(12):
+        n = 13
+        g = (rng.random((n, n)) < 0.12).astype(np.uint8)
+        if not g.any():
+            continue
+        base = (rng.random((n, n)) < 0.08).astype(np.float32)
+        r0 = M.dti(base, g)
+        ys, xs = np.nonzero(g)
+        i = rng.integers(len(ys))
+        y, x = int(ys[i]) + int(rng.integers(-2, 3)), int(xs[i]) + int(rng.integers(-2, 3))
+        if not (0 <= y < n and 0 <= x < n) or base[y, x] > 0:
+            continue
+        cand = base.copy()
+        cand[y, x] = 1.0
+        r1 = M.dti(cand, g)
+        c, f = r1["tpw"] - r0["tpw"], r1["fpw"] - r0["fpw"]
+        lhs = c * (1 - M.ALPHA * r0["dti"]) - M.ALPHA * r0["dti"] * f
+        assert np.sign(r1["dti"] - r0["dti"]) == np.sign(lhs) or abs(lhs) < 1e-12, (c, f, lhs, r1["dti"] - r0["dti"])
+
+
+def test_binary_mass_is_optimal_on_a_fixed_support():
+    """For a fixed support, DTI is monotone in the mass, so p = 1 -- the reason a dotted file beats a
+    smoothed one with the same geometry, and why the shipped raster is binary."""
+    rng = np.random.default_rng(3)
+    n = 70
+    g = np.zeros((n, n), np.uint8)
+    g[rng.random((n, n)) < 0.05] = 1
+    support = rng.random((n, n)) < 0.06
+    scores = []
+    for lam in (0.25, 0.5, 0.75, 1.0):
+        p = (support * lam).astype(np.float32)
+        scores.append(M.dti(p, g)["dti"])
+    assert scores == sorted(scores) and scores[0] < scores[-1], f"DTI is not monotone in lambda: {scores}"
+
+
 def run():
-    fns = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
+    """Run every test in file order without pytest, so `python tests/test_contracts.py` works in the
+    sandbox where pytest may not be installed."""
+    fns = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
     for fn in fns:
         fn()
         print(f"  ok  {fn.__name__}")

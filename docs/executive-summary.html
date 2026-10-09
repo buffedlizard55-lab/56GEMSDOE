@@ -1,73 +1,93 @@
-<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Executive summary · how to submit</title><style>
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Executive summary - how to file a GEMS submission from this repository</title><style>
 :root{--bg:#0d1117;--panel:#161b22;--ink:#e6edf3;--mut:#9198a1;--line:#262c36;--ok:#2ea043;--warn:#d29922;--bad:#f85149;--acc:#58a6ff}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-main{max-width:1100px;margin:0 auto;padding:26px 20px 90px}h1{font-size:26px;margin:0 0 4px}h2{font-size:20px;margin:32px 0 10px;padding-top:14px;border-top:1px solid var(--line)}h3{font-size:16px;margin:18px 0 6px}
+main{max-width:1120px;margin:0 auto;padding:26px 20px 90px}h1{font-size:26px;margin:0 0 4px}h2{font-size:20px;margin:34px 0 10px;padding-top:14px;border-top:1px solid var(--line)}h3{font-size:16px;margin:18px 0 6px}
 a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}.sub{color:var(--mut);margin:0 0 16px}
 .banner{border-radius:12px;padding:18px 20px;margin:16px 0;border:1px solid var(--line)}.banner.bad{background:rgba(248,81,73,.10);border-color:rgba(248,81,73,.45)}.banner.ok{background:rgba(46,160,67,.10);border-color:rgba(46,160,67,.45)}.banner.warn{background:rgba(210,153,34,.10);border-color:rgba(210,153,34,.45)}
-.banner .big{font-size:19px;font-weight:700}.banner p{margin:8px 0 0}.why{color:var(--mut)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
-.kv{display:flex;justify-content:space-between;gap:12px;padding:4px 0;border-bottom:1px dashed var(--line);font-variant-numeric:tabular-nums;font-size:13.5px}.kv:last-child{border-bottom:0}.kv b{font-weight:600;color:var(--mut)}.kv span{text-align:right;word-break:break-all}
-table.data{border-collapse:collapse;width:100%;margin:8px 0;font-variant-numeric:tabular-nums;font-size:13.5px}
-table.data th,table.data td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}table.data th{background:#1c2129;font-weight:600}
-.pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600;border:1px solid var(--line);margin-right:6px}
-.pill.bad{color:#ffb3ae;border-color:rgba(248,81,73,.5);background:rgba(248,81,73,.12)}.pill.ok{color:#7ee2a1;border-color:rgba(46,160,67,.5);background:rgba(46,160,67,.12)}.pill.warn{color:#e8c37a;border-color:rgba(210,153,34,.5);background:rgba(210,153,34,.12)}
-.dl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
-.btn{background:var(--acc);color:#04121f;border-radius:8px;padding:10px 16px;font-weight:700}.btn.ghost{background:transparent;color:var(--acc);border:1px solid var(--acc)}
-input.mono,code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px}
-input.mono{width:100%;background:#0b0f14;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:9px 10px}
-pre{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto}ul{margin:6px 0 6px 20px;padding:0}li{margin:4px 0}.muted{color:var(--mut)}
-nav{position:sticky;top:0;background:rgba(13,17,23,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:10px 0;z-index:5}
-nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:14px}
-.small{font-size:13px}.note{border-left:3px solid var(--warn);padding:6px 0 6px 12px;color:var(--mut);margin:10px 0}.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
-</style></head><body><nav><div class='wrap'><a href='index.html'><b>56GEMSDOE</b> · corrections lane</a><a href='executive-summary.html'>Executive summary &amp; how to submit</a><a href='irregularities.html'>Irregularities (this run)</a><a href='submit.html'>Submission how-to (prior session)</a><a href='evidence.md'>Source table (prior)</a><a href='irregularities.md'>Prior flag list</a><a href='research/hypotheses.md'>Ranked hypotheses</a><a href='https://github.com/buffedlizard55-lab/56GEMSDOE'>repo</a></div></nav><main><h1>Executive summary</h1><p class='sub'>One page: what to download, how to file it, what this run proved, and what it rules out.</p><div class="banner warn"><div class="big">
-Downloadable, format-valid, and not cleared for a slot by this run</div>
-    <p class="why">Downloading is safe: both rasters are in the submission format, values in [0, 1], null
-    outside the footprint, validated after writing. Submitting spends one of the three weekly slots and buys an
-    expected 0.00016 DTI (95% CI [0.00000,
-    0.00045]) against 0.00000 for submitting nothing at
-    all. Filing it once is a legitimate way to record a negative on the scoreboard &mdash; it is not a way to
-    beat 0.3195, and this run does not recommend it as one.</p></div>
-<h2>How to submit, exactly</h2><ol style='line-height:1.9'>
-<li>Download <a href='downloads/h56-corr-snap200cm-20261009.tif' download>the primary .tif</a> (1 dots) or <a href='downloads/h56-corr-snap100cm-20261009.tif' download>the 1 px sensitivity .tif</a> (14 dots). The <code>.zip</code> beside each holds the same single band; either is accepted.</li>
-<li>Sign in at <a href='https://drivendata.org/competitions/306/'>drivendata.org/competitions/306</a> and open the <b>Submissions</b> tab. This competition accepts a file upload; no kernel is required.</li>
-<li>Pick a short <b>submission name</b> and paste the one from the download card, so the scoreboard row carries the label. Then upload. Do <b>not</b> re-save the file in a GIS or let a viewer strip its geotransform: the form requires the CRS (EPSG:32611), shape (3730&times;3292), 100 m pixel size and bounds to match the submission format exactly.</li>
-<li>Paste the note (the form allows one, &le;140 characters). Ours states the verdict, so a future reader of the scoreboard sees &quot;NEGATIVE&quot; next to the row rather than a mystery.</li>
-<li>Wait for the receipt. Until the platform returns a score, this page claims none: a projection is never written as a score.</li></ol>
-<h2>Why earlier uploads were rejected, and why these will not be</h2>
-<p class="small">The error <code>Predicted values must be in range [0, 1]</code> comes from a
-    raster whose band holds a confidence-like quantity that is not a probability &mdash; log-odds, a 0&ndash;255
-    mask, or an int8 catalogue written straight out. It is a validator on the uploaded values, not on the
-    geometry. These files were produced by the shared <code>submission_writer</code> and re-read after writing:
-    the distinct values present are 0.0, 1.0 (primary)
-    and 0.0, 1.0 (sensitivity), the validator reported
-    no problems. One difference from the official sample, stated
-    rather than hidden: the sample leaves everything outside the data extent as NaN, while these rasters fill
-    it with 0.0, because the shared writer enforces an all-finite export policy
-    (<code>gates.format_report</code> fails a file containing NaN and notes that the public spec permits it).
-    Under the metric this cannot matter &mdash; FPw sums only over pixels with p &gt; 0, so a 0 outside is
-    arithmetically identical to a null &mdash; and 0 is in range, which is what the upload validator checks.
-    Logged as IR-56-013, with the one-line change that flips it if the platform ever objects.</p>
-<h2>What this run established</h2>
-<table class='data'><thead><tr><th>claim</th><th>class</th><th>number</th></tr></thead><tbody><tr><td>Catalogue-to-evidence offset after null calibration</td><td>MEASURED</td><td>joint median 0.774 px over n=156; MAD 1.877 px; 0.3% of pixels corroborated by both families</td></tr><tr><td>Agreement between the two independent data families</td><td>MEASURED</td><td>Pearson r = 0.0223 &mdash; no shared displacement signal</td></tr><tr><td>Same measurement at 3 m LiDAR</td><td>MEASURED</td><td>median -0.021 px, 0.27% beyond 3 px, 0 of 13 segments &ge; 200 m</td></tr><tr><td>Corridors with a consistent &ge;2 px shift</td><td>MEASURED</td><td>0 of 21 under the decision gate (2 of 1273 ungated)</td></tr><tr><td>Holdout DTI of snapping vs not snapping vs jitter</td><td>HOLDOUT-DTI</td><td>0.00016 / 0.00000 / 0.00021, overlapping intervals</td></tr><tr><td>Organizer-confirmed score for anything in this repository</td><td>ORGANIZER-CONFIRMED</td><td>none &mdash; this run filed no submission</td></tr><tr><td>Project's current best and the leader</td><td>BOARD-UNVERIFIED</td><td>0.3195 (given in the brief) and 0.3774 (sibling page, read 2026-10-09); the leaderboard is behind a login and could not be confirmed from an organizer source here</td></tr></tbody></table>
-<p class="note">Detection floor, from the sibling protocol we reuse: their holdout's paired
-    minimum detectable effect is 0.004&ndash;0.012 DTI. Board gaps of a few thousandths are therefore inside the
-    noise of anything we can build locally, which argues for spending slots on <i>diverse mechanisms</i> rather
-    than on refining one &mdash; and is a second, independent reason not to burn one on this lane's empty
-    raster.</p>
-<h2>If the goal is to beat 0.3195, the next move is elsewhere &mdash; and this run says why</h2>
+.banner .big{font-size:19px;font-weight:700}.banner p{margin:8px 0 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
+.btn{display:inline-block;background:var(--ok);color:#04140a;font-weight:700;padding:11px 16px;border-radius:9px;margin:4px 8px 4px 0}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--acc);font-weight:600}
+.badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.02em;padding:3px 9px;border-radius:999px;margin-left:8px}
+.badge.ok{background:rgba(46,160,67,.18);color:#3fb950;border:1px solid rgba(46,160,67,.5)}
+.badge.warn{background:rgba(210,153,34,.16);color:#e3b341;border:1px solid rgba(210,153,34,.5)}
+.badge.bad{background:rgba(248,81,73,.14);color:#ff7b72;border:1px solid rgba(248,81,73,.5)}
+table.data{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px}table.data th,table.data td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+table.data th{background:#11161d;font-weight:700}code{background:#11161d;padding:1px 5px;border-radius:5px;font-size:13px}
+pre{background:#11161d;border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;font-size:12.5px}
+ul{margin:8px 0 8px 18px}li{margin:4px 0}.muted{color:var(--mut)}
+.kpi{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}.kpi div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:150px}
+.verdict{border-left:4px solid var(--warn);padding:9px 13px;margin:12px 0;background:rgba(210,153,34,.07);border-radius:0 8px 8px 0;font-size:14px}
+.kpi b{display:block;font-size:19px}.kpi span{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.03em}
+</style></head><body><main><h1>Executive summary - how to file a GEMS submission from this repository</h1><p class='sub'><a href='index.html'>&#8592; back to the evidence page</a></p><div class="card" id="tldr">
+<h2 style="margin-top:0;border:0;padding:0">Executive summary - read this first</h2>
 <ul>
-<li><b>Mass on the catalogue is worth nothing.</b> Staff-confirmed masking, plus a measured sibling result
-(0.2708 &rarr; 0.2778 from deleting exactly the 2,545 catalogue-adjacent dots). Every emission rule in this
-repo encodes that: no dot on a catalogue pixel.</li>
-<li><b>The geometry rewards sparse, confident coverage of unmapped lineations.</b> With &alpha; = 0.2, &beta; = 0.8
-and a 300 m kernel, a dot within 3 px of a truth pixel already earns partial credit, a missed truth pixel costs
-0.8, and a false dot costs 0.2 &mdash; so the marginal value is in places with no candidate at all, not in
-sharpening places that already have one.</li>
-<li><b>Registration is now ruled out as the explanation for a mediocre score</b>, which is the useful product of
-a diagnostics lane: three candidate mechanisms (catalogue displacement, tail-only displacement, catalogue
-sharpening) are closed or declared untestable here, and effort can move to discovery and to fusion.</li>
-<li><b>What would change this lane's mind:</b> 1 m LiDAR over a corridor that qualifies even in the ungated
-table (component 2754 is the best candidate at
--3.17 px), or a shifted-label instrument that can see a
-2 px move at all.</li></ul></main></html>
+ <li><b>Verdict: do not promote.</b> Our best own arm, <code>mag_ridge|packed</code>, reaches
+     0.0387 pooled HOLDOUT-DTI against
+     <b>0.0900</b> for the group's filed sibling surface on the same
+     4 folds - a gap of
+     0.0513, with a CI that excludes zero.
+     Every hypothesis we set out to test this round was rejected on measurement, and the rejections are the
+     deliverable (5 hypotheses, all in <a href="research/hypotheses-round2.md">hypotheses-round2.md</a>).</li>
+ <li><b>Both rasters on this page are safe to download and legal to file</b> - single band, float32,
+     EPSG:32611, 100 m, 3730 x 3292, values in [0, 1], zero NaN, no nodata tag, re-read from disk and
+     reported in <code>docs/downloads/checks-*.json</code>. Neither is cleared for a weekly slot by our
+     instruments, and the badge on each card says so per file.</li>
+ <li><b>Why the group's best file scores what it scores</b> (measured, not narrated): it is a
+     37,654-dot <b>strict subset</b> of an earlier filing, and the
+     6,436 deleted cells are exactly the dots within 2 px of a catalogue pixel -
+     mass the organiser's mask throws away. The whole +0.0178
+     difference is that one prune. Inverting the published formula on the two scores gives T = 5,223
+     credit (0.139 per dot) and |G| = 12,783-18,294
+     hidden pixels; at perfect placement the same mass would score
+     0.825, so every remaining point is place-finding.</li>
+ <li><b>The shared holdout cannot see that prune</b> - it scores the pruned file at
+     0.0038 against 0.0900
+     for its unpruned parent, the opposite sign of the live result, because withheld truth <i>is</i> catalogue
+     trace. We therefore never used hide-DTI to decide the near-catalogue floor (IR-56-011).</li>
+ <li><b>Unique</b>: 868 prior rasters from every sibling repo screened
+     at &le;3 px in both directions - 0 exceed the 0.70 duplicate rule.</li>
+ <li><b>Evidence classes</b>: every number here is HOLDOUT-DTI (this repository's instrument, with # withheld
+     positives and 95% CI) or ORGANIZER-CONFIRMED (a submission-page receipt). The live scores 0.2778 and
+     0.3195 are USER-REPORTED from the brief; nothing in this repo is an organizer-confirmed score, and no
+     number here is a projection of a future score.</li>
+</ul></div>
+
+<div class="banner ok"><div class="big">Five steps, one download</div>
+<ol>
+ <li>Open the <a href='index.html#sources'>evidence page</a> and pick a card. Both files are validated:
+     single-band float32, EPSG:32611, 100 m, 3730&nbsp;&times;&nbsp;3292, values in [0,&nbsp;1], no NaN,
+     no nodata tag.</li>
+ <li>Click <b>Download .tif</b> (or the .zip - the portal takes either; the .zip holds exactly one GeoTIFF).</li>
+ <li>On <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">the competition's "New
+     submission" form</a>, attach the file. Leave nothing else changed: the form checks CRS, shape and
+     geotransform against the sample submission, and it requires every predicted value to lie in [0,&nbsp;1].</li>
+ <li>Paste the note from the card (&le;140 characters, already written for you) so the submission is
+     identifiable later, and submit. Weekly slots are limited and shared - see the submission limits on the
+     competition rules page - so file the one raster you would defend.</li>
+ <li>Keep the receipt. The file's sha256 is on the card; if the portal score ever differs from what this page
+     claims, the sha256 is what settles it.</li>
+</ol></div>
+<div class="banner warn"><div class="big">What you are buying, stated plainly</div>
+<p>Both files are legal submissions, and neither is cleared for a slot by our instruments: on the shared
+blocked holdout our best arm reaches 0.0383 where the group's incumbent raster reaches
+0.0900 on the identical folds, and that same instrument is provably inverted for
+the near-catalogue pruning question (IR-56-011). A slot is worth spending only if you want an orthogonal bet -
+a purely magnetic-gradient, model-free emission - against the DEM-scarp family that everything else in this
+group has filed. The one-click file is here either way, because the deliverable of this project is a submission
+that can be filed, plus the receipts that say what it is worth.</p></div>
+<h2>The two failure modes that produce "Predicted values must be in range [0, 1]"</h2>
+<ul>
+ <li><b>The float32 sentinel.</b> <code>training_features.tif</code> stores nodata as
+ <code>-3.4028234663852886e+38</code>; any pipeline that reads a band and writes predictions without replacing
+ it ships values outside [0,1]. Our loader asserts band identity and maps the sentinel to NaN before anything
+ else (<code>src/gems56/corrections.py:load_fields</code>).</li>
+ <li><b>The nodata tag itself.</b> A raster tagged <code>nodata=-3.4e38</code> can be rejected even where its
+ cells are legal. Our writer sets <code>nodata=None</code> and fills outside-footprint cells with 0.0, then the
+ build re-opens the file and reports <code>min</code>, <code>max</code>, NaN count and the tag in
+ <code>docs/downloads/checks-*.json</code>.</li>
+</ul>
+<h2>Naming</h2>
+<p>Unique submission names for the form: <b><code>h56-magpack-37k-20261009</code></b> and
+<b><code>h56-quota-37k-20261009</code></b>. Notes (&le;140 chars): <code>h56-r2 mag-ridge packed 2.8px, &gt;=2px off catalogue, 37,654 dots; holdout 0.0387 vs 0.0900 incumbent; not cleared for a slot</code>
+(123 chars) and <code>h56-r2 quota union, 6 channels, 2.8px packed, 30,800 dots off catalogue; holdout 0.0359; negative verdict, not cleared</code> (118 chars).</p><p class='muted'>Rendered by <code>scripts/build_round2.py</code> from the JSON receipts in <code>evidence/</code>. Every figure on this page is read from a receipt at build time: a required receipt that is missing fails the build; the two optional ones (the uniqueness screen, the round-1 card) print an explicit “still running - see this path” line instead of a fake number.</p></main></body></html>

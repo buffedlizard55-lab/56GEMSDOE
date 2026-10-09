@@ -82,3 +82,23 @@ What is implemented in **this** repository today: the metric (pinned from the te
 2. **INGENIOUS regional compilation** (GDR 1391), for H1–H3, H5. Free, CC BY 4.0, public. The zips are listed on the page we fetched; the sandbox cannot download them.
 3. **USGS 3DEP 1 m DEM tiles** (for H4). Free, official. Listed by the competition; not reachable from the sandbox.
 4. **SGMC 2026 update** (DOI 10.5066/P1A3DQZK), to replace the superseded 2017 raster (IR-08).
+
+---
+
+## Round 2 (2026-10-09, 17:00-19:20 UTC) - the six hypotheses that were actually tested, and what killed them
+
+The ranking above is round 1's, written before any emitter existed; it is kept unchanged. Round 2 tested a
+different set - label-free physical channels as *emitters*, plus the combination rules - on the shared blocked
+holdout, and every one of them was decided by measurement. That file is generated from the receipts so the
+numbers cannot drift: **[hypotheses-round2.md](hypotheses-round2.md)**.
+
+Headline: **5 of 6 rejected, 1 not resolvable on this instrument, no promotion.** Best own arm
+`mag_ridge|packed` 0.0387 [0.0348, 0.0424] pooled HOLDOUT-DTI against 0.0900 [0.0811, 0.0988] for the group's
+filed sibling surface on identical folds (both from `evidence/field_holdout_v1.json` / `evidence/quota_union_v1.json`).
+Two findings matter more than the ranking:
+
+- **H2-6 rejected the instrument, not the arm.** The holdout's withheld truth *is* the catalogue, so it scores
+  the sibling surface (USER-REPORTED live 0.2600) at 0.0900 and its pruned twin (USER-REPORTED live 0.2778) at
+  0.0038 - the opposite sign. Any near-catalogue pruning decision taken from hide-DTI would have been backwards (IR-56-011).
+- **H2-5 is reported as a null, not a win.** Exact 2.8 px packing moved `mag_ridge` by +0.00045 with CI
+  (-0.00125, 0.00036). We ship packing because it is free and mechanically sound, not because we measured a gain.
