@@ -1,0 +1,92 @@
+{
+  "generated_utc": "20261009T185416Z",
+  "hypothesis": "Faults are persistent two-sided steps (half-width 150 m, along-strike >=2 km) in three independent physics fields (det_elev, tmi, iso_grav_anom) simultaneously; three-way concordance ranks higher than any single-family step.",
+  "mechanism": "scarp_step (directional two-sided mean difference, along-strike persistence smoothing) on each of det_elev, tmi, iso_grav_anom; ECDF rank each to [0,1]; geometric mean; top-k=37654 after a 2 px dilation of the USGS/INGENIOUS catalogue mask; dots=1.0/0.0, NaN outside footprint.",
+  "named_non_fault_process": "Range-front alluvial-fan escarpments and pluton/lava-flow contacts can also produce persistent steps; requiring three independent geophysical fields to step at the same cell reduces but does not eliminate basin-margin escarpments that have both topographic and density/magnetic expression.",
+  "holdout_dti": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "alpha": 0.2,
+    "beta": 0.8,
+    "triangular_radius_m": 300.0,
+    "pooled": true,
+    "scores": {
+      "persist@37654": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "dti": 0.013300946936942032,
+        "ci95": [
+          0.008867491564087324,
+          0.01853896626494778
+        ],
+        "withheld_positive_pixels": 48124,
+        "tpw": 909.9984780172632,
+        "fpw": 148674.3369790901,
+        "fnw": 47214.00152198274
+      },
+      "random@37654": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "dti": 0.04758204154336901,
+        "ci95": [
+          0.04297572934152517,
+          0.05183382288412188
+        ],
+        "withheld_positive_pixels": 48124,
+        "tpw": 3284.1456161806427,
+        "fpw": 149323.3335175681,
+        "fnw": 44839.85438381936
+      }
+    },
+    "best_comparable_control": "random@37654",
+    "paired_differences": {
+      "random@37654": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "delta": -0.034281094606426976,
+        "ci95": [
+          -0.04039127280077734,
+          -0.027182529012894262
+        ],
+        "withheld_positive_pixels": 48124
+      }
+    },
+    "bootstrap": {
+      "method": "paired physical spatial-cluster percentile",
+      "clusters": 642,
+      "draws": 1000,
+      "seed": 520810,
+      "confidence": 0.95,
+      "caveat": "Conditional on fitted folds, catalogue labels and fixed budgets; not a leaderboard interval."
+    },
+    "implementation_sha256": {
+      "evaluate_holdout.py": "ffb084fdf34bb30438485b89caeb1228a6680abfd9f9f0472f4355845da05cc6",
+      "holdout.py": "f6706d781de72092e59332074af26e1d58cf734f95bf947a0d7c3fea577e6145",
+      "metric.py": "3d454119edfcec3cc2a83278c2015d7e41d39d8c1142fca12311409a18ce7d1a",
+      "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+    }
+  },
+  "raster": {
+    "file": "h56-persist-step-r300-20261009-20261009T185416Z.tif",
+    "sha256": "61c1b2b69f70f0f7efe08e5daf7605660c12ae735dfc6bf80d542ad4aa208281",
+    "bytes": 369655,
+    "dots": 37654,
+    "dots_on_catalogue": 0,
+    "dots_within_200m": 0,
+    "half_width_m": 150.0,
+    "persist_m": 2000.0,
+    "exclude_px": 2,
+    "k": 37654
+  },
+  "submission_name": "GEMSDOE56-PERSIST-STEP-3PHYS",
+  "note": "h56 persist-step: 37654 dots on 3-physics concordant persistent-step (det_elev/tmi/iso_grav_anom, half 150 m, persist 2 km), 200 m catalogue",
+  "zip_file": "h56-persist-step-r300-20261009-20261009T185416Z.zip",
+  "zip_sha256": "3dfffc3bc1f9738671e8d873cd41557ef612a05acfe2c500280f949a351dac3e",
+  "validator_pass": true,
+  "verdict": {
+    "value": "negative/research",
+    "promote": false,
+    "format_valid": true,
+    "rationale": "promote iff paired 95% CI vs random at the same budget is strictly positive AND format-valid"
+  }
+}

@@ -42,19 +42,23 @@ faults missing from the USGS/INGENIOUS catalogue</div>
 <span class=ok>ORGANIZER-CONFIRMED</span> requires an organizer receipt;
 <span class=warn>HOLDOUT-DTI</span> requires evaluator/version, withheld-positive count, and 95% CI;
 <span class=mut>MEASURED</span> describes local measurements; user and sibling reports are not organizer facts.</div></div>
-<main class=wrap><div class=card><h2 class=bad>Current verdict: NEGATIVE / STOP — no safe-to-submit file</h2>
+<main class=wrap><div class=card><h2 class=bad>Corrections-lane verdict: NEGATIVE / STOP — no corrections TIFF cleared</h2>
 <p>The active corrections primary triggers the literal &gt;70%-within-3-px registry stop and fails
 strict sample-footprint format validation. The 14-dot sensitivity also fails format validation.
-The format-valid historical TIFF linked above still triggers the registry stop. No slot has been
-used; the experiment budget is exhausted; no file is selected or promoted. The archive download is
-for technical inspection only.</p>
+The format-valid historical corrections TIFF linked above still triggers the registry stop. No
+slot has been used; the corrections experiment budget is exhausted; no corrections candidate is
+selected or promoted. The archive download is for technical inspection only.</p>
+<p>A separate dotted-ridge candidate was added to <code>main</code> in
+<a href="https://github.com/buffedlizard55-lab/56GEMSDOE/pull/11">PR #11</a>. It is outside this
+corrections-only review: this page neither revalidates nor clears it. Consult that PR's receipts
+and status pages separately; do not infer approval from this corrections verdict.</p>
 <p><a href="research.html">Research and 0.2778 evidence review</a> ·
 <a href="irregularities.html">Machine-logged findings</a></p></div>
 <h2>Project status — corrections lane</h2>
-<p><b>NEGATIVE / STOP.</b> No TIFF in this repository is cleared or safe to submit. The
-active corrections run is authoritative (`2026-10-09T16:49:44Z`); the later discovery run is
-outside this corrections-only scope. The experiment budget is exhausted. No slot was used, no
-artifact was selected, and no new experiment was run during this review.</p>
+<p><b>NEGATIVE / STOP for this lane.</b> No TIFF produced by the authoritative corrections run is
+cleared or safe to submit. The active card is `2026-10-09T16:49:44Z`; the corrections experiment
+budget is exhausted. No slot was used, no corrections artifact was selected, and no new experiment
+was run during this review.</p>
 <div class=card><h2>Download for inspection only — NOT safe to submit</h2>
 <p><a class="btn stop" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download historical format-valid TIFF — NOT SAFE TO SUBMIT</a></p>
 <p>It passes the strict local format check against the hash-pinned bridge sample, but its
@@ -66,6 +70,9 @@ for audit; it is not a recommendation or candidate upload.</p>
 is not authenticated; see the limitation below and the irregularity register.</p>
 <table><thead><tr><th>Artifact</th><th>Scope</th><th>Strict local format result</th><th>Finding</th><th>SHA-256</th></tr></thead>
 <tbody><tr><td><a href="downloads/h56-corr-snap200cm-20261009.tif">Active corrections primary (1 dot)</a></td><td>corrections</td><td>FAIL — not template-conformant</td><td>7111787 pixels outside the sample footprint are not NaN; nodata tag None != template tag nan</td><td>65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b</td></tr><tr><td><a href="downloads/h56-corr-snap100cm-20261009.tif">Sensitivity (14 dots)</a></td><td>corrections</td><td>FAIL — not template-conformant</td><td>7111787 pixels outside the sample footprint are not NaN; nodata tag None != template tag nan</td><td>e3285854e73ae4ba3fce8faea64940fdc4bee3b702eb52d2530a67fb60195196</td></tr><tr><td><a href="downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif">Discovery archive (25,000 dots)</a></td><td>outside active lane</td><td>FAIL — not template-conformant</td><td>7111787 pixels outside the sample footprint are not NaN; nodata tag None != template tag nan</td><td>dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296</td></tr><tr><td><a href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">Historical corrections archive (6,504 dots)</a></td><td>historical</td><td>PASS — local format only</td><td>Exact sample finite/NaN mask and nodata match.</td><td>08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7</td></tr></tbody></table>
+<h2>Separate lane output — not reviewed or cleared here</h2>
+<p><a class="btn alt" href="downloads/h56-final-dotted-ridge-d2p8-20261009T190421Z.tif">Download the separate dotted-ridge TIFF</a></p>
+<p>This artifact was added to <code>main</code> by <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/pull/11">PR #11</a>, outside the active corrections-only scope. That PR has its own receipts and submission-status wording; this review did not revalidate, select, or promote the artifact. Treat its status as a separate decision, not as a result of this corrections review.</p>
 <h2>Active corrections result</h2>
 <p>The primary `h56-corr-snap200cm-20261009` has the archived note below (122/140
 characters), but the name/note are preserved for audit only. <b>Do not paste them into a submission
@@ -100,7 +107,7 @@ organizer-authenticated. Only its finite mask has been used for local validation
 must compare against the actual data-tab file before any future submission is considered.</p>
 </main>
 <footer><div class=wrap>56GEMSDOE · <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/run_card.json">active run card</a> ·
-generated 2026-10-09 19:15 UTC by
+generated 2026-10-09 19:29 UTC by
 <code>scripts/build_site.py</code> ·
 <a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">project site</a></div></footer>
 </body></html>

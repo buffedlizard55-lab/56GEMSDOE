@@ -1,8 +1,8 @@
 # 56GEMSDOE — DOE GEMS Prize, corrections lane
 
-> **Current verdict: NEGATIVE / STOP. No file in this repository is cleared or safe to submit.**
-> The experiment budget for the active corrections lane is exhausted. No submission slot has
-> been used, no candidate is selected or promoted, and no ORGANIZER-CONFIRMED score exists.
+> **Current corrections-lane verdict: NEGATIVE / STOP. No corrections artifact reviewed here is cleared or safe to submit.**
+> Its experiment budget is exhausted. No corrections slot was used, and no candidate from this lane
+> is selected or promoted. No ORGANIZER-CONFIRMED score is recorded by this review.
 
 **GitHub Pages:** [project status and research](https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html) ·
 [submission instructions](https://buffedlizard55-lab.github.io/56GEMSDOE/docs/executive-summary.html).
@@ -14,6 +14,15 @@ run `2026-10-09T16:49:44Z`. It is later than the earlier strongest-crest correct
 more relevant than the still-later **discovery** run (`evidence/run_card_discovery_v1.json`), which
 is outside the active lane. The card now explicitly records this authority decision and the strict
 format revalidation. No experiments were run in this review.
+
+**Scope clarification:** while this branch was under review, `main` advanced and merged
+[PR #11](https://github.com/buffedlizard55-lab/56GEMSDOE/pull/11), which added a distinct
+*dotted-ridge* artifact and other non-corrections outputs. Those are outside this corrections-only
+review. This review neither revalidated, selected, nor promoted them; consult that PR's separate
+receipts/status page. The preserved round-2 material remains under [`docs/discovery-*`](docs/discovery-index.html),
+[`docs/research/hypotheses-round2.md`](docs/research/hypotheses-round2.md), and the separate run cards
+in `evidence/`. The negative status below applies to the corrections outputs, not every artifact
+now present in the repository.
 
 The active-lane 2 px primary has the name `h56-corr-snap200cm-20261009` and this 122-character note:
 
@@ -45,8 +54,18 @@ This older file is **format-conformant to the pinned bridge sample** under the s
 **not safe to submit**: its historical registry receipt triggered the literal >70%-within-3-px
 rule. Its descriptive low correlation/Jaccard statistics do not override duplicate-and-stop.
 The sample itself is a third-party hash-pinned mirror, not organizer-authenticated; see
-[IR-56-001/003/027](evidence/irregularities.json). This link is provided only to preserve the
+[IR-56-001/003/034](evidence/irregularities.json). This link is provided only to preserve the
 research artifact and make the negative result inspectable.
+
+### Separate-lane file now present on main — not evaluated by this corrections review
+
+[Download the dotted-ridge TIFF from merged PR #11](docs/downloads/h56-final-dotted-ridge-d2p8-20261009T190421Z.tif)
+
+This separate artifact and its receipts were added to `main` after this review branched. The other
+PR's status pages make their own claims; this corrections-only review did **not** revalidate or
+select the file. Do not treat this paragraph as a submit-clearance. Use the linked PR's run card and
+receipts for that separate lane, and obtain any needed organizer receipt before calling a score
+confirmed.
 
 ## Evidence labels and 0.2778 research note
 
@@ -105,7 +124,8 @@ bash scripts/download_competition_data.sh
 .venv/bin/python -m pytest -q
 ```
 
-Current verification: **77 tests passed**. To see the strict format result for any archived TIFF:
+Current verification after merging the latest `main`: **81 tests passed locally**; the reproduced
+minimal-data CI setup also passes all 81. To see the strict format result for any archived TIFF:
 
 ```bash
 .venv/bin/python scripts/validate_submission.py \
@@ -161,7 +181,9 @@ Review notes: [`docs/review/2026-10-09.md`](docs/review/2026-10-09.md).
 - `evidence/run_card.json` — authoritative active corrections-lane run card.
 - `evidence/corrections/run_card.json` — earlier corrections run, retained as history.
 - `evidence/run_card_discovery_v1.json` — later discovery run, outside the active corrections lane.
-- `docs/downloads/` — archived research GeoTIFFs and their receipts; none is cleared.
+- `docs/downloads/` — archived research GeoTIFFs and their receipts; corrections-lane artifacts are
+  not cleared. The distinct PR #11 dotted-ridge artifact is outside this review; see its separate
+  run receipts/status claims.
 - `docs/research/leader-analysis-2026-10-09.md` — researched score attribution and formula caveats.
 
 ## Standing prompt and active constraints

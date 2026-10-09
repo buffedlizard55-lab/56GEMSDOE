@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Build the current, evidence-led DOE GEMS status site in docs/.
 
-The active corrections run is negative. Generated pages must not advertise a file as ready to
-submit. The only one-click raster is a historical, format-valid archive that still fails the
-registry duplicate-and-stop rule. Run: python scripts/build_site.py
+The active corrections run is negative. Generated pages must not advertise a corrections
+artifact as ready to submit. The one-click corrections raster is a historical, format-valid archive
+that still fails the registry duplicate-and-stop rule; distinct lanes have separate status pages.
+Run: python scripts/build_site.py
 """
 
 from __future__ import annotations
@@ -84,12 +85,16 @@ faults missing from the USGS/INGENIOUS catalogue</div>
 <span class=ok>ORGANIZER-CONFIRMED</span> requires an organizer receipt;
 <span class=warn>HOLDOUT-DTI</span> requires evaluator/version, withheld-positive count, and 95% CI;
 <span class=mut>MEASURED</span> describes local measurements; user and sibling reports are not organizer facts.</div></div>
-<main class=wrap><div class=card><h2 class=bad>Current verdict: NEGATIVE / STOP — no safe-to-submit file</h2>
+<main class=wrap><div class=card><h2 class=bad>Corrections-lane verdict: NEGATIVE / STOP — no corrections TIFF cleared</h2>
 <p>The active corrections primary triggers the literal &gt;70%-within-3-px registry stop and fails
 strict sample-footprint format validation. The 14-dot sensitivity also fails format validation.
-The format-valid historical TIFF linked above still triggers the registry stop. No slot has been
-used; the experiment budget is exhausted; no file is selected or promoted. The archive download is
-for technical inspection only.</p>
+The format-valid historical corrections TIFF linked above still triggers the registry stop. No
+slot has been used; the corrections experiment budget is exhausted; no corrections candidate is
+selected or promoted. The archive download is for technical inspection only.</p>
+<p>A separate dotted-ridge candidate was added to <code>main</code> in
+<a href="https://github.com/buffedlizard55-lab/56GEMSDOE/pull/11">PR #11</a>. It is outside this
+corrections-only review: this page neither revalidates nor clears it. Consult that PR's receipts
+and status pages separately; do not infer approval from this corrections verdict.</p>
 <p><a href="research.html">Research and 0.2778 evidence review</a> ·
 <a href="irregularities.html">Machine-logged findings</a></p></div>{body}</main>
 <footer><div class=wrap>56GEMSDOE · <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/run_card.json">active run card</a> ·
@@ -179,10 +184,10 @@ These quantities describe this corrections lane, not competition performance.</p
 
     index = f"""
 <h2>Project status — corrections lane</h2>
-<p><b>NEGATIVE / STOP.</b> No TIFF in this repository is cleared or safe to submit. The
-active corrections run is authoritative (`2026-10-09T16:49:44Z`); the later discovery run is
-outside this corrections-only scope. The experiment budget is exhausted. No slot was used, no
-artifact was selected, and no new experiment was run during this review.</p>
+<p><b>NEGATIVE / STOP for this lane.</b> No TIFF produced by the authoritative corrections run is
+cleared or safe to submit. The active card is `2026-10-09T16:49:44Z`; the corrections experiment
+budget is exhausted. No slot was used, no corrections artifact was selected, and no new experiment
+was run during this review.</p>
 <div class=card><h2>Download for inspection only — NOT safe to submit</h2>
 <p><a class="btn stop" href="downloads/{esc(archive_name)}">&#11015; Download historical format-valid TIFF — NOT SAFE TO SUBMIT</a></p>
 <p>It passes the strict local format check against the hash-pinned bridge sample, but its
@@ -194,6 +199,9 @@ for audit; it is not a recommendation or candidate upload.</p>
 is not authenticated; see the limitation below and the irregularity register.</p>
 <table><thead><tr><th>Artifact</th><th>Scope</th><th>Strict local format result</th><th>Finding</th><th>SHA-256</th></tr></thead>
 <tbody>{''.join(home_rows)}</tbody></table>
+<h2>Separate lane output — not reviewed or cleared here</h2>
+<p><a class="btn alt" href="downloads/h56-final-dotted-ridge-d2p8-20261009T190421Z.tif">Download the separate dotted-ridge TIFF</a></p>
+<p>This artifact was added to <code>main</code> by <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/pull/11">PR #11</a>, outside the active corrections-only scope. That PR has its own receipts and submission-status wording; this review did not revalidate, select, or promote the artifact. Treat its status as a separate decision, not as a result of this corrections review.</p>
 <h2>Active corrections result</h2>
 <p>The primary `h56-corr-snap200cm-20261009` has the archived note below ({sub["note_chars"]}/140
 characters), but the name/note are preserved for audit only. <b>Do not paste them into a submission
@@ -230,13 +238,14 @@ must compare against the actual data-tab file before any future submission is co
     (out / "index.html").write_text(page("Project status", "index.html", index, dl=False))
 
     submit = f"""
-<h2>Submission status: DO NOT UPLOAD</h2>
-<div class=card><h3 class=bad>No safe-to-submit file exists</h3>
+<h2>Corrections-lane submission status: DO NOT UPLOAD</h2>
+<div class=card><h3 class=bad>No corrections-lane file is cleared to submit</h3>
 <p>The active corrections candidate fails strict template validation and triggers the explicit
-registry duplicate-and-stop rule. The only file that passes strict local format is an older
-research raster that also triggers the registry stop. A separate discovery TIFF is both outside
-the corrections lane and format-invalid. The experiment budget is exhausted; no submission slot
-is cleared.</p>
+registry duplicate-and-stop rule. The historical corrections raster passes strict local format
+only, but also triggers the registry stop. A separate discovery TIFF is outside this corrections
+scope and format-invalid. The experiment budget is exhausted; no corrections slot is cleared.</p>
+<p>The merged repository also contains a distinct dotted-ridge artifact from PR #11. This page does
+not review or clear it; see that PR and its receipts for the separate lane's status.</p>
 <p><a class="btn stop" href="downloads/{esc(archive_name)}">Download archived TIFF for inspection only — NOT safe to submit</a></p>
 <p>Archive SHA-256: <code>{esc(archive["sha256"])}</code>. This download is not an instruction to
 upload it.</p></div>
@@ -302,8 +311,8 @@ claimed 0.2778 score and its cause remain unverified.</p>
 <h3>Active corrections lane: negative</h3>
 <p>The authoritative corrections run card records the negative result. The 1-dot primary triggers
 the literal registry stop despite low rank correlation and fails strict format validation. The
-14-dot sensitivity fails strict format too. The 6,504-dot historical raster is format-conformant
-to the local bridge sample but still triggers the registry rule. No file is safe to submit.</p>
+14-dot sensitivity fails strict format too. The 6,504-dot historical corrections raster is format-conformant
+to the local bridge sample but still triggers the registry rule. No corrections-lane file is safe to submit.</p>
 {measurement_html}
 <h3>Method-level holdout values — HOLDOUT-DTI, not score</h3>
 <p>Evaluator <code>{esc(hold["evaluator_version"])}</code>; {hold["withheld_positive_pixels"]:,}
@@ -360,7 +369,7 @@ independently verified by an organizer source.</li></ul>
 
     irregularities = []
     for item in irr:
-        if item.get("id") in {"IR-56-024", "IR-56-025", "IR-56-026", "IR-56-027", "IR-56-028"}:
+        if item.get("id") in {"IR-56-031", "IR-56-032", "IR-56-033", "IR-56-034", "IR-56-035"}:
             irregularities.append(
                 f'<div class=card><h3>{esc(item.get("id"))}: {esc(item.get("title", ""))}</h3>'
                 f'<p>{esc(item.get("finding", ""))}</p>'
@@ -410,8 +419,8 @@ def main():
 <meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
 <meta http-equiv="refresh" content="0; url=executive-summary.html">
 <title>Submission status — NEGATIVE / STOP</title></head><body>
-<h1>NEGATIVE / STOP — do not upload</h1><p>No TIFF in this repository is cleared or safe to submit.
-<a href="executive-summary.html">Current submission status and future-review checklist</a>.</p>
+<h1>NEGATIVE / STOP — no corrections file cleared</h1><p>No corrections-lane TIFF in this review is cleared or safe to submit. Other lanes have separate receipts and are not adjudicated here.
+<a href="executive-summary.html">Current corrections-lane status and future-review checklist</a>.</p>
 </body></html>""")
     (out / "prior-irregularities.html").write_text("""<!doctype html><html lang=en><head>
 <meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">

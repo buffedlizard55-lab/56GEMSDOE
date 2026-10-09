@@ -26,6 +26,10 @@ def validate(pred_path, sample_path=None, training_features_path=None):
 
     report = format_report(pred, sample)
     report["warnings"] = []
+    if train is None:
+        report["warnings"].append(
+            "training feature reference not supplied; only the pinned sample grid was checked"
+        )
     if train is not None:
         if not train.is_file():
             report["problems"].append(f"training feature reference is missing: {train}")
@@ -64,7 +68,11 @@ if __name__ == "__main__":
     parser.add_argument("--pred", required=True, help="prediction GeoTIFF")
     parser.add_argument("--sample", default=str(ROOT / "data" / "sample_submission.tif"),
                         help="sample template, including its outside-footprint mask")
-    parser.add_argument("--train", default=str(ROOT / "data" / "training_features.tif"),
-                        help="training feature grid used as a second metadata reference")
+    default_train = ROOT / "data" / "training_features.tif"
+    parser.add_argument(
+        "--train",
+        default=str(default_train) if default_train.is_file() else None,
+        help="optional training feature grid used as a second metadata reference; omitted when unavailable",
+    )
     args = parser.parse_args()
     sys.exit(0 if validate(args.pred, args.sample, args.train) else 1)

@@ -38,16 +38,21 @@ jobs:
           import hashlib, json, shutil
           from pathlib import Path
           m = json.loads(Path("data/bridge/manifest.json").read_text())
+          grid = Path("data/grid")
+          grid.mkdir(parents=True, exist_ok=True)
           for f in m["files"]:
               if "parts" in f:
                   print(f"SKIP {f['name']}: needs the gitignored bridge parts")
                   continue
               src = Path("data/bridge") / f["name"]
+              grid_name = "sample_submission.tif" if f["name"] == "example_submission.tif" else f["name"]
+              grid_dst = grid / grid_name
               dst = Path("data") / f["canonical"]
               h = hashlib.sha256(src.read_bytes()).hexdigest()
               assert h == f["sha256"], f"sha256 mismatch for {src}"
-              shutil.copyfile(src, dst)
-              print(f"OK   {dst} placed from the pinned bridge ({h[:12]}...)")
+              shutil.copyfile(src, grid_dst)
+              shutil.copyfile(grid_dst, dst)
+              print(f"OK   {grid_dst} and {dst} placed from the pinned bridge ({h[:12]}...)")
           EOF
           fi
 
@@ -64,11 +69,17 @@ jobs:
       - name: pytest
         run: python -m pytest tests -q
 
-      - name: validate the shipped submission GeoTIFF
+      - name: validate the shipped archive against available template references
         run: |
           TIF=$(ls docs/downloads/gems56-corr-*-nan.tif | head -1)
-          python scripts/validate_submission.py --pred "$TIF" \
-                 --sample data/sample_submission.tif \
-                 --train data/training_features.tif
+          if [ -f data/training_features.tif ]; then
+            python scripts/validate_submission.py --pred "$TIF" \
+                   --sample data/sample_submission.tif \
+                   --train data/training_features.tif
+          else
+            echo "training_features.tif absent (bridge parts are gitignored); validating against the pinned sample only"
+            python scripts/validate_submission.py --pred "$TIF" \
+                   --sample data/sample_submission.tif
+          fi
           python -m src.submission_io validate-conformant "$TIF" \
                  --sample data/sample_submission.tif

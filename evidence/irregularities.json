@@ -214,47 +214,125 @@
   },
   {
     "id": "IR-56-024",
+    "severity": "warn",
+    "title": "A one-channel run was labelled as a fusion in the raster receipt",
+    "finding": "`scripts/emit_and_score.py --fields mag_ridge --no-holdout` wrote `arm: FUSION|packed` into the raster receipt, because the --no-holdout branch hard-codes the fusion key. The bytes were right - with a single input field the fused arm is that field - but the label made the primary file look like the 0.0332 arm instead of the 0.0387 one, which is exactly the kind of documentation defect that survives into someone else's decision.",
+    "action": "Fixed in the script (a one-field run is labelled by its channel), and verified by re-deriving the emission from `data/interim/fields/mag_ridge.npy` with the same packing parameters: the dot set is identical cell for cell and the regenerated GeoTIFF has the same sha256, 62824bcab55d97427b035a004d90c2aaf088acb30c66aeb2a355f5022cc6efb2. No number on the site changed; the receipts were rewritten from the corrected code path.  [id IR-56-024 assigned on merge with the parallel discovery run (PR #7): that run had already used IR-56-014 for a different flag.  The merged tree keeps both runs' receipts side by side, so the mislabel is not propagated by the other run's files.",
+    "link": "evidence/raster_h56-magpack-37k-20261009.json",
+    "verified_by": "sha256 of the file before and after the re-emit, plus a cell-exact xor of the two dot sets"
+  },
+  {
+    "id": "IR-56-025",
+    "severity": "warn",
+    "title": "The uniqueness rule-as-written is still tripped by artefacts - now with a named culprit",
+    "finding": "Round 1's IR-56-006 said a one-way '>70% of dots within 3 px' test is vacuous against dense rasters. Over the full 868-raster mirror this round, 56 files trip it one-way and none reciprocally; 35 of the 56 hold under 500k dots, and the largest one-way value (0.9996) belongs to `13GEMSDOE__13gems_20261001_r13-lattice-s5_v2`, which is not a prediction at all: it is a regular 5-pixel lattice (rows 0,5,10,... x cols 0,5,10,...), so every point of the region lies within 3.54 px of one of its dots.",
+    "action": "Both directions are reported everywhere in this round and the reciprocal (>0.70 both ways) is the criterion; the shared gate is run on the disclosed top-40 reciprocal subset (evidence/lane_uniqueness2_summary.json, ok=true for both rasters) while the exact 868-raster screen (evidence/registry_screen_h56b.json) covers the corpus. Any lane that reports only the one-way number against this corpus is reporting an artefact.  [id IR-56-025 assigned on merge with the parallel discovery run (PR #7): that run had already used IR-56-015 for a different flag.",
+    "link": "evidence/registry_screen_h56b.json",
+    "verified_by": "rasterio read of the lattice file: unique row indices 0,5,10,... and column indices 0,5,10,..."
+  },
+  {
+    "id": "IR-56-026",
+    "severity": "info",
+    "title": "Two submission notes were drafted longer than the portal's 140-character limit",
+    "finding": "The first drafts of the round-2 notes measured 169 and 161 characters. Nothing in the pipeline checked that, so the defect would have surfaced as a truncated or rejected form field at submission time, on the group's slot.",
+    "action": "Both notes were shortened (123 and 118 characters) and `scripts/build_round2.py` now asserts `len(note) <= 140` at build time, so an over-long note cannot ship silently; the character count is printed on each download card.  [id IR-56-026 assigned on merge with the parallel discovery run (PR #7): that run had already used IR-56-016 for a different flag.",
+    "link": "docs/research/run-card-round2.json",
+    "verified_by": "the assert in scripts/build_round2.py and note_chars in the run card"
+  },
+  {
+    "id": "IR-56-027",
+    "severity": "warn",
+    "title": "The reproduce block named two scripts that do not exist",
+    "finding": "The first version of the site's 'how to reproduce' list told the reader to run `scripts/get_inputs.sh` and `scripts/run_registry_screen.py`. Neither file exists in this repository - the real entry points are `scripts/prepare_data.py` (verify pins) and `scripts/screen_registry.py` - so the one command sequence that is supposed to let someone else re-derive every number on the page would have failed at step one.",
+    "action": "Rewritten from the actual `scripts/` listing, with each line checked against the script's own `Reproduce:` header; the list now also includes the shared gate (`scripts/run_lane_gate.py`) and the link checker (`scripts/check_site_links.py`). It is generated into the page, so a future rename breaks the build rather than the instructions.  [id IR-56-027 assigned on merge with the parallel discovery run (PR #7): that run had already used IR-56-017 for a different flag.  Addendum after the merge: PR #7 brought `scripts/download_competition_data.sh`, `scripts/preflight_data.py` and `scripts/fetch_inputs.sh` into the repository, so the reproduce block now names those real entry points instead of the ones we invented; the underlying point stands - a sandbox with no route to the competition host cannot run them, which is the same finding that run logged as IR-56-014 and IR-56-021.",
+    "link": "docs/index.html#reproduce",
+    "verified_by": "ls scripts/ and each script's module docstring, line by line"
+  },
+  {
+    "id": "IR-56-028",
+    "raised": "2026-10-09",
+    "severity": "medium",
+    "area": "published site: a cross-directory link from the merged run's page",
+    "title": "A link in PR #7's page was repo-relative and 404s on GitHub Pages",
+    "finding": "Generalising scripts/check_site_links.py to walk every *.html under docs/ (instead of the five pages this run wrote) immediately found one broken link, in the parallel run's page: docs/prior-irregularities.html linked the stored session brief as `docs/brief/2026-10-09-session-prompt.md`. Relative to a page that already lives in docs/, that resolves to docs/docs/brief/... and 404s, even though the file is committed at 16,999 bytes.",
+    "why_it_matters": "The brief for this competition asks for verified public links on the site; a link that only works when opened from the repository root is not verified. It also shows a link checker scoped to your own pages is not a link checker.",
+    "action": "Href rewritten to `brief/2026-10-09-session-prompt.md`; the checker now walks all 13 pages under docs/ and rejects any link that escapes docs/. Both runs' pages are covered by the same audit from here on.",
+    "found_by": "scripts/check_site_links.py (generalised), run over the merged tree",
+    "link": "docs/prior-irregularities.html",
+    "verified_by": "python3 scripts/check_site_links.py -> BROKEN LINKS: none, 13 pages audited"
+  },
+  {
+    "id": "IR-56-029",
+    "raised": "2026-10-09",
+    "severity": "warn",
+    "area": "merge bookkeeping: an HTML splice that silently did nothing",
+    "title": "The archive banner we said we had added to the merged run's pages was never written",
+    "finding": "The merge script prefixed PR #7's three preserved pages with an explanatory banner by inserting after a `<main>` tag. Their pages have no `<main>` element - content is wrapped in `<div class='wrap'>` - so str.replace matched nothing, wrote no change, and both the merge commit message and the PR body then asserted a banner that did not exist. Caught minutes later while fixing an unrelated reference in the same file, because the script never re-read what it had written.",
+    "why_it_matters": "This is the defect class the whole round is about: a claim about an artefact derived from a script run instead of from the artefact. A replace() that no-ops is silent unless somebody checks the bytes - which is why the fixed splice now asserts its own marker is present in the file it re-reads, and why the link checker resolves cited paths.",
+    "action": "Banner inserted after <body> in all three pages, with a per-file assertion that the marker is on disk afterwards. The wording in the merge commit and PR body is true only from this commit on; that is recorded here rather than quietly amended.",
+    "verified_by": "python: assert MARK in Path(name).read_text(), per file, after writing",
+    "link": "docs/discovery-index.html"
+  },
+  {
+    "id": "IR-56-030",
+    "raised": "2026-10-09",
+    "severity": "info",
+    "area": "published site: an ambiguous path in the merged run's page",
+    "title": "A cited receipt belonged to a sibling repository and read as a dangling path",
+    "finding": "PR #7's archived irregularities page cited `evidence/score_attribution_audit.json`, which does not exist in this repository: it is the GEMSDOE51 audit that run was describing. As written it looked like a broken link to evidence that never existed.",
+    "why_it_matters": "The instruction for this site is that every number is checkable by a reader following the published paths; a repository-relative path is only unambiguous inside that repository.",
+    "action": "Rewritten as an explicit link to the sibling blob with its size and the check date, so the reference is verifiable and clearly not ours (verified: gh api repos/buffedlizard55-lab/GEMSDOE51/contents/evidence/score_attribution_audit.json -> 3,357 bytes at main). scripts/check_site_links.py was extended to resolve every <code>evidence|docs|registry|scripts/...</code> path cited in any page against the working tree, skipping sentences that name a sibling repository - which is how this was caught.",
+    "verified_by": "GitHub contents API for the sibling path + scripts/check_site_links.py over 13 pages",
+    "link": "https://github.com/buffedlizard55-lab/GEMSDOE51/blob/main/evidence/score_attribution_audit.json"
+  },
+  {
+    "id": "IR-56-031",
     "title": "Data downloader omitted root-level sample and label aliases",
     "severity": "warn",
     "finding": "The download script verified inputs under data/grid/ while tests, validators, and lane tools read data/sample_submission.tif and data/labels.tif. The verified root aliases were absent after preparation.",
     "action": "Added deterministic post-verification copies to data/sample_submission.tif and data/labels.tif; reran scripts/download_competition_data.sh and asserted both SHA-256 pairs are identical.",
     "link": "scripts/download_competition_data.sh",
-    "verified_by": "successful end-to-end script rerun and tests/test_download_aliases.py"
+    "verified_by": "successful end-to-end script rerun and tests/test_download_aliases.py",
+    "renumbered_from": "IR-56-024"
   },
   {
-    "id": "IR-56-025",
+    "id": "IR-56-032",
     "title": "Legacy local validators missed outside-footprint finite cells and missing nodata",
     "severity": "bad",
     "finding": "The old writer/gates accepted full-grid zeros outside the sample's NaN footprint and files with no nodata tag. The 1-dot corrections, 14-dot sensitivity, and 25,000-dot discovery rasters each have 7,111,787 non-NaN outside-template cells and nodata=None.",
     "action": "Hardened shared writer/gates and both repository validators to require finite values inside the pinned sample footprint, NaN outside, a matching nodata tag, strict [0,1], and exact grid metadata. Historical receipts retain the old result and record the strict rerun; no candidate was repaired or promoted.",
     "link": "https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/",
-    "verified_by": "scripts/validate_submission.py strict replay on all four published rasters; regression tests in tests/test_template_mask_gate.py"
+    "verified_by": "scripts/validate_submission.py strict replay on all four published rasters; regression tests in tests/test_template_mask_gate.py",
+    "renumbered_from": "IR-56-025"
   },
   {
-    "id": "IR-56-026",
+    "id": "IR-56-033",
     "title": "Latest corrections TIFF fails strict format conformance",
     "severity": "bad",
     "finding": "The active corrections primary h56-corr-snap200cm-20261009 has the correct CRS, shape, transform, and in-range values but fills all 7,111,787 pixels outside the pinned sample finite mask and has nodata=None. The 14-dot sensitivity TIFF has the same failure.",
     "action": "Kept both files as historical research artifacts; updated receipts, status cards, downloads README, and site copy to say NOT SAFE TO SUBMIT. The old validator_ok fields were marked as legacy, not authoritative.",
     "link": "docs/downloads/h56-corr-snap200cm-20261009.tif",
-    "verified_by": "strict local format validator; SHA-256 values recorded in evidence/run_card.json"
+    "verified_by": "strict local format validator; SHA-256 values recorded in evidence/run_card.json",
+    "renumbered_from": "IR-56-026"
   },
   {
-    "id": "IR-56-027",
+    "id": "IR-56-034",
     "title": "The pinned sample mirror's content conflicts with the public page's sample description",
     "severity": "warn",
     "finding": "The hash-pinned owner-bridge sample is cell-for-cell identical to the catalogue with 60,988 positive cells, while the official problem page says its sample submission predicts total fault absence. Its geometry and finite mask match the training grid, but organizer provenance/content is not independently authenticated here.",
     "action": "Use the bridge sample only as the local footprint/reference; label local format passes as such, preserve the mismatch, and request a logged-in comparison with the competition data-tab file before any future submission.",
     "link": "https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/",
-    "verified_by": "official public format description plus local pinned-file equality reported in evidence/grid.json; input data-tab is login-gated (IR-56-003)"
+    "verified_by": "official public format description plus local pinned-file equality reported in evidence/grid.json; input data-tab is login-gated (IR-56-003)",
+    "renumbered_from": "IR-56-027"
   },
   {
-    "id": "IR-56-028",
+    "id": "IR-56-035",
     "title": "Active corrections holdout did not apply the buffer to catalogue-derived inputs; prevalence provenance is incomplete",
     "severity": "bad",
     "finding": "scripts/run_corrections_holdout.py builds snap inputs from fold[\"visible\"] & fp and does not restrict those catalogue-derived locations to fold[\"fit\"]. The shared fold builder places the 4-px buffer in fold[\"fit\"], but this evaluator does not consume fold[\"fit\"] for snap_map inputs. The original evidence/holdout_corrections_v1.json also records design.prevalence=null although the invocation passes prevalence=0.00294. Its 48,080 withheld-positive total and DTI values remain as reported, but the buffered-design claim and prevalence metadata are not fully evidenced.",
     "action": "Did not recompute DTI or alter the original holdout receipt. Added a source-hash-pinned reconciliation, exact buffer/prevalence defects, and NOT ADMISSIBLE FOR PROMOTION status to evidence/run_card.json and the site/review. Do not rerun under the exhausted budget.",
     "link": "evidence/holdout_corrections_v1.json; scripts/run_corrections_holdout.py; src/gems56/holdout.py",
-    "verified_by": "source review of the make_folds invocation, snap_map call and fold builder; original receipt SHA-256 07465b0cee3dd191c4ed32342e9fd2c094cf24f37787483e74c4e7bbb8127a79"
+    "verified_by": "source review of the make_folds invocation, snap_map call and fold builder; original receipt SHA-256 07465b0cee3dd191c4ed32342e9fd2c094cf24f37787483e74c4e7bbb8127a79",
+    "renumbered_from": "IR-56-028"
   }
 ]

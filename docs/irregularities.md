@@ -3,10 +3,11 @@
 > **Historical log:** entries below describe earlier reviews and inputs. They are not the current
 > run card, format clearance, or submission authorization. The active corrections result is
 > **NEGATIVE / STOP**: the latest primary and sensitivity TIFFs fail strict template validation;
-> the format-valid historical raster still triggers the registry duplicate-and-stop rule. The
-> experiment budget is exhausted, and no TIFF is safe to submit. Current findings IR-56-024 through
-> IR-56-027 are in `evidence/irregularities.json`; see `docs/review/2026-10-09.md` and the active
-> `evidence/run_card.json`.
+> the format-valid historical corrections raster still triggers the registry duplicate-and-stop
+> rule. The corrections experiment budget is exhausted; no corrections TIFF is cleared to submit.
+> Findings IR-56-031 through IR-56-035 record the latest review in `evidence/irregularities.json`;
+> see `docs/review/2026-10-09.md` and the active `evidence/run_card.json`. A separate dotted-ridge
+> output from PR #11 is outside this corrections review and is not adjudicated by this log.
 
 Each item states what was found, how it was checked, and what it means. Nothing here is resolved unless it says so.
 

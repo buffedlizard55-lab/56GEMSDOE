@@ -97,11 +97,12 @@ def test_writer_refuses_empty_emission(tmp_path):
 @pytest.mark.skipif(not SHIPPED, reason="shipped submission GeoTIFF not present")
 def test_shipped_submission_passes_validator():
     tif = SHIPPED[-1]
-    r = subprocess.run([sys.executable, "scripts/validate_submission.py",
-                        "--pred", str(tif),
-                        "--sample", "data/sample_submission.tif",
-                        "--train", "data/training_features.tif"],
-                       cwd=ROOT, capture_output=True, text=True)
+    command = [sys.executable, "scripts/validate_submission.py",
+               "--pred", str(tif), "--sample", "data/sample_submission.tif"]
+    train = ROOT / "data" / "training_features.tif"
+    if train.is_file():
+        command.extend(["--train", str(train)])
+    r = subprocess.run(command, cwd=ROOT, capture_output=True, text=True)
     assert r.returncode == 0, r.stdout + r.stderr
 
 

@@ -1,7 +1,8 @@
-# Archived research downloads — none is cleared for submission
+# Archived research downloads — no corrections-lane TIFF cleared for submission
 
-> **STOP: there is no safe-to-submit TIFF in this folder.** These files are preserved for research
-> and reproducibility, not as submission recommendations. The active corrections primary fails the
+> **STOP for the corrections lane:** no TIFF from the active corrections review is safe to submit.
+> These files are preserved for research and reproducibility, not as submission recommendations.
+> The active corrections primary fails the
 > registry proximity gate and the strict sample-footprint format check. No slot has been used.
 
 ## Published files and current status
@@ -12,6 +13,16 @@
 | `h56-corr-snap200cm-20261009.tif` (+ `.zip`, `.json`) | Active corrections primary; 1 dot | **FAIL**: 7,111,787 non-NaN cells outside the sample footprint; nodata tag is absent | Registry DUPLICATE/STOP: 1.0 directed near-3-px fraction (>0.70); no artifact-level holdout evidence | **NO** |
 | `h56-corr-snap100cm-20261009.tif` (+ `.zip`, `.json`) | Active corrections sensitivity; 14 dots | **FAIL**: same outside-mask and nodata problems | Not cleared; historical registry gate receipt has offenders | **NO** |
 | `h56-disc-multi-b25000-20261009-20261009T165646Z.tif` (+ `.zip`, `.json`) | Later discovery-lane archive; 25,000 dots | **FAIL**: same outside-mask and nodata problems | Negative holdout / registry stop; discovery is outside the active corrections lane | **NO** |
+
+## Separate dotted-ridge lane artifact (not adjudicated by this review)
+
+[Download the dotted-ridge TIFF added by PR #11](h56-final-dotted-ridge-d2p8-20261009T190421Z.tif).
+It is a distinct, later output from outside the active corrections lane. PR #11 carries its own
+run receipts and submission-status claims; this corrections review did not independently revalidate,
+select, or promote it. Its status is therefore **not adjudicated here**. Do not interpret the
+corrections-lane STOP below as either clearance or a rejection of that separate artifact. The
+preserved parallel round-2 index is [`../discovery-index.html`](../discovery-index.html); its banner
+marks it as archival, and its status/receipts are separate from this corrections review.
 
 For the active primary, the pre-placement surface check found no rank-correlation trigger among
 readable entries (max ρ=0.005135), but 36/944 priors were unreadable, so it is not a complete
@@ -38,8 +49,10 @@ literal registry proximity trigger failed. Its current file SHA-256 is
   a logged-in human before relying on this footprint.
 - The official rules require one-band float32, EPSG:32611, 100 m, same bounds, [0,1] values, and
   null/NaN outside the bounds. Local validation is not proof of upload acceptance.
-- No candidate is selected or promoted. Do not edit, sanitize, repackage, or upload any archived file
-  as a workaround for a failed scientific or registry gate.
+- No corrections-lane candidate is selected or promoted. Do not edit, sanitize, repackage, or upload
+  a corrections archive as a workaround for a failed scientific or registry gate.
+- The dotted-ridge artifact linked above is a separate lane; its status is not adjudicated by this
+  corrections log. Read PR #11's receipts and status wording separately.
 
 Revalidation is documented in [`docs/review/2026-10-09.md`](../review/2026-10-09.md) and the
 active-lane card [`evidence/run_card.json`](../../evidence/run_card.json). The user-prompt archive and

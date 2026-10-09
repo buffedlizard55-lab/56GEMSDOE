@@ -39,6 +39,6 @@ The method-level values recorded in that run are `HOLDOUT-DTI (evaluator gems52-
 
 ## Remaining verification needed
 
-1. A logged-in user should compare the hash-pinned bridge inputs against the actual competition data-tab downloads. The sample-mirror content differs from the official page's description of a total-fault-absence sample; see IR-56-001, IR-56-003, and IR-56-027.
+1. A logged-in user should compare the hash-pinned bridge inputs against the actual competition data-tab downloads. The sample-mirror content differs from the official page's description of a total-fault-absence sample; see IR-56-001, IR-56-003, and IR-56-034.
 2. A competition-page submission receipt would be needed before any value could be labeled **ORGANIZER-CONFIRMED**.
 3. Do not select, repair, or submit any current TIFF based on this mechanism note. The active lane verdict is **NEGATIVE / STOP**.

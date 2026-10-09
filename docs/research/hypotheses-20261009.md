@@ -4,7 +4,7 @@
 > GeoTIFF fails strict sample-footprint validation (7,111,787 non-NaN cells outside the pinned
 > sample mask; nodata tag missing), and the registry stop is not waived by its old holdout results.
 > This file is not permission to continue discovery or spend another experiment. The current
-> authoritative decision is `evidence/run_card.json`: NEGATIVE / STOP, no TIFF safe to submit.
+> authoritative corrections-lane decision is `evidence/run_card.json`: NEGATIVE / STOP, no corrections TIFF safe to submit. A separate dotted-ridge artifact from PR #11 is outside this review.
 
 Status key: **VALIDATED / NEGATIVE / BLOCKED / UNTESTED**. No number below is a score for a
 submission; expected-DTI ranges are *judgements* informed by receipts named inline. This file
