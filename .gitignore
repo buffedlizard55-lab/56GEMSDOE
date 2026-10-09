@@ -1,4 +1,6 @@
 # Competition inputs are never committed: they are login-gated and licence-restricted.
+# (2026-10-09) The whole data/ tree is ignored, including bridge manifests and pilot receipts (IR-56-014).
+data/
 # They are resolved from the sandbox bridge as symlinks (see data_manifest.json for pins).
 data/raw/
 data/interim/

@@ -3,19 +3,44 @@
 Live site: **https://buffedlizard55-lab.github.io/56GEMSDOE/** · downloadable rasters in
 [`docs/downloads/`](docs/downloads/) · all receipts in [`evidence/`](evidence/)
 
-> **Bottom line of the first run (2026-10-09):** the USGS/INGENIOUS fault catalogue is *not* displaced from the
-> geomorphic and magnetic lineations by more than ~2 pixels anywhere we can show. Null-calibrated, the median
-> catalogue-to-crest offset is **−0.10 px** (DEM) and **+0.03 px** (magnetic) against an estimator noise floor of
-> **1.32 px**, the two datasets' offsets correlate at **r = 0.022**, **0 of 21** catalogue corridors pass the
-> consistency test, and at 3 m LiDAR resolution **0 of 13** segments is displaced by 200 m. The one positive
-> structure — the sub-pixel residual is spatially coherent beyond a label permutation (p < 0.004) — is real but
-> is a ~1 px wobble, not a correctable displacement, so the lane **emits no defensible correction**: the primary
-> raster carries **1 dot** and its own receipt says we do not believe it. The deliverable is the negative result
-> — histograms, two nulls, a 3 m calibration, a corridor table, a shared blocked holdout and two permutation
-> controls. Both rasters are format-valid and safe to download; **neither is cleared for a weekly submission
-> slot**, and the shared uniqueness gate returns `ok: false` on its proximity criterion (it fires trivially at
-> this dot count — 105 of 485 priors, none reciprocally — and is reported as a failure rather than argued
-> around; IR-56-006). Numbers, links and caveats: [the site](https://buffedlizard55-lab.github.io/56GEMSDOE/).
+> **Bottom line (updated 2026-10-09, second run).** The catalogue is **not** displaced from the geomorphic and
+> magnetic lineations by ≥ 2 px anywhere we can show: 0 of 21 corridors pass the decision gate, the 3 m LiDAR
+> check finds 0 of 13 segments displaced by ≥ 200 m, and the two data families do not correlate (r = 0.022). The
+> lane therefore emits no correction. Its two rasters are **format-valid — download is safe — and not for
+> submission**: the shared uniqueness gate, now run against the full 944-raster corpus, reports a *proximity
+> duplicate* (263 of 944 priors for the primary; the rule fires on dense registry layers, IR-56-006), so under the
+> parallel-run protocol the lane is logged as a duplicate and stops.
+>
+> **Why 0.2778 scored and what a sparse file can reach** (derived from the official formula, not from a holdout):
+> recall is weighted 0.8 against 0.2 for false-positive mass, so the leader emits dense mass over the fault field.
+> A file with S emitted mass can earn at most `min(|G|, S·9.38)` of credit. For this lane's 14-dot file that
+> bound exceeds 0.2777 only if the hidden positive set has fewer than ~558 pixels. Full analysis:
+> [docs/research/leader-analysis-2026-10-09.md](docs/research/leader-analysis-2026-10-09.md).
+>
+> The HOLDOUT-DTI of the lane's arms is 0.00016 (B_snap, CI [0, 0.00045], 48,080 withheld positives,
+> `gems52-pooled-hide-v1`) — indistinguishable from jitter. Negative results are the deliverable here.
+> Numbers, links and caveats: [the site](https://buffedlizard55-lab.github.io/56GEMSDOE/). Executive summary and
+> the one-click downloads: [docs/executive-summary.html](docs/executive-summary.html).
+
+## What changed in the 2026-10-09 second run
+
+* **Inputs re-hydrated and re-verified.** `data/` was absent at session start (IR-56-014). The three pinned
+  competition inputs were re-fetched from the owner's sibling repo `buffedlizard55-lab/GEMSDOE` (`data/bridge`,
+  5 shards reassembled) and the LiDAR layer from `buffedlizard55-lab/GEMSDOE48`. Every hash matches
+  `registry/input_pins.json` / `data_manifest.json`. The 3 m pilot tiles come from `GEMSDOE48/data/pilot/dem3m`
+  and match `dem_pilot_receipt.json`. That is a third-party mirror of a login-gated organizer tab: a licence
+  review is needed before any redistribution (IR-56-014). `data/` is git-ignored and is not committed.
+* **Reproduction.** The lane's five scripts regenerate both rasters byte-for-byte (sha256 `e3285854…` and
+  `65635a53…`) and the calibration and holdout receipts with identical numbers (timing fields aside).
+* **Uniqueness gate fixed and run on the full corpus (IR-56-015).** The gate had been silently checking zero
+  priors (`/home/user/_reg` absent) and wrote empty receipts. The build now fails closed below 944 priors, and
+  `scripts/mirror_registry_corpus.py` rebuilds the flat corpus from `docs/research/registry-index.json` with a
+  sha256 check per file (944/944, `evidence/registry_corpus_mirror.json`). 36 priors are unreadable on this grid
+  and are reported as errors, not silently dropped.
+* **Submission status made unambiguous.** Site and summary now say *download: yes (format-valid); submit: no*.
+* **Session brief stored** in [docs/brief/2026-10-09-session-prompt.md](docs/brief/2026-10-09-session-prompt.md)
+  (near-verbatim; the per-site score table is abbreviated, IR-56-017).
+* **Irregularities IR-56-014 … 018** are in [`evidence/irregularities.json`](evidence/irregularities.json).
 
 ---
 
@@ -138,7 +163,11 @@ template-side change, and both are pinned to the same upstream commit, so they a
 ## How to run it
 
 ```bash
-python -m venv .venv && .venv/bin/pip install numpy scipy rasterio shapely pyproj pandas
+python -m venv .venv && .venv/bin/pip install numpy==2.4.6 rasterio==1.4.4 scipy==1.17.1 shapely pyproj pandas pytest
+# inputs (hash-checked; see registry/input_pins.json): data/training_features.tif, data/grid/existing_faults.tif,
+#   data/grid/sample_submission.tif, data/external/h52_scarp3m_100m.tif  -- and for the 3 m check, the two pilot
+#   tiles copied to /home/user/_lidar/ (x42y425_3m.tif, x40y427_3m.tif from GEMSDOE48/data/pilot/dem3m)
+.venv/bin/python scripts/mirror_registry_corpus.py /home/user/_reg /home/user/_regsrc   # uniqueness corpus, 944 files
 .venv/bin/python scripts/prepare_data.py                    # grid, footprint, catalogue stats
 .venv/bin/python scripts/measure_offsets.py                 # E1  offsets + corridor table
 .venv/bin/python scripts/lidar_calibration.py               # E1b/E1c nulls, strength gate, 3 m calibration
@@ -152,6 +181,28 @@ python -m venv .venv && .venv/bin/pip install numpy scipy rasterio shapely pypro
 
 Everything is deterministic: fixed seeds, no network at run time beyond the pinned inputs, and every script
 writes its own receipt.
+
+## Next steps and limitations (for the next session)
+
+1. **Decide the submission question explicitly.** This lane's files are negative and capped (IR-56-018). The
+   recommendation is *not* to spend a weekly slot on them. A selector decision is still needed, and it belongs to a
+   person, not to this lane.
+2. **Fix the proximity rule, through the protocol, not around it.** A 14-dot file meets "≥ 70 % of dots within
+   3 px of a registry raster" against dense layers trivially. Propose a reciprocal or density-normalised rule to the
+   organisers of the parallel-run protocol and log the proposal; do not change the rule in this repo.
+3. **Keep the reciprocal screen current.** `scripts/screen_registry.py /home/user/_reg` was re-run on the full
+   944-raster corpus in this session (evidence/registry_screen_v1.json). Re-run it whenever the corpus or the
+   candidate files change; it takes roughly 30 minutes.
+4. **Get the organiser-confirmed number.** Every score in this repo is HOLDOUT-DTI or a user report. The
+   [DrivenData leaderboard](https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/) renders
+   client-side and was unreadable here (IR-56-016). A logged-in person must read it and paste the value.
+5. **Licence the inputs.** The competition rasters came from a third-party GitHub mirror. Before any push of data
+   or derived rasters beyond the two files in `docs/downloads/`, confirm the DrivenData data-use terms (IR-56-014).
+6. **Dense, recall-weighted emission belongs in another lane.** The leader's mechanism (IR-56-018, H7/H8 in
+   `docs/research/hypotheses.md`) needs a detector that emits mass over the fault field. That is a different method
+   paragraph and must start from a clean session.
+7. **Limits of the holdout.** It scores recovery of catalogue faults, cannot reward genuinely new faults, and cannot
+   see a ≤ 3 px lateral offset (IR-56-004). Do not read it as a leaderboard predictor.
 
 ## Reading order for a reviewer
 
