@@ -137,7 +137,11 @@ def test_shipped_submission_passes_all_finite_gate():
     """The gate that actually governs the shipped file: gems56.gates.format_report."""
     sys.path.insert(0, str(ROOT / "src"))
     from gems56 import gates
-    rep = gates.format_report(SHIPPED[-1], ROOT / "data" / "grid" / "sample_submission.tif")
+    sample = next((p for p in (ROOT / "data" / "grid" / "sample_submission.tif",
+                               ROOT / "data" / "sample_submission.tif") if p.exists()), None)
+    if sample is None:
+        pytest.skip("sample submission raster not placed")
+    rep = gates.format_report(SHIPPED[-1], sample)
     assert rep["ok"], rep["problems"]
     assert rep["n_nan"] == 0 and rep["min"] >= 0.0 and rep["max"] <= 1.0
     assert rep["bands"] == 1 and rep["dtype"] == "float32"
@@ -159,7 +163,13 @@ def test_shipped_submission_readback():
         tpl = src.read(1)
     # the catalogue as the bridge places it (data/labels.tif is the login-gated name and is not
     # present in this sandbox; data/grid/existing_faults.tif is the hash-pinned same raster)
-    cat_path = ROOT / "data" / "grid" / "existing_faults.tif"
+    # the catalogue under either placement: data/labels.tif is the CI/bridge canonical name,
+    # data/grid/existing_faults.tif is where download_competition_data.sh puts the same pinned
+    # raster locally (IR-57-005).
+    cat_path = next((p for p in (ROOT / "data" / "labels.tif",
+                                 ROOT / "data" / "grid" / "existing_faults.tif") if p.exists()), None)
+    if cat_path is None:
+        pytest.skip("catalogue raster not placed")
     with rasterio.open(cat_path) as src:
         fault = src.read(1) == 1
     fin = np.isfinite(a)
