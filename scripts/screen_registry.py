@@ -92,7 +92,7 @@ def tag(cp, kind):
 
 def main(argv):
     # --tag v2 writes registry_screen_v2*.json (default v1 keeps the corrections-lane contract)
-    tag = "v1"
+    tag = __import__("os").environ.get("SCREEN_PREFIX", "v1").strip("_")
     if "--tag" in argv:
         i = argv.index("--tag")
         tag = argv[i + 1]
@@ -140,7 +140,7 @@ def main(argv):
     # Curated registry for the authoritative shared gate: the 40 largest *reciprocal* overlaps, so that
     # gates.lane_uniqueness_report -- which is the tool the protocol names -- runs on the priors that could
     # actually be duplicates rather than on the dense diagnostic layers that dominate a one-way count.
-    cur = Path(f"/home/user/_reg_top_{tag}")
+    cur = Path(ROOT / "data" / f"_reg_top_{tag}")      # inside the workspace: survives a sandbox reset   # kept inside the workspace so it survives a reset
     cur.mkdir(parents=True, exist_ok=True)
     for old in cur.rglob("*.tif"):
         old.unlink()
