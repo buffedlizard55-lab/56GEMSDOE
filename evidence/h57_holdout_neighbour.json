@@ -1,0 +1,207 @@
+{
+ "experiment": "E2/E3 H57 hide-and-recover holdout (neighbour mode), real withheld catalogue components",
+ "evaluator": "src/metrics.py GtContext (official DTI, alpha 0.2, beta 0.8, R=3 px/300 m) + pixel-exact visible-fault masking model",
+ "evaluator_version": "h57-hide-and-recover-v1",
+ "label": "HOLDOUT-DTI (never an organizer score)",
+ "mode": "neighbour",
+ "neighbour_px": 4.0,
+ "folds": 4,
+ "buffer_px": 0,
+ "min_offset_px": 2.0,
+ "n_withheld_positives": 41742,
+ "pooled": {
+  "B0_chance": 0.020303,
+  "B1_corridor": 0.001773,
+  "B2_evidence": 0.000872,
+  "B3_corroborated": 0.000226,
+  "B4_catalogue": 0.0
+ },
+ "dots": {
+  "B0_chance": 44202,
+  "B1_corridor": 44623,
+  "B2_evidence": 44623,
+  "B3_corroborated": 7275,
+  "B4_catalogue": 201834
+ },
+ "bootstrap": {
+  "B1_corridor": {
+   "dti_p50": 0.001772,
+   "dti_ci95": [
+    0.001295,
+    0.002317
+   ],
+   "contrast_vs_reference_p50": 0.0,
+   "contrast_vs_reference_ci95": [
+    0.0,
+    0.0
+   ],
+   "prob_beats_reference": null,
+   "n_blocks": 30855,
+   "n_scoreable_blocks": 4267
+  },
+  "B0_chance": {
+   "dti_p50": 0.020286,
+   "dti_ci95": [
+    0.018431,
+    0.022125
+   ],
+   "contrast_vs_reference_p50": 0.018486,
+   "contrast_vs_reference_ci95": [
+    0.016619,
+    0.020454
+   ],
+   "prob_beats_reference": 1.0,
+   "n_blocks": 30855,
+   "n_scoreable_blocks": 12783
+  },
+  "B2_evidence": {
+   "dti_p50": 0.000852,
+   "dti_ci95": [
+    0.000486,
+    0.001327
+   ],
+   "contrast_vs_reference_p50": -0.000899,
+   "contrast_vs_reference_ci95": [
+    -0.001378,
+    -0.000476
+   ],
+   "prob_beats_reference": 0.0,
+   "n_blocks": 30855,
+   "n_scoreable_blocks": 3660
+  },
+  "B3_corroborated": {
+   "dti_p50": 0.000216,
+   "dti_ci95": [
+    7.6e-05,
+    0.00041
+   ],
+   "contrast_vs_reference_p50": -0.001552,
+   "contrast_vs_reference_ci95": [
+    -0.002061,
+    -0.001083
+   ],
+   "prob_beats_reference": 0.0,
+   "n_blocks": 30855,
+   "n_scoreable_blocks": 2874
+  },
+  "B4_catalogue": {
+   "dti_p50": 0.0,
+   "dti_ci95": [
+    0.0,
+    0.0
+   ],
+   "contrast_vs_reference_p50": -0.001772,
+   "contrast_vs_reference_ci95": [
+    -0.002317,
+    -0.001295
+   ],
+   "prob_beats_reference": 0.0,
+   "n_blocks": 30855,
+   "n_scoreable_blocks": 3816
+  }
+ },
+ "per_fold": [
+  {
+   "fold": 0,
+   "withheld_px": 8738,
+   "visible_px": 52156,
+   "B0_chance": {
+    "dti": 0.019686,
+    "dots": 11251
+   },
+   "B1_corridor": {
+    "dti": 0.00198,
+    "dots": 11355
+   },
+   "B2_evidence": {
+    "dti": 0.001143,
+    "dots": 11355
+   },
+   "B3_corroborated": {
+    "dti": 0.000641,
+    "dots": 1856
+   },
+   "B4_catalogue": {
+    "dti": 0.0,
+    "dots": 52156
+   }
+  },
+  {
+   "fold": 1,
+   "withheld_px": 9557,
+   "visible_px": 51337,
+   "B0_chance": {
+    "dti": 0.020254,
+    "dots": 11335
+   },
+   "B1_corridor": {
+    "dti": 0.001968,
+    "dots": 11429
+   },
+   "B2_evidence": {
+    "dti": 0.000325,
+    "dots": 11429
+   },
+   "B3_corroborated": {
+    "dti": 3.2e-05,
+    "dots": 1858
+   },
+   "B4_catalogue": {
+    "dti": 0.0,
+    "dots": 51337
+   }
+  },
+  {
+   "fold": 2,
+   "withheld_px": 9029,
+   "visible_px": 51865,
+   "B0_chance": {
+    "dti": 0.019769,
+    "dots": 11354
+   },
+   "B1_corridor": {
+    "dti": 0.002248,
+    "dots": 11473
+   },
+   "B2_evidence": {
+    "dti": 0.001316,
+    "dots": 11473
+   },
+   "B3_corroborated": {
+    "dti": 0.000198,
+    "dots": 1866
+   },
+   "B4_catalogue": {
+    "dti": 0.0,
+    "dots": 51865
+   }
+  },
+  {
+   "fold": 3,
+   "withheld_px": 14418,
+   "visible_px": 46476,
+   "B0_chance": {
+    "dti": 0.021133,
+    "dots": 10262
+   },
+   "B1_corridor": {
+    "dti": 0.001157,
+    "dots": 10366
+   },
+   "B2_evidence": {
+    "dti": 0.000775,
+    "dots": 10366
+   },
+   "B3_corroborated": {
+    "dti": 0.000116,
+    "dots": 1695
+   },
+   "B4_catalogue": {
+    "dti": 0.0,
+    "dots": 46476
+   }
+  }
+ ],
+ "reference_arm": "B1_corridor (geometry-matched, evidence-free corridor coverage)",
+ "runtime_s": 94.7
+}

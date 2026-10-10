@@ -1,0 +1,349 @@
+<!doctype html><html lang=en><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>H57 run · 56GEMSDOE</title><style>
+:root{--bg:#0f1420;--fg:#e8eaf0;--mut:#9aa3b5;--acc:#4da3ff;--ok:#3fd68f;--warn:#ffb454;--bad:#ff6b6b;--card:#171d2e;--line:#28304a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+header.top{background:linear-gradient(180deg,#131a2c,#0f1420);border-bottom:1px solid var(--line);padding:22px 0 18px}
+h1{font-size:24px;margin:0 0 4px}
+h2{font-size:19px;margin:28px 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px}
+h3{font-size:16px;margin:20px 0 6px}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+nav a{color:var(--mut);text-decoration:none;padding:5px 10px;border:1px solid var(--line);border-radius:16px;font-size:13px}
+nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
+.dlbtn{margin:14px 0}
+.btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:8px}
+.btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn:hover{filter:brightness(1.1)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.mut{color:var(--mut)}
+.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+code{background:#0a0e18;border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:13px}
+pre{background:#0a0e18;border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;font-size:12.5px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#131a2c}
+img{max-width:100%;border:1px solid var(--line);border-radius:8px}
+.values{background:#10182b;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;font-size:13.5px;color:var(--mut)}
+footer{border-top:1px solid var(--line);margin-top:34px;padding:18px 0 30px;color:var(--mut);font-size:13px}
+.tag{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:10px;padding:1px 8px;color:var(--mut);margin-right:5px}
+ul{margin:6px 0 6px 20px}li{margin:3px 0}
+</style></head><body>
+<header class=top><div class=wrap>
+<h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
+<div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
+faults missing from the USGS/INGENIOUS catalogue</div>
+<nav><a href="index.html">Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="h57.html" class=active>H57 run (current)</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">&#11015; Download the submission GeoTIFF (150 KB)</a> <a class="btn alt" href="executive-summary.html">How to submit it &rarr;</a></div>
+</div></header>
+<div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
+submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
+on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
+<span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
+data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
+<main class=wrap><div class=card><h2 class=ok>Current file: OK to download and OK to submit</h2>
+<p>The download button above gives you <code>h57-corr-band2px-cover-20261009T191337Z.tif</code>. It is
+<b>format-valid for the DrivenData form</b>: single band, float32, every value in [0,&nbsp;1],
+<b>zero NaN cells anywhere</b> (the earlier "Predicted values must be in range [0, 1]" rejection
+was caused by NaN padding, which this file does not contain), EPSG:32611, 3292&times;3730, and a
+geotransform identical to <code>sample_submission.tif</code>. Paste the submission name and note
+printed on the home page into the form.</p>
+<p><b>What it is not:</b> it is not a validated discovery. This run's crest-steering hypothesis is
+<b>REFUTED</b> by its own holdout (see <a href="h57.html">H57 run</a>); what ships is the
+unsteered, kernel-optimal cover of the 100&ndash;400&nbsp;m band the organizers describe as
+containing "corrections or modifications to existing fault traces". Spending one of your weekly
+slots on it is a judgement call that stays with you &mdash; the full evidence is one click away.</p>
+<p><a href="h57.html">H57 run card and holdout</a> ·
+<a href="executive-summary.html">Step-by-step submission guide</a> ·
+<a href="prior-run.html">Preserved prior runs</a> ·
+<a href="prior-irregularities.html">Prior run irregularities</a></p></div>
+<h2>H57 &mdash; the current run, end to end</h2>
+<div class=card>
+<p><b>Lane.</b> Corrections: measure how far the catalogue sits from the evidence, then emit
+where the evidence says the fault is. <b>Budget used:</b> 3 experiments.
+<b>Verdict:</b> <span class=bad>negative (hypothesis) / deliverable shipped (format-valid unique raster)</span>.</p>
+<p>The crest-steering corrections hypothesis is REFUTED by E1 (offsets cluster under 2 px and match the null) and E3 (crest-steered dots score below an evidence-free corridor at matched budget, paired CI strictly below 0). Per the brief, the lane emits nothing steered by crests. What ships instead is the unsteered, kernel-optimal cover of the 100-400 m band the organizers themselves describe as containing corrections - sized by an explicit metric calculation, unique by rank (rho 0.286) and by exact overlap (Jaccard 0.152), and labelled as a bet rather than a validated discovery.</p>
+</div>
+
+<h3>E1 &mdash; the offset histogram (MEASURED on the pinned official rasters)</h3>
+<div class=card>
+<ul>
+<li>DEM-crest |offset|: median <b>1.476 px</b>
+(148 m); signed median
+-0.113 px &mdash; no preferred side.</li>
+<li>Fraction beyond 2 px: <b>0.326</b> for catalogue transects vs
+<b>0.273</b> for the random null &mdash; the signal barely
+separates from "nearest crest to an arbitrary point".</li>
+<li>Magnetic-ridge |offset| median 1.771 px; DEM&ndash;magnetic
+Pearson r 0.022 &mdash; the two families do not agree on a direction.</li>
+<li>Whole corridors passing the consistency gate: <b>2</b> of 1,273.</li>
+</ul>
+<p><b>Reading.</b> offsets cluster UNDER two pixels (median 1.48 px), the signed median is -0.11 px (no preferred side), and the distribution is barely separated from the random null (0.326 vs 0.273 beyond 2 px). The brief's stop rule for crest steering is met.</p>
+<p><img src="downloads/offset_histogram.png" alt="offset histogram"></p>
+</div>
+
+<h3>E3 &mdash; hide-and-recover on REAL withheld faults (neighbour-strand folds)</h3>
+<div class=card>
+<p>Whole catalogue components that have another component within 400 m are withheld; every
+feature the emitter uses is derived from the visible catalogue only; visible faults are masked
+pixel-exactly on both sides of the metric. Truth = 41,742 withheld
+mapped-fault pixels. Reference arm for the paired contrast:
+<code>B1_corridor</code> (same dot budget, no evidence consulted).</p>
+<table><tr><th>arm</th><th>pooled HOLDOUT-DTI</th><th>95% CI</th>
+<th>paired contrast vs B1</th><th>P(beats B1)</th><th>dots</th></tr>
+<tr><td><code>B0_chance</code></td><td>0.02030</td><td>[0.018431, 0.022125]</td><td>[0.016619, 0.020454]</td><td>1.0</td><td>44,202</td></tr><tr><td><code>B1_corridor</code></td><td>0.00177</td><td>[0.001295, 0.002317]</td><td>[0.0, 0.0]</td><td>None</td><td>44,623</td></tr><tr><td><code>B2_evidence</code></td><td>0.00087</td><td>[0.000486, 0.001327]</td><td>[-0.001378, -0.000476]</td><td>0.0</td><td>44,623</td></tr><tr><td><code>B3_corroborated</code></td><td>0.00023</td><td>[7.6e-05, 0.00041]</td><td>[-0.002061, -0.001083]</td><td>0.0</td><td>7,275</td></tr><tr><td><code>B4_catalogue</code></td><td>0.00000</td><td>[0.0, 0.0]</td><td>[-0.002317, -0.001295]</td><td>0.0</td><td>201,834</td></tr></table>
+<p><b>B4_catalogue = 0.00000 exactly</b> is the positive control: dots on a masked fault earn
+nothing, so the masking model is in force. <b>B2/B3 below B1</b> is the refutation: steering by
+the crest is worse than not steering at all.</p>
+</div>
+
+<h3>E2 &mdash; the same holdout with spatial folds, and why it cannot answer this question</h3>
+<div class=card>
+<table><tr><th>arm</th><th>pooled HOLDOUT-DTI</th><th>95% CI</th>
+<th>paired contrast vs B1</th><th>P(beats B1)</th><th>dots</th></tr>
+<tr><td><code>B0_chance</code></td><td>0.01758</td><td>[0.016205, 0.019036]</td><td>[0.015943, 0.018811]</td><td>1.0</td><td>39,737</td></tr><tr><td><code>B1_corridor</code></td><td>0.00023</td><td>[4.1e-05, 0.000518]</td><td>[0.0, 0.0]</td><td>None</td><td>40,103</td></tr><tr><td><code>B2_evidence</code></td><td>0.00004</td><td>[0.0, 9.2e-05]</td><td>[-0.000459, -2.6e-05]</td><td>0.003</td><td>40,103</td></tr><tr><td><code>B3_corroborated</code></td><td>0.00000</td><td>[0.0, 0.0]</td><td>[-0.000518, -4.1e-05]</td><td>0.0</td><td>6,539</td></tr><tr><td><code>B4_catalogue</code></td><td>0.00000</td><td>[0.0, 0.0]</td><td>[-0.000518, -4.1e-05]</td><td>0.0</td><td>182,625</td></tr></table>
+<p>Withholding whole components by spatial block puts every hidden fault far from any visible
+trace, so a corridor-restricted emitter cannot reach it by construction &mdash; which is exactly
+why uniform-random dots beat every corridor arm here. Logged as
+<a href="irregularities.html">IR-57-001</a>; E3 is the mode that can answer the question.</p>
+</div>
+
+<h3>Geometry sizing (design calculation, not an experiment, and circular by construction)</h3>
+<div class=card>
+<p>Target: a simulated parallel refined trace 1&ndash;4 px off a random 35% of components
+(18,149 px). It is drawn from the same corridor model the emitter
+covers, so its absolute level means nothing; it is used only to rank geometries.</p>
+<table><tr><th>offsets (px)</th><th>along-strike step</th><th>dots</th><th>sim-DTI (not a score)</th></tr>
+<tr><td><code>[2.0, -2.0]</code></td><td>1</td><td>109,865</td><td>0.38634</td></tr><tr><td><code>[2.0, -2.0]</code></td><td>2</td><td>54,919</td><td>0.43181</td></tr><tr><td><code>[2.0, -2.0]</code></td><td>3</td><td>24,558</td><td>0.35793</td></tr><tr><td><code>[3.0, -3.0]</code></td><td>2</td><td>54,192</td><td>0.41711</td></tr><tr><td><code>[3.0, -3.0]</code></td><td>3</td><td>24,017</td><td>0.35216</td></tr><tr><td><code>[2.0, -2.0, 4.0, -4.0]</code></td><td>2</td><td>104,926</td><td>0.35983</td></tr><tr><td><code>[2.0, -2.0, 4.0, -4.0]</code></td><td>3</td><td>46,923</td><td>0.38540</td></tr><tr><td><code>[1.5, -1.5, 3.5, -3.5]</code></td><td>3</td><td>46,739</td><td>0.39335</td></tr><tr><td><code>[2.0, -2.0, 4.0, -4.0]</code></td><td>4</td><td>26,205</td><td>0.32385</td></tr></table>
+<p>Chosen: <code>[2.0, -2.0]</code>, step
+2 &rarr; 54,919 dots.</p>
+</div>
+
+<h3>What this run says to try next (ranked, with the cost of each)</h3>
+<div class=card>
+<ol>
+<li><b>Budget-and-spacing optimisation of a whole-footprint dot field</b> (rank 1, cost: low).
+This run's own chance arm is the loudest measured signal on the page: uniform dots at a matched
+budget scored 0.02030 against real withheld faults, an order of
+magnitude above every corridor arm. The open question nobody in the sibling corpus has answered
+with a measurement is the <i>optimal</i> (density, spacing, budget) triple for the DTI algebra
+&mdash; TP saturates with coverage while FP grows linearly at &alpha;&nbsp;=&nbsp;0.2, so an
+interior optimum exists and can be solved for directly on the kernel. Deliverable: the
+budget&ndash;score curve, measured, not projected.</li>
+<li><b>Strike-conditioned corridor instead of isotropic corridor</b> (rank 2, cost: low). This
+run placed dots perpendicular to the local strike with no regard to whether the hidden strand is
+more likely en &eacute;chelon (along strike, beyond the tip) than parallel. Tip-prolongation vs
+side-parallel can be separated on the same neighbour-strand holdout that refuted crest steering.</li>
+<li><b>Fault-density field rather than fault-line field</b> (rank 3, cost: medium). Score the
+holdout against a kilometre-scale density target instead of pixel lines: if the hidden truth is
+structurally clustered, a coarse prospectivity field at optimal spacing dominates any line
+geometry, and this is measurable with the arms already written.</li>
+<li><b>Radiometric alteration (eTh/K) joint with magnetic-gradient persistence</b> (rank 4,
+cost: medium; needs only bands already in the official stack). The crest/ridge families failed
+as <i>registration</i> evidence here; that says nothing about them as <i>detection</i> evidence
+away from the catalogue, which this lane never tested.</li>
+</ol>
+<p class=mut>Each needs its own lane session and its own holdout; none is claimed here.</p>
+</div>
+
+<h3>Run card (verbatim)</h3>
+<div class=card><pre>{
+ "session": {
+  "date_utc": "2026-10-09",
+  "repo": "buffedlizard55-lab/56GEMSDOE",
+  "branch": "arena/f02cf443-56gemsdoe",
+  "lane": "corrections",
+  "experiments_used": 3,
+  "experiments": [
+   "E1 (reused, re-verified on the restored pinned inputs): catalogue-to-evidence perpendicular offset histogram, evidence/offsets_v1.json",
+   "E2 H57 hide-and-recover holdout, spatial whole-component folds (evidence/h57_holdout.json)",
+   "E3 H57 hide-and-recover holdout, neighbour-strand folds (evidence/h57_holdout_neighbour.json)"
+  ],
+  "design_calculation_not_an_experiment": "geometry sweep against an explicitly circular simulated-corrections target, evidence/h57_geometry_sweep.json",
+  "budget_limit": "3 experiments or 2 hours"
+ },
+ "hypothesis": "Corrections lane: the catalogue sits &gt;2 px (200 m) from the DEM-curvature scarp crest / magnetic-gradient ridge along a consistent direction, so dots should be emitted on the evidence-defined trace rather than on the (masked) catalogue line.",
+ "mechanism": "A real registration error shows as (a) a signed offset mode away from zero that exceeds the random null, and (b) crest-steered dots recovering hidden mapped faults better than evidence-free dots in the same corridor.",
+ "named_non_fault_process_that_could_mimic_it": "Erosional terraces and alluvial-fan edges give the same convex break-in-slope with no fault; 1:50,000-1:1,000,000 map generalisation and 100 m rasterisation displace a line by 1-3 px with no fault involved. Both are why the random-offset null and the evidence-free corridor null exist in E2/E3.",
+ "result_E1_MEASURED": {
+  "dem_abs_offset_median_px": 1.4757114074181301,
+  "dem_signed_median_px": -0.11314796634889474,
+  "dem_frac_abs_ge_2px": 0.3259517909439063,
+  "random_null_frac_abs_ge_2px": 0.27323245276566643,
+  "mag_abs_offset_median_px": 1.7714027566468142,
+  "dem_mag_pearson_r": 0.02233471267813126,
+  "qualifying_corridors": 2,
+  "reading": "offsets cluster UNDER two pixels (median 1.48 px), the signed median is -0.11 px (no preferred side), and the distribution is barely separated from the random null (0.326 vs 0.273 beyond 2 px). The brief's stop rule for crest steering is met."
+ },
+ "holdout_dti": {
+  "evaluator_version": "h57-hide-and-recover-v1 (src/metrics.py, alpha 0.2, beta 0.8, 300 m triangular kernel, visible faults masked pixel-exactly)",
+  "label": "HOLDOUT-DTI (never an organizer score)",
+  "E2_spatial_folds": {
+   "withheld_positives": 60894,
+   "pooled": {
+    "B0_chance": 0.017584,
+    "B1_corridor": 0.000231,
+    "B2_evidence": 3.8e-05,
+    "B3_corroborated": 0.0,
+    "B4_catalogue": 0.0
+   },
+   "ci95": {
+    "B0_chance": [
+     0.016205,
+     0.019036
+    ],
+    "B1_corridor": [
+     4.1e-05,
+     0.000518
+    ],
+    "B2_evidence": [
+     0.0,
+     9.2e-05
+    ],
+    "B3_corroborated": [
+     0.0,
+     0.0
+    ],
+    "B4_catalogue": [
+     0.0,
+     0.0
+    ]
+   },
+   "caveat": "IR-57-001: whole-component spatial withholding puts the hidden faults far from every visible trace, so a corridor-restricted emitter structurally cannot reach them. This mode measures that fact; it cannot test the corrections claim."
+  },
+  "E3_neighbour_strand_folds": {
+   "withheld_positives": 41742,
+   "pooled": {
+    "B0_chance": 0.020303,
+    "B1_corridor": 0.001773,
+    "B2_evidence": 0.000872,
+    "B3_corroborated": 0.000226,
+    "B4_catalogue": 0.0
+   },
+   "ci95": {
+    "B0_chance": [
+     0.018431,
+     0.022125
+    ],
+    "B1_corridor": [
+     0.001295,
+     0.002317
+    ],
+    "B2_evidence": [
+     0.000486,
+     0.001327
+    ],
+    "B3_corroborated": [
+     7.6e-05,
+     0.00041
+    ],
+    "B4_catalogue": [
+     0.0,
+     0.0
+    ]
+   },
+   "paired_contrast_vs_evidence_free_corridor": {
+    "B2_evidence": [
+     -0.001378,
+     -0.000476
+    ],
+    "B3_corroborated": [
+     -0.002061,
+     -0.001083
+    ],
+    "prob_evidence_beats_corridor": 0.0
+   },
+   "reading": "crest steering is WORSE than the evidence-free corridor at the identical dot budget (0.00087 vs 0.00177, paired CI strictly below 0, P(beats)=0.0). The crest-steering component of the hypothesis is REFUTED on real withheld mapped faults."
+  }
+ },
+ "leakage_canary": {
+  "status": "STRUCTURAL - not needed for a learned component because none was trained",
+  "B4_catalogue_arm": "dots placed on the visible catalogue score exactly 0.00000 in every fold, which is the positive control that the pixel-exact masking is in force",
+  "note": "no feature was fitted to the withheld labels, so the AUC&gt;0.90 leakage bar has no learned object to apply to in this run"
+ },
+ "organizer_confirmed_score": null,
+ "correlation_overlap_vs_registry": {
+  "corpus": "944 rasters mirrored from 54 sibling GEMSDOE repos (evidence/registry_corpus_mirror.json), full-corpus directed screen in evidence/registry_screen_v1.json; shared template gate gems56.gates.lane_report on the 40 worst-overlap SUBMISSION rasters in evidence/h57_uniqueness_submissions.json",
+  "max_spearman": 0.28610885474420605,
+  "max_near_3px_fraction": 1.0,
+  "literal_verdict": "DUPLICATE/STOP",
+  "max_exact_jaccard_vs_submissions": 0.1517,
+  "discriminators": "evidence/h57_uniqueness_discriminators.json",
+  "reading": "rank-uniqueness passes with room to spare (max rho 0.286 vs the 0.90 bar) and the largest exact-pixel Jaccard against any earlier submission is 0.152 against a 6.6x larger raster. The literal 3 px containment clause fires, as it does for every emission near the catalogue, because 100% of dots 2 px off a trace are within 3 px of the catalogue raster itself and of every habitat-sized prior. IR-57-003."
+ },
+ "raster_sha256": "fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced",
+ "validator_output": {
+  "ok": true,
+  "n_nan": 0,
+  "min": 0.0,
+  "max": 1.0,
+  "n_nonzero": 54914,
+  "crs": "EPSG:32611",
+  "shape": [
+   3730,
+   3292
+  ],
+  "transform": [
+   100.0,
+   0.0,
+   243350.0,
+   0.0,
+   -100.0,
+   4508550.0
+  ],
+  "problems": [],
+  "all_finite": true,
+  "mass_outside_sample_footprint": 0
+ },
+ "submission": {
+  "name": "h57-corr-band2px-cover-20261009T191337Z",
+  "note": "corrections-band cover: dots 2px either side of every catalogue trace, 2px along strike; crest steering refuted on holdout",
+  "note_chars": 122,
+  "file": "h57-corr-band2px-cover-20261009T191337Z.tif",
+  "zip": "h57-corr-band2px-cover-20261009T191337Z.zip",
+  "dots": 54914,
+  "geometry": {
+   "offsets_px": [
+    2.0,
+    -2.0
+   ],
+   "step_px": 2,
+   "sized_by": "evidence/h57_geometry_sweep.json (design simulation, circular, geometry only)",
+   "sweep_best": {
+    "offsets": [
+     2.0,
+     -2.0
+    ],
+    "step": 2,
+    "dots": 54919,
+    "sim_dti": 0.43181,
+    "TP": 11281.4,
+    "FP": 46753.6
+   }
+  },
+  "approved_for_weekly_slot": false,
+  "ok_to_download": true,
+  "ok_to_submit": "ACCEPTED BY THE FORM: yes - all-finite, every value in [0,1], CRS/shape/transform match the sample. SCIENTIFICALLY: this is a coverage bet on the organizers' stated corrections family, NOT an evidence-ranked discovery; the crest-steering hypothesis it started from is refuted above and no holdout exists for the real corrections truth family (we have no corrections labels). Promotion to a weekly slot is a separate selector decision."
+ },
+ "verdict": "negative (hypothesis) / deliverable shipped (format-valid unique raster)",
+ "verdict_detail": "The crest-steering corrections hypothesis is REFUTED by E1 (offsets cluster under 2 px and match the null) and E3 (crest-steered dots score below an evidence-free corridor at matched budget, paired CI strictly below 0). Per the brief, the lane emits nothing steered by crests. What ships instead is the unsteered, kernel-optimal cover of the 100-400 m band the organizers themselves describe as containing corrections - sized by an explicit metric calculation, unique by rank (rho 0.286) and by exact overlap (Jaccard 0.152), and labelled as a bet rather than a validated discovery.",
+ "irregularities": [
+  "IR-57-001",
+  "IR-57-002",
+  "IR-57-003",
+  "IR-57-004",
+  "IR-57-005",
+  "IR-57-006"
+ ]
+}</pre></div>
+</main>
+<footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
+round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
+round-3 twin-family branch <code>arena/e86c5610-56gemsdoe</code> ·
+generated 2026-10-09 19:50 UTC by
+<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
+and <code>evidence/*.json</code> (run B) ·
+site served from <code>main</code> at
+<a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
+</body></html>

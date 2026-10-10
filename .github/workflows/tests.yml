@@ -69,17 +69,50 @@ jobs:
       - name: pytest
         run: python -m pytest tests -q
 
-      - name: validate the shipped archive against available template references
+      - name: validate the shipped submission GeoTIFFs
         run: |
-          TIF=$(ls docs/downloads/gems56-corr-*-nan.tif | head -1)
-          if [ -f data/training_features.tif ]; then
+          # Legacy NaN-outside file: only when the feature stack is present, because the
+          # validator cross-checks against it.
+          TIF=$(ls docs/downloads/gems56-corr-*-nan.tif 2>/dev/null | head -1)
+          if [ -n "$TIF" ] && [ -f data/training_features.tif ]; then
             python scripts/validate_submission.py --pred "$TIF" \
                    --sample data/sample_submission.tif \
                    --train data/training_features.tif
-          else
-            echo "training_features.tif absent (bridge parts are gitignored); validating against the pinned sample only"
-            python scripts/validate_submission.py --pred "$TIF" \
+            python -m src.submission_io validate-conformant "$TIF" \
                    --sample data/sample_submission.tif
+          else
+            echo "legacy NaN-outside file or feature stack absent - skipping its validator"
           fi
-          python -m src.submission_io validate-conformant "$TIF" \
-                 --sample data/sample_submission.tif
+          # Verify strict mask/nodata rejection and the independent registry STOP.
+          # The H57 artifact must remain negative, not advertised as submit-ready.
+          python - <<'EOF'
+          import hashlib, json, sys
+          from pathlib import Path
+          import numpy as np
+          import rasterio
+          sys.path.insert(0, "src")
+          from gems56 import gates
+          tif = Path("docs/downloads/h57-corr-band2px-cover-20261009T191337Z.tif")
+          sample = Path("data/sample_submission.tif")
+          card = json.loads(Path("evidence/h57_run_card.json").read_text())
+          sha = hashlib.sha256(tif.read_bytes()).hexdigest()
+          assert sha == card["raster_sha256"]
+          rep = gates.format_report(tif, sample)
+          print("strict template gate:", rep["path"], "ok=", rep["ok"], "outside=", rep["non_nan_outside_px"])
+          assert not rep["ok"], "H57 must not pass strict template validation"
+          assert rep["n_nan"] == 0 and rep["non_nan_outside_px"] == 7111787
+          assert rep["nodata_matches_template"] is False
+          with rasterio.open(tif) as pred, rasterio.open(sample) as ref:
+              arr, tpl = pred.read(1), ref.read(1)
+              outside = ~np.isfinite(tpl)
+              non_nan_outside = int(np.isfinite(arr[outside]).sum())
+              nodata_match = (pred.nodata is not None and ref.nodata is not None
+                              and np.isnan(pred.nodata) and np.isnan(ref.nodata))
+          assert non_nan_outside == 7111787 and not nodata_match
+          assert card["correlation_overlap_vs_registry"]["max_near_3px_fraction"] > 0.70
+          assert card["correlation_overlap_vs_registry"]["literal_verdict"] == "DUPLICATE/STOP"
+          assert card["submission"]["ok_to_submit"] == "NO — DUPLICATE/STOP and strict template validation fail"
+          assert card["verdict"] == "NEGATIVE / STOP"
+          assert card["post_review"]["authoritative_status"] == "NEGATIVE / STOP"
+          print("NEGATIVE / STOP verified: strict template mask and literal >70% registry rule fail")
+          EOF

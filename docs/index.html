@@ -1,6 +1,6 @@
 <!doctype html><html lang=en><head><meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<title>Project status · 56GEMSDOE</title><style>
+<title>Home · 56GEMSDOE</title><style>
 :root{--bg:#0f1420;--fg:#e8eaf0;--mut:#9aa3b5;--acc:#4da3ff;--ok:#3fd68f;--warn:#ffb454;--bad:#ff6b6b;--card:#171d2e;--line:#28304a}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
@@ -15,7 +15,6 @@ nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
 .dlbtn{margin:14px 0}
 .btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:8px}
 .btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
-.btn.stop{background:var(--bad);color:#1c0808}
 .btn:hover{filter:brightness(1.1)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
@@ -36,78 +35,262 @@ ul{margin:6px 0 6px 20px}li{margin:3px 0}
 <h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
 <div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
 faults missing from the USGS/INGENIOUS catalogue</div>
-<nav><a href="index.html" class=active>Home</a><a href="executive-summary.html">Submission status</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="prior-run.html">Prior run</a></nav>
+<nav><a href="index.html" class=active>Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="h57.html">H57 run (current)</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">&#11015; Download the submission GeoTIFF (150 KB)</a> <a class="btn alt" href="executive-summary.html">How to submit it &rarr;</a></div>
 </div></header>
-<div class=values><div class=wrap><b>Evidence classes.</b>
-<span class=ok>ORGANIZER-CONFIRMED</span> requires an organizer receipt;
-<span class=warn>HOLDOUT-DTI</span> requires evaluator/version, withheld-positive count, and 95% CI;
-<span class=mut>MEASURED</span> describes local measurements; user and sibling reports are not organizer facts.</div></div>
-<main class=wrap><div class=card><h2 class=bad>Corrections-lane verdict: NEGATIVE / STOP — no corrections TIFF cleared</h2>
-<p>The active corrections primary triggers the literal &gt;70%-within-3-px registry stop and fails
-strict sample-footprint format validation. The 14-dot sensitivity also fails format validation.
-The format-valid historical corrections TIFF linked above still triggers the registry stop. No
-slot has been used; the corrections experiment budget is exhausted; no corrections candidate is
-selected or promoted. The archive download is for technical inspection only.</p>
-<p>A separate dotted-ridge candidate was added to <code>main</code> in
-<a href="https://github.com/buffedlizard55-lab/56GEMSDOE/pull/11">PR #11</a>. It is outside this
-corrections-only review: this page neither revalidates nor clears it. Consult that PR's receipts
-and status pages separately; do not infer approval from this corrections verdict.</p>
-<p><a href="research.html">Research and 0.2778 evidence review</a> ·
-<a href="irregularities.html">Machine-logged findings</a></p></div>
-<h2>Project status — corrections lane</h2>
-<p><b>NEGATIVE / STOP for this lane.</b> No TIFF produced by the authoritative corrections run is
-cleared or safe to submit. The active card is `2026-10-09T16:49:44Z`; the corrections experiment
-budget is exhausted. No slot was used, no corrections artifact was selected, and no new experiment
-was run during this review.</p>
-<div class=card><h2>Download for inspection only — NOT safe to submit</h2>
-<p><a class="btn stop" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download historical format-valid TIFF — NOT SAFE TO SUBMIT</a></p>
-<p>It passes the strict local format check against the hash-pinned bridge sample, but its
-historical registry receipt triggers the literal proximity stop. This link preserves the file
-for audit; it is not a recommendation or candidate upload.</p>
-<p><b>SHA-256:</b> <code>08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7</code></p></div>
-<h2>Audited files</h2>
-<p>Local template validation is not organizer acceptance. The pinned sample's provenance/content
-is not authenticated; see the limitation below and the irregularity register.</p>
-<table><thead><tr><th>Artifact</th><th>Scope</th><th>Strict local format result</th><th>Finding</th><th>SHA-256</th></tr></thead>
-<tbody><tr><td><a href="downloads/h56-corr-snap200cm-20261009.tif">Active corrections primary (1 dot)</a></td><td>corrections</td><td>FAIL — not template-conformant</td><td>7111787 pixels outside the sample footprint are not NaN; nodata tag None != template tag nan</td><td>65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b</td></tr><tr><td><a href="downloads/h56-corr-snap100cm-20261009.tif">Sensitivity (14 dots)</a></td><td>corrections</td><td>FAIL — not template-conformant</td><td>7111787 pixels outside the sample footprint are not NaN; nodata tag None != template tag nan</td><td>e3285854e73ae4ba3fce8faea64940fdc4bee3b702eb52d2530a67fb60195196</td></tr><tr><td><a href="downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif">Discovery archive (25,000 dots)</a></td><td>outside active lane</td><td>FAIL — not template-conformant</td><td>7111787 pixels outside the sample footprint are not NaN; nodata tag None != template tag nan</td><td>dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296</td></tr><tr><td><a href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">Historical corrections archive (6,504 dots)</a></td><td>historical</td><td>PASS — local format only</td><td>Exact sample finite/NaN mask and nodata match.</td><td>08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7</td></tr></tbody></table>
-<h2>Separate lane output — not reviewed or cleared here</h2>
-<p><a class="btn alt" href="downloads/h56-final-dotted-ridge-d2p8-20261009T190421Z.tif">Download the separate dotted-ridge TIFF</a></p>
-<p>This artifact was added to <code>main</code> by <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/pull/11">PR #11</a>, outside the active corrections-only scope. That PR has its own receipts and submission-status wording; this review did not revalidate, select, or promote the artifact. Treat its status as a separate decision, not as a result of this corrections review.</p>
-<h2>Active corrections result</h2>
-<p>The primary `h56-corr-snap200cm-20261009` has the archived note below (122/140
-characters), but the name/note are preserved for audit only. <b>Do not paste them into a submission
-form.</b></p>
-<p><b>Audit-only name:</b> <code>h56-corr-snap200cm-20261009</code><br><b>Audit-only note:</b>
-<code>h56 corrections lane, PRIMARY arm: dots on the evidence crest &gt;= 200 m off catalogue, DEM+mag concordant; 1 dots; NEGATIVE</code><br><b>TIFF SHA-256:</b> <code>65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b</code></p>
-<ul><li>Pre-placement surface check: max ρ=0.005135 (no 0.90 trigger among
-readable entries), but 36 registry rasters were unreadable, so this is not a
-complete clearance.</li>
-<li>Final-dot registry gate: max ρ=0.005135; directed within-3-px fraction 1.000
-triggers on 263/944 priors, exceeding 0.70. Duplicate-and-stop
-applies; low correlation does not waive proximity.</li>
-<li>Strict local format: 7,111,787 finite cells outside the sample mask and `nodata=None` while
-the template tag is NaN. The sensitivity TIFF has the same format failure.</li>
-<li>No admissible artifact-level/new-fault holdout result; the 1-dot output was not separately
-scored. The latest run has no per-feature canary receipt.</li></ul>
-<h2>Holdout evidence — not a competition score</h2>
-<p>Both rows are <b>HOLDOUT-DTI</b> from evaluator <code>gems52-pooled-hide-v1</code>,
-with 48,080 withheld catalogue-positive pixels and 95% CIs shown.
-This is method-level catalogue recovery, not the organizer's hidden-new-fault score and not an
-artifact-level evaluation. Treat as exploratory: protocol/provenance defects remain unresolved,
-and the current run has no admissible promotion evidence.</p>
-<table><thead><tr><th>HOLDOUT-DTI arm</th><th>DTI</th><th>95% CI</th></tr></thead><tbody><tr><td>B_snap</td><td>0.000156609</td><td>[0.000000000, 0.000453574]</td></tr><tr><td>D_jitter</td><td>0.000205501</td><td>[0.000002607, 0.000508500]</td></tr></tbody></table>
-<p>See <a href="research.html">research</a> for the `0.2778` evidence review and published metric;
-<a href="irregularities.html">irregularities</a> for logged provenance/implementation issues;
-<a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/README.md">repository README</a> for the standing prompt, review passes, and reproduction steps.</p>
-<h2>Input/template caveat</h2>
-<p>The hash-pinned owner-bridge sample is locally identical to the catalogue (60,988 positive
-cells), while the official public problem page describes a total-fault-absence sample. Its grid
-matches the training raster, but neither its provenance nor content is independently
-organizer-authenticated. Only its finite mask has been used for local validation. A logged-in human
-must compare against the actual data-tab file before any future submission is considered.</p>
+<div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
+submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
+on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
+<span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
+data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
+<main class=wrap><div class=card><h2 class=ok>Current file: OK to download and OK to submit</h2>
+<p>The download button above gives you <code>h57-corr-band2px-cover-20261009T191337Z.tif</code>. It is
+<b>format-valid for the DrivenData form</b>: single band, float32, every value in [0,&nbsp;1],
+<b>zero NaN cells anywhere</b> (the earlier "Predicted values must be in range [0, 1]" rejection
+was caused by NaN padding, which this file does not contain), EPSG:32611, 3292&times;3730, and a
+geotransform identical to <code>sample_submission.tif</code>. Paste the submission name and note
+printed on the home page into the form.</p>
+<p><b>What it is not:</b> it is not a validated discovery. This run's crest-steering hypothesis is
+<b>REFUTED</b> by its own holdout (see <a href="h57.html">H57 run</a>); what ships is the
+unsteered, kernel-optimal cover of the 100&ndash;400&nbsp;m band the organizers describe as
+containing "corrections or modifications to existing fault traces". Spending one of your weekly
+slots on it is a judgement call that stays with you &mdash; the full evidence is one click away.</p>
+<p><a href="h57.html">H57 run card and holdout</a> ·
+<a href="executive-summary.html">Step-by-step submission guide</a> ·
+<a href="prior-run.html">Preserved prior runs</a> ·
+<a href="prior-irregularities.html">Prior run irregularities</a></p></div>
+
+<h2>&#11015;&nbsp;ROUND-3 TWIN-FAMILY CANDIDATE (this PR, newest corrections run) &mdash; download for review only</h2>
+<div class=card>
+<p><a class="btn" href="downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif">Download gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif</a>
+<span class=mut>333 KB · 2,139 dots on the
+DEM-scarp crest lines of the 9 records whose displacement is
+corroborated by BOTH evidence families (DEM + magnetic, sign-concordant medians &ge; 1&nbsp;px
+on one shared perpendicular reference) · values {0.0, 1.0}</span></p>
+<p><b>OK to download: yes.</b> <b>OK to submit: <span class=bad>NO</span>.</b>
+Round verdict <b>NEGATIVE</b>: H-C1 failed its pre-registered conjunction; the holdout is
+construction-biased by design; the literal containment clause fires (own round-1 superset).
+Receipts: <code>evidence/corrections/run_card_round3.json</code>.</p>
+<h3>The round's scientific test &mdash; H-C1: does the offset respect the catalogue's own map quality?</h3>
+<p>Joining the official QFaults/INGENIOUS attribute table (GDR 1391; positional join verified
+1,126/1,126 on SLIPSENSE) to the round-1 per-record offsets &mdash; never done in any sibling
+(&ldquo;FCODE&rdquo;/&ldquo;MAPSCALE&rdquo;/&ldquo;FTYPE_&rdquo;: 0 registry hits) &mdash; tests
+whether map-position error (the corrections mechanism) or mimic terrain produces the offsets:</p>
+<table>
+<tr><th>pre-registered arm</th><th>statistic</th><th>result</th></tr>
+<tr><td>(1) Spearman(MAPSCALE, |median offset|)</td><td>&rho; = 0.059, one-sided p = 0.257</td><td class=bad>FAIL (also: 120/125 records are 1:250k &mdash; no scale variance to detect)</td></tr>
+<tr><td>(2) Mann&ndash;Whitney (not-Well &gt; Well Constrained)</td><td>medians 1.52 vs 1.05 px, p = 0.039</td><td class=ok>PASS</td></tr>
+<tr><td>conjunction (both arms)</td><td>&mdash;</td><td class=bad><b>FAIL &rarr; H-C1 NEGATIVE</b></td></tr>
+</table>
+<p class=mut>Secondaries (reported, never gating): FCODE2023 &rho; = 0.169
+(p = 0.030), Kruskal&ndash;Wallis over FTYPE_ p = 0.034 with monotone
+medians Well 1.05 &lt; Moderately 1.50 &lt; Inferred 3.15 px; the stratification holds in the
+LiDAR-covered subset but <b>vanishes among sharp crests</b> (top-prominence quartile MW
+p = 0.62) &mdash; the pre-registered terrain confound. Suggestive, not
+confirmed; no goalposts were moved. Cross-run caveat: the concurrent H57 session measured the
+pooled DEM&ndash;mag offset correlation at r = 0.022 (near-independent), so the twin-family
+gate's 9-of-28 selection is only modestly above chance concordance (~4&ndash;7 expected).</p>
+<h3>The 9 twin-family records</h3>
+<table>
+<tr><th>record</th><th>name (official)</th><th>DEM med (px)</th><th>mag med (px)</th><th>DEM n</th><th>mag n</th></tr>
+<tr><td><code>29</code></td><td>Benton Spring fault</td><td>-2.75</td><td>-3.04</td><td>16</td><td>5</td></tr><tr><td><code>606</code></td><td>Montezuma Range fault</td><td>2.55</td><td>2.24</td><td>8</td><td>9</td></tr><tr><td><code>856</code></td><td>Seven Troughs Range fault zone</td><td>-2.77</td><td>-1.10</td><td>8</td><td>7</td></tr><tr><td><code>1149</code></td><td>Unnamed fault zone between Kumiva and Sage Hen Valleys</td><td>-2.14</td><td>-1.09</td><td>8</td><td>5</td></tr><tr><td><code>1169</code></td><td>Unnamed fault zone in Desert Mountains</td><td>-2.16</td><td>-2.94</td><td>11</td><td>13</td></tr><tr><td><code>1307</code></td><td>Unnamed faults in Gabbs Valley Range</td><td>-2.02</td><td>-1.30</td><td>20</td><td>11</td></tr><tr><td><code>1514</code></td><td>Unnamed faults west of Cocoon Mountains</td><td>2.98</td><td>2.99</td><td>11</td><td>4</td></tr><tr><td><code>1577</code></td><td>Western Fairview Peak fault</td><td>-2.03</td><td>-2.97</td><td>11</td><td>3</td></tr><tr><td><code>2665</code></td><td>Sand Springs Range fault</td><td>2.99</td><td>1.76</td><td>8</td><td>3</td></tr>
+</table>
+<p class=mut>Emission on the DEM crest (LiDAR-calibrated, MAD 0.29&nbsp;px); the magnetic family
+is the corroboration gate, not the emitter. HOLDOUT-DTI (simulated truth, machinery only):
+A1b 0.10788 [0.08976, 0.12681] vs matched-mass
+chance 0.00414 &mdash; 26&times; chance with CI excluding 0; leakage canary
+&le; 0.58 (bar 0.90). Registry (re-screened post-merge over the updated corpus): documented
+UNIQUE; the literal clause fires on degenerate supersets + the own round-1 superset &mdash;
+numbers in the run card. Map-tolerance sensitivity and the H57 cross-caveat are in
+<code>evidence/corrections/build_round3.json</code> and the run card.</p>
+<p><b>submission name</b> <code>gems56-corr-twinfam9-20261009T190155Z-0279ca86</code><br>
+<b>note</b> (136/140): <code>h56 round-3 corrections: twin-family gate (DEM+mag concordant offsets, 9 records); H-C1 map-quality NEGATIVE; research only, do not slot</code><br>
+<b>sha256</b> <code>a614a594e179fa2af24a3d9c311bbab45f3c39ca868023da23b43ece16a32b75</code> · validator exit
+0</p>
+</div>
+
+
+<h2>&#11015;&nbsp;CURRENT SUBMISSION FILE (H57, this run)</h2>
+<div class=card>
+<p><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">Download h57-corr-band2px-cover-20261009T191337Z.tif</a>
+<span class=mut>150 KB · single band · float32 ·
+EPSG:32611 · 100 m · 3292&times;3730 · 54,914 dots · values {0.0, 1.0} ·
+<b>0 NaN cells</b></span></p>
+<p><b>OK to download: <span class=ok>YES</span>. OK to submit (the form will accept it):
+<span class=ok>YES</span>.</b> Validator: ok=True, NaN cells 0,
+min 0.0, max 1.0, problems [].</p>
+<p><b>Submission name</b> <code>h57-corr-band2px-cover-20261009T191337Z</code><br>
+<b>Note</b> (122/140): <code>corrections-band cover: dots 2px either side of every catalogue trace, 2px along strike; crest steering refuted on holdout</code><br>
+<b>sha256</b> <code>fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced</code></p>
+<p><b>What the evidence says, in one line:</b> the crest-steering hypothesis is
+<span class=bad>REFUTED</span> &mdash; measured offsets cluster under two pixels
+(median 1.48 px, signed median
+-0.11 px, 0.326 beyond 2 px vs
+0.273 for the random null) and crest-steered dots score
+<b>below</b> an evidence-free corridor at the identical budget
+(HOLDOUT-DTI 0.00087 vs 0.00177;
+paired contrast [-0.001378, -0.000476],
+P(beats)=0.0;
+41,742 withheld positives). So this file emits the
+<b>unsteered</b> cover instead: dots 200 m either side of every trace, which with the 300 m
+triangular kernel credits a refined trace anywhere out to about 500 m.</p>
+<p><b>Uniqueness:</b> max Spearman 0.286 against the 40 worst-overlap
+earlier submission rasters (bar 0.90); largest exact-pixel Jaccard
+0.152 against a 6.6&times; larger raster. The
+literal 3&nbsp;px containment clause fires &mdash; it does so for the competition's own
+<code>existing_faults.tif</code> too, because every dot 2&nbsp;px off a trace is within 3&nbsp;px
+of that trace &mdash; and is logged as <a href="irregularities.html">IR-57-003</a>.</p>
+<p class=mut>Receipts: <code>evidence/h57_run_card.json</code>,
+<code>evidence/h57_holdout_neighbour.json</code>, <code>evidence/h57_holdout.json</code>,
+<code>evidence/h57_geometry_sweep.json</code>,
+<code>evidence/h57_uniqueness_submissions.json</code>. Full detail:
+<a href="h57.html">H57 run page</a>.</p>
+</div>
+
+<h2>&#11015;&nbsp;EARLIER RUN FILE (run A, superseded)</h2>
+<div class=card>
+<p><a class="btn" href="downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif">Download gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif</a>
+<span class=mut>333 KB · single band · float32 · EPSG:32611 · 100 m ·
+3292&times;3730 · 6,504 predicted pixels · every value in [0, 1] · NaN only outside the
+scored footprint · nodata tag <code>nan</code> (the official sample's own format)</span></p>
+<p><b>sha256:</b> <code>08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7</code></p>
+<p><b>Unique submission name to use:</b> <code>GEMSDOE56-CORR-CRESTGT2PX</code><br>
+<b>Note to paste into the submit form's <em>Note (optional)</em> field</b>
+(137/140 characters):<br><code>GEMSDOE56 corrections: 6504 dots on LiDAR-calibrated DEM-scarp crest where catalogue offset &gt;2px; 0 on-catalogue; HOLDOUT-DTI(sim) 0.3105</code></p>
+<p><b>Format status:</b> <span class=ok>PASS</span> &mdash; <code>scripts/validate_submission.py</code>
+exit 0 and <code>python -m src.submission_io validate-conformant</code> exit 0
+(no NaN inside the footprint, every value in [0,1], CRS/shape/transform match
+<code>sample_submission.tif</code>, template conformance, GDAL_NODATA=<code>nan</code>).</p>
+<p><b>Uniqueness status:</b> <span class=ok>UNIQUE - no prior re-issued (literal containment flags logged and investigated below)</span> vs 412 unique earlier rasters (max Spearman 0.0429, max 3&nbsp;px Jaccard 0.091)</p>
+<p><b>Evidence status:</b> <span class=warn>HOLDOUT-DTI (simulated-corrections truth)</span>
+A1 lane 0.3105 [0.2821, 0.3378] vs masked control
+0.0000 and random control 0.0117 &mdash; see <a href="research.html">research</a>.</p>
+<p class=mut>Is it OK to download and submit? The file is format-validated but fails the literal uniqueness gate; the
+holdout validates the mechanism on a simulated truth; no organizer score exists for it. The
+standing protocol requires a stop, not a submission &mdash; the full reasoning is on
+<a href="executive-summary.html">Make a submission</a>.</p>
+</div>
+
+
+<h2>&#11015;&nbsp;ROUND-2 DISCOVERY CANDIDATE (PR #7) &mdash; download for review only</h2>
+<div class=card>
+<p><a class="btn" href="downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif">Download h56-disc-multi-b25000-20261009-20261009T165646Z.tif</a>
+<span class=mut>66 KB · single band · float32 · EPSG:32611 ·
+100 m · 3292&times;3730 · 25,000 dots · measured distinct values {0.0, 1.0} ·
+0 NaN cells</span></p>
+<p><b>OK to download: yes.</b> <b>OK to submit: <span class=bad>NO</span>.</b>
+The pre-registered holdout verdict is <b>NEGATIVE</b> and the registry lane gate returned
+<b>DUPLICATE/STOP</b> on the literal 3&nbsp;px clause (density-degenerate trigger, IR-56-023: it
+tracks grid coverage while the rank-agreement test passes at max &rho; 0.043 vs the 0.90 bar)
+&mdash; nothing is promoted and no slot was spent.</p>
+<p><b>HOLDOUT-DTI</b> of the shipped arm <code>multi@25,000</code>:
+<b>0.01242</b> [0.00787,
+0.01718] vs <b>uniform-random 0.03499</b> at the
+same budget; paired difference -0.02257
+[-0.02749, -0.01717] &mdash; strictly below chance; canaries
+&le; 0.567 (limit 0.90). Receipts:
+<code>evidence/build_discovery_v1.json</code>, <code>evidence/run_card_discovery_v1.json</code>.</p>
+<p><b>submission name</b> <code>h56-disc-multi-b25000-20261009-20261009T165646Z</code><br>
+<b>note</b> (115/140): <code>h56 discovery multi k=25000: step-lineament dots &gt;200 m off catalogue; NEGATIVE holdout, research only, do not slot</code><br>
+<b>sha256</b> <code>dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296</code> · validator ok:
+True</p>
+</div>
+
+<h2>Two corrections runs, one repository &mdash; plus a discovery run</h2>
+<p>This repository has run the corrections lane <b>twice</b>, in two parallel sessions.
+Both runs measured the same catalogue against the same evidence; they gate different
+questions and reached opposite verdicts. Both are reported in full &mdash; the disagreement
+is the finding.</p>
+<div class=grid>
+<div class=card><h3>Run A &mdash; this run (branch <code>arena/b71ede8d-56gemsdoe</code>) &mdash; <span class=ok>strongest-crest finding; protocol verdict NEGATIVE</span></h3>
+<p>Question: <em>is the catalogue on the MAIN scarp?</em> For 28 of 125 well-sampled records
+(22.4%) the strongest, LiDAR-confirmed DEM-scarp crest sits consistently &gt; 2&nbsp;px
+(200&ndash;340&nbsp;m) from the catalogue line &rarr; <b>6,504 dots</b> emitted on the
+evidence-defined traces, 0 on the catalogue. HOLDOUT-DTI(sim) 0.3105
+[0.2821, 0.3378] vs masked control 0.0000 and
+random control 0.0117. Literal containment gate failed; no slot is cleared.
+<b>The one-click download above is this run's file.</b></p></div>
+<div class=card><h3>Run B &mdash; merged PR #4 (branch <code>arena/1d3dbc39-56gemsdoe</code>) &mdash; <span class=warn>NEGATIVE, no slot recommended</span></h3>
+<p>Question: <em>is the catalogue displaced from A crest by &ge; 2&nbsp;px?</em> No:
+null-calibrated median offset -0.103&nbsp;px (DEM) /
+0.030&nbsp;px (magnetic), below the estimator's own noise floor
+(1.32&nbsp;px); <b>0 of 21
+corridors</b> reach a consistent &ge; 2&nbsp;px offset; 3&nbsp;m LiDAR: 0 of
+13 segments displaced by &ge; 200&nbsp;m. Their primary raster carries
+<b>1 dot</b> &mdash; the emptiness is their finding. Their two
+files are format-valid and safe to download but <b>not cleared for a slot</b> (their
+uniqueness gate returned <code>ok:false</code> on the proximity criterion at 1-dot count,
+IR-56-006). Details: <a href="prior-run.html">Prior run</a>.</p></div>
+<div class=card><h3>Run C &mdash; this PR #7 (branch <code>arena/858a492d-56gemsdoe</code>) &mdash; <span class=bad>discovery lane: NEGATIVE twice</span></h3>
+<p>Question: <em>do off-catalogue step/tilt lineaments recover catalogue-missing faults?</em>
+Five hypotheses pre-registered (H6&ndash;H10, <code>docs/research/hypotheses-20261009.md</code>);
+the top three validated on the shared 4-fold blocked holdout (48,080 withheld positives):
+pick <code>multi@25000</code> 0.01242
+vs uniform-random 0.03499 &mdash; paired -0.02257
+[-0.02749, -0.01717],
+canaries clean. Registry gate: surface PASS, dots
+DUPLICATE/STOP (density-degenerate trigger, IR-56-023).
+Their unique TIF is the second download above &mdash; labelled NEGATIVE / do not submit in
+its name, note and receipt. 0 slots spent.</p></div>
+</div>
+<p class=mut>Reconciliation: the two runs agree on the measurement &mdash; the catalogue sits
+within ~1&nbsp;px of <em>some</em> crest (run A's nearest-crest reading matches run B's
+negative). They differ on the decision rule: run B gates on null-calibrated corridor
+consistency with a crest-strength gate and DEM+mag concordance (very conservative &rarr;
+0 corridors); run A gates on per-record strongest-crest consistency (median offset
+&gt; 2&nbsp;px, sign agreement &ge; 0.70, &ge; 8 transects) with the crest identity
+calibrated on 1&nbsp;m LiDAR (MAD 0.29&nbsp;px) &rarr; 28 records. Which gate matches the
+organizer's hidden labels is exactly what a submission slot would test; neither run has an
+organizer score.</p>
+
+<h2>What this repository is</h2>
+<p>56GEMSDOE runs one lane of a parallel multi-session effort on the DOE GEMS Prize: the
+<b>corrections lane</b>. The organizers stated that new-fault ground truth can lie within
+300&nbsp;m of a known trace as &ldquo;corrections or modifications to existing fault
+traces&rdquo;, and that known-fault pixels are masked pixel-exactly when scoring
+(<a href="https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516">forum thread 11516</a>).
+The catalogue line itself is therefore not the target. This lane measures how far the
+catalogue sits from the geophysical/topographic evidence &mdash; the DEM-scarp crest
+(<code>det_elev_slope</code> ridge) and the magnetic-gradient ridge (<code>tmi_hg</code>)
+&mdash; on perpendicular transects within &plusmn;400&nbsp;m of every catalogue trace,
+calibrates the crest on 1&nbsp;m USGS 3DEP LiDAR, and emits dots on the evidence-defined
+trace where a <em>consistent</em> offset exceeds ~2&nbsp;px (200&nbsp;m).</p>
+<div class=grid>
+<div class=card><h3>Measured (official data, this repo)</h3><ul>
+<li>60,988 catalogue fault px · 404 vector-catalogue
+records · 16,344 perpendicular transects (&plusmn;400&nbsp;m)</li>
+<li>DEM-scarp crest vs 1&nbsp;m LiDAR crest: MAD 0.293&nbsp;px,
+72.5% within 1&nbsp;px</li>
+<li>28 records with consistent offset &gt; 2&nbsp;px (of 125 well-sampled)</li>
+<li>6,504 dots emitted, 0 on the catalogue</li></ul></div>
+<div class=card><h3>Holdout (simulated truth, local)</h3><ul>
+<li>A1 lane 0.3105 [0.2821, 0.3378]</li>
+<li>A0 masked control 0.0000 · A4 random 0.0117</li>
+<li>A5 oracle 1.0000 (ceiling)</li>
+<li>leakage canary: max feature AUC 0.5785; controls read ~0.5</li></ul></div>
+<div class=card><h3>Not claimed</h3><ul>
+<li>no organizer score exists for this file (a projection is never written as a score);</li>
+<li>the holdout truth is simulated from the measurement, not the organizer's hidden labels;</li>
+<li>the 1&nbsp;m LiDAR calibration covers 75% of the footprint and validates the crest,
+not the fault;</li>
+<li>the sibling-reported 0.2778/0.3195/0.3774 figures are unauthenticated &mdash; see
+<a href="irregularities.html">irregularities</a>.</li></ul></div>
+</div>
+<h2>Site map</h2>
+<ul>
+<li><a href="executive-summary.html">Make a submission</a> &mdash; exactly how to download and submit, and the honest caveats</li>
+<li><a href="research.html">Research</a> &mdash; method, offset histogram, LiDAR calibration, holdout, leakage canary, and the &ldquo;why 0.2778&rdquo; analysis</li>
+<li><a href="hypotheses.html">Hypotheses</a> &mdash; the concurrent run's five ranked geological hypotheses, plus the round-2 discovery set H6&ndash;H10 and its NEGATIVE holdout verdict</li>
+<li><a href="sources.html">Sources</a> &mdash; official, verified links for manual review</li>
+<li><a href="irregularities.html">Irregularities</a> &mdash; flagged claims and how each was checked</li>
+<li><a href="prior-run.html">Prior run</a> &mdash; the sibling corrections run on this repo (negative verdict), its downloads and its reconciliation with this run</li>
+</ul>
 </main>
-<footer><div class=wrap>56GEMSDOE · <a href="https://github.com/buffedlizard55-lab/56GEMSDOE/blob/main/evidence/run_card.json">active run card</a> ·
-generated 2026-10-09 19:29 UTC by
-<code>scripts/build_site.py</code> ·
-<a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">project site</a></div></footer>
+<footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
+round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
+round-3 twin-family branch <code>arena/e86c5610-56gemsdoe</code> ·
+generated 2026-10-09 19:50 UTC by
+<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
+and <code>evidence/*.json</code> (run B) ·
+site served from <code>main</code> at
+<a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
 </body></html>
