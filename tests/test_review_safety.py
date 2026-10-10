@@ -4,6 +4,7 @@ from __future__ import annotations
 import ast
 import hashlib
 import json
+import re
 from pathlib import Path
 
 import numpy as np
@@ -73,6 +74,8 @@ def test_generated_site_fails_closed_and_keeps_independent_runs_separate():
     h56_hypotheses = (ROOT / "docs" / "research" / "hypotheses-round2.md").read_text()
     research_summary = (ROOT / "docs" / "research" / "hypotheses.md").read_text()
     round2_builder = (ROOT / "scripts" / "build_round2.py").read_text()
+    current_irregularities = (ROOT / "docs" / "irregularities.html").read_text()
+    archived_irregularities = (ROOT / "docs" / "discovery-irregularities.html").read_text()
     prior_lane = (ROOT / "docs" / "lane1-corrections.html").read_text()
     assert "H57 ARCHIVE — NEGATIVE / STOP — NOT SAFE TO SUBMIT" in index
     assert "The H57 TIFF linked above is retained for audit only" in index
@@ -82,7 +85,8 @@ def test_generated_site_fails_closed_and_keeps_independent_runs_separate():
     assert "this PR #7" in index
     assert "48,080 withheld positives" in index and "gems52-pooled-hide-v1" in index
     assert "neither is cleared for upload or a weekly slot" in index
-    assert "finite exterior conflicts with the official null-outside-footprint convention" in index
+    assert "finite exterior conflicts with the official" in index
+    assert "null-outside-footprint convention" in index
     assert "No portal" in index and "upload or organizer score exists." in index
     assert "h57-hide-and-recover-v1" in index and "41,742 withheld positives" in index
     assert "0.00087 [95% CI 0.000486, 0.001327]" in index
@@ -91,11 +95,15 @@ def test_generated_site_fails_closed_and_keeps_independent_runs_separate():
     assert "evaluator version hash not recorded" in research
     assert "26,813 withheld positives" in research
     assert "A1 lane (archived research output; not submitted)" in research
-    assert "0.31049 [95% CI 0.28212, 0.33781]" in research
+    assert "0.31049" in research and "[0.28212, 0.33781]" in research
     assert "0.10788 [95% CI 0.08976, 0.12681]" in research
     assert "not an organizer score" in research
     assert "DUPLICATE / STOP" in research and "not submitted" in research
-    assert "HOLDOUT-DTI, simulated truth" in hypotheses
+    assert "reported positive local HOLDOUT-DTI results used" in hypotheses
+    assert "simulated-corrections truth" in hypotheses
+    assert "HISTORICAL — machinery-only HOLDOUT-DTI" in hypotheses
+    assert "not geological validation" in hypotheses
+    assert "HOLDOUT-VALIDATED" not in hypotheses
     assert "26,813 withheld positives" in hypotheses and "version hash not recorded" in hypotheses
     assert "0.00716 [95% CI 0.00284, 0.01270]" in hypotheses
     assert "0.00523 [95% CI 0.00162, 0.00963]" in hypotheses
@@ -105,6 +113,8 @@ def test_generated_site_fails_closed_and_keeps_independent_runs_separate():
     assert "Evidence classes: **HOLDOUT-DTI**" in h56_hypotheses
     assert "36,335 withheld positive pixels" in h56_hypotheses
     assert "0.03872 [95% CI 0.03494, 0.04239]" in h56_hypotheses
+    h2_2 = h56_hypotheses.split("### H2-2", 1)[1].split("### H2-3", 1)[0]
+    assert "evidence/emission_holdout_h56-mpp-r1-20261009.json" in h2_2
     assert "0.03117 [95% CI 0.02769, 0.03469]" in h56_hypotheses
     assert "0.09003 [95% CI 0.08041, 0.09856]" in h56_hypotheses
     assert "not an organizer score" in h56_hypotheses
@@ -114,6 +124,11 @@ def test_generated_site_fails_closed_and_keeps_independent_runs_separate():
     assert "NOT CLEARED for upload or a weekly slot" in prior_lane
     assert "0.00016 [95% CI 0.00000, 0.00045]" in prior_lane
     assert "not an organizer score" in prior_lane
+    assert "62.1% of 47,939 sampled points" in prior_lane
+    assert "IR-56-035" in prior_lane and "not admissible for promotion" in prior_lane
+    assert "DUPLICATE / STOP" in prior_lane and "263" in prior_lane
+    assert "H33-2-B2 is UNSCORED" in prior_lane
+    assert "{n:.0f}" not in prior_lane
     assert "OK to submit" not in prior_lane
     assert "paste into the DrivenData form" not in prior_lane
     assert "No corrections-lane artifact is selected, promoted, or cleared to submit" in exec_page
@@ -139,6 +154,52 @@ def test_generated_site_fails_closed_and_keeps_independent_runs_separate():
     assert "score is deliberately omitted here because the note was never submitted" in pr7_index
     assert "HOLDOUT-DTI(sim) 0.3105" not in pr7_index
     assert "95% CI" in round2_builder and "withheld_positive_pixels" in round2_builder
+
+    assert "Historical ID note" in current_irregularities
+    assert "run-local IDs" in archived_irregularities
+    for page in (current_irregularities, archived_irregularities):
+        assert "USER-REPORTED; no organizer rejection receipt is preserved here" in page
+        assert "candidate mechanisms, not a confirmed cause" in page
+        assert "strict local replay against the hash-pinned owner-bridge sample" in page
+        assert "not organizer acceptance" in page
+        assert "DUPLICATE / STOP" in page
+        assert 'href="https://github.com/buffedlizard55-lab/GEMSDOE51/blob/main/evidence/score_attribution_audit.json"' in page
+        assert not re.search(
+            r'''href=["'](?:\.\./)?evidence/score_attribution_audit\.json["']''', page
+        )  # permit the external audit URL; reject only an unqualified/local file link
+
+
+def test_post_review_provenance_and_legacy_stop_are_explicit():
+    hypotheses = (ROOT / "docs" / "hypotheses.html").read_text()
+    research = (ROOT / "docs" / "research.html").read_text()
+    prior_lane = (ROOT / "docs" / "lane1-corrections.html").read_text()
+    current_irregularities = (ROOT / "docs" / "irregularities.html").read_text()
+    archived_irregularities = (ROOT / "docs" / "discovery-irregularities.html").read_text()
+    ledger_review = (ROOT / "docs" / "research" / "leader-analysis-2026-10-09.md").read_text()
+    round2 = (ROOT / "docs" / "research" / "hypotheses-round2.md").read_text()
+    current_log = load_json("evidence/irregularities.json")
+    docs_log = load_json("docs/evidence/irregularities.json")
+
+    assert "HOLDOUT-VALIDATED" not in hypotheses
+    assert "HISTORICAL — machinery-only HOLDOUT-DTI" in hypotheses
+    assert "H1's reported positive local HOLDOUT-DTI results used" in hypotheses
+    assert "user-reported and unsupported" in research
+    assert "no artifact cleared" in research
+    assert "not admissible for promotion" in research and "IR-56-035" in research
+    assert "H33-2-B2 is UNSCORED" in prior_lane
+    assert "DUPLICATE / STOP" in prior_lane and "263" in prior_lane
+    assert "DO NOT RUN under the current exhausted budget" in prior_lane
+    for page in (current_irregularities, archived_irregularities):
+        assert "user-reported; not independently authenticated" in page
+        assert "no 0.2778" in page
+        assert "owner-reported" in page and "does not override" in page
+    assert "blob SHA `cf220a49da89ff88926019df303af5b8ea7b2b14`" in ledger_review
+    assert "not an organizer score" in ledger_review
+    h2_2 = round2.split("### H2-2", 1)[1].split("### H2-3", 1)[0]
+    assert "evidence/emission_holdout_h56-mpp-r1-20261009.json" in h2_2
+    current_record = next(item for item in current_log if item["id"] == "IR-56-038")
+    assert "cf220a49da89ff88926019df303af5b8ea7b2b14" in current_record["finding"]
+    assert docs_log == current_log
 
 
 def test_published_downloads_match_receipts_and_sample_mask_but_remain_audit_only():

@@ -34,7 +34,7 @@ Scope rule inherited from round 1: each hypothesis names the layer(s), the physi
 - **Why it should find a fault missing from the catalogue:** unmapped *active* structure is exactly what a strain field sees and a Quaternary-map compilation can miss where slip is diffuse
 - **Named non-fault process that mimics it:** lithology-driven strain partitioning, elastic-contrast artefacts at mapped contacts, interpolation smoothing between sparse GNSS sites (the field's own correlation length is several km)
 - **Difference from what the group has already filed:** no sibling repo in the mirror uses the strain bands as an emitter; they appear as auxiliary features in learned models
-- **Evidence:** `evidence/field_holdout_v1.json` (AUC + DTI columns)
+- **Evidence:** `evidence/emission_holdout_h56-mpp-r1-20261009.json` (`mag_ridge|packed` comparator and paired fold CIs), `evidence/field_holdout_v1.json` (strain AUC + channel DTI columns)
 
 ### H2-3 (rank 3) - lineament persistence (discrete Radon / Hough integration along strike) finds through-going faults that individual segments hide
 - **Verdict:** REJECTED: line_persist|packed 0.02290 [95% CI 0.01615, 0.03050] and line_contrast|packed 0.01671 [95% CI 0.01330, 0.02002] vs mag_ridge|packed 0.03872 [95% CI 0.03494, 0.04239]; recall within 3 px 0.021 vs 0.175. A 1.85 px per-step walk-off tolerance is not the limiting factor; the straightness prior itself is.

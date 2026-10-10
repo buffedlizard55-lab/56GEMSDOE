@@ -165,23 +165,25 @@ policies coexist in the template; the tests now assert the policy the file decla
 > ## Round 2 - discovery run (already on `main` via PR #7): **Bottom line:** five new hypotheses were
 > pre-registered (`docs/research/hypotheses-20261009.md`), the missing probe layer was obtained
 > (3,800 INGENOUS points), `scripts/download_competition_data.sh` now rebuilds every input from
-> the hash-pinned bridge, and the top-three hypotheses were validated on the shared 4-fold blocked
+> the hash-pinned bridge, and the top-three hypotheses were assessed on the shared 4-fold blocked
 > holdout (local HOLDOUT-DTI, evaluator `gems52-pooled-hide-v1`, 4 folds, 48,080 withheld positives;
-> not an organizer score). **Verdict: NEGATIVE, robustly.** The pre-registered pick,
+> not an organizer score or geological validation). **Verdict: NEGATIVE.** The pre-registered pick,
 > `multi@25000`, scored **0.01242 [95% CI 0.00787, 0.01718]** while *uniform-random emission scored
 > 0.03499 [95% CI 0.03273, 0.03714] at the same budget* — the paired difference is
 > **−0.02257 [paired 95% CI −0.02749, −0.01717]**, strictly below chance; all physics arms sat below the measured chance floor (tilt ≈ 0.0001),
-> with leakage canaries clean (≤ 0.567 vs the 0.90 bar), so this is not leakage — the fields
-> simply locate *mapped* structure, and excluding the catalogue (±200 m, the verified 0.2778
-> mechanism) leaves them nothing to find. An instrument defect found by the first run (the
+> with leakage canaries clean (≤ 0.567 vs the 0.90 bar). These results say the tested fields did
+> not beat chance on this instrument; they do not prove no hidden faults exist. The 200 m
+> exclusion was motivated by sibling-reported raster construction, not a verified score mechanism:
+> GEMSDOE32 marks H33-2-B2 UNSCORED and the 0.2778 attribution is unsupported. An instrument defect found by the first run (the
 > zero-filled rim put 56.5 % of `iso_step`'s top-25,000 cells on the data edge — IR-56-020) was
 > fixed once in the template with six regression tests, and the negative survived re-run
 > unchanged. The registry gate returned literal **DUPLICATE/STOP** on the 3 px clause — logged
 > honestly as density-degenerate (IR-56-023: the trigger tracks grid coverage, while rank
-> agreement passes at max ρ 0.043 vs the 0.90 bar, reciprocal >0.70 = 0). A unique, format-valid
-> 25,000-dot GeoTIFF (`h56-disc-multi-b25000-20261009-…`, values {0.0, 1.0}, both validators ok)
-> is downloadable for review, and its name, note, receipt and the front-page banner all say
-> **NEGATIVE / do not submit** — nothing is promoted to a slot; no slot was spent.
+> agreement passes at max ρ 0.043 vs the 0.90 bar, reciprocal >0.70 = 0). The 25,000-dot GeoTIFF remains downloadable for audit only. The on-disk audit in
+> `evidence/submission_status.json` records finite zeros outside the sample's NaN mask, so it is
+> **not format-conformant or safe to submit**; legacy `ok` fields are not authoritative. Its name,
+> note, receipt and front-page banner say **NEGATIVE / do not submit** — nothing is promoted and no
+> slot was spent.
 
 ---
 
@@ -251,19 +253,12 @@ policies coexist in the template; the tests now assert the policy the file decla
 
 ---
 
-### Round-2 session brief (2026-10-09, also active)
+### Round-2 session brief and outcome (2026-10-09; request preserved)
 
-Recorded from this session's instruction; each item is executed in this run or explicitly deferred:
+The bullets retain the requested acceptance criteria; outcome notes state what the receipts actually support. A requested positive result is not implied.
 
-- **Study the top scores.** Why did `h33-h33-2-b2 … 0.2778` score highest among published sibling
-  artefacts, and can we beat it? Answer, with receipts: GEMSDOE54's raster-level check proves that
-  file = its 40,199-dot parent minus exactly the 2,545 dots within 200 m of a catalogue fault
-  (0.2708 → 0.2778) — the metric masks known-fault pixels, so catalogue-adjacent mass is pure
-  penalty under α = 0.2 while contributing no TP. 0.3195/0.3774 remain BOARD-UNVERIFIED here.
-- **3–5 new geological hypotheses** we have not tried, each with layers/signature/why-missing/
-  difference-from-attempts, ranked by expected DTI ÷ cost, top candidate validated on the
-  spatially-blocked holdout **before** any slot is touched: `docs/research/hypotheses-20261009.md`
-  (H6–H10; external sources named and checked live).
+- **Study the top scores (original question):** Why did `h33-h33-2-b2 … 0.2778` score highest among published sibling artefacts, and can we beat it? **Provenance outcome:** the premise is unverified. GEMSDOE32 labels H33-2-B2 UNSCORED and describes 0.2747 as a model projection; GEMSDOE54 reports a raster-construction difference (40,199-dot parent minus 2,545 dots within 200 m), not an organizer score. The staff statement about known-fault pixels does not make a 200 m neighborhood exempt. See `docs/research.html` §8 and `docs/irregularities.html`; 0.3195/0.3774 remain unverified here.
+- **3–5 new geological hypotheses:** specify layers/signature/why-missing/difference-from-attempts and rank by expected DTI ÷ cost; assess the top candidate with a spatial holdout **before** considering any slot. The five entries are H6–H10 in `docs/research/hypotheses-20261009.md`; the local run returned NEGATIVE, not geological confirmation, and no candidate was cleared.
 - **The data blocker**: `bash scripts/download_competition_data.sh` must exist and work end to end
   (created this run as IR-56-021's fix; route B verified against both hash sets).
 - **One-click TIF with an obvious OK/NOT-OK statement**, at the very top of the site, plus the
@@ -320,27 +315,11 @@ crest is LiDAR-calibrated and the format is validated. The final run card instea
 **NEGATIVE** because the literal containment gate failed. No organizer
 score exists for this file; spending a weekly slot is the separate selector step.
 
-### Why 0.2778 (and the irregularity around it)
+### The 0.2778 claim: reported construction, unsupported score
 
-The mechanism (measured by the GEMSDOE32 sibling against the official formula and its worked
-example): the distance-weighted Tversky index reduces exactly to
-`DTI = T/(α(T+F)+βK)`; adding one unit of mass raises the denominator by exactly α=0.2
-anywhere, so a dot pays iff its kernel credit exceeds α·DTI (≈0.052 at DTI 0.26, i.e. within
-~284 m of a hidden truth pixel); the live scorer masks known-fault pixels (forum thread
-11516), so catalogue dots are pure 0.2-cost false positives; `h33-h33-2-b2` is the group's
-best live-scored emission (40,199-dot "dotted d2.8" thinning of their H19-5 field) with every
-dot within 200 m of the catalogue deleted → 37,654 dots, 0 on-catalogue. The family shows the
-emission-side optimum (solid 121,131 px → 0.1922, d1.5 → 0.2477, d2.8 → 0.2600, all
-owner-reported), implying a hidden |G| ≈ 7,905 px. Beating the live leader needs ≈+25% mean
-credit at equal mass — a better *field* or genuinely novel faults; emission-side gains are
-nearly exhausted. **This lane is such a field mechanism.**
-**Irregularity (flagged):** the 0.2778 attached to `h33-h33-2-b2` is user-reported and
-unsupported — GEMSDOE32's own pages label that artifact UNSCORED (projected 0.2747, a model),
-and GEMSDOE51's audit calls the attribution "unsupported and contradicted". The stated
-"0.3195 is the highest score right now" is stale (verified 2026-10-04 snapshot: #1 nchuzhoy
-0.3262; GEMSDOE51's 2026-10-08 check also found 0.3195 was not the page high); the newer
-0.3774 figure is user-supplied and unverifiable from this sandbox (drivendata.org is not
-reachable). Full analysis: `docs/research.html` §8 and `docs/irregularities.html`.
+The mechanism hypothesis follows the [official scoring formula](https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/), not an observed score: the distance-weighted Tversky index reduces to `DTI = T/(α(T+F)+βK)`, and adding one unit of mass raises the denominator by α=0.2. At a hypothetical DTI of 0.26, a dot needs kernel credit above about 0.052 (roughly within 284 m of a hidden truth pixel) to be beneficial. Staff say known-fault pixels are excluded from evaluation penalty terms (forum thread 11516); this does not make a 200 m neighborhood exempt. GEMSDOE54 reports a 40,199-dot parent and a 37,654-dot H33-2-B2 child after removing 2,545 dots within 200 m, but that raster-construction report is not a score receipt. GEMSDOE32's manifest labels H33-2-B2 **UNSCORED** and describes 0.2747 as a model projection. Its owner-maintained score ledger labels the 0.1922, 0.2477, and 0.2600 rows as user-brief reports, not independently authenticated; the 0.2600 row notes an owner-page conflict, and the ledger contains no 0.2778 or H33-2-B2 row. Therefore the hidden-|G| estimate and any ≈+25% equal-mass comparison are conditional arithmetic on unverified values, not score evidence. The pruning idea is a mechanism hypothesis, not a demonstrated score gain or positive correction; current corrections status remains **NEGATIVE / STOP**.
+
+**Irregularity (flagged):** the 0.2778 attached to `h33-h33-2-b2` is user-reported and unsupported — GEMSDOE32's own pages label that artifact UNSCORED (projected 0.2747, a model), and GEMSDOE51's audit calls the attribution "unsupported and contradicted". The stated "0.3195 is the highest score right now" is stale (verified 2026-10-04 snapshot: #1 nchuzhoy 0.3262; GEMSDOE51's 2026-10-08 check also found 0.3195 was not the page high); the newer 0.3774 figure is user-supplied and unverifiable from this sandbox (drivendata.org is not reachable). Full analysis: `docs/research.html` §8 and `docs/irregularities.html`.
 
 ## Repository map
 

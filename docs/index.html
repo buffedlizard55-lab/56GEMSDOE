@@ -233,11 +233,14 @@ corridors</b> reach a consistent &ge; 2&nbsp;px offset; 3&nbsp;m LiDAR: 0 of
 13 segments displaced by &ge; 200&nbsp;m. Their primary raster carries
 <b>1 dot</b> &mdash; the emptiness is their finding. The two archived files are audit downloads only; <b>neither is cleared for upload or a weekly slot</b>.
 Their local HOLDOUT-DTI uses evaluator <code>gems52-pooled-hide-v1</code> with 48,080 withheld positives
-and four folds; it is not an organizer score. A local format pass is not organizer acceptance: the
-finite exterior conflicts with the official null-outside-footprint convention, and the shared
-writer/gate tension is documented in GEMSDOE52 issue #65 (not claimed fixed upstream). No portal
-upload or organizer score exists. Their uniqueness gate also returned <code>ok:false</code> on the
-proximity criterion at 1-dot count, IR-56-006. Details: <a href="prior-run.html">Prior run</a>.</p></div>
+and four folds; it is not an organizer score. Post-review IR-56-035 found the snap-map inputs did
+not consume the buffered <code>fold["fit"]</code> set and the receipt omitted prevalence, so these
+values are exploratory and <b>not admissible for promotion</b>; no DTI was recomputed. A local format
+pass is not organizer acceptance: the finite exterior conflicts with the official
+null-outside-footprint convention, and the shared writer/gate tension is documented in GEMSDOE52
+issue #65 (not claimed fixed upstream). No portal upload or organizer score exists. Their
+uniqueness gate triggers literal <b>DUPLICATE / STOP</b> at 1-dot count (IR-56-006); density
+degeneracy does not waive it. Details: <a href="prior-run.html">Prior run</a>.</p></div>
 <div class=card><h3>Run C &mdash; this PR #7 (branch <code>arena/858a492d-56gemsdoe</code>) &mdash; <span class=bad>discovery lane: NEGATIVE twice</span></h3>
 <p>Question: <em>do off-catalogue step/tilt lineaments recover catalogue-missing faults?</em>
 Five hypotheses pre-registered (H6&ndash;H10, <code>docs/research/hypotheses-20261009.md</code>);
@@ -295,7 +298,7 @@ not the fault;</li>
 <h2>Site map</h2>
 <ul>
 <li><a href="executive-summary.html">Submission status</a> &mdash; exactly how to download and submit, and the honest caveats</li>
-<li><a href="research.html">Research</a> &mdash; method, offset histogram, LiDAR calibration, holdout, leakage canary, and the &ldquo;why 0.2778&rdquo; analysis</li>
+<li><a href="research.html">Research</a> &mdash; method, offset histogram, LiDAR calibration, holdout, leakage canary, and the unverified 0.2778 attribution review</li>
 <li><a href="hypotheses.html">Hypotheses</a> &mdash; the concurrent run's five ranked geological hypotheses, plus the round-2 discovery set H6&ndash;H10 and its NEGATIVE holdout verdict</li>
 <li><a href="sources.html">Sources</a> &mdash; official, verified links for manual review</li>
 <li><a href="irregularities.html">Irregularities</a> &mdash; flagged claims and how each was checked</li>
@@ -305,9 +308,10 @@ not the fault;</li>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
 round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
 round-3 twin-family branch <code>arena/e86c5610-56gemsdoe</code> ·
-generated 2026-10-09 19:50 UTC by
+base page generated 2026-10-09 19:50 UTC by
 <code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
-and <code>evidence/*.json</code> (run B) ·
+and <code>evidence/*.json</code> (run B) · post-review status/provenance wording checked
+2026-10-10; no study-level experiment, competition holdout, registry scan, or site builder rerun (unit tests only) ·
 site served from <code>main</code> at
 <a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
 </body></html>

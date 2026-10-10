@@ -58,13 +58,13 @@ technical inspection, not as a workaround or candidate upload.</p>
 <a href="prior-run.html">Preserved prior runs</a> ·
 <a href="irregularities.html">Irregularities</a></p></div>
 <h2>Ranked geological hypotheses</h2>
-<p>Five candidates, ranked by expected DTI improvement versus implementation cost. Each
-names its layers, target physical signature/operator, why it could expose fault geometry
-missing from the USGS/INGENIOUS catalogue (rather than merely recovering known-fault
-habitat), how it differs from implemented repository/prior-art work, expected benefit and
-cost. The top candidate was implemented and validated on a spatially-blocked holdout this
-session (HOLDOUT-DTI, simulated truth); the others are preregistered future lanes. Budget
-note: the session's 3-experiment budget is spent (E1 measurement, E2 canary, E3 holdout).</p>
+<p>Historical ranking of five candidates from an earlier corrections session, not current
+submission authorization. H1's reported positive local HOLDOUT-DTI results used
+simulated-corrections truth and were machinery checks, not geological validation or competition
+scores; the later H57 holdout refuted crest steering on withheld mapped faults. Current corrections status remains
+<b>NEGATIVE / STOP</b>; no candidate is promoted. The other four entries are preregistered
+hypotheses from that earlier session. Its three-experiment budget was spent (E1 measurement,
+E2 canary, E3 holdout).</p>
 <table>
 <tr><th>#</th><th>hypothesis</th><th>layers</th><th>signature / operator</th><th>why it catches catalogue-missing faults</th><th>differs from prior art</th><th>expected &Delta;DTI vs cost</th><th>status</th></tr>
 <tr><td>1</td><td><b>Corrections: catalogue-to-evidence registration offset</b></td>
@@ -73,7 +73,7 @@ note: the session's 3-experiment budget is spent (E1 measurement, E2 canary, E3 
 <td>the hidden truth contains &ldquo;corrections or modifications&rdquo; within 300 m of known traces (forum 11516); USGS-to-refined discrepancies up to 400 m are documented (Hermant et al. 2025). The catalogue line is masked, so only the refined position scores</td>
 <td>siblings emit on catalogue-distance halos or learned fields; none measures the catalogue-to-evidence offset per vector trace with a LiDAR-calibrated crest</td>
 <td>Local <b>HOLDOUT-DTI</b> (simulated-corrections truth; <code>src/metrics.py</code>, evaluator version hash not recorded; 26,813 withheld positives; not an organizer score): A1 0.31049 [95% CI 0.28212, 0.33781] vs masked A0 0.00000 [95% CI 0.00000, 0.00000] and random A4 0.01174 [95% CI 0.01001, 0.01359]; cost already spent</td>
-<td><span class=ok>IMPLEMENTED + HOLDOUT-VALIDATED</span></td></tr>
+<td><span class=bad>HISTORICAL — machinery-only HOLDOUT-DTI; not geological validation; not cleared</span></td></tr>
 <tr><td>2</td><td><b>Magnetic-gradient ridge lineaments off-catalogue</b></td>
 <td>tmi_hg (3), tc (6), rtp (2), tmi (14)</td>
 <td>ridge tracing of the horizontal-gradient / tilt-angle fields; strike-family filtering (Basin-and-Range orientations); exclude anything within 2 px of the catalogue</td>
@@ -103,10 +103,7 @@ note: the session's 3-experiment budget is spent (E1 measurement, E2 canary, E3 
 <td>low (the strain field is smooth at 100 m; one event is a weak prior); cost: medium</td>
 <td>preregistered future lane</td></tr>
 </table>
-<p class=mut>Ranking rationale: expected DTI improvement per unit cost. H1 is the only
-candidate whose target (corrections near known traces) is confirmed by the organizers to be
-in the hidden label set, and it is the only one with a completed holdout. H2 addresses the
-largest untapped pool (genuinely new faults) but carries lithology false-positive risk.
+<p class=mut>Ranking rationale: expected DTI improvement per unit cost. H1's target family (corrections near known traces) is named in organizer guidance, but that does not validate local crest steering; its reported positive HOLDOUT-DTI results are simulated-truth machinery checks, and later H57 evidence was negative. H2 addresses the largest untapped pool (genuinely new faults) but carries lithology false-positive risk.
 H3 is the most goal-aligned but the coarsest data. H4 is cheap but indirect. H5 is the
 weakest signal at the official resolution.</p>
 
@@ -141,9 +138,7 @@ evaluator <code>gems52-pooled-hide-v1</code>, 4 folds, 48,080 withheld positives
 <b>uniform-random emission at the same budget scored 0.03499</b>
 [95% CI 0.03273, 0.03714]; paired contrast -0.02257 [95% CI -0.02749, -0.01717] &mdash;
 strictly below chance. Leakage canaries &le; 0.567 (limit 0.90),
-so this is not leakage: the step/tilt signatures locate <em>mapped</em> structure, and once the
-catalogue &plusmn;200 m is excluded (the mechanism behind the sibling 0.2708&rarr;0.2778
-deletion, <a href="research.html">research &sect;8</a>) there is nothing left for them to find.
+so this is not leakage: on this local hide-and-recover instrument the step/tilt signatures behave as <em>mapped-structure</em> priors and fail to beat chance after the catalogue &plusmn;200 m is excluded. GEMSDOE54 reports a 200 m pruning construction behind the unverified 0.2708&rarr;0.2778 attribution; H33-2-B2 is marked UNSCORED (<a href="research.html">research &sect;8</a>). This result does not establish that no hidden faults exist.
 Verdict by the pre-registered rule: <b>NEGATIVE</b>; the shipped TIF (second download on the
 <a href="index.html">home page</a>) carries the verdict in its name, note and receipt
 (<code>evidence/run_card_discovery_v1.json</code>). One instrument defect found en route &mdash;
@@ -154,9 +149,10 @@ tests; the negative survived the re-run unchanged.</p>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
 round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
 round-3 twin-family branch <code>arena/e86c5610-56gemsdoe</code> ·
-generated 2026-10-09 19:50 UTC by
+base page generated 2026-10-09 19:50 UTC by
 <code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
-and <code>evidence/*.json</code> (run B) ·
+and <code>evidence/*.json</code> (run B) · H1 status and provenance wording reviewed
+2026-10-10; no builder or study-level experiment rerun (unit tests only) ·
 site served from <code>main</code> at
 <a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
 </body></html>
