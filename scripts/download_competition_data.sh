@@ -128,6 +128,21 @@ echo "Verifying pins:"
 verify features   data/training_features.tif
 verify catalogue  data/grid/existing_faults.tif
 verify sample     data/grid/sample_submission.tif
+# The lane pipeline uses data/grid/, while vendored template CLIs/tests use the
+# legacy data/labels.tif and data/sample_submission.tif names. Keep verified local
+# aliases instead of letting identical inputs be discovered under inconsistent paths.
+if [ -e data/labels.tif ] || [ -L data/labels.tif ]; then
+  verify catalogue data/labels.tif
+else
+  ln -s grid/existing_faults.tif data/labels.tif
+  verify catalogue data/labels.tif
+fi
+if [ -e data/sample_submission.tif ] || [ -L data/sample_submission.tif ]; then
+  verify sample data/sample_submission.tif
+else
+  ln -s grid/sample_submission.tif data/sample_submission.tif
+  verify sample data/sample_submission.tif
+fi
 [ -f data/external/h52_scarp3m_100m.tif ] && verify lidar_scarp data/external/h52_scarp3m_100m.tif || true
 
 # Compatibility aliases: shared template tools consume the root paths, while verified originals

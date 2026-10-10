@@ -72,7 +72,7 @@ note: the session's 3-experiment budget is spent (E1 measurement, E2 canary, E3 
 <td>perpendicular transects &plusmn;400 m; strongest-crest offset of the DEM-scarp ridge per record; emit at the crest when consistent &gt; 2 px</td>
 <td>the hidden truth contains &ldquo;corrections or modifications&rdquo; within 300 m of known traces (forum 11516); USGS-to-refined discrepancies up to 400 m are documented (Hermant et al. 2025). The catalogue line is masked, so only the refined position scores</td>
 <td>siblings emit on catalogue-distance halos or learned fields; none measures the catalogue-to-evidence offset per vector trace with a LiDAR-calibrated crest</td>
-<td><b>validated this session</b>: HOLDOUT-DTI(sim) 0.3105 vs 0.0000 masked control, 0.0117 random; cost already spent</td>
+<td>Local <b>HOLDOUT-DTI</b> (simulated-corrections truth; <code>src/metrics.py</code>, evaluator version hash not recorded; 26,813 withheld positives; not an organizer score): A1 0.31049 [95% CI 0.28212, 0.33781] vs masked A0 0.00000 [95% CI 0.00000, 0.00000] and random A4 0.01174 [95% CI 0.01001, 0.01359]; cost already spent</td>
 <td><span class=ok>IMPLEMENTED + HOLDOUT-VALIDATED</span></td></tr>
 <tr><td>2</td><td><b>Magnetic-gradient ridge lineaments off-catalogue</b></td>
 <td>tmi_hg (3), tc (6), rtp (2), tmi (14)</td>
@@ -116,18 +116,18 @@ weakest signal at the official resolution.</p>
 ranked prior &times; cost &divide; danger) and spent its three-experiment budget testing the
 top three on the same blocked instrument (E1, <code>evidence/holdout_discovery_v1.json</code>,
 evaluator <code>gems52-pooled-hide-v1</code>, 4 folds, 48,080 withheld positives, budgets
-8k/15k/25k/37,654, six arms including a <i>measured</i> chance floor):</p>
+8k/15k/25k/37,654, six arms including a <i>measured</i> chance floor; every value below is local HOLDOUT-DTI, not an organizer score, with 95% CIs from the receipt):</p>
 <table>
 <tr><th>#</th><th>hypothesis</th><th>mechanism / named non-fault process</th><th>status from E1</th></tr>
 <tr><td>H6</td><td><b>iso-gravity steps are fault-reactivated boundaries</b></td>
 <td>isostatic residual steps &rarr; potential-field edges; non-fault: erosional terrace edges</td>
-<td>best 0.00716 vs chance 0.03499 &mdash; <span class=bad>below chance, NEGATIVE</span></td></tr>
+<td>iso_step@25,000 0.00716 [95% CI 0.00284, 0.01270] vs random@25,000 0.03499 [95% CI 0.03273, 0.03714] &mdash; <span class=bad>below chance, NEGATIVE</span></td></tr>
 <tr><td>H7</td><td><b>basement topography &times; conductors concordance</b></td>
 <td>weak contact made conductive by fluids; non-fault: intrusions &amp; alteration halos</td>
-<td>best 0.00523 &mdash; <span class=bad>below chance, NEGATIVE</span></td></tr>
+<td>bc_step@25,000 0.00523 [95% CI 0.00162, 0.00963] vs random@25,000 0.03499 [95% CI 0.03273, 0.03714] &mdash; <span class=bad>below chance, NEGATIVE</span></td></tr>
 <tr><td>H8</td><td><b>tilt-low lineaments beneath cover</b></td>
 <td>basin-fill depocentres; non-fault: channel &amp; fan morphology</td>
-<td>best 0.00020 &mdash; <span class=bad>~0, NEGATIVE (channel/fan stands)</span></td></tr>
+<td>tilt_r@37,654 0.00020 [95% CI 0.00000, 0.00065] &mdash; <span class=bad>~0, NEGATIVE (channel/fan stands)</span></td></tr>
 <tr><td>H9</td><td><b>INGENOUS 2 m probes gate on structural proximity</b></td>
 <td>measured surface-temperature steps; non-fault: soil moisture &amp; albedo</td>
 <td>probe layer obtained (3,800 pts) &mdash; not tested (budget stop)</td></tr>
@@ -135,11 +135,11 @@ evaluator <code>gems52-pooled-hide-v1</code>, 4 folds, 48,080 withheld positives
 <td>fluid pathways without catalogue faults; non-fault: anthropogenic site effects</td>
 <td>not tested (budget stop)</td></tr>
 </table>
-<p><b>The headline:</b> the pre-registered pick <code>multi@25000</code> scored
-0.01242 [0.00787, 0.01718]
-while <b>uniform-random emission at the same budget scored 0.03499</b>;
-paired -0.02257
-[-0.02749, -0.01717] &mdash;
+<p><b>The headline:</b> local <b>HOLDOUT-DTI</b> (evaluator <code>gems52-pooled-hide-v1</code>,
+4 folds, 48,080 withheld positives; not an organizer score): the pre-registered pick
+<code>multi@25000</code> scored 0.01242 [95% CI 0.00787, 0.01718] while
+<b>uniform-random emission at the same budget scored 0.03499</b>
+[95% CI 0.03273, 0.03714]; paired contrast -0.02257 [95% CI -0.02749, -0.01717] &mdash;
 strictly below chance. Leakage canaries &le; 0.567 (limit 0.90),
 so this is not leakage: the step/tilt signatures locate <em>mapped</em> structure, and once the
 catalogue &plusmn;200 m is excluded (the mechanism behind the sibling 0.2708&rarr;0.2778

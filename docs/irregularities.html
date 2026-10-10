@@ -59,18 +59,22 @@ technical inspection, not as a workaround or candidate upload.</p>
 <a href="irregularities.html">Irregularities</a></p></div>
 <h2>Irregularities &mdash; flagged, and how each was checked</h2>
 <div class=card><h3 class=warn>IR-57-001: the spatial-fold holdout cannot test a corrections lane</h3>
-<p>Withholding whole catalogue components by spatial block (<code>evidence/h57_holdout.json</code>)
-places every hidden fault far from any visible trace, so a corridor-restricted emitter is
-structurally unable to reach it &mdash; measured: uniform-random dots 0.01758 vs corridor dots
-0.00023 pooled HOLDOUT-DTI. The result is a property of the split, not of the hypothesis. The
+<p>On local <b>HOLDOUT-DTI</b> (evaluator <code>h57-hide-and-recover-v1</code>, 4 folds,
+60,894 withheld positives; not an organizer score), withholding whole catalogue components by
+spatial block (<code>evidence/h57_holdout.json</code>) places every hidden fault far from any
+visible trace, so a corridor-restricted emitter is structurally unable to reach it. Uniform-random
+dots score 0.01758 [95% CI 0.016205, 0.019036] vs corridor dots 0.00023
+[95% CI 0.000041, 0.000518]. The result is a property of the split, not of the hypothesis. The
 neighbour-strand mode (<code>--mode neighbour</code>) was added in the same run and is the mode
 used for the verdict. Both are published; neither is deleted.</p></div>
 <div class=card><h3 class=bad>IR-57-002: the crest-steering corrections hypothesis is refuted</h3>
 <p>E1: |offset| median 1.48 px with a signed median of -0.11 px and a random null at nearly the
 same spread (0.326 vs 0.273 of transects beyond 2 px); DEM&ndash;magnetic agreement r = 0.022;
-2 of 1,273 corridors pass the consistency gate. E3: crest-steered dots 0.00087
-[0.00049, 0.00133] vs evidence-free corridor dots 0.00177 [0.00130, 0.00232] at an identical
-budget, paired contrast [-0.00138, -0.00048], P(beats) = 0.0. The lane therefore emits nothing
+2 of 1,273 corridors pass the consistency gate. E3 is local <b>HOLDOUT-DTI</b> (evaluator
+<code>h57-hide-and-recover-v1</code>, 4 folds, 41,742 withheld positives; not an organizer score):
+crest-steered dots 0.00087 [95% CI 0.000486, 0.001327] vs evidence-free corridor dots 0.00177
+[95% CI 0.001295, 0.002317] at an identical budget, paired contrast
+[paired 95% CI -0.001378, -0.000476], P(beats) = 0.0. The lane therefore emits nothing
 steered by crests, exactly as the brief instructs.</p></div>
 <div class=card><h3 class=bad>IR-57-003: final-dot proximity triggers DUPLICATE / STOP</h3>
 <p>The final-dot shared gate reports a maximum <b>1.0 within-3-px fraction</b> on its 40

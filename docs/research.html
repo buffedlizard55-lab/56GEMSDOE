@@ -155,26 +155,26 @@ MAD 2.32&nbsp;px, |d|&gt;2px 62.6%
 band, and the same per-record consistency pattern.</li>
 </ul>
 <h3>6. Holdout (hide-and-recover, simulated corrections) &mdash; HOLDOUT-DTI</h3>
-<p>Whole records' refined positions are withheld and simulated by their measured
-crest lines (records with |median offset| &gt; 1&nbsp;px; records &le; 1&nbsp;px are
-&ldquo;uncorrected&rdquo;). Visible faults are masked pixel-exactly on BOTH sides (GT excludes
-the catalogue; prediction on the catalogue earns no TP and costs &alpha;). 4 spatial folds
-(k-means on record centroids); DTI scored POOLED with the official metric
-(<code>src/metrics.py</code>, &alpha;=0.2, &beta;=0.8, 300&nbsp;m triangular kernel);
-95% CI from a 20&times;20&nbsp;px spatial-block bootstrap (2,000 draws).</p>
+<p>Local <b>HOLDOUT-DTI</b> on simulated-corrections truth (evaluator <code>src/metrics.py</code>,
+evaluator version hash not recorded; 4 spatial folds, 26,813 withheld positives; not an organizer
+score). Whole records' refined positions are withheld and simulated by their measured crest lines
+(records with |median offset| &gt; 1&nbsp;px; records &le; 1&nbsp;px are &ldquo;uncorrected&rdquo;).
+Visible faults are masked pixel-exactly on BOTH sides (GT excludes the catalogue; prediction on
+the catalogue earns no TP and costs &alpha;). DTI is pooled with the official metric
+(&alpha;=0.2, &beta;=0.8, 300&nbsp;m triangular kernel); intervals are 95% CIs from a
+20&times;20&nbsp;px spatial-block bootstrap (2,000 draws).</p>
 <table>
-<tr><th>arm</th><th>dots</th><th>pooled DTI</th><th>95% CI</th><th>TP_w</th><th>FP_w</th><th>FN_w</th></tr>
+<tr><th>arm</th><th>dots</th><th>pooled HOLDOUT-DTI</th><th>95% CI</th><th>TP_w</th><th>FP_w</th><th>FN_w</th></tr>
 <tr><td>A0 catalogue (masked control)</td><td>60,988</td><td>0.00000</td><td>[0.00000, 0.00000]</td><td>0.0</td><td>55255.1</td><td>26813.0</td></tr>
-<tr><td><b>A1 lane (this submission)</b></td><td><b>6,504</b></td><td><b>0.31049</b></td><td><b>[0.28212, 0.33781]</b></td><td><b>7101.0</b></td><td><b>0.0</b></td><td><b>19712.0</b></td></tr>
+<tr><td><b>A1 lane (archived research output; not submitted)</b></td><td><b>6,504</b></td><td><b>0.31049</b></td><td><b>[0.28212, 0.33781]</b></td><td><b>7101.0</b></td><td><b>0.0</b></td><td><b>19712.0</b></td></tr>
 <tr><td>A2 no-gate crest emission</td><td>57,904</td><td>0.66172</td><td>[0.64597, 0.67612]</td><td>22047.5</td><td>37292.1</td><td>4765.5</td></tr>
 <tr><td>A4 random (matched mass)</td><td>6,504</td><td>0.01174</td><td>[0.01001, 0.01359]</td><td>267.6</td><td>6401.2</td><td>26545.4</td></tr>
 <tr><td>A5 oracle (ceiling)</td><td>26,813</td><td>1.00000</td><td>[1.00000, 1.00000]</td><td>26813.0</td><td>0.0</td><td>0.0</td></tr>
 </table>
-<p>|G| = 26,813 withheld positives (simulated).
-Contrasts: A1&minus;A0 = +0.3105,
-A1&minus;A4 = +0.2987.
-<b>The masked control scores exactly 0</b> &mdash; the masking model works, and the catalogue
-line itself is not the target. <b>The lane arm beats both controls decisively.</b>
+<p>The withheld-positive count and evaluator provenance are given above; this is local simulated-truth
+HOLDOUT-DTI, not an organizer score. <b>The masked control scores exactly 0</b> &mdash; the masking
+model works, and the catalogue line itself is not the target. <b>The lane arm beats both controls
+under this synthetic design.</b>
 A2 (no gate) scores higher under the simulation, but the simulation is construction-biased
 toward A2 (its truth includes crest lines of 1&ndash;2&nbsp;px-offset records, which the
 real scorer rewards only if those corrections exist); the gate's real-world purpose is
@@ -243,16 +243,15 @@ corridors qualify</b> (ungated exploration: 2 of
 13 segments displaced by &ge; 200&nbsp;m</b>. This run's 1&nbsp;m
 calibration (75% of the footprint) instead validates the crest operator itself
 (MAD 0.29&nbsp;px).</li>
-<li><b>Its holdout</b> (evaluator <code>gems52-pooled-hide-v1</code>,
-48,080 withheld positives, whole 8-connected components
-withheld, visible catalogue masked pixel-exactly): A as-is 0.00000,
-B snap 0.00016 [0.00000,
-0.00045], C snap-sub 0.00005,
-D jitter 0.00021 &mdash; the snap arms' intervals contain zero.
-This run's holdout (different truth construction: simulated corrections,
-26,813 withheld positives, official <code>src/metrics.py</code>)
-gives the lane arm 0.31049. The two holdouts validate different machinery on
-different simulated truths; neither is an organizer score.</li>
+<li><b>Its local HOLDOUT-DTI</b> (evaluator <code>gems52-pooled-hide-v1</code>,
+4 folds, 48,080 withheld positives, whole 8-connected components withheld, visible catalogue
+masked pixel-exactly; not an organizer score): A as-is 0.00000 [95% CI 0.00000, 0.00000],
+B snap 0.00016 [95% CI 0.00000, 0.00045], C snap-sub 0.00005 [95% CI 0.00000, 0.00011],
+D jitter 0.00021 [95% CI 0.000003, 0.00051] &mdash; the snap arms' intervals contain zero.
+The separate local HOLDOUT-DTI on simulated-corrections truth (evaluator <code>src/metrics.py</code>,
+version hash not recorded, 26,813 withheld positives; not an organizer score) gives the lane arm
+0.31049 [95% CI 0.28212, 0.33781]. These holdouts validate different machinery on different
+simulated truths; neither is an organizer score.</li>
 <li><b>Its uniqueness gate failed on a technicality:</b> the shared gate's proximity
 criterion fires trivially at 1-dot count (100% of
 its dots within 3&nbsp;px of 263 of 944 priors;
@@ -297,13 +296,14 @@ MAD 0.29&nbsp;px). The map-tolerance sensitivity (z = |offset| / 0.5&nbsp;mm-at-
 Well-Constrained records, 400&nbsp;m otherwise) keeps all 28 at z*&nbsp;&le;&nbsp;3
 (max z 2.44) and 6 at z*&nbsp;&le;&nbsp;1.5 &mdash; published in
 <code>evidence/corrections/build_round3.json</code>.</p>
-<p><b>Holdout (machinery check only, simulated truth):</b> A1b twin
-0.10788 [0.08976, 0.12681] vs matched-mass
-random 0.00414 [0.00294, 0.00541] and masked
-control 0.00000 &mdash; 26&times; chance, CI excluding 0; canaries
-&le; 0.58 (bar 0.90); the round-1 arm reproduces 0.31049 exactly. The truth is
-the measured crests themselves, so this validates placement machinery, not geology &mdash;
-the geological test this round was H-C1, and it failed.</p>
+<p><b>Local HOLDOUT-DTI (machinery check only, simulated corrections truth; evaluator
+<code>src/metrics.py</code>, version hash not recorded, 26,813 withheld positives; not an organizer
+score):</b> A1b twin 0.10788 [95% CI 0.08976, 0.12681] vs matched-mass random A4b
+0.00414 [95% CI 0.00294, 0.00541] and masked control A0 0.00000
+[95% CI 0.00000, 0.00000] &mdash; 26&times; chance, with an interval excluding 0; canaries
+&le; 0.58 (bar 0.90). The round-1 arm reproduces the same local result. The truth is the
+measured crests themselves, so this validates placement machinery, not geology &mdash; the
+geological test this round was H-C1, and it failed.</p>
 <p><b>Registry: DUPLICATE / STOP (post-review application of the existing receipt).</b>
 The 1,034-raster receipt records <b>12 literal &gt;0.70 directed-proximity flags</b>, with maximum
 containment 1.0; max Spearman is 0.5732 for dots and 0.3335 for the surface. Under the standing

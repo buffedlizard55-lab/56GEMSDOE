@@ -27,12 +27,15 @@ and its obtainability, and is (f) ranked by expected DTI improvement ÷ implemen
   gradient ridge C3 = 0.0148 [0.0118, 0.0180]; mag×gravity cross-gradient C5 = 0.0128
   [+0.0024 vs chance, CI touches 0]; basement-step gradient C6 = 0.0097 (chance); geodetic shear
   ridge C2 = 0.0098 (chance); SGMC complement C1 = 0.0483 (sibling-occupied); learned C4 = 0.0465.
-  **Those are HOLDOUT-DTI on their evaluator, not board scores.** Their instrument ≠ ours, so they
-  are *priors*, not predictions for our numbers.
+  **Those are sibling HOLDOUT-DTI values on `gemsdoe54-segment-cv` v2, not board scores.** The
+  fetched summary does not give a comparable withheld-positive count and omits a confidence interval
+  for some point estimates; retain only the intervals it actually reports. Its instrument differs
+  from ours, so these are *contextual priors*, not directly comparable results or predictions for our numbers.
 
-**Our own holdout bars (this repo's evaluator `gems52-pooled-hide-v1`, 4 folds, whole-component
-withholding, visible catalogue masked pixel-exactly):** previous best arm = `D_jitter`
-0.00021 [0.000003, 0.00051] (`evidence/holdout_corrections_v1.json`) — a corrections arm, i.e.
+**Our local HOLDOUT-DTI bars (evaluator `gems52-pooled-hide-v1`, 4 folds, 48,080 withheld positive
+pixels, whole-component withholding, visible catalogue masked pixel-exactly; not an organizer score):**
+previous best arm = `D_jitter` 0.00021 [95% CI 0.000003, 0.00051]
+(`evidence/holdout_corrections_v1.json`) — a corrections arm, i.e.
 essentially empty; a chance control for *discovery-sized* emissions did not exist in our receipts
 and is added in this round (E1).
 
@@ -178,7 +181,7 @@ and is added in this round (E1).
 - **Primary pick rule (deterministic, fixed now):** among {`iso_step`,`bc_step`,`tilt_r`,`multi`}
   at k = 25,000, take the highest pooled HOLDOUT-DTI. It **passes** iff its paired 95 % CI vs
   `random`@25,000 is strictly > 0, no new-field canary exceeds 0.90, and every arm stays above
-  the previous repo best 0.00021. Fail ⇒ verdict NEGATIVE, no slot, and the emitted research
+  the prior local `D_jitter` HOLDOUT-DTI baseline (evaluator and count are labelled above). Fail ⇒ verdict NEGATIVE, no slot, and the emitted research
   raster is labelled NEGATIVE — exactly the corrections-lane precedent.
 - **Budget:** experiments E1 (holdout) → E2 (build+validate) → E3 (uniqueness screen); stop after
   these three.

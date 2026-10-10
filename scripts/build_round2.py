@@ -716,13 +716,15 @@ histogram, emit no correction. Details: <a href="lane1-corrections.html">the rou
       "the catalogue only carries traces that reached the surface or the photogeologic map; a buried or faintly expressed trace still has a magnetic or gravity gradient lineation",
       "lithologic contacts, intrusive margins, alluvial/fan edges, mining and seismic-lines, gravity artifact from cover thickness",
       "the sibling group filed DEM-scarp and bayesopt-learned fields; this is a model-free ridge of the magnetics, the only band family whose gradients cross the cover",
-      f"REJECTED. Best own arm `mag_ridge|packed` = {t3['mag_ridge|packed']['dti']:.4f} "
-      f"[{t3['mag_ridge|packed']['ci95'][0]:.4f}, {t3['mag_ridge|packed']['ci95'][1]:.4f}] vs the filed surface "
-      f"{t3['PRIOR_base_44090']['dti']:.4f} [{t3['PRIOR_base_44090']['ci95'][0]:.4f}, {t3['PRIOR_base_44090']['ci95'][1]:.4f}] "
-      f"on the same {ev1['protocol']['folds']} folds at the same {e3['budget']:,}-dot budget. The receipt's paired"
+      f"REJECTED. Local HOLDOUT-DTI (evaluator `gems52-pooled-hide-v1`, {ev1['protocol']['folds']} folds, "
+      f"{t3['mag_ridge|packed']['withheld_positive_pixels']:,} withheld positives; not an organizer score): "
+      f"best own arm `mag_ridge|packed` = {t3['mag_ridge|packed']['dti']:.5f} "
+      f"[95% CI {t3['mag_ridge|packed']['ci95'][0]:.5f}, {t3['mag_ridge|packed']['ci95'][1]:.5f}] vs the filed surface "
+      f"{t3['PRIOR_base_44090']['dti']:.5f} [95% CI {t3['PRIOR_base_44090']['ci95'][0]:.5f}, {t3['PRIOR_base_44090']['ci95'][1]:.5f}] "
+      f"on the same folds at the same {e3['budget']:,}-dot budget. The receipt's paired"
       f" statistic (reference <code>PRIOR_base_44090</code> minus this arm) is"
-      f" {pd3['mag_ridge|packed']['delta']:+.4f} [{pd3['mag_ridge|packed']['ci95'][0]:+.4f},"
-      f" {pd3['mag_ridge|packed']['ci95'][1]:+.4f}] - behind, with an interval that excludes zero.",
+      f" {pd3['mag_ridge|packed']['delta']:+.5f} [paired 95% CI {pd3['mag_ridge|packed']['ci95'][0]:+.5f},"
+      f" {pd3['mag_ridge|packed']['ci95'][1]:+.5f}] - behind, with an interval that excludes zero.",
       "`evidence/emission_holdout_h56-mpp-r1-20261009.json`, `evidence/field_holdout_v1.json`")
 
     H("H2-2", 2, "geodetic strain rate (dilatation, shear, second invariant) locates faults at the 300 m scale the metric uses",
@@ -731,15 +733,21 @@ histogram, emit no correction. Details: <a href="lane1-corrections.html">the rou
       "unmapped *active* structure is exactly what a strain field sees and a Quaternary-map compilation can miss where slip is diffuse",
       "lithology-driven strain partitioning, elastic-contrast artefacts at mapped contacts, interpolation smoothing between sparse GNSS sites (the field's own correlation length is several km)",
       "no sibling repo in the mirror uses the strain bands as an emitter; they appear as auxiliary features in learned models",
-      f"REJECTED: strain_2ndinv_ridge {hide['strain_2ndinv_ridge']['dti']:.4f} and strain_all "
-      f"{hide['strain_all']['dti']:.4f} vs mag_ridge {t3['mag_ridge|packed']['dti']:.4f}; recall within 3 px "
+      f"REJECTED: strain_2ndinv_ridge {hide['strain_2ndinv_ridge']['dti']:.5f} "
+      f"[95% CI {hide['strain_2ndinv_ridge']['ci95'][0]:.5f}, {hide['strain_2ndinv_ridge']['ci95'][1]:.5f}] and strain_all "
+      f"{hide['strain_all']['dti']:.5f} [95% CI {hide['strain_all']['ci95'][0]:.5f}, {hide['strain_all']['ci95'][1]:.5f}] "
+      f"vs mag_ridge|packed {t3['mag_ridge|packed']['dti']:.5f} "
+      f"[95% CI {t3['mag_ridge|packed']['ci95'][0]:.5f}, {t3['mag_ridge|packed']['ci95'][1]:.5f}]; recall within 3 px "
       f"{r37.get('strain_2ndinv_ridge', float('nan')):.3f} vs {r37.get('mag_ridge', float('nan')):.3f}. The AUC "
       f"against the hidden set is genuinely high ({diag['strain_all']['auc_hidden']:.3f}) - it is a regional prior "
       "with no 300 m precision, which is why it is not emittable at this resolution.",
       "`evidence/field_holdout_v1.json` (AUC + DTI columns)")
 
-    H2_3_note = (f"REJECTED: line_persist|packed {t3['line_persist|packed']['dti']:.4f} and line_contrast|packed "
-                 f"{t3['line_contrast|packed']['dti']:.4f} vs mag_ridge|packed {t3['mag_ridge|packed']['dti']:.4f}; "
+    H2_3_note = (f"REJECTED: line_persist|packed {t3['line_persist|packed']['dti']:.5f} "
+                 f"[95% CI {t3['line_persist|packed']['ci95'][0]:.5f}, {t3['line_persist|packed']['ci95'][1]:.5f}] and line_contrast|packed "
+                 f"{t3['line_contrast|packed']['dti']:.5f} [95% CI {t3['line_contrast|packed']['ci95'][0]:.5f}, "
+                 f"{t3['line_contrast|packed']['ci95'][1]:.5f}] vs mag_ridge|packed {t3['mag_ridge|packed']['dti']:.5f} "
+                 f"[95% CI {t3['mag_ridge|packed']['ci95'][0]:.5f}, {t3['mag_ridge|packed']['ci95'][1]:.5f}]; "
                  f"recall within 3 px {t3['line_persist|packed']['recall3']:.3f} vs {t3['mag_ridge|packed']['recall3']:.3f}. "
                  f"A 1.85 px per-step walk-off tolerance is not the limiting factor; the straightness prior itself is.")
     H("H2-3", 3, "lineament persistence (discrete Radon / Hough integration along strike) finds through-going faults that individual segments hide",
@@ -756,13 +764,17 @@ histogram, emit no correction. Details: <a href="lane1-corrections.html">the rou
       "a channel that fires only where the DEM is dead (cover, intrusive fabric) can recover traces no scarp method can",
       "each channel's own non-fault mimic (see H2-1/H2-2); a union also unions their false positives, and FPw is paid at full weight outside 300 m",
       "the group's filed files are single-field emissions; nobody in the mirror published a measured mean-vs-union comparison at matched budget",
-      f"REJECTED on measurement: QUOTA|packed {e4['table']['QUOTA|packed']['dti']:.4f} and QUOTA|packed|weighted "
-      f"{e4['table']['QUOTA|packed|weighted']['dti']:.4f} are both behind the best single channel "
-      f"{e4['table'][e4['best_arm']]['dti']:.4f}. The receipt's paired statistic for the union arm is "
-      f"{pd4['QUOTA|packed']['delta']:+.4f} [CI {pd4['QUOTA|packed']['ci95'][0]:+.4f}, "
+      f"REJECTED on measurement: QUOTA|packed {e4['table']['QUOTA|packed']['dti']:.5f} "
+      f"[95% CI {e4['table']['QUOTA|packed']['ci95'][0]:.5f}, {e4['table']['QUOTA|packed']['ci95'][1]:.5f}] and QUOTA|packed|weighted "
+      f"{e4['table']['QUOTA|packed|weighted']['dti']:.5f} [95% CI {e4['table']['QUOTA|packed|weighted']['ci95'][0]:.5f}, "
+      f"{e4['table']['QUOTA|packed|weighted']['ci95'][1]:.5f}] are both behind the best single channel "
+      f"{e4['table'][e4['best_arm']]['dti']:.5f} [95% CI {e4['table'][e4['best_arm']]['ci95'][0]:.5f}, "
+      f"{e4['table'][e4['best_arm']]['ci95'][1]:.5f}]. The receipt's paired statistic for the union arm is "
+      f"{pd4['QUOTA|packed']['delta']:+.4f} [paired 95% CI {pd4['QUOTA|packed']['ci95'][0]:+.4f}, "
       f"{pd4['QUOTA|packed']['ci95'][1]:+.4f}] in the convention 'reference mag_ridge|topk minus this arm', "
       f"i.e. the union is that far BEHIND and the interval excludes zero; the equal-rank "
-      f"mean is worse than every decent member (MEAN|topk {e4['table']['MEAN|topk']['dti']:.4f}).",
+      f"mean is worse than every decent member (MEAN|topk {e4['table']['MEAN|topk']['dti']:.5f} "
+      f"[95% CI {e4['table']['MEAN|topk']['ci95'][0]:.5f}, {e4['table']['MEAN|topk']['ci95'][1]:.5f}]).",
       "`evidence/quota_union_v1.json`")
 
     H("H2-5", 5, "exact greedy packing at fixed budget (mutual 2.8 px exclusion) raises credit per emitted pixel enough to matter, as the sibling derivation claimed",
@@ -772,7 +784,7 @@ histogram, emit no correction. Details: <a href="lane1-corrections.html">the rou
       "n/a (this is a policy on the emission, not a geological inference)",
       "the sibling repo measured +0.0247 on a scatter-smoothed field and +0.0100 on the surface but -0.0033 in 12 Monte-Carlo draws; we tested it on our own field",
       f"NOT RESOLVABLE - reported as a null, not a win. In the receipt's convention the paired statistic "
-      f"for packing is {pd4['mag_ridge|packed']['delta']:+.5f} [CI {pd4['mag_ridge|packed']['ci95'][0]:+.5f}, "
+      f"for packing is {pd4['mag_ridge|packed']['delta']:+.5f} [paired 95% CI {pd4['mag_ridge|packed']['ci95'][0]:+.5f}, "
       f"{pd4['mag_ridge|packed']['ci95'][1]:+.5f}] (reference mag_ridge|topk minus mag_ridge|packed), i.e. "
       f"packing is {e4['table']['mag_ridge|packed']['dti'] - e4['table']['mag_ridge|topk']['dti']:+.5f} ahead "
       f"with an interval straddling zero. Packing is shipped because it is free, mechanically sound and already "
@@ -785,9 +797,14 @@ histogram, emit no correction. Details: <a href="lane1-corrections.html">the rou
       "n/a - a policy question",
       "n/a",
       "the mirror treats the 2 px floor as a win to be reproduced; nobody said whether the holdout can see it",
-      f"REJECTED - the instrument is blind to it, in the wrong direction. PRIOR_base_44090 "
-      f"{t3['PRIOR_base_44090']['dti']:.4f} vs PRIOR_pruned_37654 {t3['PRIOR_pruned_37654']['dti']:.4f} pooled "
-      f"HOLDOUT-DTI, i.e. the pruned file that scores *higher live* scores far lower here, because withheld truth "
+      f"REJECTED - the instrument is blind to it, in the wrong direction. Local HOLDOUT-DTI "
+      f"(evaluator `gems52-pooled-hide-v1`, {ev1['protocol']['folds']} folds, "
+      f"{t3['mag_ridge|packed']['withheld_positive_pixels']:,} withheld positives; not an organizer score): "
+      f"PRIOR_base_44090 {t3['PRIOR_base_44090']['dti']:.5f} "
+      f"[95% CI {t3['PRIOR_base_44090']['ci95'][0]:.5f}, {t3['PRIOR_base_44090']['ci95'][1]:.5f}] vs "
+      f"PRIOR_pruned_37654 {t3['PRIOR_pruned_37654']['dti']:.5f} "
+      f"[95% CI {t3['PRIOR_pruned_37654']['ci95'][0]:.5f}, {t3['PRIOR_pruned_37654']['ci95'][1]:.5f}], "
+      f"i.e. the pruned file that scores *higher live* scores far lower here, because withheld truth "
       "is the catalogue trace itself (IR-56-011). Corollary used all round: never decide a near-catalogue policy "
       "from hide-DTI.",
       "`evidence/emission_holdout_h56-mpp-r1-20261009.json` (--priors arms)")

@@ -61,6 +61,7 @@ def test_current_status_fails_closed_for_every_published_artifact():
 
 def test_generated_site_fails_closed_and_keeps_independent_runs_separate():
     index = (ROOT / "docs" / "index.html").read_text()
+    readme = (ROOT / "README.md").read_text()
     exec_page = (ROOT / "docs" / "executive-summary.html").read_text()
     downloads = (ROOT / "docs" / "downloads" / "README.md").read_text()
     submit = (ROOT / "docs" / "submit.html").read_text()
@@ -70,49 +71,74 @@ def test_generated_site_fails_closed_and_keeps_independent_runs_separate():
     research = (ROOT / "docs" / "research.html").read_text()
     hypotheses = (ROOT / "docs" / "hypotheses.html").read_text()
     h56_hypotheses = (ROOT / "docs" / "research" / "hypotheses-round2.md").read_text()
+    research_summary = (ROOT / "docs" / "research" / "hypotheses.md").read_text()
+    round2_builder = (ROOT / "scripts" / "build_round2.py").read_text()
     prior_lane = (ROOT / "docs" / "lane1-corrections.html").read_text()
-    assert "H57 corrections-band GeoTIFF" in index
-    assert "Available for audit download: YES. Cleared to submit: NO." in index
+    assert "H57 ARCHIVE — NEGATIVE / STOP — NOT SAFE TO SUBMIT" in index
+    assert "The H57 TIFF linked above is retained for audit only" in index
     assert "DUPLICATE/STOP" in index
-    assert "H56 field/physics run" in index
-    assert "Separate PR #7 discovery-lane result" in index
+    assert "h56 round-3 corrections" in index and "H-C1 map-quality NEGATIVE" in index
+    assert "ROUND-2 DISCOVERY CANDIDATE (PR #7)" in index
+    assert "this PR #7" in index
     assert "48,080 withheld positives" in index and "gems52-pooled-hide-v1" in index
+    assert "neither is cleared for upload or a weekly slot" in index
+    assert "finite exterior conflicts with the official null-outside-footprint convention" in index
+    assert "No portal" in index and "upload or organizer score exists." in index
     assert "h57-hide-and-recover-v1" in index and "41,742 withheld positives" in index
-    assert "0.000872 [0.000486, 0.001327]" in index
-    assert "paired 95% contrast [-0.001378, -0.000476]" in index
-    assert "ok_to_submit" in h57_page and "no organizer receipt or tested upload behind it" in h57_page
-    assert "H57 is audit-only" in h57_page and "DUPLICATE/STOP" in h57_page
-    assert "gems52-pooled-hide-v1" in pr7_index and "48,080 withheld positives" in pr7_index
-    assert "DUPLICATE/STOP" in pr7_index and "not an organizer score" in pr7_exec
-    assert "no upload was made" in pr7_exec
-    assert "HOLDOUT-DTI (local, never an organizer score)" in research
-    assert "src/metrics.py" in research and "26,813 withheld positives" in research
-    assert "0.31049" in research and "[0.28212, 0.33781]" in research
-    assert "no separate contrast CI is recorded" in research
-    assert "DUPLICATE/STOP" in research and "historical raster remains audit-only" in research
-    assert "PR #5/#6 A1 historical correction run" in research
-    assert "HOLDOUT-DTI (simulated truth)" in hypotheses
+    assert "0.00087 [95% CI 0.000486, 0.001327]" in index
+    assert "[paired 95% CI -0.001378, -0.000476]" in index
+    assert "Local <b>HOLDOUT-DTI</b> on simulated-corrections truth" in research
+    assert "evaluator version hash not recorded" in research
+    assert "26,813 withheld positives" in research
+    assert "A1 lane (archived research output; not submitted)" in research
+    assert "0.31049 [95% CI 0.28212, 0.33781]" in research
+    assert "0.10788 [95% CI 0.08976, 0.12681]" in research
+    assert "not an organizer score" in research
+    assert "DUPLICATE / STOP" in research and "not submitted" in research
+    assert "HOLDOUT-DTI, simulated truth" in hypotheses
     assert "26,813 withheld positives" in hypotheses and "version hash not recorded" in hypotheses
-    assert "historical PR #5/#6; DUPLICATE/STOP; audit-only" in hypotheses
-    assert "0.00716 [0.00284, 0.01270] vs random 0.03499 [0.03273, 0.03714]" in hypotheses
-    assert "0.00523 [0.00162, 0.00963] vs same-budget random 0.03499" in hypotheses
-    assert "0.00020 [0.00000, 0.00065] vs same-budget random 0.04451 [0.04128, 0.04755]" in hypotheses
-    assert "E1 field-only mag_ridge; HOLDOUT-DTI evaluator gems52-pooled-hide-v1, 36,335 withheld positives" in index
-    assert "0.03826 [CI 0.03440 to 0.04196]" in index
-    assert "0.03872 [95% CI 0.03483, 0.04241]" in index
-    assert "36,335 withheld positives" in index and "95% CI" in index
-    assert "every DTI value below is local **HOLDOUT-DTI**, not an organizer score" in h56_hypotheses
+    assert "0.00716 [95% CI 0.00284, 0.01270]" in hypotheses
+    assert "0.00523 [95% CI 0.00162, 0.00963]" in hypotheses
+    assert "0.00020 [95% CI 0.00000, 0.00065]" in hypotheses
+    assert "evaluator <code>gems52-pooled-hide-v1</code>" in hypotheses
+    assert "48,080 withheld positives" in hypotheses and "paired contrast -0.02257 [95% CI" in hypotheses
+    assert "Evidence classes: **HOLDOUT-DTI**" in h56_hypotheses
+    assert "36,335 withheld positive pixels" in h56_hypotheses
+    assert "0.03872 [95% CI 0.03494, 0.04239]" in h56_hypotheses
+    assert "0.03117 [95% CI 0.02769, 0.03469]" in h56_hypotheses
+    assert "0.09003 [95% CI 0.08041, 0.09856]" in h56_hypotheses
+    assert "not an organizer score" in h56_hypotheses
     assert "HOLDOUT-DTI, evaluator" in prior_lane and "gems52-pooled-hide-v1" in prior_lane
     assert "48,080 withheld positives" in prior_lane
-    assert "Historical PR #4 page" in prior_lane and "NOT CLEARED for upload" in prior_lane
-    assert "0.0001566 [0.0000000, 0.0004536]" in prior_lane
-    assert "not a corrections-lane result" in exec_page
-    assert "H57 corrections file is audit-only and DUPLICATE/STOP" in submit
-    assert "no weekly slot selected and no submission made" in submit
-    assert "0.05466" in downloads and "0.05340" in downloads
-    assert "0.00552" in downloads and "0.00647" in downloads
-    assert "not an organizer score or a weekly-slot selection" in downloads
+    assert "Historical PR #4 page" in prior_lane
+    assert "NOT CLEARED for upload or a weekly slot" in prior_lane
+    assert "0.00016 [95% CI 0.00000, 0.00045]" in prior_lane
+    assert "not an organizer score" in prior_lane
+    assert "OK to submit" not in prior_lane
+    assert "paste into the DrivenData form" not in prior_lane
+    assert "No corrections-lane artifact is selected, promoted, or cleared to submit" in exec_page
+    assert "No corrections-lane TIFF in this review is cleared or safe to submit" in submit
+    assert "Other lanes have separate receipts and are not adjudicated here" in submit
+    assert "48,080 withheld positives; not an organizer score" in downloads
+    assert "0.01242 [95% CI 0.00787, 0.01718]" in downloads
+    assert "0.05466" not in downloads and "0.05340" not in downloads
+    assert "0.00552" not in downloads and "0.00647" not in downloads
     assert "promoted=None" not in downloads
+    assert "not an organizer score" in (ROOT / "docs" / "downloads" / "README.md").read_text()
+    assert "evaluator version hash not\nrecorded" in readme
+    assert "26,813 withheld positives" in readme
+    assert "0.10788 [95% CI 0.089756, 0.126814]" in readme
+    assert "gems52-pooled-hide-v1`, 4 folds, 36,335 withheld positive pixels" in readme
+    assert "0.03872 [95% CI 0.03483, 0.04241]" in readme
+    assert "h57-hide-and-recover-v1" in h57_page and "60,894 withheld positives" in h57_page
+    assert "paired contrast vs B1 (95% CI)" in h57_page
+    assert "36,335 withheld positives" in research_summary
+    assert "0.03872 [95% CI 0.03483, 0.04241]" in research_summary
+    assert "0.00380 [95% CI 0.00330, 0.00429]" in research_summary
+    assert "Historical Run A &mdash; separate corrections session" in pr7_index
+    assert "score is deliberately omitted here because the note was never submitted" in pr7_index
+    assert "HOLDOUT-DTI(sim) 0.3105" not in pr7_index
+    assert "95% CI" in round2_builder and "withheld_positive_pixels" in round2_builder
 
 
 def test_published_downloads_match_receipts_and_sample_mask_but_remain_audit_only():

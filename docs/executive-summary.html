@@ -74,12 +74,10 @@ or organizer acceptance.</p>
 <a class="btn stop" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">Download for technical inspection only — NOT SAFE TO SUBMIT</a></p>
 <p>H57's E3 results are method-level <b>HOLDOUT-DTI</b> (evaluator
 <code>h57-hide-and-recover-v1 (src/metrics.py, alpha 0.2, beta 0.8, 300 m triangular kernel, visible faults masked pixel-exactly)</code>,
-41,742 withheld positives): crest-steered
-0.00087
-[0.000486, 0.001327] versus the evidence-free
-corridor 0.00177
-[0.001295, 0.002317]; paired contrast
-[-0.001378, -0.000476].
+41,742 withheld positives; not an organizer score; bracketed intervals are 95% CIs): crest-steered
+0.00087 [95% CI 0.000486, 0.001327] versus the evidence-free
+corridor 0.00177 [95% CI 0.001295, 0.002317]; paired contrast
+[paired 95% CI -0.001378, -0.000476].
 This evaluates crest steering on withheld catalogue faults, not the emitted cover itself.</p>
 <p>No ORGANIZER-CONFIRMED score or submission receipt exists. No extra experiment or slot was
 used in this review. The next action is not another experiment: preserve the negative card and
@@ -99,9 +97,10 @@ and the run cards in <code>evidence/</code>.</p>
 (<code>h56-disc-multi-b25000-20261009-20261009T165646Z.tif</code>, 25,000 dots) is format-validated
 research output: single band, float32, values exactly {0.0, 1.0}, EPSG:32611, shape and
 transform equal to the submission format, sha256 <code>dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296</code>.
-Two independent verdicts block it: the pre-registered holdout rule failed (HOLDOUT-DTI
-0.01242 vs chance 0.03499, paired
--0.02257, CI strictly below zero), and the
+Two independent verdicts block it: the pre-registered local <b>HOLDOUT-DTI</b> rule failed
+(evaluator <code>gems52-pooled-hide-v1</code>, 4 folds, 48,080 withheld positives; not an organizer
+score): multi@25,000 0.01242 [95% CI 0.00787, 0.01718] vs same-budget random 0.03499
+[95% CI 0.03273, 0.03714], paired contrast -0.02257 [95% CI -0.02749, -0.01717]; and the
 registry lane gate returned <b>DUPLICATE/STOP</b>
 (density-degenerate 3&nbsp;px trigger, IR-56-023). Its name, note and receipt all say
 NEGATIVE; no slot was spent. Full walk-through of the numbers:

@@ -19,7 +19,7 @@ Scope rule inherited from round 1: each hypothesis names the layer(s), the physi
 ---
 
 ### H2-1 (rank 1) - any single official geophysical band, used label-free as a ridge/crest field, can beat the filed surface at matched budget
-- **Verdict:** REJECTED. Best own arm `mag_ridge|packed` = 0.0387 [0.0349, 0.0424] vs the filed surface 0.0900 [0.0804, 0.0986] on the same 4 folds at the same 37,654-dot budget. The receipt's paired statistic (reference <code>PRIOR_base_44090</code> minus this arm) is +0.0513 [+0.0426, +0.0598] - behind, with an interval that excludes zero.
+- **Verdict:** REJECTED. Local HOLDOUT-DTI (`gems52-pooled-hide-v1`, 4 folds, 36,335 withheld positives; not an organizer score): best own arm `mag_ridge|packed` = 0.03872 [95% CI 0.03494, 0.04239] vs the filed surface rescored locally at 0.09003 [95% CI 0.08041, 0.09856] on the same folds and 37,654-dot budget. The paired statistic (reference <code>PRIOR_base_44090</code> minus this arm) is +0.05132 [paired 95% CI +0.04256, +0.05984] - behind, with an interval excluding zero.
 - **Layer(s):** training_features.tif bands: magnetics RTP/TMI + slopes, isostatic gravity + slope, conductivity + depth to conductive base, detrended elevation + slope, earthquake density, top-of-crustal depth
 - **Physical signature relied on:** a fault is a *lineation*: the ridge of a horizontal-gradient magnitude field (or the slope crest of a scarp-like field) peaks on the contact, not in the anomaly centre
 - **Why it should find a fault missing from the catalogue:** the catalogue only carries traces that reached the surface or the photogeologic map; a buried or faintly expressed trace still has a magnetic or gravity gradient lineation
@@ -28,7 +28,7 @@ Scope rule inherited from round 1: each hypothesis names the layer(s), the physi
 - **Evidence:** `evidence/emission_holdout_h56-mpp-r1-20261009.json`, `evidence/field_holdout_v1.json`
 
 ### H2-2 (rank 2) - geodetic strain rate (dilatation, shear, second invariant) locates faults at the 300 m scale the metric uses
-- **Verdict:** REJECTED: strain_2ndinv_ridge 0.0196 and strain_all 0.0122 vs mag_ridge 0.0387; recall within 3 px 0.054 vs 0.156. The AUC against the hidden set is genuinely high (0.688) - it is a regional prior with no 300 m precision, which is why it is not emittable at this resolution.
+- **Verdict:** REJECTED: strain_2ndinv_ridge 0.01965 [95% CI 0.01510, 0.02418] and strain_all 0.01223 [95% CI 0.00057, 0.02874] vs mag_ridge|packed 0.03872 [95% CI 0.03494, 0.04239]; recall within 3 px 0.054 vs 0.156. The AUC against the hidden set is genuinely high (0.688) - it is a regional prior with no 300 m precision, which is why it is not emittable at this resolution.
 - **Layer(s):** official GNSS-derived dilatation rate, shear strain rate, second invariant of the strain-rate tensor
 - **Physical signature relied on:** active strain localises onto the fault, so |strain| peaks within a few hundred metres of the trace
 - **Why it should find a fault missing from the catalogue:** unmapped *active* structure is exactly what a strain field sees and a Quaternary-map compilation can miss where slip is diffuse
@@ -37,7 +37,7 @@ Scope rule inherited from round 1: each hypothesis names the layer(s), the physi
 - **Evidence:** `evidence/field_holdout_v1.json` (AUC + DTI columns)
 
 ### H2-3 (rank 3) - lineament persistence (discrete Radon / Hough integration along strike) finds through-going faults that individual segments hide
-- **Verdict:** REJECTED: line_persist|packed 0.0229 and line_contrast|packed 0.0167 vs mag_ridge|packed 0.0387; recall within 3 px 0.021 vs 0.175. A 1.85 px per-step walk-off tolerance is not the limiting factor; the straightness prior itself is.
+- **Verdict:** REJECTED: line_persist|packed 0.02290 [95% CI 0.01615, 0.03050] and line_contrast|packed 0.01671 [95% CI 0.01330, 0.02002] vs mag_ridge|packed 0.03872 [95% CI 0.03494, 0.04239]; recall within 3 px 0.021 vs 0.175. A 1.85 px per-step walk-off tolerance is not the limiting factor; the straightness prior itself is.
 - **Layer(s):** same geophysics, integrated: 100 m rank rasters, along-strike line integrals over 25 azimuths, persistence = max run length; plus along-strike contrast of the field across the candidate line
 - **Physical signature relied on:** a real fault is a *continuous* lineation over kilometres; noise crests are short
 - **Why it should find a fault missing from the catalogue:** a fault whose surface expression is broken but whose geophysical lineation continues is precisely what a persistence filter recovers
@@ -46,7 +46,7 @@ Scope rule inherited from round 1: each hypothesis names the layer(s), the physi
 - **Evidence:** `evidence/quota_union_v1.json`, `evidence/emission_holdout_h56-mpp-r1-20261009.json`
 
 ### H2-4 (rank 4) - combining complementary channels by union beats the best single channel, because TPw is a max over emitted pixels per truth pixel
-- **Verdict:** REJECTED on measurement: QUOTA|packed 0.0312 and QUOTA|packed|weighted 0.0359 are both behind the best single channel 0.0387. The receipt's paired statistic for the union arm is +0.0071 [CI +0.0034, +0.0104] in the convention 'reference mag_ridge|topk minus this arm', i.e. the union is that far BEHIND and the interval excludes zero; the equal-rank mean is worse than every decent member (MEAN|topk 0.0179).
+- **Verdict:** REJECTED on measurement: QUOTA|packed 0.03117 [95% CI 0.02769, 0.03469] and QUOTA|packed|weighted 0.03592 [95% CI 0.03239, 0.03937] are both behind the best single channel 0.03872 [95% CI 0.03483, 0.04241]. The union's paired statistic is +0.0071 [95% CI +0.0034, +0.0104] in the convention 'reference mag_ridge|topk minus this arm', i.e. that far BEHIND; the equal-rank mean is worse than every decent member (MEAN|topk 0.01791 [95% CI 0.01369, 0.02234]).
 - **Layer(s):** 6 channels (mag_ridge, scarp_slope, rtp_ridge, strain_2ndinv_ridge, grav_ridge, cond_edge) with per-channel quotas, credit-weighted quotas, and the equal-rank mean
 - **Physical signature relied on:** different physical processes see different parts of the fault population, so a union should raise TPw without raising FPw proportionally
 - **Why it should find a fault missing from the catalogue:** a channel that fires only where the DEM is dead (cover, intrusive fabric) can recover traces no scarp method can
@@ -55,7 +55,7 @@ Scope rule inherited from round 1: each hypothesis names the layer(s), the physi
 - **Evidence:** `evidence/quota_union_v1.json`
 
 ### H2-5 (rank 5) - exact greedy packing at fixed budget (mutual 2.8 px exclusion) raises credit per emitted pixel enough to matter, as the sibling derivation claimed
-- **Verdict:** NOT RESOLVABLE - reported as a null, not a win. In the receipt's convention the paired statistic for packing is -0.00045 [CI -0.00125, +0.00036] (reference mag_ridge|topk minus mag_ridge|packed), i.e. packing is +0.00045 ahead with an interval straddling zero. Packing is shipped because it is free, mechanically sound and already in the sibling recipe, not because we measured a gain - so it is not evidence for a live gain.
+- **Verdict:** NOT RESOLVABLE - reported as a null, not a win. In the receipt's convention the paired statistic for packing is -0.00045 [paired 95% CI -0.00125, +0.00036] (reference mag_ridge|topk minus mag_ridge|packed), i.e. packing is +0.00045 ahead with an interval straddling zero. Packing is shipped because it is free, mechanically sound and already in the sibling recipe, not because we measured a gain - so it is not evidence for a live gain.
 - **Layer(s):** any channel; packing applied to the field before emission
 - **Physical signature relied on:** the metric charges a truth pixel once at its best emitter, so spreading dots apart buys coverage at constant mass
 - **Why it should find a fault missing from the catalogue:** not about finding new faults - about not paying twice for one
@@ -64,7 +64,7 @@ Scope rule inherited from round 1: each hypothesis names the layer(s), the physi
 - **Evidence:** `evidence/quota_union_v1.json`, `tests/test_contracts.py::test_batch_packing_equals_the_naive_greedy`
 
 ### H2-6 (rank 6) - the near-catalogue pruning policy that made the incumbent strong can be chosen on the shared holdout
-- **Verdict:** REJECTED - the instrument is blind to it, in the wrong direction. PRIOR_base_44090 0.0900 vs PRIOR_pruned_37654 0.0038 pooled HOLDOUT-DTI, i.e. the pruned file that scores *higher live* scores far lower here, because withheld truth is the catalogue trace itself (IR-56-011). Corollary used all round: never decide a near-catalogue policy from hide-DTI.
+- **Verdict:** REJECTED - the instrument is blind to it, in the wrong direction. Local HOLDOUT-DTI (evaluator `gems52-pooled-hide-v1`, 4 folds, 36,335 withheld positives; not an organizer score): PRIOR_base_44090 0.09003 [95% CI 0.08041, 0.09856] vs PRIOR_pruned_37654 0.00380 [95% CI 0.00328, 0.00429], i.e. the pruned file that scores *higher live* scores far lower here, because withheld truth is the catalogue trace itself (IR-56-011). Corollary used all round: never decide a near-catalogue policy from hide-DTI.
 - **Layer(s):** the organiser's visible catalogue mask + the filed rasters, scored as-is on identical folds
 - **Physical signature relied on:** known-fault pixels are removed from the truth, so mass within ~2 px of the catalogue is deleted for free
 - **Why it should find a fault missing from the catalogue:** n/a - a policy question
