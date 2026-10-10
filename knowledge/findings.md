@@ -11,7 +11,7 @@ that contains it is named. Nothing here is a score, and no board position is cla
 | The LiDAR products are packed, differently per file: the 100 m stack is int16 decimetres with `SCALE` and nodata `-32768`; the 3 m pilot tiles decode as `z_m = 1000 + v/10`. | IR-56-005 | Assert decoding against bounds, and guard a reprojection with a valid-fraction check — a silently all-NaN destination grid was a real failure mode here. |
 | `sample_submission.tif` **is** the catalogue, cell-for-cell (60,988 positives in both). | `evidence/grid.json` (`sample_submission_forensics`) | Never treat it as a zero template. It is the format reference (CRS/shape/transform) and the "do nothing" baseline, and that baseline scores DTI 0.00000 under the organizer's own masking. |
 | Grid `(3730, 3292)`, EPSG:32611, transform `(100, 0, 243350, 0, -100, 4508550)`, 5,165,840 footprint cells, 60,894 catalogue cells inside it. | `evidence/grid.json` | One pixel = 100 m exactly along either axis, so offsets quote metres without a resampling correction. |
-| The data tab is login-gated (HTTP 302). Three competition files match the public owner-maintained mirror pins; the sibling-derived LiDAR cache matches its separate pin. | IR-56-003, `knowledge/sources.json`, `data_manifest.json` | For official text use the page fetcher; for bytes use the hash-pinned mirror and say so. Hash equality is not direct organizer authentication or licensing confirmation. |
+| The data tab is login-gated (HTTP 302). `fetch_page` reads drivendata.org pages that the sandbox's own HTTP client cannot. | IR-56-003, `knowledge/sources.json` | For official text use the page fetcher; for bytes use the hash-pinned sibling bridge and say so. 3 of 4 inputs reproduce their pin; the LiDAR cache has no pin, so its measured hash is published in `data_manifest.json`. |
 
 ## 2. Scoring geometry (where submission decisions should come from)
 
@@ -205,40 +205,36 @@ Nothing here is a board score; no ORGANIZER-CONFIRMED number exists for anything
 - Net round-2 verdict: **NEGATIVE twice over** (holdout below chance; gate stop) — the unique TIF
   is published for review with both reasons in its receipt, note and the front-page banner.
 
-## 8. PR #9 integration reconciliation (no new experiment)
+## R7. Round 3 — the map-quality test and the twin-family tightening
+(receipts: `evidence/corrections/map_quality_stratification.json`, `build_round3.json`,
+`registry_check_round3.json`, `run_card_round3.json`; pre-reg:
+`docs/research/hypotheses-20261009-round3.md`)
 
-The repository contains several independent receipts that must not be merged into one
-scientific claim: (a) PR #4's conservative corrections gate (0/21 corridors); (b) PR #5/#6's
-strongest-crest corrections output (6,504 dots, locally mask-conformant, but eight literal
-registry containment triggers); (c) PR #7's distinct discovery-lane negative holdout and
-DUPLICATE/STOP; (d) the H57 corrections run; and (e) separate H56 field/physics runs. The PR
-#5/#6 simulated-corrections result is HOLDOUT-DTI 0.310486 [0.282121, 0.337809],
-`src/metrics.py`, 26,813 withheld positives; it is not an organizer score. PR #7 remains
-HOLDOUT-DTI 0.01242 [0.00787, 0.01718], `gems52-pooled-hide-v1`, 48,080 withheld positives,
-below same-budget random (paired difference -0.02257 [-0.02749, -0.01717]); it is not the H57
-corrections run and must not be reattributed to it.
-
-H57's measured DEM offset median is 1.48 px (signed median -0.11 px; 2/1,273 corridors qualify),
-so the under-two-pixel stop applies to crest steering. Its E3 result is HOLDOUT-DTI
-(`h57-hide-and-recover-v1`, 41,742 withheld positives): B2 0.000872 [0.000486, 0.001327] vs
-B1 evidence-free corridor 0.001773 [0.001295, 0.002317], paired contrast
-[-0.001378, -0.000476]. The holdout refutes crest steering but does not test real unmapped
-corrections. The published unsteered band is a coverage bet, not a positive correction; its
-literal 3-px uniqueness gate reports DUPLICATE/STOP (max near fraction 1.0). It remains audit-only
-and is not cleared for a weekly slot or upload; see `evidence/submission_status.json` and
-IR-57-007.
-
-The separate H56 field/physics final receipt reports HOLDOUT-DTI (`gems52-pooled-hide-v1`,
-48,124 withheld positives) 0.05340 [0.04755, 0.05877] versus matched random 0.04693
-[0.04263, 0.05078], paired difference +0.00647 [0.00184, 0.01091]. This remains that run's
-local evidence, not an organizer score or a correction-lane result. PR #9 did not select or spend
-a weekly slot, and this status review does not adjudicate that independent run or change its
-receipt. The PR #4/#5/#6/H57 corrections decisions and PR #7 discovery decision remain separate.
-
-Local format validation is not portal acceptance, and the all-finite writer path must not be
-conflated with mask-aware template conformance. The feature stack and pins are hash-verified
-from an owner-maintained mirror, not directly authenticated to DrivenData; licensing remains
-unresolved. PR #9 ran no new holdout/canary. The corrections-only ranked candidate register is
-`docs/research/corrections-hypotheses-20261009.md`; its candidate was not tested by this review.
-See `evidence/submission_status.json` for current audit status and `evidence/review_card_20261009.json`
-for the pre-H57 PR #9 review snapshot.
+- **Join semantics (IR-56-031, load-bearing):** `record_id` in `trace_segments_utm11.csv` is the
+  shapefile FEATURE INDEX (`enumerate(iterShapeRecords())` in GEMSDOE51's
+  `extract_official_segments.py`), not `NUM`. The attribute table (22,956 rows = dbf record
+  count) joins POSITIONALLY; verified `SLIPSENSE` 1,126/1,126 after NaN normalisation. The first
+  draft joined on `NUM` (46/125 spurious matches) and was discarded before any decision.
+- **H-C1 (does the offset respect the catalogue's own map quality?): NEGATIVE on the
+  pre-registered conjunction.** MAPSCALE arm starved (120/125 records at 1:250k; ρ=0.059,
+  p=0.257); FTYPE arm passed (not-Well vs Well medians 1.52 vs 1.05 px, MW p=0.039). Secondaries
+  supportive: FCODE2023 ρ=0.169 (p=0.030), Kruskal p=0.034, monotone FTYPE medians
+  1.05 < 1.50 < 3.15 px; holds in the LiDAR-covered subset (p=0.045) but **vanishes among sharp
+  crests** (top-prominence quartile p=0.62) — the pre-registered terrain confound (low-relief
+  terrain hosts both inferred mapping and terrace-dominated crests). Suggestive, not confirmed.
+- **Twin-family gate (pre-registered fallback):** 9 of 28 round-1 records corroborated by BOTH
+  families (sign-concordant medians, |mag| ≥ 1 px, ≥ 3 qualified mag transects, ONE shared
+  perpendicular reference — the sign-convention trap; a raw-median comparison flips 2 records:
+  1514, 2665). 2,139 dots on their DEM crest lines (LiDAR-calibrated operator; mag is the gate,
+  not the emitter). HOLDOUT-DTI (simulated, machinery only): 0.10788 [0.0898, 0.1268] vs
+  matched-mass chance 0.00414 [0.0029, 0.0054]; canaries ≤ 0.58; A1 reproduced 0.31049 exactly.
+- **Registry (1,026 rasters incl. 17 unzipped zips, 477 unique pixel contents):** documented
+  UNIQUE (max Spearman 0.573, max 3 px Jaccard 0.329, no mutual containment, 0 duplicates);
+  literal clause fires on 12 (11 degenerate supersets with rev ≤ 0.011 + this lane's own round-1
+  raster — the twin dots are its strict subset, declared before the screen). STOP logged; verdict
+  NEGATIVE; 0 slots spent.
+- **Strategic read (for the selector):** the corrections lane's product is an additive component
+  (2,139 two-family dots at the metric's free-TP geometry: dots exactly on truth cost nothing),
+  not a standalone winner; the literal containment gate blocks composing it with a family
+  emission inside this lane, so composition is the selector's step. The lane's emissions stay
+  research-only until an independent (non-simulated) test passes — H-C1 was the first and failed.

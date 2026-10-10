@@ -1,5 +1,10 @@
 # Candidate hypotheses — ranked, with the data each one needs
 
+> **Historical planning document, not current authorization.** The active corrections lane has a
+> negative stop result and the experiment budget is exhausted. Do not treat the proposed candidates
+> below as instructions to run experiments; the current task is corrections-only. See `README.md`
+> and `evidence/run_card.json` for the authoritative status.
+
 Status key: **VALIDATED** = a holdout DTI with CI exists. **BLOCKED** = cannot be tested here; the blocker is named. **NEGATIVE** = a measured null.
 No expected-DTI number below is a score. The ranking is qualitative and is a judgement, not a projection.
 
@@ -118,16 +123,13 @@ different set - label-free physical channels as *emitters*, plus the combination
 holdout, and every one of them was decided by measurement. That file is generated from the receipts so the
 numbers cannot drift: **[hypotheses-round2.md](hypotheses-round2.md)**.
 
-Headline: **5 of 6 rejected, 1 not resolvable on this instrument, no promotion.** These are local
-HOLDOUT-DTI results (evaluator `gems52-pooled-hide-v1`, 36,335 withheld positives, 4 folds; not organizer
-scores). Best own arm `mag_ridge|packed` 0.0387 [95% CI 0.0348, 0.0424] against 0.0900
-[95% CI 0.0811, 0.0988] for the group's filed sibling surface on identical folds (receipts
-`evidence/field_holdout_v1.json` / `evidence/quota_union_v1.json`). Two findings matter more than the ranking:
+Headline: **5 of 6 rejected, 1 not resolvable on this instrument, no promotion.** Best own arm
+`mag_ridge|packed` 0.0387 [0.0348, 0.0424] pooled HOLDOUT-DTI against 0.0900 [0.0811, 0.0988] for the group's
+filed sibling surface on identical folds (both from `evidence/field_holdout_v1.json` / `evidence/quota_union_v1.json`).
+Two findings matter more than the ranking:
 
-- **H2-6 rejected the instrument, not the arm.** On this local HOLDOUT-DTI (evaluator `gems52-pooled-hide-v1`,
-  36,335 withheld positives), the withheld truth *is* the catalogue: the sibling surface scores 0.0900
-  [95% CI 0.0811, 0.0988] and its pruned twin 0.0038 [95% CI 0.0033, 0.0043]. Their separate live
-  figures (0.2600 and 0.2778) are USER-REPORTED, not organizer-confirmed. Any near-catalogue pruning decision
-  taken from hide-DTI would have been backwards (IR-56-011).
+- **H2-6 rejected the instrument, not the arm.** The holdout's withheld truth *is* the catalogue, so it scores
+  the sibling surface (USER-REPORTED live 0.2600) at 0.0900 and its pruned twin (USER-REPORTED live 0.2778) at
+  0.0038 - the opposite sign. Any near-catalogue pruning decision taken from hide-DTI would have been backwards (IR-56-011).
 - **H2-5 is reported as a null, not a win.** Exact 2.8 px packing moved `mag_ridge` by +0.00045 with CI
   (-0.00125, 0.00036). We ship packing because it is free and mechanically sound, not because we measured a gain.

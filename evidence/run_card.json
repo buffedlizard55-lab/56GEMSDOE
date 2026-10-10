@@ -1,219 +1,819 @@
 {
- "lane": "corrections",
- "competition": "DrivenData GEMS Prize 306 (USGS quake-explorer fault delineation)",
- "run_utc": "2026-10-09T16:49:44Z",
- "commit": "994ff6a644eec8a238e251a84261fbb8db8f2599",
- "hypothesis": "The USGS/INGENIOUS catalogue is displaced from the geomorphic and magnetic lineations by more than ~2 pixels in places, so dots placed on the evidence-defined trace score where dots on the catalogue line cannot (known-fault pixels are excluded from the penalty terms).",
- "mechanism": "Active-quaternary slip expressed as a scarp in detrended elevation (crest of -d2z/dn2) and as a step in the magnetic gradient (ridge of |tmi_hg|), measured perpendicular to the trace strike within +-400 m.",
- "named_non_fault_process": "Slope-dependent scarp degradation and relaxation, which migrates a scarp's convex break downslope away from the fault trace without any registration error; plus the shading/curvature asymmetry of a DEM-derived field, and, on the estimator side, bilinear-interpolation curvature spikes at source gridlines. Each is why the lane requires two nulls, a strength gate calibrated on the null, and corridor-level agreement rather than any single per-pixel offset.",
- "measurements": {
-  "offsets_ungated_px": {
-   "dem_median": -0.11314796634889474,
-   "dem_n": 44390,
-   "joint_median": -0.3824233359803283,
-   "joint_n": 7239,
-   "abs_offset_median_px": 1.4757114074181301,
-   "dem_mag_correlation_r": 0.02233471267813126,
-   "both_families_agreeing_fraction": 0.12104339102081765
+  "lane": "corrections",
+  "competition": "DrivenData GEMS Prize 306 (USGS quake-explorer fault delineation)",
+  "run_utc": "2026-10-09T16:49:44Z",
+  "commit": "994ff6a644eec8a238e251a84261fbb8db8f2599",
+  "hypothesis": "The USGS/INGENIOUS catalogue is displaced from the geomorphic and magnetic lineations by more than ~2 pixels in places, so dots placed on the evidence-defined trace score where dots on the catalogue line cannot (known-fault pixels are excluded from the penalty terms).",
+  "mechanism": "Active-quaternary slip expressed as a scarp in detrended elevation (crest of -d2z/dn2) and as a step in the magnetic gradient (ridge of |tmi_hg|), measured perpendicular to the trace strike within +-400 m.",
+  "named_non_fault_process": "Slope-dependent scarp degradation and relaxation, which migrates a scarp's convex break downslope away from the fault trace without any registration error; plus the shading/curvature asymmetry of a DEM-derived field, and, on the estimator side, bilinear-interpolation curvature spikes at source gridlines. Each is why the lane requires two nulls, a strength gate calibrated on the null, and corridor-level agreement rather than any single per-pixel offset.",
+  "measurements": {
+    "offsets_ungated_px": {
+      "dem_median": -0.11314796634889474,
+      "dem_n": 44390,
+      "joint_median": -0.3824233359803283,
+      "joint_n": 7239,
+      "abs_offset_median_px": 1.4757114074181301,
+      "dem_mag_correlation_r": 0.02233471267813126,
+      "both_families_agreeing_fraction": 0.12104339102081765
+    },
+    "offsets_null_calibrated_px": {
+      "dem_median": -0.10336448793692654,
+      "dem_n": 3187,
+      "mag_median": 0.02988210086131843,
+      "mag_n": 5297,
+      "joint_median": 0.7735278550045412,
+      "joint_n": 156,
+      "joint_mad": 1.8771643351107046,
+      "null_random_abs_median": 1.3232876860504166,
+      "null_rotated_abs_median": 1.3936437306796836,
+      "strength_gate": {
+        "dem_min_hgt": 17.57184561400475,
+        "mag_min_hgt": 94.10431282987766,
+        "rule": "a crest is only believed when its convexity height exceeds the 90th percentile of the same statistic measured at random traceless points",
+        "note": "units: dem = m per cell^2 of curvature, mag = |tmi_hg| units"
+      }
+    },
+    "corridors": {
+      "decision_gate": {
+        "components": 21,
+        "qualifying": 0,
+        "qualifying_pixels": 0,
+        "qualifying_length_m": 0,
+        "sigma_floor_px": 1.296
+      },
+      "ungated_exploration": {
+        "components_evaluated": 1273,
+        "qualifying": 2,
+        "joint_median_px": -2.340092050268823
+      }
+    },
+    "lidar_3m": {
+      "coverage_fraction_of_catalogue": 0.009064932505665584,
+      "pooled_median_px": -0.020532070869259747,
+      "pooled_mad_px": 0.6640383807807138,
+      "frac_ge_3px": 0.00273224043715847,
+      "segments": 13,
+      "segments_ge_200m": 0,
+      "segments_z_ge_3": 0,
+      "max_z": 2.6775347929655466,
+      "coarse_vs_fine_rms_m": 180.8517481924266
+    },
+    "instrument": {
+      "detection_complete_within_2px": true,
+      "placement_bias_px": 0.3285,
+      "max_abs_placement_bias_px": 0.4622
+    },
+    "permutation_control_on_cluster_rule": {
+      "real_survivors": 680,
+      "permutation_null_mean": 152.592,
+      "permutation_null_sd": 15.479015981094273,
+      "permutation_null_max": 193,
+      "signflip_null_mean": 170.788,
+      "signflip_note": "not neutral: a constant placement bias b displaces a flipped dot by 2b",
+      "one_sided_p_permutation": 0.0,
+      "reading": "coherence of the sub-2px residual is real (p<0.004 vs both nulls) but the effect size is ~1 px, under the brief's 2 px bar and under the estimator's own 1.32 px noise floor, and it does not appear at 3 m on any segment",
+      "interpretation": "the survivors are more spatially coherent than a reassignment of the same offsets would produce -- a necessary, not sufficient, condition for a real correction; read together with the corridor gate, which is the sufficient one"
+    }
   },
-  "offsets_null_calibrated_px": {
-   "dem_median": -0.10336448793692654,
-   "dem_n": 3187,
-   "mag_median": 0.02988210086131843,
-   "mag_n": 5297,
-   "joint_median": 0.7735278550045412,
-   "joint_n": 156,
-   "joint_mad": 1.8771643351107046,
-   "null_random_abs_median": 1.3232876860504166,
-   "null_rotated_abs_median": 1.3936437306796836,
-   "strength_gate": {
-    "dem_min_hgt": 17.57184561400475,
-    "mag_min_hgt": 94.10431282987766,
-    "rule": "a crest is only believed when its convexity height exceeds the 90th percentile of the same statistic measured at random traceless points",
-    "note": "units: dem = m per cell^2 of curvature, mag = |tmi_hg| units"
-   }
+  "holdout_dti": {
+    "evidence_class": "HOLDOUT-DTI (catalogue recovery; exploratory; not new-fault discovery or organizer score)",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "protocol": {
+      "folds": 4,
+      "mode": "hide",
+      "buffer_px": 4,
+      "rule": "whole 8-connected catalogue components withheld; visible catalogue masked pixel-exactly; prevalence-matched truth",
+      "prevalence": null,
+      "prevalence_rule": "target fraction passed to make_folds; each fold thins whole held components until that pixel target is reached; actual total is recorded below",
+      "invoked_prevalence": 0.00294,
+      "prevalence_reconciliation": {
+        "receipt_value": null,
+        "invoked_value": 0.00294,
+        "invocation_source": "scripts/run_corrections_holdout.py: H.make_folds(... prevalence=0.00294, seed=0, mode=\"hide\")",
+        "meaning": "The receipt incorrectly leaves design.prevalence null. The run card records the source-code invocation separately; 48,080 is the receipt-reported total withheld positives. Do not treat the null field as confirmation that the requested design was serialized correctly."
+      },
+      "buffer_provenance": {
+        "receipt_buffer_px": 4,
+        "observed_candidate_inputs": "scripts/run_corrections_holdout.py computes vis = fold[\"visible\"] & fp and calls snap_map(fields, vis, fp); it does not restrict catalogue-derived snap inputs to fold[\"fit\"].",
+        "shared_fold_behavior": "gems56.holdout.make_folds creates fold[\"fit\"] after excluding the 4-px boundary and a 4-px dilation of held_cat, but this run script does not consume fold[\"fit\"] for snap-map inputs.",
+        "assessment": "The hide-and-recover split withholds whole components, but the specified spatial buffer is not applied to the catalogue-derived input locations. Treat the DTI as exploratory and not admissible promotion evidence."
+      }
+    },
+    "withheld_positive_pixels": 48080,
+    "arms": {
+      "A_as_is": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "dti": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "withheld_positive_pixels": 48080,
+        "tpw": 0.0,
+        "fpw": 0.0,
+        "fnw": 48080.0
+      },
+      "B_snap": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "dti": 0.00015660914317701405,
+        "ci95": [
+          0.0,
+          0.00045357384313326045
+        ],
+        "withheld_positive_pixels": 48080,
+        "tpw": 6.466291280169486,
+        "fpw": 14120.333333333332,
+        "fnw": 48073.53370871983
+      },
+      "C_snap_sub": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "dti": 4.7447962554677763e-05,
+        "ci95": [
+          0.0,
+          0.00011146770377698813
+        ],
+        "withheld_positive_pixels": 48080,
+        "tpw": 1.8998123067514103,
+        "fpw": 7877.666666666666,
+        "fnw": 48078.10018769324
+      },
+      "D_jitter": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "dti": 0.00020550105762550465,
+        "ci95": [
+          2.6074210302486136e-06,
+          0.0005084996249930672
+        ],
+        "withheld_positive_pixels": 48080,
+        "tpw": 8.501983871172097,
+        "fpw": 14531.354831700748,
+        "fnw": 48071.498016128826
+      }
+    },
+    "bootstrap": {
+      "method": "paired physical spatial-cluster percentile",
+      "clusters": 154,
+      "draws": 1000,
+      "seed": 520810,
+      "confidence": 0.95,
+      "caveat": "Conditional on fitted folds, catalogue labels and fixed budgets; not a leaderboard interval."
+    },
+    "limitation": "the withheld target is catalogue faults, not the organizer's new faults; see gems56/holdout.py docstring and IR-56-004",
+    "reading": "all arms are inside each other's intervals, and a random sub-pixel jitter scores the same as the evidence-based snap: the instrument cannot see a <=3 px lateral offset, so the holdout supplies no admissible evidence in favour of correcting",
+    "candidate_linkage": "The one-dot emitted primary was not separately scored. B_snap/C_snap_sub are method-level holdout arms on catalogue-recovery truth, not new-fault truth; do not attribute their DTI directly to the one-dot TIFF.",
+    "leakage_canary": {
+      "status": "not present in the authoritative corrections holdout receipt",
+      "passed": false,
+      "reason": "Per-feature AUC canaries exist in an earlier, separate corrections run card, not this latest run. They are not copied forward as evidence. No new canary was run because the experiment budget is exhausted."
+    },
+    "alpha": 0.2,
+    "beta": 0.8,
+    "triangular_radius_m": 300.0,
+    "pooled": true,
+    "receipt_reconciliation": {
+      "source_file": "evidence/holdout_corrections_v1.json",
+      "source_sha256": "07465b0cee3dd191c4ed32342e9fd2c094cf24f37787483e74c4e7bbb8127a79",
+      "invocation_script": "scripts/run_corrections_holdout.py",
+      "invocation_script_sha256": "95799732c8aeb84e0b78a9380e5c732164cb396c768bf324287912cc63c802dd",
+      "review_action": "Copied evaluator, metric configuration, pooled scores, CIs, paired bootstrap metadata, and withheld-positive total from the original JSON. No DTI or interval was recomputed; the original receipt was not altered.",
+      "status": "RECONCILED WITH LIMITATIONS; no evidence upgrade or promotion clearance."
+    },
+    "admissibility": {
+      "status": "EXPLORATORY / NOT ADMISSIBLE FOR PROMOTION",
+      "reasons": [
+        "target is withheld catalogue faults, not the organizer hidden-new-fault set",
+        "the 4-px buffer is not applied to the catalogue-derived snap inputs used by this script",
+        "receipt design.prevalence is null although the invocation supplied 0.00294",
+        "latest corrections holdout has no per-feature leakage-canary receipt",
+        "one-dot primary was not separately evaluated"
+      ]
+    },
+    "paired_differences": {
+      "candidate_arm": "C_snap_sub",
+      "contrasts_are_candidate_minus_control": true,
+      "contrasts": {
+        "A_as_is": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems52-pooled-hide-v1",
+          "delta": 4.7447962554677763e-05,
+          "ci95": [
+            0.0,
+            0.00011146770377698813
+          ],
+          "withheld_positive_pixels": 48080
+        },
+        "B_snap": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems52-pooled-hide-v1",
+          "delta": -0.00010916118062233628,
+          "ci95": [
+            -0.000356824560051748,
+            2.2076478424284652e-06
+          ],
+          "withheld_positive_pixels": 48080
+        },
+        "D_jitter": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems52-pooled-hide-v1",
+          "delta": -0.00015805309507082687,
+          "ci95": [
+            -0.00042387865024720383,
+            1.62101172648752e-05
+          ],
+          "withheld_positive_pixels": 48080
+        }
+      },
+      "best_comparable_control": "D_jitter",
+      "interpretation": "Copied from the original pooled receipt. These contrasts compare C_snap_sub with each listed control; they are not a B_snap-versus-D_jitter interval."
+    },
+    "evaluator_implementation_sha256": {
+      "evaluate_holdout.py": "ffb084fdf34bb30438485b89caeb1228a6680abfd9f9f0472f4355845da05cc6",
+      "holdout.py": "f6706d781de72092e59332074af26e1d58cf734f95bf947a0d7c3fea577e6145",
+      "metric.py": "3d454119edfcec3cc2a83278c2015d7e41d39d8c1142fca12311409a18ce7d1a",
+      "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+    }
   },
-  "corridors": {
-   "decision_gate": {
-    "components": 21,
-    "qualifying": 0,
-    "qualifying_pixels": 0,
-    "qualifying_length_m": 0,
-    "sigma_floor_px": 1.296
-   },
-   "ungated_exploration": {
-    "components_evaluated": 1273,
-    "qualifying": 2,
-    "joint_median_px": -2.340092050268823
-   }
+  "registry_comparison": {
+    "shared_gate_verdict": {
+      "tool": "gates.lane_uniqueness_report (vendored template, phase=dots, exact full eligible rank)",
+      "priors_checked": 944,
+      "max_spearman": 0.005134591433171967,
+      "rank_threshold": 0.9,
+      "rank_pass": true,
+      "directed_near3px_fraction": 1.0,
+      "near_threshold": 0.7,
+      "duplicate": true,
+      "ok": false,
+      "offender_count": 263,
+      "sensitivity_arm_offender_count": 175,
+      "reading": "the shared gate FAILS the primary on the proximity criterion. The primary has 1 dot(s); the criterion is met against 263 of 944 priors (the sensitivity raster: 175). The primary's offenders carry 12,000 to 5,167,373 positive cells (median 88,988; measured from the receipt), so the criterion is met by dense layers rather than by a like-for-like duplicate. 36 priors could not be read onto the grid and were not compared. The reciprocal figure below comes from the one-pass screen over the full 944-raster corpus (evidence/registry_screen_v1.json). The protocol says a trigger is a logged duplicate and a stop, so the artefacts are published as research output and no slot is claimed."
+    },
+    "corpus_files": 944,
+    "corpus_read_errors": 35,
+    "rule_as_written_triggers": 292,
+    "of_which_dense_layers": 141,
+    "reciprocal_overlap_gt_070": 0,
+    "surface_max_rank_correlation": 0.005134591433171967,
+    "dots_max_rank_correlation": 0.005134591433171967,
+    "note": "the >70%-within-3px duplicate rule fires against whole-footprint plausibility masks for any non-empty raster, so it is reported with both directions rather than claimed as a pass (IR-56-006); the structural guarantee is that no dot is ever placed on a catalogue pixel",
+    "stage_checks": {
+      "primary": {
+        "preplacement_surface": {
+          "phase": "surface",
+          "priors_checked": 944,
+          "distinct_decoded_priors": 449,
+          "rank_pixels": 5165840,
+          "max_spearman": 0.005134591433171967,
+          "rank_threshold": 0.9,
+          "rank_stop_triggered": false,
+          "max_near_3px_fraction": null,
+          "near_threshold": 0.7,
+          "duplicate": false,
+          "offender_count": 0,
+          "error_count": 36,
+          "ok": false,
+          "receipt_file": "evidence/lane_uniqueness_h56-corr-snap200cm-20261009.json",
+          "receipt_sha256": "b64d0eb02e321294f248ee1d2279c764f84da224bcae91da9bd7824708386c9c",
+          "assessment": "INCOMPLETE / NOT CLEARED: no rank trigger among readable entries, but some registry files could not be compared."
+        },
+        "final_dots": {
+          "phase": "dots",
+          "priors_checked": 944,
+          "distinct_decoded_priors": 449,
+          "rank_pixels": 5165840,
+          "max_spearman": 0.005134591433171967,
+          "rank_threshold": 0.9,
+          "rank_stop_triggered": false,
+          "max_near_3px_fraction": 1.0,
+          "near_threshold": 0.7,
+          "duplicate": true,
+          "offender_count": 263,
+          "error_count": 36,
+          "ok": false,
+          "receipt_file": "evidence/lane_uniqueness_h56-corr-snap200cm-20261009.json",
+          "receipt_sha256": "b64d0eb02e321294f248ee1d2279c764f84da224bcae91da9bd7824708386c9c",
+          "assessment": "DUPLICATE / STOP: final-dot proximity threshold triggered."
+        }
+      },
+      "sensitivity": {
+        "preplacement_surface": {
+          "phase": "surface",
+          "priors_checked": 944,
+          "distinct_decoded_priors": 449,
+          "rank_pixels": 5165840,
+          "max_spearman": 0.006059874406178202,
+          "rank_threshold": 0.9,
+          "rank_stop_triggered": false,
+          "max_near_3px_fraction": null,
+          "near_threshold": 0.7,
+          "duplicate": false,
+          "offender_count": 0,
+          "error_count": 36,
+          "ok": false,
+          "receipt_file": "evidence/lane_uniqueness_h56-corr-snap100cm-20261009.json",
+          "receipt_sha256": "525ba8ee2cb0ce26a8417ccc259d8250f0bf04265448356d77a015f65845684d",
+          "assessment": "INCOMPLETE / NOT CLEARED: no rank trigger among readable entries, but some registry files could not be compared."
+        },
+        "final_dots": {
+          "phase": "dots",
+          "priors_checked": 944,
+          "distinct_decoded_priors": 449,
+          "rank_pixels": 5165840,
+          "max_spearman": 0.006059874406178202,
+          "rank_threshold": 0.9,
+          "rank_stop_triggered": false,
+          "max_near_3px_fraction": 1.0,
+          "near_threshold": 0.7,
+          "duplicate": true,
+          "offender_count": 175,
+          "error_count": 36,
+          "ok": false,
+          "receipt_file": "evidence/lane_uniqueness_h56-corr-snap100cm-20261009.json",
+          "receipt_sha256": "525ba8ee2cb0ce26a8417ccc259d8250f0bf04265448356d77a015f65845684d",
+          "assessment": "DUPLICATE / STOP: final-dot proximity threshold triggered."
+        }
+      }
+    },
+    "read_error_reconciliation": {
+      "lane_uniqueness_receipts": 36,
+      "run_card_registry_summary": 35,
+      "status": "UNRESOLVED 35-versus-36 count discrepancy across different registry receipts; use the more conservative 36 unreadable entries until reconciled.",
+      "action": "Do not claim the pre-placement registry surface check is a complete pass."
+    }
   },
-  "lidar_3m": {
-   "coverage_fraction_of_catalogue": 0.009064932505665584,
-   "pooled_median_px": -0.020532070869259747,
-   "pooled_mad_px": 0.6640383807807138,
-   "frac_ge_3px": 0.00273224043715847,
-   "segments": 13,
-   "segments_ge_200m": 0,
-   "segments_z_ge_3": 0,
-   "max_z": 2.6775347929655466,
-   "coarse_vs_fine_rms_m": 180.8517481924266
+  "artefacts": {
+    "primary": {
+      "name": "h56-corr-snap200cm-20261009",
+      "note": "h56 corrections lane, PRIMARY arm: dots on the evidence crest >= 200 m off catalogue, DEM+mag concordant; 1 dots; NEGATIVE",
+      "note_chars": 122,
+      "file": "docs/downloads/h56-corr-snap200cm-20261009.tif",
+      "sha256": "65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b",
+      "bytes": 55772,
+      "dots": 1,
+      "validator_ok": false,
+      "validator_problems": [
+        "7111787 pixels outside the sample footprint are not NaN",
+        "nodata tag None != template tag nan"
+      ],
+      "values_present": [
+        0.0,
+        1.0
+      ],
+      "legacy_validator_ok": true,
+      "strict_template_validation": {
+        "path": "docs/downloads/h56-corr-snap200cm-20261009.tif",
+        "bytes": 55772,
+        "sha256": "65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b",
+        "bands": 1,
+        "dtype": "float32",
+        "crs": "EPSG:32611",
+        "width": 3292,
+        "height": 3730,
+        "bounds": [
+          243350.0,
+          4135550.0,
+          572550.0,
+          4508550.0
+        ],
+        "ref_bounds": [
+          243350.0,
+          4135550.0,
+          572550.0,
+          4508550.0
+        ],
+        "transform": [
+          100.0,
+          0.0,
+          243350.0,
+          0.0,
+          -100.0,
+          4508550.0
+        ],
+        "nodata": null,
+        "ref_nodata": "nan",
+        "blocksize": [
+          256,
+          256
+        ],
+        "fixture_grid": false,
+        "has_validity_mask": false,
+        "nan_pixels": 0,
+        "infinity_pixels": 0,
+        "n_nan": 0,
+        "template_valid_px": 5167373,
+        "nan_inside_px": 0,
+        "non_nan_outside_px": 7111787,
+        "mask_matches_template": false,
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 8.143879881572502e-08,
+        "n_nonzero": 1,
+        "mass": 1.0,
+        "nodata_matches_template": false,
+        "problems": [
+          "7111787 pixels outside the sample footprint are not NaN",
+          "nodata tag None != template tag nan"
+        ],
+        "ok": false,
+        "validation_class": "strict local template-mask/metadata/range check; not organizer acceptance",
+        "training_grid_matches": true,
+        "source_template": "data/sample_submission.tif (hash-pinned owner bridge copy; organizer authenticity not independently verified)"
+      },
+      "safe_to_submit": false,
+      "safe_to_download_as_submission": false
+    },
+    "sensitivity": {
+      "name": "h56-corr-snap100cm-20261009",
+      "note": "h56 corrections lane, sensitivity arm: dots on the evidence crest >= 100 m off catalogue, DEM+mag concordant; 14 dots; NEGATIVE",
+      "note_chars": 127,
+      "file": "docs/downloads/h56-corr-snap100cm-20261009.tif",
+      "sha256": "e3285854e73ae4ba3fce8faea64940fdc4bee3b702eb52d2530a67fb60195196",
+      "bytes": 55844,
+      "dots": 14,
+      "validator_ok": false,
+      "validator_problems": [
+        "7111787 pixels outside the sample footprint are not NaN",
+        "nodata tag None != template tag nan"
+      ],
+      "values_present": [
+        0.0,
+        1.0
+      ],
+      "legacy_validator_ok": true,
+      "strict_template_validation": {
+        "path": "docs/downloads/h56-corr-snap100cm-20261009.tif",
+        "bytes": 55844,
+        "sha256": "e3285854e73ae4ba3fce8faea64940fdc4bee3b702eb52d2530a67fb60195196",
+        "bands": 1,
+        "dtype": "float32",
+        "crs": "EPSG:32611",
+        "width": 3292,
+        "height": 3730,
+        "bounds": [
+          243350.0,
+          4135550.0,
+          572550.0,
+          4508550.0
+        ],
+        "ref_bounds": [
+          243350.0,
+          4135550.0,
+          572550.0,
+          4508550.0
+        ],
+        "transform": [
+          100.0,
+          0.0,
+          243350.0,
+          0.0,
+          -100.0,
+          4508550.0
+        ],
+        "nodata": null,
+        "ref_nodata": "nan",
+        "blocksize": [
+          256,
+          256
+        ],
+        "fixture_grid": false,
+        "has_validity_mask": false,
+        "nan_pixels": 0,
+        "infinity_pixels": 0,
+        "n_nan": 0,
+        "template_valid_px": 5167373,
+        "nan_inside_px": 0,
+        "non_nan_outside_px": 7111787,
+        "mask_matches_template": false,
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 1.1401431265767314e-06,
+        "n_nonzero": 14,
+        "mass": 14.0,
+        "nodata_matches_template": false,
+        "problems": [
+          "7111787 pixels outside the sample footprint are not NaN",
+          "nodata tag None != template tag nan"
+        ],
+        "ok": false,
+        "validation_class": "strict local template-mask/metadata/range check; not organizer acceptance",
+        "training_grid_matches": true,
+        "source_template": "data/sample_submission.tif (hash-pinned owner bridge copy; organizer authenticity not independently verified)"
+      },
+      "safe_to_submit": false,
+      "safe_to_download_as_submission": false
+    }
   },
-  "instrument": {
-   "detection_complete_within_2px": true,
-   "placement_bias_px": 0.3285,
-   "max_abs_placement_bias_px": 0.4622
+  "verdict": "negative",
+  "cleared_for_weekly_slot": false,
+  "promote": false,
+  "verdict_text": "STOP. The authoritative corrections run exhausted its experiment budget and its one-dot primary triggers the literal registry duplicate rule. A strict independent format replay also fails: the raster fills 7,111,787 outside-template cells and lacks the matching NaN nodata tag. The method-level holdout arms are catalogue-recovery tests, not organizer new-fault truth, and the latest run has no recorded leakage canary. Do not submit, promote, select a slot, or run another experiment in this lane.",
+  "budget": {
+    "experiments": 3,
+    "extra_controls": 1,
+    "script_seconds": {
+      "measure": null,
+      "calibration": 76.1,
+      "lidar": 72.4,
+      "holdout": 116.6
+    },
+    "note": "the 2 h / 3 experiment stop-loss was reached; everything after it is packaging, including the estimator fix that all re-runs stem from (IR-56-009)"
   },
-  "permutation_control_on_cluster_rule": {
-   "real_survivors": 680,
-   "permutation_null_mean": 152.592,
-   "permutation_null_sd": 15.479015981094273,
-   "permutation_null_max": 193,
-   "signflip_null_mean": 170.788,
-   "signflip_note": "not neutral: a constant placement bias b displaces a flipped dot by 2b",
-   "one_sided_p_permutation": 0.0,
-   "reading": "coherence of the sub-2px residual is real (p<0.004 vs both nulls) but the effect size is ~1 px, under the brief's 2 px bar and under the estimator's own 1.32 px noise floor, and it does not appear at 3 m on any segment",
-   "interpretation": "the survivors are more spatially coherent than a reassignment of the same offsets would produce -- a necessary, not sufficient, condition for a real correction; read together with the corridor gate, which is the sufficient one"
-  }
- },
- "holdout_dti": {
-  "evidence_class": "HOLDOUT-DTI",
-  "evaluator_version": "gems52-pooled-hide-v1",
-  "protocol": {
-   "folds": 4,
-   "mode": "hide",
-   "buffer_px": 4,
-   "rule": "whole 8-connected catalogue components withheld; visible catalogue masked pixel-exactly; prevalence-matched truth",
-   "prevalence": null
+  "reproduce": [
+    "python tests/test_contracts.py",
+    "python scripts/validate_estimator.py",
+    "python scripts/measure_offsets.py",
+    "python scripts/calibrate_gate.py",
+    "python scripts/lidar_calibration.py",
+    "python scripts/run_corrections_holdout.py",
+    "python scripts/cluster_gate_control.py",
+    "python scripts/build_corrections_submission.py",
+    "python scripts/screen_registry.py",
+    "python scripts/build_site.py"
+  ],
+  "authority": {
+    "authoritative_for_active_corrections_lane": true,
+    "run_utc": "2026-10-09T16:49:44Z",
+    "reason": "This is the latest completed corrections-lane run (2026-10-09T16:49:44Z). The later run_card_discovery_v1.json is discovery, outside the active lane; evidence/corrections/run_card.json is an earlier corrections run. The declared 3-experiment/2-hour budget is exhausted.",
+    "experiments_remaining": 0,
+    "new_experiments_in_this_review": 0
   },
-  "withheld_positive_pixels": 48080,
-  "arms": {
-   "A_as_is": {
-    "dti": 0.0,
-    "ci95": [
-     0.0,
-     0.0
-    ],
-    "tpw": 0.0,
-    "fpw": 0.0,
-    "fnw": 48080.0
-   },
-   "B_snap": {
-    "dti": 0.00015660914317701405,
-    "ci95": [
-     0.0,
-     0.00045357384313326045
-    ],
-    "tpw": 6.466291280169486,
-    "fpw": 14120.333333333332,
-    "fnw": 48073.53370871983
-   },
-   "C_snap_sub": {
-    "dti": 4.7447962554677763e-05,
-    "ci95": [
-     0.0,
-     0.00011146770377698813
-    ],
-    "tpw": 1.8998123067514103,
-    "fpw": 7877.666666666666,
-    "fnw": 48078.10018769324
-   },
-   "D_jitter": {
-    "dti": 0.00020550105762550465,
-    "ci95": [
-     2.6074210302486136e-06,
-     0.0005084996249930672
-    ],
-    "tpw": 8.501983871172097,
-    "fpw": 14531.354831700748,
-    "fnw": 48071.498016128826
-   }
+  "format_validation_review": {
+    "validator": "scripts/validate_submission.py -> gems56.gates.format_report; exact sample finite mask, nodata, metadata, range, infinity checks",
+    "template_sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+    "results": {
+      "primary": {
+        "path": "docs/downloads/h56-corr-snap200cm-20261009.tif",
+        "bytes": 55772,
+        "sha256": "65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b",
+        "bands": 1,
+        "dtype": "float32",
+        "crs": "EPSG:32611",
+        "width": 3292,
+        "height": 3730,
+        "bounds": [
+          243350.0,
+          4135550.0,
+          572550.0,
+          4508550.0
+        ],
+        "ref_bounds": [
+          243350.0,
+          4135550.0,
+          572550.0,
+          4508550.0
+        ],
+        "transform": [
+          100.0,
+          0.0,
+          243350.0,
+          0.0,
+          -100.0,
+          4508550.0
+        ],
+        "nodata": null,
+        "ref_nodata": "nan",
+        "blocksize": [
+          256,
+          256
+        ],
+        "fixture_grid": false,
+        "has_validity_mask": false,
+        "nan_pixels": 0,
+        "infinity_pixels": 0,
+        "n_nan": 0,
+        "template_valid_px": 5167373,
+        "nan_inside_px": 0,
+        "non_nan_outside_px": 7111787,
+        "mask_matches_template": false,
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 8.143879881572502e-08,
+        "n_nonzero": 1,
+        "mass": 1.0,
+        "nodata_matches_template": false,
+        "problems": [
+          "7111787 pixels outside the sample footprint are not NaN",
+          "nodata tag None != template tag nan"
+        ],
+        "ok": false,
+        "validation_class": "strict local template-mask/metadata/range check; not organizer acceptance",
+        "training_grid_matches": true,
+        "source_template": "data/sample_submission.tif (hash-pinned owner bridge copy; organizer authenticity not independently verified)"
+      },
+      "sensitivity": {
+        "path": "docs/downloads/h56-corr-snap100cm-20261009.tif",
+        "bytes": 55844,
+        "sha256": "e3285854e73ae4ba3fce8faea64940fdc4bee3b702eb52d2530a67fb60195196",
+        "bands": 1,
+        "dtype": "float32",
+        "crs": "EPSG:32611",
+        "width": 3292,
+        "height": 3730,
+        "bounds": [
+          243350.0,
+          4135550.0,
+          572550.0,
+          4508550.0
+        ],
+        "ref_bounds": [
+          243350.0,
+          4135550.0,
+          572550.0,
+          4508550.0
+        ],
+        "transform": [
+          100.0,
+          0.0,
+          243350.0,
+          0.0,
+          -100.0,
+          4508550.0
+        ],
+        "nodata": null,
+        "ref_nodata": "nan",
+        "blocksize": [
+          256,
+          256
+        ],
+        "fixture_grid": false,
+        "has_validity_mask": false,
+        "nan_pixels": 0,
+        "infinity_pixels": 0,
+        "n_nan": 0,
+        "template_valid_px": 5167373,
+        "nan_inside_px": 0,
+        "non_nan_outside_px": 7111787,
+        "mask_matches_template": false,
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 1.1401431265767314e-06,
+        "n_nonzero": 14,
+        "mass": 14.0,
+        "nodata_matches_template": false,
+        "problems": [
+          "7111787 pixels outside the sample footprint are not NaN",
+          "nodata tag None != template tag nan"
+        ],
+        "ok": false,
+        "validation_class": "strict local template-mask/metadata/range check; not organizer acceptance",
+        "training_grid_matches": true,
+        "source_template": "data/sample_submission.tif (hash-pinned owner bridge copy; organizer authenticity not independently verified)"
+      },
+      "historical_6504": {
+        "path": "docs/downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif",
+        "bytes": 351093,
+        "sha256": "08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7",
+        "bands": 1,
+        "dtype": "float32",
+        "crs": "EPSG:32611",
+        "width": 3292,
+        "height": 3730,
+        "bounds": [
+          243350.0,
+          4135550.0,
+          572550.0,
+          4508550.0
+        ],
+        "ref_bounds": [
+          243350.0,
+          4135550.0,
+          572550.0,
+          4508550.0
+        ],
+        "transform": [
+          100.0,
+          0.0,
+          243350.0,
+          0.0,
+          -100.0,
+          4508550.0
+        ],
+        "nodata": "nan",
+        "ref_nodata": "nan",
+        "blocksize": [
+          256,
+          256
+        ],
+        "fixture_grid": false,
+        "has_validity_mask": true,
+        "nan_pixels": 7111787,
+        "infinity_pixels": 0,
+        "n_nan": 7111787,
+        "template_valid_px": 5167373,
+        "nan_inside_px": 0,
+        "non_nan_outside_px": 0,
+        "mask_matches_template": true,
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.0012586666271090508,
+        "n_nonzero": 6504,
+        "mass": 6504.0,
+        "nodata_matches_template": true,
+        "problems": [],
+        "ok": true,
+        "validation_class": "strict local template-mask/metadata/range check; not organizer acceptance",
+        "training_grid_matches": true,
+        "source_template": "data/sample_submission.tif (hash-pinned owner bridge copy; organizer authenticity not independently verified)"
+      },
+      "discovery_archive": {
+        "path": "docs/downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif",
+        "bytes": 68005,
+        "sha256": "dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296",
+        "bands": 1,
+        "dtype": "float32",
+        "crs": "EPSG:32611",
+        "width": 3292,
+        "height": 3730,
+        "bounds": [
+          243350.0,
+          4135550.0,
+          572550.0,
+          4508550.0
+        ],
+        "ref_bounds": [
+          243350.0,
+          4135550.0,
+          572550.0,
+          4508550.0
+        ],
+        "transform": [
+          100.0,
+          0.0,
+          243350.0,
+          0.0,
+          -100.0,
+          4508550.0
+        ],
+        "nodata": null,
+        "ref_nodata": "nan",
+        "blocksize": [
+          256,
+          256
+        ],
+        "fixture_grid": false,
+        "has_validity_mask": false,
+        "nan_pixels": 0,
+        "infinity_pixels": 0,
+        "n_nan": 0,
+        "template_valid_px": 5167373,
+        "nan_inside_px": 0,
+        "non_nan_outside_px": 7111787,
+        "mask_matches_template": false,
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.0020359698683023453,
+        "n_nonzero": 25000,
+        "mass": 25000.0,
+        "nodata_matches_template": false,
+        "problems": [
+          "7111787 pixels outside the sample footprint are not NaN",
+          "nodata tag None != template tag nan"
+        ],
+        "ok": false,
+        "validation_class": "strict local template-mask/metadata/range check; not organizer acceptance",
+        "training_grid_matches": true,
+        "source_template": "data/sample_submission.tif (hash-pinned owner bridge copy; organizer authenticity not independently verified)"
+      }
+    },
+    "limitation": "The sample bytes are a hash-pinned owner-bridge copy. The official problem page calls its sample a total-fault-absence raster, while this local mirror is cell-for-cell equal to existing_faults.tif; the footprint convention is therefore locally validated but not independently organizer-authenticated (IR-56-001/003)."
   },
-  "paired_delta_vs_reference": {},
-  "bootstrap": null,
-  "limitation": "the withheld target is catalogue faults, not the organizer's new faults; see gems56/holdout.py docstring and IR-56-004",
-  "reading": "all arms are inside each other's intervals, and a random sub-pixel jitter scores the same as the evidence-based snap: the instrument cannot see a <=3 px lateral offset, so the holdout supplies no admissible evidence in favour of correcting"
- },
- "registry_comparison": {
-  "shared_gate_verdict": {
-   "tool": "gates.lane_uniqueness_report (vendored template, phase=dots, exact full eligible rank)",
-   "priors_checked": 944,
-   "max_spearman": 0.005134591433171967,
-   "rank_threshold": 0.9,
-   "rank_pass": true,
-   "directed_near3px_fraction": 1.0,
-   "near_threshold": 0.7,
-   "duplicate": true,
-   "ok": false,
-   "offender_count": 263,
-   "sensitivity_arm_offender_count": 175,
-   "reading": "the shared gate FAILS the primary on the proximity criterion. The primary has 1 dot(s); the criterion is met against 263 of 944 priors (the sensitivity raster: 175). The primary's offenders carry 12,000 to 5,167,373 positive cells (median 88,988; measured from the receipt), so the criterion is met by dense layers rather than by a like-for-like duplicate. 36 priors could not be read onto the grid and were not compared. The reciprocal figure below comes from the one-pass screen over the full 944-raster corpus (evidence/registry_screen_v1.json). The protocol says a trigger is a logged duplicate and a stop, so the artefacts are published as research output and no slot is claimed."
+  "submission": {
+    "name": "h56-corr-snap200cm-20261009",
+    "note": "h56 corrections lane, PRIMARY arm: dots on the evidence crest >= 200 m off catalogue, DEM+mag concordant; 1 dots; NEGATIVE",
+    "note_chars": 122,
+    "file": "docs/downloads/h56-corr-snap200cm-20261009.tif",
+    "sha256": "65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b",
+    "format_status": "FAIL: 7,111,787 non-NaN cells outside sample footprint; nodata tag None vs template nan",
+    "registry_status": "DUPLICATE/STOP: final-dot directed 3-px fraction=1.0 (>0.70) against 263/944 priors; pre-placement surface rank check had no >0.90 trigger but is incomplete (36 unreadable priors); max Spearman=0.005135 does not waive either finding.",
+    "holdout_status": "no admissible artifact-level holdout result; method-level catalogue-recovery DTI does not establish recovery of new faults",
+    "safe_to_submit": false
   },
-  "corpus_files": 944,
-  "corpus_read_errors": 35,
-  "rule_as_written_triggers": 292,
-  "of_which_dense_layers": 141,
-  "reciprocal_overlap_gt_070": 0,
-  "surface_max_rank_correlation": 0.005134591433171967,
-  "dots_max_rank_correlation": 0.005134591433171967,
-  "note": "the >70%-within-3px duplicate rule fires against whole-footprint plausibility masks for any non-empty raster, so it is reported with both directions rather than claimed as a pass (IR-56-006); the structural guarantee is that no dot is ever placed on a catalogue pixel"
- },
- "artefacts": {
-  "primary": {
-   "name": "h56-corr-snap200cm-20261009",
-   "note": "h56 corrections lane, PRIMARY arm: dots on the evidence crest >= 200 m off catalogue, DEM+mag concordant; 1 dots; NEGATIVE",
-   "note_chars": 122,
-   "file": "docs/downloads/h56-corr-snap200cm-20261009.tif",
-   "sha256": "65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b",
-   "bytes": 55772,
-   "dots": 1,
-   "validator_ok": true,
-   "validator_problems": [],
-   "values_present": [
-    0.0,
-    1.0
-   ]
-  },
-  "sensitivity": {
-   "name": "h56-corr-snap100cm-20261009",
-   "note": "h56 corrections lane, sensitivity arm: dots on the evidence crest >= 100 m off catalogue, DEM+mag concordant; 14 dots; NEGATIVE",
-   "note_chars": 127,
-   "file": "docs/downloads/h56-corr-snap100cm-20261009.tif",
-   "sha256": "e3285854e73ae4ba3fce8faea64940fdc4bee3b702eb52d2530a67fb60195196",
-   "bytes": 55844,
-   "dots": 14,
-   "validator_ok": true,
-   "validator_problems": [],
-   "values_present": [
-    0.0,
-    1.0
-   ]
-  }
- },
- "verdict": "negative",
- "cleared_for_weekly_slot": false,
- "promote": false,
- "verdict_text": "Report the histogram, do not emit a correction: under the null-calibrated gate 0 of 21 catalogue corridors reach a consistent >=2 px offset, the 3 m LiDAR check finds 0 of 13 segments displaced by >=200 m, and the two data families do not even correlate in their offsets (r = 0.022). The primary raster therefore carries 1 dots -- the emptiness is the finding, and it is written through the real submission path so the format is proven, not asserted. The 1 px sensitivity raster is shipped for inspection of what the rule would have chosen and is labelled NEGATIVE in its own note. No slot is recommended; promotion is a separate selector decision.",
- "budget": {
-  "experiments": 3,
-  "extra_controls": 1,
-  "script_seconds": {
-   "measure": null,
-   "calibration": 76.1,
-   "lidar": 72.4,
-   "holdout": 116.6
-  },
-  "note": "the 2 h / 3 experiment stop-loss was reached; everything after it is packaging, including the estimator fix that all re-runs stem from (IR-56-009)"
- },
- "reproduce": [
-  "python tests/test_contracts.py",
-  "python scripts/validate_estimator.py",
-  "python scripts/measure_offsets.py",
-  "python scripts/calibrate_gate.py",
-  "python scripts/lidar_calibration.py",
-  "python scripts/run_corrections_holdout.py",
-  "python scripts/cluster_gate_control.py",
-  "python scripts/build_corrections_submission.py",
-  "python scripts/screen_registry.py",
-  "python scripts/build_site.py"
- ]
+  "submission_safe_to_download": false,
+  "review_date": "2026-10-09",
+  "source_verification": [
+    {
+      "class": "ORGANIZER-SPEC",
+      "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/",
+      "verified": "Scoring formula / alpha 0.2 beta 0.8 300m triangular kernel and GeoTIFF format; sample described as total-fault-absence."
+    },
+    {
+      "class": "ORGANIZER-STAFF-FORUM",
+      "url": "https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516",
+      "verified": "Staff response: pixels corresponding to known USGS/INGENIOUS faults are masked/excluded from penalty terms."
+    },
+    {
+      "class": "SIBLING-REPO-REPORT",
+      "url": "https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html",
+      "verified": "The exact H33-2-B2 artifact is labeled UNSCORED and its 0.2747 value is described as a model projection; no organizer score receipt."
+    },
+    {
+      "class": "SIBLING-REPO-MECHANISM-REPORT",
+      "url": "https://github.com/buffedlizard55-lab/GEMSDOE54/blob/main/RUN2-SUMMARY.md",
+      "verified": "GEMSDOE54 reports the pixel construction 40,199 parent dots minus 2,545 within 200m -> 37,654 child dots; not independently reproduced from source rasters in this checkout and not a score receipt."
+    }
+  ]
 }

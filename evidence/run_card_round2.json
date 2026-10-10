@@ -469,5 +469,32 @@
    "IR-56-027"
   ],
   "consequence": "That run's IR-56-016 records that the page hosting the 0.2778 file calls it UNSCORED and quotes a conflicting leader, so every number this run derived from 0.2600 -> 0.2778 (|G| band, T_credit, the break-even credit per dot) is conditional on those two user-reported scores being the real public values. The structural conclusion - pruning known-fault pixels is worth +0.0178 because the scorer deletes them from the truth while the 300 m kernel still discounts their neighbours - rests on the metric definition and stands either way. Neither run claims an organizer-confirmed score, and neither certifies the other's raster."
+ },
+ "post_review_registry_status": {
+  "review_id": "IR-56-036",
+  "status": "DUPLICATE / STOP for both archived H56 dot rasters",
+  "method": "Read-only interpretation of existing full-corpus registry rows; no registry screen rerun.",
+  "literal_rule": "Stop if >70% of final dots fall within 3 px of any registry raster; reverse containment and density do not waive this condition.",
+  "screen": {
+   "receipt": "evidence/registry_screen_h56b.json",
+   "rows_receipt": "evidence/registry_screen_h56brows.jsonl",
+   "readable_rows": 837,
+   "unreadable_rows": 31,
+   "corpus_rows": 868,
+   "directed_priors_above_0_70": {
+    "h56-magpack-37k-20261009": 56,
+    "h56-quota-37k-20261009": 54
+   },
+   "top40_final_dot_max_fraction": {
+    "h56-magpack-37k-20261009": 0.5271418707175864,
+    "h56-quota-37k-20261009": 0.47529220779220777
+   },
+   "over_070_reciprocal": 0,
+   "top40_surface_spearman_max": {
+    "h56-magpack-37k-20261009": 0.011706694038259604,
+    "h56-quota-37k-20261009": 0.016893540813984947
+   }
+  },
+  "action": "Supersedes the old reciprocal-only UNIQUE interpretation. Both files remain archive-only; do not submit or promote."
  }
 }

@@ -1,189 +1,260 @@
 {
- "session": {
-  "date_utc": "2026-10-09",
-  "repo": "buffedlizard55-lab/56GEMSDOE",
-  "branch": "arena/f02cf443-56gemsdoe",
-  "lane": "corrections",
-  "experiments_used": 3,
-  "experiments": [
-   "E1 (reused, re-verified on the restored pinned inputs): catalogue-to-evidence perpendicular offset histogram, evidence/offsets_v1.json",
-   "E2 H57 hide-and-recover holdout, spatial whole-component folds (evidence/h57_holdout.json)",
-   "E3 H57 hide-and-recover holdout, neighbour-strand folds (evidence/h57_holdout_neighbour.json)"
-  ],
-  "design_calculation_not_an_experiment": "geometry sweep against an explicitly circular simulated-corrections target, evidence/h57_geometry_sweep.json",
-  "budget_limit": "3 experiments or 2 hours"
- },
- "hypothesis": "Corrections lane: the catalogue sits >2 px (200 m) from the DEM-curvature scarp crest / magnetic-gradient ridge along a consistent direction, so dots should be emitted on the evidence-defined trace rather than on the (masked) catalogue line.",
- "mechanism": "A real registration error shows as (a) a signed offset mode away from zero that exceeds the random null, and (b) crest-steered dots recovering hidden mapped faults better than evidence-free dots in the same corridor.",
- "named_non_fault_process_that_could_mimic_it": "Erosional terraces and alluvial-fan edges give the same convex break-in-slope with no fault; 1:50,000-1:1,000,000 map generalisation and 100 m rasterisation displace a line by 1-3 px with no fault involved. Both are why the random-offset null and the evidence-free corridor null exist in E2/E3.",
- "result_E1_MEASURED": {
-  "dem_abs_offset_median_px": 1.4757114074181301,
-  "dem_signed_median_px": -0.11314796634889474,
-  "dem_frac_abs_ge_2px": 0.3259517909439063,
-  "random_null_frac_abs_ge_2px": 0.27323245276566643,
-  "mag_abs_offset_median_px": 1.7714027566468142,
-  "dem_mag_pearson_r": 0.02233471267813126,
-  "qualifying_corridors": 2,
-  "reading": "offsets cluster UNDER two pixels (median 1.48 px), the signed median is -0.11 px (no preferred side), and the distribution is barely separated from the random null (0.326 vs 0.273 beyond 2 px). The brief's stop rule for crest steering is met."
- },
- "holdout_dti": {
-  "evaluator_version": "h57-hide-and-recover-v1 (src/metrics.py, alpha 0.2, beta 0.8, 300 m triangular kernel, visible faults masked pixel-exactly)",
-  "label": "HOLDOUT-DTI (never an organizer score)",
-  "E2_spatial_folds": {
-   "withheld_positives": 60894,
-   "pooled": {
-    "B0_chance": 0.017584,
-    "B1_corridor": 0.000231,
-    "B2_evidence": 3.8e-05,
-    "B3_corroborated": 0.0,
-    "B4_catalogue": 0.0
-   },
-   "ci95": {
-    "B0_chance": [
-     0.016205,
-     0.019036
+  "session": {
+    "date_utc": "2026-10-09",
+    "repo": "buffedlizard55-lab/56GEMSDOE",
+    "branch": "arena/f02cf443-56gemsdoe",
+    "lane": "corrections",
+    "experiments_used": 3,
+    "experiments": [
+      "E1 (reused, re-verified on the restored pinned inputs): catalogue-to-evidence perpendicular offset histogram, evidence/offsets_v1.json",
+      "E2 H57 hide-and-recover holdout, spatial whole-component folds (evidence/h57_holdout.json)",
+      "E3 H57 hide-and-recover holdout, neighbour-strand folds (evidence/h57_holdout_neighbour.json)"
     ],
-    "B1_corridor": [
-     4.1e-05,
-     0.000518
-    ],
-    "B2_evidence": [
-     0.0,
-     9.2e-05
-    ],
-    "B3_corroborated": [
-     0.0,
-     0.0
-    ],
-    "B4_catalogue": [
-     0.0,
-     0.0
-    ]
-   },
-   "caveat": "IR-57-001: whole-component spatial withholding puts the hidden faults far from every visible trace, so a corridor-restricted emitter structurally cannot reach them. This mode measures that fact; it cannot test the corrections claim."
+    "design_calculation_not_an_experiment": "geometry sweep against an explicitly circular simulated-corrections target, evidence/h57_geometry_sweep.json",
+    "budget_limit": "3 experiments or 2 hours"
   },
-  "E3_neighbour_strand_folds": {
-   "withheld_positives": 41742,
-   "pooled": {
-    "B0_chance": 0.020303,
-    "B1_corridor": 0.001773,
-    "B2_evidence": 0.000872,
-    "B3_corroborated": 0.000226,
-    "B4_catalogue": 0.0
-   },
-   "ci95": {
-    "B0_chance": [
-     0.018431,
-     0.022125
+  "hypothesis": "Corrections lane: the catalogue sits >2 px (200 m) from the DEM-curvature scarp crest / magnetic-gradient ridge along a consistent direction, so dots should be emitted on the evidence-defined trace rather than on the (masked) catalogue line.",
+  "mechanism": "A real registration error shows as (a) a signed offset mode away from zero that exceeds the random null, and (b) crest-steered dots recovering hidden mapped faults better than evidence-free dots in the same corridor.",
+  "named_non_fault_process_that_could_mimic_it": "Erosional terraces and alluvial-fan edges give the same convex break-in-slope with no fault; 1:50,000-1:1,000,000 map generalisation and 100 m rasterisation displace a line by 1-3 px with no fault involved. Both are why the random-offset null and the evidence-free corridor null exist in E2/E3.",
+  "result_E1_MEASURED": {
+    "dem_abs_offset_median_px": 1.4757114074181301,
+    "dem_signed_median_px": -0.11314796634889474,
+    "dem_frac_abs_ge_2px": 0.3259517909439063,
+    "random_null_frac_abs_ge_2px": 0.27323245276566643,
+    "mag_abs_offset_median_px": 1.7714027566468142,
+    "dem_mag_pearson_r": 0.02233471267813126,
+    "qualifying_corridors": 2,
+    "reading": "offsets cluster UNDER two pixels (median 1.48 px), the signed median is -0.11 px (no preferred side), and the distribution is barely separated from the random null (0.326 vs 0.273 beyond 2 px). The brief's stop rule for crest steering is met."
+  },
+  "holdout_dti": {
+    "evaluator_version": "h57-hide-and-recover-v1 (src/metrics.py, alpha 0.2, beta 0.8, 300 m triangular kernel, visible faults masked pixel-exactly)",
+    "label": "HOLDOUT-DTI (never an organizer score)",
+    "E2_spatial_folds": {
+      "withheld_positives": 60894,
+      "pooled": {
+        "B0_chance": 0.017584,
+        "B1_corridor": 0.000231,
+        "B2_evidence": 3.8e-05,
+        "B3_corroborated": 0.0,
+        "B4_catalogue": 0.0
+      },
+      "ci95": {
+        "B0_chance": [
+          0.016205,
+          0.019036
+        ],
+        "B1_corridor": [
+          4.1e-05,
+          0.000518
+        ],
+        "B2_evidence": [
+          0.0,
+          9.2e-05
+        ],
+        "B3_corroborated": [
+          0.0,
+          0.0
+        ],
+        "B4_catalogue": [
+          0.0,
+          0.0
+        ]
+      },
+      "caveat": "IR-57-001: whole-component spatial withholding puts the hidden faults far from every visible trace, so a corridor-restricted emitter structurally cannot reach them. This mode measures that fact; it cannot test the corrections claim."
+    },
+    "E3_neighbour_strand_folds": {
+      "withheld_positives": 41742,
+      "pooled": {
+        "B0_chance": 0.020303,
+        "B1_corridor": 0.001773,
+        "B2_evidence": 0.000872,
+        "B3_corroborated": 0.000226,
+        "B4_catalogue": 0.0
+      },
+      "ci95": {
+        "B0_chance": [
+          0.018431,
+          0.022125
+        ],
+        "B1_corridor": [
+          0.001295,
+          0.002317
+        ],
+        "B2_evidence": [
+          0.000486,
+          0.001327
+        ],
+        "B3_corroborated": [
+          7.6e-05,
+          0.00041
+        ],
+        "B4_catalogue": [
+          0.0,
+          0.0
+        ]
+      },
+      "paired_contrast_vs_evidence_free_corridor": {
+        "B2_evidence": [
+          -0.001378,
+          -0.000476
+        ],
+        "B3_corroborated": [
+          -0.002061,
+          -0.001083
+        ],
+        "prob_evidence_beats_corridor": 0.0
+      },
+      "reading": "crest steering is WORSE than the evidence-free corridor at the identical dot budget (0.00087 vs 0.00177, paired CI strictly below 0, P(beats)=0.0). The crest-steering component of the hypothesis is REFUTED on real withheld mapped faults."
+    }
+  },
+  "leakage_canary": {
+    "status": "STRUCTURAL - not needed for a learned component because none was trained",
+    "B4_catalogue_arm": "dots placed on the visible catalogue score exactly 0.00000 in every fold, which is the positive control that the pixel-exact masking is in force",
+    "note": "no feature was fitted to the withheld labels, so the AUC>0.90 leakage bar has no learned object to apply to in this run"
+  },
+  "organizer_confirmed_score": null,
+  "correlation_overlap_vs_registry": {
+    "corpus": "944 rasters mirrored from 54 sibling GEMSDOE repos (evidence/registry_corpus_mirror.json), full-corpus directed screen in evidence/registry_screen_v1.json; shared template gate gems56.gates.lane_report on the 40 worst-overlap SUBMISSION rasters in evidence/h57_uniqueness_submissions.json",
+    "max_spearman": 0.28610885474420605,
+    "max_near_3px_fraction": 1.0,
+    "literal_verdict": "DUPLICATE/STOP",
+    "max_exact_jaccard_vs_submissions": 0.1517,
+    "discriminators": "evidence/h57_uniqueness_discriminators.json",
+    "reading": "Final-dot gate: max near-3-px fraction 1.0 on its 40 worst-overlap submission priors, exceeding the independent 0.70 stop threshold. The run card Spearman value (0.286) and exact-pixel Jaccard (0.152) are descriptive only and do not waive DUPLICATE/STOP. The earlier full-corpus screen was for a timestamped candidate; do not claim it is a final-file pre-placement surface check.",
+    "post_review_decision": {
+      "rule": "Stop when rank correlation > 0.90 OR >70% of final dots are within 3 px of a registry raster.",
+      "final_dots_phase": "evidence/h57_uniqueness.json (phase=dots; 40 worst-overlap submission priors)",
+      "max_near_3px_fraction": 1.0,
+      "threshold": 0.7,
+      "literal_action": "DUPLICATE/STOP",
+      "preplacement_surface_clearance": "Not established by the final H57 receipts; final-dot trigger is independently decisive.",
+      "note": "Low Spearman (0.286 in the run card; 0.299 in the 40-prior dot gate) does not cancel the proximity rule."
+    }
+  },
+  "raster_sha256": "fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced",
+  "validator_output": {
+    "validator": "scripts/validate_submission.py (strict sample-mask and nodata validator)",
+    "validator_source_commit": "d623a00a6e9bc8ae04f92dabfa8f2358bb47834c",
+    "validator_sha256": "90bdadf28f112c0b8683fa501786ae7be6b0a00f08fbd4c3ca5d48350f6bd602",
+    "ok": false,
+    "n_nan": 0,
+    "min": 0.0,
+    "max": 1.0,
+    "n_nonzero": 54914,
+    "crs": "EPSG:32611",
+    "shape": [
+      3730,
+      3292
     ],
-    "B1_corridor": [
-     0.001295,
-     0.002317
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
     ],
-    "B2_evidence": [
-     0.000486,
-     0.001327
+    "sample_sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+    "training_features_sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+    "training_grid_matches": true,
+    "template_valid_px": 5167373,
+    "nan_inside_px": 0,
+    "non_nan_outside_px": 7111787,
+    "mask_matches_template": false,
+    "candidate_nodata": null,
+    "template_nodata": "nan",
+    "nodata_matches_template": false,
+    "problems": [
+      "7111787 pixels outside the sample footprint are not NaN",
+      "nodata tag None != template tag nan"
     ],
-    "B3_corroborated": [
-     7.6e-05,
-     0.00041
-    ],
-    "B4_catalogue": [
-     0.0,
-     0.0
-    ]
-   },
-   "paired_contrast_vs_evidence_free_corridor": {
-    "B2_evidence": [
-     -0.001378,
-     -0.000476
-    ],
-    "B3_corroborated": [
-     -0.002061,
-     -0.001083
-    ],
-    "prob_evidence_beats_corridor": 0.0
-   },
-   "reading": "crest steering is WORSE than the evidence-free corridor at the identical dot budget (0.00087 vs 0.00177, paired CI strictly below 0, P(beats)=0.0). The crest-steering component of the hypothesis is REFUTED on real withheld mapped faults."
+    "validation_class": "strict local format validation only; not organizer acceptance"
+  },
+  "submission": {
+    "name": "h57-corr-band2px-cover-20261009T191337Z",
+    "note": "corrections-band cover: dots 2px either side of every catalogue trace, 2px along strike; crest steering refuted on holdout",
+    "note_chars": 122,
+    "file": "h57-corr-band2px-cover-20261009T191337Z.tif",
+    "zip": "h57-corr-band2px-cover-20261009T191337Z.zip",
+    "dots": 54914,
+    "geometry": {
+      "offsets_px": [
+        2.0,
+        -2.0
+      ],
+      "step_px": 2,
+      "sized_by": "evidence/h57_geometry_sweep.json (design simulation, circular, geometry only)",
+      "sweep_best": {
+        "offsets": [
+          2.0,
+          -2.0
+        ],
+        "step": 2,
+        "dots": 54919,
+        "sim_dti": 0.43181,
+        "TP": 11281.4,
+        "FP": 46753.6
+      }
+    },
+    "approved_for_weekly_slot": false,
+    "ok_to_download": true,
+    "ok_to_submit": "NO — DUPLICATE/STOP and strict template validation fail",
+    "post_review_status": "Archive / technical inspection only; do not submit or promote.",
+    "safe_to_submit": false
+  },
+  "verdict": "NEGATIVE / STOP",
+  "verdict_detail": "The crest-steering hypothesis is refuted by the reported offset and neighbour-strand holdout. The emitted all-finite cover is not promoted: the final-dot registry receipt reports 100% within 3 px (above the literal 70% stop), and strict replay finds 7,111,787 finite cells outside the pinned sample mask with no matching NaN nodata tag. Preserve the TIFF only as a technical-inspection archive. No experiment or slot was used in this review.",
+  "irregularities": [
+    "IR-57-001",
+    "IR-57-002",
+    "IR-57-003",
+    "IR-57-004",
+    "IR-57-005",
+    "IR-57-006",
+    "IR-57-007",
+    "IR-57-008",
+    "IR-57-009"
+  ],
+  "pre_review_record": {
+    "source_run_card_sha256": "c45a3764d4e30e594b44ed3e591059af6ca8d00175e82c68100c70d9ac8cd149",
+    "original_builder_validator_output": {
+      "ok": true,
+      "n_nan": 0,
+      "min": 0.0,
+      "max": 1.0,
+      "n_nonzero": 54914,
+      "crs": "EPSG:32611",
+      "shape": [
+        3730,
+        3292
+      ],
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "problems": [],
+      "all_finite": true,
+      "mass_outside_sample_footprint": 0
+    },
+    "original_submission_claim": "ACCEPTED BY THE FORM: yes - all-finite, every value in [0,1], CRS/shape/transform match the sample. SCIENTIFICALLY: this is a coverage bet on the organizers' stated corrections family, NOT an evidence-ranked discovery; the crest-steering hypothesis it started from is refuted above and no holdout exists for the real corrections truth family (we have no corrections labels). Promotion to a weekly slot is a separate selector decision.",
+    "note": "Preserved verbatim from the merged H57 run card before this independent fail-closed review."
+  },
+  "post_review": {
+    "review_date": "2026-10-09",
+    "scope": "Independent, fail-closed review of the merged H57 corrections deliverable; no holdout/DTI was rerun.",
+    "authoritative_status": "NEGATIVE / STOP",
+    "experiment_budget_used": 3,
+    "experiments_added_by_review": 0,
+    "submission_slots_used_by_review": 0,
+    "strict_validation_result": "FAIL",
+    "registry_result": "DUPLICATE/STOP",
+    "holdout_scope_note": "The E3 HOLDOUT-DTI values compare crest steering with an evidence-free corridor. The emitted 54,914-dot cover itself was not scored; the geometry sweep is a design calculation, not a score.",
+    "preplacement_surface_gate": "Not evidenced for the final geometry; the earlier full-corpus screen names a different timestamped raster.",
+    "final_dot_registry_fraction_within_3px": 1.0,
+    "literal_registry_threshold": 0.7
   }
- },
- "leakage_canary": {
-  "status": "STRUCTURAL - not needed for a learned component because none was trained",
-  "B4_catalogue_arm": "dots placed on the visible catalogue score exactly 0.00000 in every fold, which is the positive control that the pixel-exact masking is in force",
-  "note": "no feature was fitted to the withheld labels, so the AUC>0.90 leakage bar has no learned object to apply to in this run"
- },
- "organizer_confirmed_score": null,
- "correlation_overlap_vs_registry": {
-  "corpus": "944 rasters mirrored from 54 sibling GEMSDOE repos (evidence/registry_corpus_mirror.json), full-corpus directed screen in evidence/registry_screen_v1.json; shared template gate gems56.gates.lane_report on the 40 worst-overlap SUBMISSION rasters in evidence/h57_uniqueness_submissions.json",
-  "max_spearman": 0.28610885474420605,
-  "max_near_3px_fraction": 1.0,
-  "literal_verdict": "DUPLICATE/STOP",
-  "max_exact_jaccard_vs_submissions": 0.1517,
-  "discriminators": "evidence/h57_uniqueness_discriminators.json",
-  "reading": "rank-uniqueness passes with room to spare (max rho 0.286 vs the 0.90 bar) and the largest exact-pixel Jaccard against any earlier submission is 0.152 against a 6.6x larger raster. The literal 3 px containment clause fires, as it does for every emission near the catalogue, because 100% of dots 2 px off a trace are within 3 px of the catalogue raster itself and of every habitat-sized prior. IR-57-003."
- },
- "raster_sha256": "fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced",
- "validator_output": {
-  "ok": true,
-  "n_nan": 0,
-  "min": 0.0,
-  "max": 1.0,
-  "n_nonzero": 54914,
-  "crs": "EPSG:32611",
-  "shape": [
-   3730,
-   3292
-  ],
-  "transform": [
-   100.0,
-   0.0,
-   243350.0,
-   0.0,
-   -100.0,
-   4508550.0
-  ],
-  "problems": [],
-  "all_finite": true,
-  "mass_outside_sample_footprint": 0
- },
- "submission": {
-  "name": "h57-corr-band2px-cover-20261009T191337Z",
-  "note": "corrections-band cover: dots 2px either side of every catalogue trace, 2px along strike; crest steering refuted on holdout",
-  "note_chars": 122,
-  "file": "h57-corr-band2px-cover-20261009T191337Z.tif",
-  "zip": "h57-corr-band2px-cover-20261009T191337Z.zip",
-  "dots": 54914,
-  "geometry": {
-   "offsets_px": [
-    2.0,
-    -2.0
-   ],
-   "step_px": 2,
-   "sized_by": "evidence/h57_geometry_sweep.json (design simulation, circular, geometry only)",
-   "sweep_best": {
-    "offsets": [
-     2.0,
-     -2.0
-    ],
-    "step": 2,
-    "dots": 54919,
-    "sim_dti": 0.43181,
-    "TP": 11281.4,
-    "FP": 46753.6
-   }
-  },
-  "approved_for_weekly_slot": false,
-  "ok_to_download": true,
-  "ok_to_submit": "ACCEPTED BY THE FORM: yes - all-finite, every value in [0,1], CRS/shape/transform match the sample. SCIENTIFICALLY: this is a coverage bet on the organizers' stated corrections family, NOT an evidence-ranked discovery; the crest-steering hypothesis it started from is refuted above and no holdout exists for the real corrections truth family (we have no corrections labels). Promotion to a weekly slot is a separate selector decision."
- },
- "verdict": "negative (hypothesis) / deliverable shipped (format-valid unique raster)",
- "verdict_detail": "The crest-steering corrections hypothesis is REFUTED by E1 (offsets cluster under 2 px and match the null) and E3 (crest-steered dots score below an evidence-free corridor at matched budget, paired CI strictly below 0). Per the brief, the lane emits nothing steered by crests. What ships instead is the unsteered, kernel-optimal cover of the 100-400 m band the organizers themselves describe as containing corrections - sized by an explicit metric calculation, unique by rank (rho 0.286) and by exact overlap (Jaccard 0.152), and labelled as a bet rather than a validated discovery.",
- "irregularities": [
-  "IR-57-001",
-  "IR-57-002",
-  "IR-57-003",
-  "IR-57-004",
-  "IR-57-005",
-  "IR-57-006"
- ]
 }

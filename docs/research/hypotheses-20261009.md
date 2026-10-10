@@ -1,5 +1,10 @@
 # Round-2 hypotheses — 2026-10-09 (corrections-lane repo, discovery sub-lane)
 
+> **Archived discovery-lane record, outside the active corrections-only scope.** Its 25,000-dot
+> GeoTIFF fails strict sample-footprint validation (7,111,787 non-NaN cells outside the pinned
+> sample mask; nodata tag missing), and the registry stop is not waived by its old holdout results.
+> This file is not permission to continue discovery or spend another experiment. The latest corrections-lane decision is `evidence/h57_run_card.json`: NEGATIVE / STOP after final-dot DUPLICATE/STOP and strict mask/nodata failure. The earlier H56 card is preserved at `evidence/run_card.json`. The separate dotted-ridge artifact from PR #11 is not adjudicated by this review.
+
 Status key: **VALIDATED / NEGATIVE / BLOCKED / UNTESTED**. No number below is a score for a
 submission; expected-DTI ranges are *judgements* informed by receipts named inline. This file
 supersedes nothing: `hypotheses.md` (round 1) stays as the earlier record.
@@ -22,14 +27,12 @@ and its obtainability, and is (f) ranked by expected DTI improvement ÷ implemen
   gradient ridge C3 = 0.0148 [0.0118, 0.0180]; mag×gravity cross-gradient C5 = 0.0128
   [+0.0024 vs chance, CI touches 0]; basement-step gradient C6 = 0.0097 (chance); geodetic shear
   ridge C2 = 0.0098 (chance); SGMC complement C1 = 0.0483 (sibling-occupied); learned C4 = 0.0465.
-  **Those are sibling HOLDOUT-DTI results on evaluator `gemsdoe54-segment-cv` v2, not board scores.** The
-  cited sibling summary does not supply a comparable withheld-positive count; the instrument differs from ours,
-  so these are *priors*, not predictions for our numbers.
+  **Those are HOLDOUT-DTI on their evaluator, not board scores.** Their instrument ≠ ours, so they
+  are *priors*, not predictions for our numbers.
 
-**Our local HOLDOUT-DTI bars (evaluator `gems52-pooled-hide-v1`, 4 folds, 48,080 withheld positive
-pixels, whole-component withholding, visible catalogue masked pixel-exactly; not an organizer score):**
-previous best arm = `D_jitter` 0.00021 [95% CI 0.000003, 0.00051]
-(`evidence/holdout_corrections_v1.json`) — a corrections arm, i.e.
+**Our own holdout bars (this repo's evaluator `gems52-pooled-hide-v1`, 4 folds, whole-component
+withholding, visible catalogue masked pixel-exactly):** previous best arm = `D_jitter`
+0.00021 [0.000003, 0.00051] (`evidence/holdout_corrections_v1.json`) — a corrections arm, i.e.
 essentially empty; a chance control for *discovery-sized* emissions did not exist in our receipts
 and is added in this round (E1).
 

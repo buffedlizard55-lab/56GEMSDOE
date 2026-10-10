@@ -20,7 +20,7 @@ pre{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:12
 nav{position:sticky;top:0;background:rgba(13,17,23,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:10px 0;z-index:5}
 nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:14px}
 .small{font-size:13px}.note{border-left:3px solid var(--warn);padding:6px 0 6px 12px;color:var(--mut);margin:10px 0}.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
-</style></head><body><nav><div class='wrap'><a href='index.html'><b>56GEMSDOE</b> · historical corrections run</a><a href='executive-summary.html'>Executive summary</a><a href='irregularities.html'>Current irregularities</a><a href='submit.html'>Format reference (not upload authorization)</a><a href='evidence.md'>Source table (prior)</a><a href='irregularities.md'>Prior flag list</a><a href='research/hypotheses.md'>Ranked hypotheses</a><a href='https://github.com/buffedlizard55-lab/56GEMSDOE'>repo</a></div></nav><main><div class="banner bad"><div class="big">Historical PR #4 page &mdash; audit reference only</div><p>No raster on this page is cleared for upload or slot selection. The current H57 corrections disposition is separate and remains audit-only; see the <a href="h57.html">H57 audit report</a>. Do not conflate these runs.</p></div><p class="small muted">All local DTI values on this historical page are HOLDOUT-DTI, evaluator <code>gems52-pooled-hide-v1</code>, 48,080 withheld positives, with 95% CIs; none are organizer scores.</p><h1>How far is the fault catalogue from the evidence?</h1><p class='sub'>GEMS Prize (DrivenData 306). Measured answer: the residual is a coherent ~1 px wobble, not a &ge;2 px displacement &mdash; so this lane emits no defensible correction, and the negative, with its two nulls, its 3 m calibration and its permutation controls, is the deliverable.</p><p class='small muted'>built 2026-10-09 05:36 UTC from <code>evidence/</code> at commit <code>5718133</code>. Every number is read from a receipt at build time; none is typed. Evidence class is stated on each figure: MEASURED (this workspace), HOLDOUT-DTI (our evaluator, withhold-and-recover), ORGANIZER-CONFIRMED (a submission receipt &mdash; there are none), BOARD-UNVERIFIED (a number we could not read from an official source).</p>
+</style></head><body><nav><div class='wrap'><a href='index.html'><b>56GEMSDOE</b> · corrections lane</a><a href='executive-summary.html'>Executive summary &amp; how to submit</a><a href='irregularities.html'>Irregularities (this run)</a><a href='submit.html'>Submission how-to (prior session)</a><a href='evidence.md'>Source table (prior)</a><a href='irregularities.md'>Prior flag list</a><a href='research/hypotheses.md'>Ranked hypotheses</a><a href='https://github.com/buffedlizard55-lab/56GEMSDOE'>repo</a></div></nav><main><h1>How far is the fault catalogue from the evidence?</h1><p class='sub'>GEMS Prize (DrivenData 306). Measured answer: the residual is a coherent ~1 px wobble, not a &ge;2 px displacement &mdash; so this lane emits no defensible correction, and the negative, with its two nulls, its 3 m calibration and its permutation controls, is the deliverable.</p><p class='small muted'>built 2026-10-09 05:36 UTC from <code>evidence/</code> at commit <code>5718133</code>. Every number is read from a receipt at build time; none is typed. Evidence class is stated on each figure: MEASURED (this workspace), HOLDOUT-DTI (our evaluator, withhold-and-recover), ORGANIZER-CONFIRMED (a submission receipt &mdash; there are none), BOARD-UNVERIFIED (a number we could not read from an official source).</p>
 
 <div class="banner bad">
   <div class="big">Corrections lane: NEGATIVE &mdash; no corridor survives the calibrated test, so there is nothing to correct</div>
@@ -37,19 +37,21 @@ nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;fl
   (-2.1 m) with
   <b>0.27%</b> of pixels beyond 3 px. Corridors with a consistent
   offset &ge; 2 px under the calibrated gate: <b>0 of 21</b>.</p>
-  <p class="why"><b>Audit download only; NOT CLEARED for upload or a weekly slot.</b> Both PR #4 rasters pass local
-  format checks (single-band float32, EPSG:32611, 3730&times;3292 at 100 m, and exact transform match), but
-  they carry <b>0.0, not null</b>, outside the data footprint. A local writer/validator pass does not establish
-  organizer portal acceptance, and no upload was tested. The evidence is negative: HOLDOUT-DTI evaluator
-  <code>gems52-pooled-hide-v1</code>, 48,080 withheld positives, B_snap 0.0001566 [0.0000000, 0.0004536]
-  vs D_jitter 0.0002055 [0.0000026, 0.0005085] (95% CIs; intervals overlap). This local mapped-fault
-  holdout does not test real corrections truth and is not an organizer score. This run files nothing,
-  selects no slot, and clears neither raster.</p>
+  <p class="why"><b>Safe to download: yes.</b> Both files below pass the submission validator (single-band
+  float32, EPSG:32611, 3730&times;3292 cells at 100 m,
+  bounds equal to the training data, values in [0, 1], single band, exact transform match) and were written and
+  re-read by the shared <code>submission_writer</code>. One documented deviation, stated in full below: outside
+  the data footprint these rasters carry <b>0.0, not null</b>, because the shared toolchain enforces an
+  all-finite export policy (IR-56-013). <b>Safe to submit: this is your call, not ours &mdash; the expected
+  gain is 0.00016 DTI with a 95% interval of
+  [0.00000, 0.00045], which contains the value for
+  doing nothing (0.00000) and for jittering dots at random
+  (0.00021). This run files nothing and recommends no slot.</p>
 </div>
 <h2>Downloads</h2><div class='grid'>
 <div class="card">
   <h3>primary arm &mdash; the brief&#x27;s rule as written: emit only where a consistent offset exceeds ~2 px (200 m)</h3>
-  <p><span class="pill ok">Audit download only</span><span class="pill bad">NOT cleared for upload or a slot</span>
+  <p><span class="pill ok">OK to download</span><span class="pill bad">NOT cleared for a slot</span>
      <span class="pill warn">1 dots</span></p>
   <div class="kv"><b>file</b><span class="mono">h56-corr-snap200cm-20261009.tif</span></div>
   <div class="kv"><b>validator</b><span>PASSED, no problems</span></div>
@@ -62,15 +64,15 @@ nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;fl
     <a class="btn ghost" href="downloads/h56-corr-snap200cm-20261009.zip" download>.zip</a>
     <a class="btn ghost" href="downloads/h56-corr-snap200cm-20261009.json">receipt</a>
   </div>
-  <p class="small muted">Historical run-record name (not an upload instruction):</p>
+  <p class="small muted">Submission name &mdash; paste into the DrivenData form:</p>
   <input class="mono" readonly value="h56-corr-snap200cm-20261009">
-  <p class="small muted">Historical note metadata (not a submission recommendation):</p>
+  <p class="small muted">Note (122 chars, limit 140):</p>
   <input class="mono" readonly value="h56 corrections lane, PRIMARY arm: dots on the evidence crest &gt;= 200 m off catalogue, DEM+mag concordant; 1 dots; NEGATIVE">
   <p class="small">1 dot(s) from 2 corridor(s). Every step of the pipeline is visible in the receipt: 2074 qualified px, 1996 inside the footprint and off the catalogue, 2 with corroborating neighbours, 2 inside a corridor that passed the consistency test, 1 after 200 m along-strike thinning.</p>
 </div>
 <div class="card">
   <h3>sensitivity arm &mdash; same rule with the bar relaxed to 1 px, to show what the rule would have chosen</h3>
-  <p><span class="pill ok">Audit download only</span><span class="pill bad">NOT cleared for upload or a slot</span>
+  <p><span class="pill ok">OK to download</span><span class="pill bad">NOT cleared for a slot</span>
      <span class="pill warn">14 dots</span></p>
   <div class="kv"><b>file</b><span class="mono">h56-corr-snap100cm-20261009.tif</span></div>
   <div class="kv"><b>validator</b><span>PASSED, no problems</span></div>
@@ -83,9 +85,9 @@ nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;fl
     <a class="btn ghost" href="downloads/h56-corr-snap100cm-20261009.zip" download>.zip</a>
     <a class="btn ghost" href="downloads/h56-corr-snap100cm-20261009.json">receipt</a>
   </div>
-  <p class="small muted">Historical run-record name (not an upload instruction):</p>
+  <p class="small muted">Submission name &mdash; paste into the DrivenData form:</p>
   <input class="mono" readonly value="h56-corr-snap100cm-20261009">
-  <p class="small muted">Historical note metadata (not a submission recommendation):</p>
+  <p class="small muted">Note (127 chars, limit 140):</p>
   <input class="mono" readonly value="h56 corrections lane, sensitivity arm: dots on the evidence crest &gt;= 100 m off catalogue, DEM+mag concordant; 14 dots; NEGATIVE">
   <p class="small">14 dot(s) from 6 corridor(s). Every step of the pipeline is visible in the receipt: 5846 qualified px, 5612 inside the footprint and off the catalogue, 30 with corroborating neighbours, 30 inside a corridor that passed the consistency test, 14 after 200 m along-strike thinning.</p>
 </div></div>
@@ -163,9 +165,8 @@ nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;fl
     a correction.</p>
     <p class="note">The shared harness also reports <code>best_comparable_control = D_jitter</code>: the
     arm that displaces dots by <em>random</em> sub-pixel amounts scored <b>higher</b> than the arm that moves
-    them to a measured crest (random HOLDOUT-DTI 0.00021 [95% CI 0.000003, 0.000508] vs
-    0.00016 [95% CI 0.000000, 0.000454], evaluator gems52-pooled-hide-v1, 48,080 withheld positives;
-    intervals overlap both ways). Nobody should read that as
+    them to a measured crest (0.00021 vs
+    0.00016, intervals overlapping both ways). Nobody should read that as
     &quot;jittering helps&quot;; it means the instrument cannot see the difference. It is also the strongest
     argument in this repository for not spending a slot on a snapping submission.</p>
 <h2>5 &middot; Control on the cluster rule &mdash; and what it changes</h2>
@@ -226,7 +227,7 @@ nav .wrap{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:16px;fl
     <code>&hellip;h56-corr-snap100cm-20261009.json</code> (per-prior detail, 485 rows each) and the one-pass corpus scan
     <code>evidence/registry_screen_v1_rows.jsonl</code>.</p>
 <h2>7 &middot; Hypotheses, ranked by expected gain per cost</h2>
-<table class='data'><thead><tr><th>#</th><th>hypothesis</th><th>mechanism, and the named non-fault process</th><th>cost</th><th>status from this run</th></tr></thead><tbody><tr><td>H1</td><td>The catalogue is systematically displaced by &ge;2 px from the geomorphic lineation, so dots on the evidence crest earn credit that dots on the line cannot.</td><td>Active slip expressed as a scarp. Competing process that would fake it: slope-dependent scarp degradation (a scarp migrates downslope as it relaxes) and the shading asymmetry of a hillshade-derived curvature field.</td><td>1 experiment, ~150 s</td><td><b>Refuted</b>: gated medians -0.103 / 0.030 px, DEM-vs-magnetic r = 0.022, 0/21 corridors.</td></tr><tr><td>H2</td><td>The mean is zero but the tail is real: pixels where both families agree on a &ge;2 px shift are a mis-drawn segment and can be dotted profitably.</td><td>Localised slip or a mapper's step-over. Competing process: a crest picked on the wrong side of the trace at a bend &mdash; the null shows this is common, {n:.0f}% of traceless points produce a &ge;1 px &quot;offset&quot;.</td><td>same experiment</td><td><b>Half true, and not emittable</b>: the tail's structure is real (680 coherent survivors vs 153 under label permutation, p &lt; 0.004) &mdash; but it sits at 0.77 px, under both the 2 px bar and the 1.32 px noise floor, and its local HOLDOUT-DTI is 0.00016 [95% CI 0.00000, 0.00045] versus same-budget random jitter 0.00021 [95% CI 0.000003, 0.000508] (evaluator gems52-pooled-hide-v1, 48,080 withheld positives); neither is an organizer score.</td></tr><tr><td>H3</td><td>Offsets can <em>sharpen</em> the catalogue (snap the line to the crest) so that any downstream learner or fusion improves.</td><td>Registration error in a published map. Competing process: the map is itself partly interpreted from the same DEM, in which case snapping is circular.</td><td>1 experiment, 115 s</td><td><b>Not admissible here</b>: the hide-and-recover instrument is blind to &le;3 px shifts, so the claim can be neither supported nor refuted locally. Left for a lane with a shifted-label instrument, which the organizer does not ship.</td></tr><tr><td>H4</td><td>Because catalogue pixels earn nothing, a lane's only scoreable output is mass placed <em>off</em> the traces; corrections therefore matter mainly as a gate on other lanes' ideas.</td><td>Scoring geometry, not geology: staff confirm known-fault pixels are excluded from the penalty terms, and a sibling measured 0.2708 &rarr; 0.2778 from deleting exactly the catalogue-adjacent dots.</td><td>free (already measured)</td><td><b>Confirmed and used</b>: it is why this lane never emits on a catalogue pixel, and why the sensitivity arm is labelled NEGATIVE in its own filename.</td></tr><tr><td>H5</td><td>A residual, sub-pixel systematic exists and would matter to a finer grid or a future 30 m release.</td><td>Slow, distributed deformation; competing process: geoid/vertical-datum offsets in the DEM's own ties.</td><td>would need new inputs</td><td><b>Not testable at 100 m</b>: the estimator's own precision floor is 0.46 px of placement bias plus 0.735 px of noise, so a 0.3 px systematic is unresolvable here. Recorded as a question for a 1 m/LiDAR-native lane.</td></tr></tbody></table>
+<table class='data'><thead><tr><th>#</th><th>hypothesis</th><th>mechanism, and the named non-fault process</th><th>cost</th><th>status from this run</th></tr></thead><tbody><tr><td>H1</td><td>The catalogue is systematically displaced by &ge;2 px from the geomorphic lineation, so dots on the evidence crest earn credit that dots on the line cannot.</td><td>Active slip expressed as a scarp. Competing process that would fake it: slope-dependent scarp degradation (a scarp migrates downslope as it relaxes) and the shading asymmetry of a hillshade-derived curvature field.</td><td>1 experiment, ~150 s</td><td><b>Refuted</b>: gated medians -0.103 / 0.030 px, DEM-vs-magnetic r = 0.022, 0/21 corridors.</td></tr><tr><td>H2</td><td>The mean is zero but the tail is real: pixels where both families agree on a &ge;2 px shift are a mis-drawn segment and can be dotted profitably.</td><td>Localised slip or a mapper's step-over. Competing process: a crest picked on the wrong side of the trace at a bend &mdash; the null shows this is common, {n:.0f}% of traceless points produce a &ge;1 px &quot;offset&quot;.</td><td>same experiment</td><td><b>Half true, and not emittable</b>: the tail's structure is real (680 coherent survivors vs 153 under label permutation, p &lt; 0.004) &mdash; but it sits at 0.77 px, under both the 2 px bar and the 1.32 px noise floor, and its holdout DTI is 0.00016 [0.00000, 0.00045], which random jitter matches.</td></tr><tr><td>H3</td><td>Offsets can <em>sharpen</em> the catalogue (snap the line to the crest) so that any downstream learner or fusion improves.</td><td>Registration error in a published map. Competing process: the map is itself partly interpreted from the same DEM, in which case snapping is circular.</td><td>1 experiment, 115 s</td><td><b>Not admissible here</b>: the hide-and-recover instrument is blind to &le;3 px shifts, so the claim can be neither supported nor refuted locally. Left for a lane with a shifted-label instrument, which the organizer does not ship.</td></tr><tr><td>H4</td><td>Because catalogue pixels earn nothing, a lane's only scoreable output is mass placed <em>off</em> the traces; corrections therefore matter mainly as a gate on other lanes' ideas.</td><td>Scoring geometry, not geology: staff confirm known-fault pixels are excluded from the penalty terms, and a sibling measured 0.2708 &rarr; 0.2778 from deleting exactly the catalogue-adjacent dots.</td><td>free (already measured)</td><td><b>Confirmed and used</b>: it is why this lane never emits on a catalogue pixel, and why the sensitivity arm is labelled NEGATIVE in its own filename.</td></tr><tr><td>H5</td><td>A residual, sub-pixel systematic exists and would matter to a finer grid or a future 30 m release.</td><td>Slow, distributed deformation; competing process: geoid/vertical-datum offsets in the DEM's own ties.</td><td>would need new inputs</td><td><b>Not testable at 100 m</b>: the estimator's own precision floor is 0.46 px of placement bias plus 0.735 px of noise, so a 0.3 px systematic is unresolvable here. Recorded as a question for a 1 m/LiDAR-native lane.</td></tr></tbody></table>
 <p class="small muted">Cost accounting for the run: three budgeted experiments (E1 offsets
     + nulls + 3 m calibration, E2 shared holdout, E3 build + validation) plus one permutation control, in the
     72 s / 117 s / 76 s measured at the

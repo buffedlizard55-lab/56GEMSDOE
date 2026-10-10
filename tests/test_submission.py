@@ -70,3 +70,15 @@ def test_nan_allowed_only_on_reference_footprint(tmp_path):
     assert validate_submission(str(p), reference_nan_mask=mask).ok
     assert not validate_submission(str(p), reference_nan_mask=~mask).ok
     assert not validate_submission(str(p)).ok
+
+
+def test_nan_template_mask_requires_matching_nodata_tag(tmp_path):
+    arr = np.zeros((REF_HEIGHT, REF_WIDTH), np.float32)
+    mask = np.zeros(arr.shape, bool)
+    mask[:10, :] = True
+    arr[mask] = np.nan
+    p = tmp_path / "nan-without-tag.tif"
+    _write_raw(p, arr, nodata=None)
+    report = validate_submission(str(p), reference_nan_mask=mask)
+    assert not report.ok
+    assert any("nodata tag" in problem for problem in report.problems)

@@ -336,5 +336,9 @@
    "n_reg": 324488
   }
  ],
- "verdict": "UNIQUE - no prior re-issued (literal containment flags logged and investigated below)"
+ "verdict": "DUPLICATE/STOP under the literal >70%-within-3px rule",
+ "status": "DUPLICATE/STOP under the literal >70%-within-3px rule; descriptive Jaccard/correlation statistics do not waive the stop.",
+ "lane_gate_pass": false,
+ "duplicate_stop": true,
+ "descriptive_result": "No exact pixel-identical reissue was measured. This descriptive result does not waive the protocol trigger."
 }

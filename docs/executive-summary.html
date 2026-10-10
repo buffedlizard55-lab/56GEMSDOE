@@ -1,123 +1,119 @@
-<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Audit summary - H56 field/physics and current clearance</title><style>
-:root{--bg:#0d1117;--panel:#161b22;--ink:#e6edf3;--mut:#9198a1;--line:#262c36;--ok:#2ea043;--warn:#d29922;--bad:#f85149;--acc:#58a6ff}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-main{max-width:1120px;margin:0 auto;padding:26px 20px 90px}h1{font-size:26px;margin:0 0 4px}h2{font-size:20px;margin:34px 0 10px;padding-top:14px;border-top:1px solid var(--line)}h3{font-size:16px;margin:18px 0 6px}
-a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}.sub{color:var(--mut);margin:0 0 16px}
-.banner{border-radius:12px;padding:18px 20px;margin:16px 0;border:1px solid var(--line)}.banner.bad{background:rgba(248,81,73,.10);border-color:rgba(248,81,73,.45)}.banner.ok{background:rgba(46,160,67,.10);border-color:rgba(46,160,67,.45)}.banner.warn{background:rgba(210,153,34,.10);border-color:rgba(210,153,34,.45)}
-.banner .big{font-size:19px;font-weight:700}.banner p{margin:8px 0 0}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
-.btn{display:inline-block;background:var(--ok);color:#04140a;font-weight:700;padding:11px 16px;border-radius:9px;margin:4px 8px 4px 0}
-.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--acc);font-weight:600}
-.badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.02em;padding:3px 9px;border-radius:999px;margin-left:8px}
-.badge.ok{background:rgba(46,160,67,.18);color:#3fb950;border:1px solid rgba(46,160,67,.5)}
-.badge.warn{background:rgba(210,153,34,.16);color:#e3b341;border:1px solid rgba(210,153,34,.5)}
-.badge.bad{background:rgba(248,81,73,.14);color:#ff7b72;border:1px solid rgba(248,81,73,.5)}
-table.data{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px}table.data th,table.data td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
-table.data th{background:#11161d;font-weight:700}code{background:#11161d;padding:1px 5px;border-radius:5px;font-size:13px}
-pre{background:#11161d;border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;font-size:12.5px}
-ul{margin:8px 0 8px 18px}li{margin:4px 0}.muted{color:var(--mut)}
-.kpi{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}.kpi div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:150px}
-.verdict{border-left:4px solid var(--warn);padding:9px 13px;margin:12px 0;background:rgba(210,153,34,.07);border-radius:0 8px 8px 0;font-size:14px}
-.kpi b{display:block;font-size:19px}.kpi span{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.03em}
-</style></head><body><main>
-<!-- H57-CARD:BEGIN -->
-<div class=card style="border-color:#ff6b6b">
-<h2>&#11015; H57 corrections-band GeoTIFF &mdash; audit download only, NOT CLEARED</h2>
-<p><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">Download h57-corr-band2px-cover-20261009T191337Z.tif (150 KB)</a>
-<a class="btn alt" href="downloads/h57-corr-band2px-cover-20261009T191337Z.zip">.zip</a>
-<a class="btn alt" href="h57.html">What it is &amp; the holdout &rarr;</a></p>
-<p><b>Available for audit download: YES. Cleared to submit: NO.</b>
-The local validator reports 0 NaN cells, 0 infinite cells, min 0.0,
-max 1.0, 1 band, float32, EPSG:32611, shape [3730, 3292],
-transform [100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0]; this is not an organizer upload receipt, and zero NaNs does not
-match the official sample's NaN exterior. No portal upload was tested. 54,914 dots.</p>
-<p><b>Run-record name (not a submission instruction)</b> <code>h57-corr-band2px-cover-20261009T191337Z</code><br>
-<b>Run-record note</b> (122/140): <code>corrections-band cover: dots 2px either side of every catalogue trace, 2px along strike; crest steering refuted on holdout</code><br>
-<b>sha256</b> <code>fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced</code></p>
-<p><b>Honest verdict:</b> the lane's crest-steering hypothesis is <b>REFUTED</b> by its own
-holdout &mdash; offsets cluster under two pixels (median 1.48 px,
-signed median -0.11 px, 0.326 beyond 2 px vs
-0.273 for the random null). HOLDOUT-DTI evaluator
-<code>h57-hide-and-recover-v1 (src/metrics.py, alpha 0.2, beta 0.8, 300 m triangular kernel, visible faults masked pixel-exactly)</code>, 41,742 withheld positives:
-B2 crest-steered 0.000872 [0.000486, 0.001327]
-vs B1 evidence-free 0.001773 [0.001295, 0.002317];
-paired 95% contrast [-0.001378, -0.000476].
-These are local results on withheld mapped faults, not organizer scores or tests of real corrections truth.
-The historical run emitted an unsteered 200 m band-cover: a coverage bet, not an evidence-supported
-corrected trace. No holdout can score the real corrections family because no corrections labels exist.</p>
-<p>Uniqueness diagnostics: max Spearman 0.286 and max exact-pixel Jaccard
-0.152; these do not waive the literal gate. The final-dot
-receipt says <b>DUPLICATE/STOP</b> (max directed near fraction
-1.000; 39 near-offenders).
-Under the stated protocol this blocks upload and slot selection. The H57 holdout is negative for
-crest steering, and no holdout tests real corrections truth. Run card:
-<code>evidence/h57_run_card.json</code>; current decision:
-<code>evidence/submission_status.json</code>.</p>
+<!doctype html><html lang=en><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Submission status · 56GEMSDOE</title><style>
+:root{--bg:#0f1420;--fg:#e8eaf0;--mut:#9aa3b5;--acc:#4da3ff;--ok:#3fd68f;--warn:#ffb454;--bad:#ff6b6b;--card:#171d2e;--line:#28304a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+header.top{background:linear-gradient(180deg,#131a2c,#0f1420);border-bottom:1px solid var(--line);padding:22px 0 18px}
+h1{font-size:24px;margin:0 0 4px}
+h2{font-size:19px;margin:28px 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px}
+h3{font-size:16px;margin:20px 0 6px}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+nav a{color:var(--mut);text-decoration:none;padding:5px 10px;border:1px solid var(--line);border-radius:16px;font-size:13px}
+nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
+.dlbtn{margin:14px 0}
+.btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:8px}
+.btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn.stop{background:var(--bad);color:#1c0808}
+.btn:hover{filter:brightness(1.1)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.mut{color:var(--mut)}
+.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+code{background:#0a0e18;border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:13px}
+pre{background:#0a0e18;border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;font-size:12.5px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#131a2c}
+img{max-width:100%;border:1px solid var(--line);border-radius:8px}
+.values{background:#10182b;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;font-size:13.5px;color:var(--mut)}
+footer{border-top:1px solid var(--line);margin-top:34px;padding:18px 0 30px;color:var(--mut);font-size:13px}
+.tag{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:10px;padding:1px 8px;color:var(--mut);margin-right:5px}
+ul{margin:6px 0 6px 20px}li{margin:3px 0}
+</style></head><body>
+<header class=top><div class=wrap>
+<h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
+<div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
+faults missing from the USGS/INGENIOUS catalogue</div>
+<nav><a href="index.html">Home</a><a href="executive-summary.html" class=active>Submission status</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="h57.html">H57 run (current)</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn stop" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">&#11015; Download archived H57 TIFF — NOT SAFE TO SUBMIT (150 KB)</a> <a class="btn alt" href="h57.html">Why this is blocked &rarr;</a></div>
+</div></header>
+<div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
+submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
+on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
+<span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
+data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
+<main class=wrap><div class=card><h2 class=bad>Corrections lane: NEGATIVE / STOP — do not submit</h2>
+<p>The H57 TIFF linked above is retained for audit only. Its final-dot registry receipt reports
+<b>1.0</b> of dots within 3 px of prior rasters, exceeding the explicit 0.70 duplicate-and-stop
+threshold. A strict replay against the pinned sample also finds <b>7,111,787 finite cells outside
+the template footprint</b> and a missing NaN nodata tag. Its original "OK to submit" wording is
+superseded by this fail-closed review.</p>
+<p>The H57 crest-steering hypothesis was refuted by its own method-level HOLDOUT-DTI; the emitted
+54,914-dot cover itself was not scored. The review used no extra experiment or submission slot.
+No corrections-lane artifact is selected, promoted, or cleared to submit. Download only for
+technical inspection, not as a workaround or candidate upload.</p>
+<p><a href="h57.html">H57 run card, holdout and stop review</a> ·
+<a href="executive-summary.html">Current submission status and future checklist</a> ·
+<a href="prior-run.html">Preserved prior runs</a> ·
+<a href="irregularities.html">Irregularities</a></p></div>
+<h2>Current corrections submission status: NEGATIVE / STOP</h2>
+<div class=card>
+<p><b class=bad>Do not upload the H57 file or any earlier corrections TIFF.</b> The H57
+archive is available for audit only; no corrections artifact is cleared, selected, or promoted.</p>
+<p>H57 file <code>h57-corr-band2px-cover-20261009T191337Z.tif</code> (SHA-256
+<code>fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced</code>) fails two independent stop conditions:
+(1) final-dot registry proximity is 1.000,
+above the literal 0.70 threshold (DUPLICATE/STOP); (2) strict template replay finds
+7,111,787 finite cells outside the sample footprint and a missing NaN
+nodata tag. The permissive all-finite compatibility check is not strict template conformance
+or organizer acceptance.</p>
+<p><b>Audit-only submission name:</b> <code>h57-corr-band2px-cover-20261009T191337Z</code><br>
+<b>Audit-only note (122/140; do not paste):</b>
+<code>corrections-band cover: dots 2px either side of every catalogue trace, 2px along strike; crest steering refuted on holdout</code><br>
+<a class="btn stop" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">Download for technical inspection only — NOT SAFE TO SUBMIT</a></p>
+<p>H57's E3 results are method-level <b>HOLDOUT-DTI</b> (evaluator
+<code>h57-hide-and-recover-v1 (src/metrics.py, alpha 0.2, beta 0.8, 300 m triangular kernel, visible faults masked pixel-exactly)</code>,
+41,742 withheld positives): crest-steered
+0.00087
+[0.000486, 0.001327] versus the evidence-free
+corridor 0.00177
+[0.001295, 0.002317]; paired contrast
+[-0.001378, -0.000476].
+This evaluates crest steering on withheld catalogue faults, not the emitted cover itself.</p>
+<p>No ORGANIZER-CONFIRMED score or submission receipt exists. No extra experiment or slot was
+used in this review. The next action is not another experiment: preserve the negative card and
+resolve input/protocol/gate issues before any separately authorized run.</p>
 </div>
-<!-- H57-CARD:END -->
-<h1>Audit summary - H56 field/physics and current clearance</h1><p class='sub'><a href='index.html'>&#8592; back to the evidence page</a></p><div class="card" id="tldr">
-<h2 style="margin-top:0;border:0;padding:0">Executive summary - read this first</h2>
-<ul>
- <li><b>Verdict: do not promote.</b> The best own arm, <code>mag_ridge|packed</code>, scores
-     0.0387 [0.0348, 0.0424]
-     against 0.0900 [0.0811, 0.0988] for the sibling surface on the same
-     4 folds. Both are local HOLDOUT-DTI using evaluator
-     <code>gems52-pooled-hide-v1</code> (36,335 withheld positives), not organizer scores.
-     Every hypothesis set out to be tested this round was rejected on measurement; the negative results are the
-     deliverable (<a href="research/hypotheses-round2.md">hypotheses-round2.md</a>).</li>
- <li><b>Both rasters are available as audit downloads only.</b> Their adjacent receipts record local
-     on-disk format measurements; these do not establish organizer exterior-mask compatibility or portal
-     acceptance. This review selected no weekly slot and made no upload. The H57 corrections artifact has its
-     own audit-only/DUPLICATE/STOP status in the banner above.</li>
- <li><b>Why the group's best file scores what it scores</b> (measured, not narrated): it is a
-     37,654-dot <b>strict subset</b> of an earlier filing, and the
-     6,436 deleted cells are exactly the dots within 2 px of a catalogue pixel -
-     mass the organiser's mask throws away. The whole +0.0178
-     difference is that one prune. Inverting the published formula on the two scores gives T = 5,223
-     credit (0.139 per dot) and |G| = 12,783-18,294
-     hidden pixels; at perfect placement the same mass would score
-     0.825, so every remaining point is place-finding.</li>
- <li><b>The shared holdout cannot see that prune</b> - local HOLDOUT-DTI evaluator
-     <code>gems52-pooled-hide-v1</code>, 36,335 withheld
-     positives: the pruned file scores 0.00380
-     [95% CI 0.00330,
-     0.00429] against
-     0.09003 [95% CI 0.08113,
-     0.09878] for its unpruned parent. This is the opposite sign of the
-     live result because withheld truth <i>is</i> catalogue trace. We therefore never used hide-DTI to decide
-     the near-catalogue floor (IR-56-011).</li>
- <li><b>Unique</b>: 868 prior rasters from every sibling repo screened
-     at &le;3 px in both directions - 0 exceed the 0.70 duplicate rule.</li>
- <li><b>Evidence classes</b>: local evaluation scores are HOLDOUT-DTI and should travel with their evaluator,
-     withheld-positive count and 95% CI; only a submission-page receipt would make a score
-     ORGANIZER-CONFIRMED. Live scores 0.2778 and 0.3195 are USER-REPORTED from the brief; this repository has
-     no organizer-confirmed score and makes no future-score projection.</li>
-</ul></div>
+<h2>Historical files and separate lanes</h2>
+<p>The earlier 6,504-dot, 1-dot and 14-dot corrections TIFFs remain research archives with their
+own negative receipts. The 25,000-dot discovery file also remains negative. The PR #11 dotted-ridge
+artifact is separately documented and not cleared by this H57 review. See
+<a href="prior-run.html">prior runs</a>, <a href="irregularities.html">the irregularity log</a>,
+and the run cards in <code>evidence/</code>.</p>
 
-<div class="banner warn"><div class="big">Guide only — no weekly slot selected or submission made by this review</div>
-<ol>
- <li>Open the <a href='index.html#sources'>evidence page</a> and read the status attached to each run. Local format checks are not organizer acceptance.</li>
- <li>Files remain downloadable for audit. The .zip archives contain one GeoTIFF; downloading does not clear a file for upload.</li>
- <li>This page records the competition's form requirements (single-band GeoTIFF, matching CRS/shape/geotransform, values in [0, 1]); it is not an instruction to upload a candidate from this review.</li>
- <li>Do not spend a weekly slot or submit based on this page. Promotion is a separate selector decision; none was made here.</li>
- <li>Keep each run's receipt and sha256 together. A local HOLDOUT-DTI result is not an organizer score; only an organizer submission receipt can confirm one.</li>
-</ol></div>
-<div class="banner warn"><div class="big">What the separate H56 field/physics receipt says</div>
-<p>On the shared blocked holdout, the H56 run's best arm reaches 0.0383 while the group's incumbent raster reaches
-0.0900 on identical folds; that instrument is also inverted for the near-catalogue pruning question (IR-56-011). These are local HOLDOUT-DTI values from a separate run, not organizer scores and not a corrections-lane result. This review does not select or spend a slot; preserve the per-file receipts and keep the PR #7 discovery result separate.</p></div>
-<h2>The two failure modes that produce "Predicted values must be in range [0, 1]"</h2>
-<ul>
- <li><b>The float32 sentinel.</b> <code>training_features.tif</code> stores nodata as
- <code>-3.4028234663852886e+38</code>; any pipeline that reads a band and writes predictions without replacing
- it ships values outside [0,1]. Our loader asserts band identity and maps the sentinel to NaN before anything
- else (<code>src/gems56/corrections.py:load_fields</code>).</li>
- <li><b>The nodata tag itself.</b> A raster tagged <code>nodata=-3.4e38</code> can be rejected even where its
- cells are legal. Our writer sets <code>nodata=None</code> and fills outside-footprint cells with 0.0, then the
- build re-opens the file and reports <code>min</code>, <code>max</code>, NaN count and the tag in
- <code>docs/downloads/checks-*.json</code>.</li>
-</ul>
-<h2>Historical run-record metadata</h2>
-<p>These names and notes are retained for audit only; they are not instructions to paste into a form
-and do not authorize an upload. Run-record names: <b><code>h56-magpack-37k-20261009</code></b> and
-<b><code>h56-quota-37k-20261009</code></b>. Stored notes: <code>h56-r2 mag-ridge packed 2.8px, &gt;=2px off catalogue, 37,654 dots; holdout 0.0387 vs 0.0900 incumbent; not cleared for a slot</code>
-(123 chars) and <code>h56-r2 quota union, 6 channels, 2.8px packed, 30,800 dots off catalogue; holdout 0.0359; negative verdict, not cleared</code> (118 chars).</p><p class='muted'>Rendered by <code>scripts/build_round2.py</code> from the JSON receipts in <code>evidence/</code>. Every figure on this page is read from a receipt at build time: a required receipt that is missing fails the build; the two optional ones (the uniqueness screen, the round-1 card) print an explicit “still running - see this path” line instead of a fake number.</p></main></body></html>
+<h2>Round-2 discovery candidate &mdash; also NOT for submission</h2>
+<div class=card>
+<p><b>OK to submit: <span class=bad>NO</span>.</b> The second download on the
+<a href="index.html">home page</a>
+(<code>h56-disc-multi-b25000-20261009-20261009T165646Z.tif</code>, 25,000 dots) is format-validated
+research output: single band, float32, values exactly {0.0, 1.0}, EPSG:32611, shape and
+transform equal to the submission format, sha256 <code>dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296</code>.
+Two independent verdicts block it: the pre-registered holdout rule failed (HOLDOUT-DTI
+0.01242 vs chance 0.03499, paired
+-0.02257, CI strictly below zero), and the
+registry lane gate returned <b>DUPLICATE/STOP</b>
+(density-degenerate 3&nbsp;px trigger, IR-56-023). Its name, note and receipt all say
+NEGATIVE; no slot was spent. Full walk-through of the numbers:
+<a href="hypotheses.html">hypotheses (round-2 section)</a> ·
+<code>evidence/run_card_discovery_v1.json</code>.</p>
+</div>
+</main>
+<footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
+round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
+generated 2026-10-10 07:23 UTC by
+<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
+and <code>evidence/*.json</code> (run B) ·
+site served from <code>main</code> at
+<a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
+</body></html>

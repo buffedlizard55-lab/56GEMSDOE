@@ -3,6 +3,14 @@
 Checked 2026-10-09 from the sandbox. "Fetched" means the page or file text was retrieved and read in this session.
 "Search snippet" means only the search-result text was read. "Listed" means the source was not opened.
 
+> **Current status addendum (2026-10-09 review):** this earlier evidence ledger is not a submission
+> clearance. The active corrections run is `evidence/run_card.json`: NEGATIVE / STOP, no slot,
+> exhausted experiment budget. The active 1-dot and 14-dot TIFFs fail strict finite-mask/nodata
+> validation; an earlier 6,504-dot file passes local format only but triggers the registry stop.
+> No score is ORGANIZER-CONFIRMED. Use `docs/research/leader-analysis-2026-10-09.md` and
+> `docs/review/2026-10-09.md` for current claims/source scope. The owner-bridge data remain
+> unauthenticated against the login-gated data tab.
+
 ## A. Official competition sources
 
 | ID | Source (official link) | What it establishes | Status |

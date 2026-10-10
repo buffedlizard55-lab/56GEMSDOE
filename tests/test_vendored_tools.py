@@ -1,8 +1,8 @@
 """Tests for the vendored template tools as used by this lane.
 
 Covers: the official metric's worked example, the fail-loud submission writer
-round-trip, template conformance of a conformed raster, and the repository
-validator on the SHIPPED submission GeoTIFF (skipped if the file is absent).
+round-trip, template conformance of a conformed raster, and the strict rejection of
+the archived H57 GeoTIFF (skipped if the file is absent).
 
 Run: python -m pytest tests/test_vendored_tools.py -q
 """
@@ -16,10 +16,6 @@ import pytest
 import rasterio
 
 ROOT = Path(__file__).resolve().parents[1]
-SAMPLE = next((path for path in (ROOT / "data" / "sample_submission.tif",
-                                ROOT / "data" / "grid" / "sample_submission.tif",
-                                ROOT / "data" / "bridge" / "example_submission.tif") if path.exists()),
-              ROOT / "data" / "sample_submission.tif")
 sys.path.insert(0, str(ROOT / "src"))
 import metrics as M  # noqa: E402
 import submission_io as S  # noqa: E402
@@ -58,7 +54,7 @@ def test_metric_identity_on_a_small_case():
 
 # ----------------------------------------------------------- writer round-trip
 def test_writer_round_trip_and_conformance(tmp_path):
-    with rasterio.open(SAMPLE) as src:
+    with rasterio.open(ROOT / "data" / "sample_submission.tif") as src:
         template = src.read(1)
         prof = src.profile.copy()
     arr = np.zeros(template.shape, np.float32)
@@ -91,7 +87,7 @@ def test_writer_round_trip_and_conformance(tmp_path):
 
 
 def test_writer_refuses_empty_emission(tmp_path):
-    with rasterio.open(SAMPLE) as src:
+    with rasterio.open(ROOT / "data" / "sample_submission.tif") as src:
         template = src.read(1)
         prof = src.profile.copy()
     arr = np.zeros(template.shape, np.float32)
@@ -104,13 +100,10 @@ def test_writer_refuses_empty_emission(tmp_path):
 
 
 # ------------------------------------------------------- the shipped submission
-# POLICY NOTE (IR-57-006). Two export policies coexist in this template and they are mutually
-# exclusive on one file: the legacy "NaN outside the footprint + GDAL_NODATA=nan" policy of the
-# gems56-corr-* run, and the all-finite policy that gems56.gates.write_geotiff/format_report
-# enforce (zeros outside, no nodata tag). The public spec permits either ("data outside bounds is
-# null or NaN"), and the all-finite form is what the current H57 file ships, because the live form
-# rejected a NaN-bearing upload with "Predicted values must be in range [0, 1]". These tests
-# therefore assert the policy the file declares, and assert the parts that are common to both.
+# POLICY NOTE (IR-57-008). The archived H57 file is all-finite with no nodata tag, but that
+# permissive compatibility claim does not satisfy the strict template contract. The sample's
+# finite mask is authoritative: predictions must be finite inside it, NaN outside it, and carry
+# a matching NaN nodata tag. The H57 artifact intentionally remains unchanged as negative evidence.
 ALL_FINITE = bool(SHIPPED) and not _has_nan(SHIPPED[-1])
 
 
@@ -118,11 +111,12 @@ ALL_FINITE = bool(SHIPPED) and not _has_nan(SHIPPED[-1])
 @pytest.mark.skipif(ALL_FINITE, reason="legacy NaN-outside validator does not apply to an all-finite export")
 def test_shipped_submission_passes_validator():
     tif = SHIPPED[-1]
-    r = subprocess.run([sys.executable, "scripts/validate_submission.py",
-                        "--pred", str(tif),
-                        "--sample", str(SAMPLE),
-                        "--train", "data/training_features.tif"],
-                       cwd=ROOT, capture_output=True, text=True)
+    command = [sys.executable, "scripts/validate_submission.py",
+               "--pred", str(tif), "--sample", "data/sample_submission.tif"]
+    train = ROOT / "data" / "training_features.tif"
+    if train.is_file():
+        command.extend(["--train", str(train)])
+    r = subprocess.run(command, cwd=ROOT, capture_output=True, text=True)
     assert r.returncode == 0, r.stdout + r.stderr
 
 
@@ -131,21 +125,27 @@ def test_shipped_submission_passes_validator():
 def test_shipped_submission_is_template_conformant():
     tif = SHIPPED[-1]
     r = subprocess.run([sys.executable, "-m", "src.submission_io", "validate-conformant",
-                        str(tif), "--sample", str(SAMPLE)],
+                        str(tif), "--sample", "data/sample_submission.tif"],
                        cwd=ROOT, capture_output=True, text=True)
     assert r.returncode == 0, r.stdout + r.stderr
 
 
-@pytest.mark.skipif(not SHIPPED, reason="shipped submission GeoTIFF not present")
-def test_shipped_submission_passes_all_finite_gate():
-    """The gate that actually governs the shipped file: gems56.gates.format_report."""
+@pytest.mark.skipif(not SHIPPED, reason="archived H57 GeoTIFF not present")
+def test_archived_h57_is_rejected_by_strict_template_gate():
+    """The current H57 archive must remain explicitly blocked by strict conformance."""
     sys.path.insert(0, str(ROOT / "src"))
     from gems56 import gates
-    sample = SAMPLE
-    if not sample.exists():
+    sample = next((p for p in (ROOT / "data" / "grid" / "sample_submission.tif",
+                               ROOT / "data" / "sample_submission.tif") if p.exists()), None)
+    if sample is None:
         pytest.skip("sample submission raster not placed")
     rep = gates.format_report(SHIPPED[-1], sample)
-    assert rep["ok"], rep["problems"]
+    assert not rep["ok"], "the H57 archive must not be represented as strict-format-valid"
+    assert rep["non_nan_outside_px"] == 7_111_787
+    assert rep["mask_matches_template"] is False
+    assert rep["nodata_matches_template"] is False
+    assert any("outside the sample footprint are not NaN" in x for x in rep["problems"])
+    assert any("nodata tag None" in x and "nan" in x for x in rep["problems"])
     assert rep["n_nan"] == 0 and rep["min"] >= 0.0 and rep["max"] <= 1.0
     assert rep["bands"] == 1 and rep["dtype"] == "float32"
 
@@ -162,7 +162,7 @@ def test_shipped_submission_readback():
             assert src.nodata is None or np.isnan(src.nodata)
         else:
             assert src.nodata is not None and np.isnan(src.nodata)
-    with rasterio.open(SAMPLE) as src:
+    with rasterio.open(ROOT / "data" / "sample_submission.tif") as src:
         tpl = src.read(1)
     # the catalogue as the bridge places it (data/labels.tif is the login-gated name and is not
     # present in this sandbox; data/grid/existing_faults.tif is the hash-pinned same raster)

@@ -4,7 +4,7 @@ Byte copies of the receipts in `evidence/` at the repo root, with underscores sw
 
 The list is generated from the directory, so a receipt that exists is a receipt that is described - nothing published here is left unexplained. Rows without a description of their own are receipts belonging to the parallel run (PR #7) or to round 1; they are copied so the group can audit both runs from one place, and they are labelled as that run's claim rather than ours.
 
-| file | what it is | 45 files |
+| file | what it is | 35 files |
 |---|---|
 | `build-corrections-v1.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: built artefacts with local format and lane receipts; no organizer receipt exists |
 | `build-discovery-v1.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: h56 discovery multi k=25000: step-lineament dots &gt;200 m off catalogue; NEGATIVE holdout, research only, do not slot |
@@ -16,14 +16,6 @@ The list is generated from the directory, so a receipt that exists is a receipt 
 | `estimator-validation.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: MEASURED instrument characterisation on synthetic scarps; not a score |
 | `field-holdout-v1.json` | E1b: every official channel scored alone on the shared blocked holdout, both instruments, AUC canaries, budget ladder |
 | `grid.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: no header recorded in the file |
-| `h57-curated-priors.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: no header recorded in the file |
-| `h57-geometry-sweep.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: DESIGN SIMULATION ONLY - circular by construction, never a score |
-| `h57-holdout-neighbour.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: no header recorded in the file |
-| `h57-holdout.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: no header recorded in the file |
-| `h57-run-card.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: no header recorded in the file |
-| `h57-uniqueness-discriminators.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: no header recorded in the file |
-| `h57-uniqueness-submissions.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: uniqueness/lane diagnostic, not a score |
-| `h57-uniqueness.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: uniqueness/lane diagnostic, not a score |
 | `hidden-size-inversion.json` | E0: what the two published scores imply about hidden |G|, credit per dot, the marginal-dot rule and the perfect-placement ceiling - arithmetic on user-reported scores, never a projection |
 | `holdout-corrections-v1.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: HOLDOUT-DTI (catalogue recovery, hide-and-recover; NOT new-fault discovery) |
 | `holdout-discovery-v0-prefx.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: HOLDOUT-DTI (catalogue recovery, hide-and-recover; NOT new-fault discovery) |
@@ -46,8 +38,6 @@ The list is generated from the directory, so a receipt that exists is a receipt 
 | `registry-screen-h56b.json` | uniqueness screen over the mirrored sibling corpus: 868 rasters, <=3 px dot proximity in both directions |
 | `registry-screen-v1.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: uniqueness diagnostic, not a score |
 | `registry-screen-v2.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: uniqueness diagnostic, not a score |
-| `review-card-20261009.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: no header recorded in the file |
 | `run-card-discovery-v1.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: discovery (round 2 of the corrections-lane repository) |
 | `run-card-round2.json` | the round-2 run card (identical to docs/research/run-card-round2.json) |
 | `run-card.json` | the round-1 lane-assignment run card |
-| `submission-status.json` | published by another run of this lane (its own page is under docs/); not re-derived here, so read it as that run's claim. Its file says: RESEARCH-ONLY — NO CORRECTIONS-LANE FILE CLEARED FOR SUBMISSION |

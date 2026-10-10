@@ -1,118 +1,44 @@
-# Why the 0.2778 file scored well, and can this lane beat it?
+# What can—and cannot—be said about the claimed 0.2778
 
-Session 2026-10-09 · lane: corrections · every number below is either (a) a formula checked against the official
-page, (b) a value computed by the code cited in the row, or (c) a figure copied from a named public page and labelled
-with its evidence class. Nothing here is a score for this lane's file.
+**Scope.** This note separates the official metric, a sibling-reported raster-construction observation, and the unsupported score attribution. It does not claim that the file scored 0.2778. No projection is a score.
 
-## 0. Evidence classes used
+## Evidence classes
 
-| label | meaning here |
+| Class | What is supported |
 |---|---|
-| **ORGANIZER-CONFIRMED** | none exists for anything discussed below |
-| **HOLDOUT-DTI** | our evaluator (`gems52-pooled-hide-v1`), withheld positives and CI stated |
-| **USER-REPORTED** | a number the user typed from a site or board; not checked |
-| **CLAIM (site)** | a number a sibling site publishes about itself; not checked |
-| **MEASURED** | computed by a script in this repo, receipt named |
-| **DERIVED** | arithmetic from the official formula, with the code that checks it |
+| **ORGANIZER-CONFIRMED** | No submission-page receipt for the 0.2778 file is present in this repository. No score is organizer-confirmed here. |
+| **USER-REPORTED / SIBLING-REPORTED** | The 0.2778 attribution and nearby leaderboard values. GEMSDOE54 reports a raster-level construction mechanism and a board observation; those reports are not an organizer receipt. |
+| **ORGANIZER-SPEC** | The public problem page defines distance-weighted Tversky scoring with a 300 m triangular kernel, α=0.2, β=0.8, and the required GeoTIFF format. The staff forum reply says known USGS/INGENIOUS fault pixels are excluded from evaluation penalties. |
+| **MEASURED HERE** | Current input hashes, grid facts, local format-validator results, and the local corrections-lane evidence in this repository. These are not competition scores. |
+| **HOLDOUT-DTI** | A local catalogue-recovery diagnostic only; evaluator, withheld count, and CI must accompany every such value. It is not the hidden-new-fault score. |
 
-## 1. Verification status of the numbers in the brief
+## What the primary sources say
 
-| number | where it appears | status | evidence |
-|---|---|---|---|
-| 0.2778 for `h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros` | user list; the GEMSDOE32 site | **USER-REPORTED** | The GEMSDOE32 page [docs/index.html](https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html) names the file `gemsdoe32-h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros.tif`, the same hash stem, and says it is **UNSCORED**: "NO ORGANISER SCORE EXISTS for this or any artifact in this repository". Its own projection is 0.2747 and is labelled a model. So 0.2778 has no receipt we can read. |
-| 0.3262 (#1, nchuzhoy) | GEMSDOE32 page | **CLAIM (site)** | Same page, "read 2026-10-04 from the official page". Not re-read here. |
-| 0.3774, 0.3195 | user brief | **USER-REPORTED** | Conflict with the 0.3262 above. Flagged, not resolved. |
-| official leaderboard values | — | **UNVERIFIED in this sandbox** | The [leaderboard page](https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/) returned only "Loading..." to our fetch tool; the values are rendered client-side. Manual check needed. |
-| metric definition | [problem page](https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/) | **verified** this session | Fetched and read: triangular kernel `k(d)=max(1-d/R,0)`, R = 300 m, α = 0.2, β = 0.8, TP_w / FP_w / FN_w definitions, worked example TP_w 3.00, FP_w 1.89, FN_w 2.00 → 0.60. Our `src/gems56/metric.py` gives 0.602652 for that example (checked below). |
-| submission format | same page | **verified** this session | float32, single layer, 100 m, EPSG 32611, "values between 0 and 1", "data outside the bounds is null or nan". |
+- **Official scoring and format:** [DrivenData problem description](https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/). It defines a triangular kernel `k(d)=max(1-d/R, 0)` with `R=300 m`, and `DTI=TP_w/(TP_w+0.2 FP_w+0.8 FN_w)`. It says submissions are single-band float32, EPSG:32611, 100 m, values in [0,1], with null/NaN outside bounds. The page describes the supplied sample as predicting total fault absence.
+- **Known-fault masking:** [DrivenData staff reply, forum thread 11516](https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516). Staff say pixels corresponding to known USGS/INGENIOUS faults are masked/excluded and do not count toward penalty terms. This is a pixel-level statement; it does **not** say that a 200 m buffer around a known fault is automatically exempt.
+- **The artifact's status:** [GEMSDOE32 page](https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html). The page identifies the H33-2-B2 artifact as **UNSCORED**, calls 0.2747 a model projection, and says no organizer score exists for artifacts in that repository. This directly blocks treating 0.2778 as a confirmed score.
+- **Reported construction mechanism:** [GEMSDOE54 Run 2 summary](https://github.com/buffedlizard55-lab/GEMSDOE54/blob/main/RUN2-SUMMARY.md), section “The 0.2778 entry”. GEMSDOE54 reports that its child raster has 37,654 dots and equals a 40,199-dot parent minus the 2,545 parent dots within 2 px (200 m) of a USGS catalogue fault. It reports 5.8% of the child and 11.7% of the parent within 300 m of the catalogue. **That is a sibling's raster-level report, not an organizer score and not independently reproduced from the source rasters in this checkout.**
 
-## 2. Why the high-scoring files score high (mechanism, DERIVED)
+## A defensible mechanism hypothesis—not a score explanation
 
-The official metric is `DTI = T / (T + α·FP_w + β·FN_w)` with the distance-weighted terms of the page. Two
-consequences follow directly from the formula and are the whole story:
+For unit-valued dots, let `N` be the number of predicted dots, `G` the number of positive truth pixels, `T=TP_w`, and `M` the sum of the best triangular-kernel proximity weight over predicted dots. The official definitions imply `FN_w=G-T` and `FP_w=N-M`, so:
 
-1. **Recall is weighted four times precision.** β = 0.8 on misses against α = 0.2 on false-positive mass. A unit of
-   emitted mass costs 0.2 unless it covers a truth pixel. So the optimum is to emit a *lot* of mass near where
-   hidden faults are, and accept that much of it is wrong.
-2. **The 3-px kernel turns a dot into a 29-cell disc of credit.** Each truth pixel is credited with the best cover
-   within 300 m. A dotted field of ~37k pixels (0.3% of the 12.28 M-cell grid) therefore covers a large share of the
-   plausible fault corridor while staying cheap in FP mass.
+```text
+DTI = T / (0.2*N + 0.8*G + 0.2*(T-M))
+```
 
-The break-even credit per emitted pixel is `0.2·DTI` (metric.py docstring, identity (ii)). At DTI 0.2778 that is
-**0.0556 per pixel**; at the 0.3262 claimed leader it is 0.0652. A file of 14 pixels cannot earn that much total
-credit (section 3).
+This identity is algebra from the published metric, not an inference of any private labels or leaderboard score. Removing dots can improve DTI if it reduces false-positive mass more than it reduces true-positive cover; it can also hurt if removed dots were near newly labeled faults. The exact known-fault mask only removes the masked pixels themselves. A dot 200 m away is not automatically unpenalized: it can receive triangular credit only if it is within 300 m of a hidden truth pixel, and otherwise contributes false-positive cost.
 
-The GEMSDOE32 site's own explanation (CLAIM, same page) agrees with this arithmetic: thinning a thick surface
-raises credit per pixel, and the group measured the break-even at 0.0548. We did not re-derive that measurement.
+Therefore the sibling-reported 200 m pruning rule is a plausible **mass/placement trade-off** to test. Its effect on a realized competition score cannot be deduced from the raster construction alone. The score attribution remains unverified, and there is no scientifically defensible causal explanation for why an unreceipted value “scored 0.2778.” The strongest supported answer is: the artifact embodies catalogue-distance pruning, but its claimed score is not established.
 
-## 3. The ceiling for a sparse file (DERIVED, code-checked)
+## Why the active corrections lane does not validate that claim
 
-Let `p` be the prediction, `S = Σp`, `M = Σ p·max_g k`, `G` the truth set, and `K = Σ_offsets k(d)` over the 29
-lattice offsets inside the 3-px disc. Because each truth pixel's credit is at most the sum of kernel-weighted
-predictions within 300 m of it,
+The active corrections run is recorded in [`evidence/run_card.json`](../../evidence/run_card.json). It is the latest corrections-lane card; the later `run_card_discovery_v1.json` is a different lane and is not the authority for this task. The current run's gate is negative: the one-dot primary triggers the literal >70%-within-3-px registry stop, and strict local template validation fails because 7,111,787 outside-mask cells are finite and the raster lacks the sample's NaN nodata tag. The sensitivity raster has the same format failure. No slot was used and no artifact is cleared.
 
-    T = TP_w ≤ min(|G|, S·K),   and   S − M ≥ 0,
+The method-level values recorded in that run are `HOLDOUT-DTI (evaluator gems52-pooled-hide-v1; 48,080 withheld positives; 95% CI in evidence/run_card.json)`. They are copied from `evidence/holdout_corrections_v1.json`; no DTI was recomputed in this review. That holdout targets withheld **catalogue** components, not the organizer's hidden new faults, and the one-dot output was not separately scored. The receipt leaves `design.prevalence` null although `scripts/run_corrections_holdout.py` invokes `make_folds(... prevalence=0.00294 ...)`. The same script builds catalogue-derived snap inputs from `fold["visible"]` and does not restrict them to `fold["fit"]`, where the shared fold builder records the 4 px buffer. The specified spatial buffer is therefore not established for those inputs. The latest run card also has no per-feature canary receipt. Treat the values as exploratory, not admissible for promotion. The previous experiment budget is exhausted, so this note does not propose or perform another experiment.
 
-so for any prediction
+## Remaining verification needed
 
-    DTI ≤ T_max / (0.2·T_max + 0.8·|G|),   T_max = min(|G|, S·K).
-
-`K = 9.3803` (computed with `gems56.metric.OFFSETS`, `.venv/bin/python`, this session).
-
-| prediction | |G| = 558 | |G| = 1,000 | |G| = 12,691 | |G| = 60,988 |
-|---|---|---|---|---|
-| 14 dots (this lane's file) | **0.2777** | 0.1589 | 0.0129 | 0.0027 |
-
-**Reading:** a 14-dot file can exceed 0.2778 only if the hidden truth set has fewer than about **558 positive
-pixels** (~56 km of 100 m-wide trace). `|G|` for the organizer's private test set is not published. The only
-figure in circulation is 12,691 px, which is the GEMSDOE32 *inference* (CLAIM), not an organizer count. This is
-the single most important negative result in the session: the lane's file is capped far below the leader under
-any |G| that is plausible for a regional fault test, independent of how well its dots are placed.
-
-Scope of the check: the bound is algebra, not a measurement, so it does not depend on the holdout. The holdout
-(section 4) uses different arms (about 3,700 dots per fold, catalogue truth) and is not a test of the 14-dot file.
-
-## 4. What this lane's own holdout says (HOLDOUT-DTI)
-
-Source: [evidence/holdout_corrections_v1.json](../../evidence/holdout_corrections_v1.json), evaluator
-`gems52-pooled-hide-v1`, α 0.2, β 0.8, R 300 m, 4 folds, 48,080 withheld positives per arm.
-
-| arm | DTI | 95% CI |
-|---|---|---|
-| A_as_is (catalogue, no snapping) | 0.00000 | [0, 0] |
-| B_snap (dots snapped to evidence crest) | 0.00016 | [0.00000, 0.00045] |
-| C_snap_sub | 0.00005 | [0.00000, 0.00011] |
-| D_jitter (control) | 0.00021 | [0.00000, 0.00051] |
-
-B_snap − D_jitter = −0.00016, CI [−0.00042, +0.00002]: no detectable benefit of evidence-placement over a random
-jitter. The holdout also cannot reward genuinely new faults (catalogue truth only; IR-56-004).
-
-## 5. Implication for the strategy
-
-* A **sparse, evidence-placed** emission (this lane) is capped by the ceiling in section 3 and measured near zero
-  on the holdout. It cannot be the route to 0.2778 or above.
-* The leader's route is **dense, recall-weighted emission** over the plausible fault field. Its validity rests on
-  a detector that finds unmapped faults, which is outside this lane's method paragraph.
-* Therefore the honest outputs of this lane are: a format-valid, hash-unique file labelled **negative**, and the
-  ceiling above. Spending a weekly slot on the 14-dot file is not recommended.
-
-## 6. Checks run (line by line)
-
-1. `metric.dti` worked example → 0.602652 (official page rounds to 0.60). Test: `tests/test_metric.py`.
-2. `OFFSETS` count 29, `K` 9.3803 → the bound table above.
-3. Repeat of the lane pipeline: `measure_offsets`, `lidar_calibration`, `run_corrections_holdout`,
-   `cluster_gate_control`, `build_corrections_submission` regenerated both rasters byte-for-byte
-   (sha256 `e3285854…` and `65635a53…`, see the run card).
-4. Input pins: `existing_faults.tif` `7ba308cc…`, `sample_submission.tif` `2176d08e…`, `training_features.tif`
-   `4371c82e…` all match `registry/input_pins.json`. LiDAR layer `h52_scarp3m_100m.tif` `b5e53d67…` matches
-   `data_manifest.json`.
-5. Uniqueness: see the run card and `evidence/lane_uniqueness_*.json` (regenerated with the full corpus; see IR-56-015).
-
-## 7. Sources (all fetched or read this session)
-
-* DrivenData problem page (metric, format): https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/
-* DrivenData leaderboard (not readable here): https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/
-* GEMSDOE32 site (claimed 0.2778 file, UNSCORED): https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html
-* Input mirror used for the pinned inputs (sibling repo, third-party copy of the data tab, not an organizer source):
-  https://github.com/buffedlizard55-lab/GEMSDOE/tree/main/data/bridge
-* LiDAR layer source (sibling repo): https://github.com/buffedlizard55-lab/GEMSDOE48/tree/main/data/external
+1. A logged-in user should compare the hash-pinned bridge inputs against the actual competition data-tab downloads. The sample-mirror content differs from the official page's description of a total-fault-absence sample; see IR-56-001, IR-56-003, and IR-56-034.
+2. A competition-page submission receipt would be needed before any value could be labeled **ORGANIZER-CONFIRMED**.
+3. Do not select, repair, or submit any current TIFF based on this mechanism note. The active lane verdict is **NEGATIVE / STOP**.

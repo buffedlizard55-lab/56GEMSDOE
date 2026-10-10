@@ -15,6 +15,7 @@ nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
 .dlbtn{margin:14px 0}
 .btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:8px}
 .btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn.stop{background:var(--bad);color:#1c0808}
 .btn:hover{filter:brightness(1.1)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
@@ -32,42 +33,36 @@ footer{border-top:1px solid var(--line);margin-top:34px;padding:18px 0 30px;colo
 ul{margin:6px 0 6px 20px}li{margin:3px 0}
 </style></head><body>
 <header class=top><div class=wrap>
-<h1>56GEMSDOE &mdash; research and audit for the DOE GEMS Prize</h1>
+<h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
 <div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
 faults missing from the USGS/INGENIOUS catalogue</div>
-<nav><a href="index.html">Home</a><a href="executive-summary.html">Audit status</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="h57.html" class=active>H57 run (current)</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">&#11015; Download H57 for audit (150 KB)</a> <a class="btn alt" href="executive-summary.html">Read the clearance status &rarr;</a></div>
+<nav><a href="index.html">Home</a><a href="executive-summary.html">Submission status</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="h57.html" class=active>H57 run (current)</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn stop" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">&#11015; Download archived H57 TIFF — NOT SAFE TO SUBMIT (150 KB)</a> <a class="btn alt" href="h57.html">Why this is blocked &rarr;</a></div>
 </div></header>
 <div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
 submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
 on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
 <span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
 data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
-<main class=wrap><div class=card><h2 class=bad>H57 file: audit download only — NOT CLEARED for submission</h2>
-<p>The download button above gives you <code>h57-corr-band2px-cover-20261009T191337Z.tif</code>. Its adjacent receipt reports a local
-single-band float32/range/grid check, but that is not organizer upload acceptance. The file has
-zero NaN cells anywhere, while the official sample uses a NaN exterior; do not infer exact portal
-compatibility from the local check or paste this file into a live submission.</p>
-<p><b>Scientific and protocol status:</b> the measured crest offsets remain below the two-pixel
-threshold; the H57 holdout refutes crest steering; the unsteered band is a coverage bet, not a
-trace located by positive correction evidence; and the literal 3-px registry gate returns
-<b>DUPLICATE/STOP</b> (see <a href="irregularities.html">IR-57-003/007</a> and
-<code>evidence/h57_uniqueness.json</code>). It is <b>not cleared for a weekly slot or upload</b>.
-No holdout tests the real corrections truth family.</p>
-<p><a href="h57.html">H57 run card and holdout</a> ·
-<a href="executive-summary.html">Read the current status</a> ·
+<main class=wrap><div class=card><h2 class=bad>Corrections lane: NEGATIVE / STOP — do not submit</h2>
+<p>The H57 TIFF linked above is retained for audit only. Its final-dot registry receipt reports
+<b>1.0</b> of dots within 3 px of prior rasters, exceeding the explicit 0.70 duplicate-and-stop
+threshold. A strict replay against the pinned sample also finds <b>7,111,787 finite cells outside
+the template footprint</b> and a missing NaN nodata tag. Its original "OK to submit" wording is
+superseded by this fail-closed review.</p>
+<p>The H57 crest-steering hypothesis was refuted by its own method-level HOLDOUT-DTI; the emitted
+54,914-dot cover itself was not scored. The review used no extra experiment or submission slot.
+No corrections-lane artifact is selected, promoted, or cleared to submit. Download only for
+technical inspection, not as a workaround or candidate upload.</p>
+<p><a href="h57.html">H57 run card, holdout and stop review</a> ·
+<a href="executive-summary.html">Current submission status and future checklist</a> ·
 <a href="prior-run.html">Preserved prior runs</a> ·
-<a href="prior-irregularities.html">Prior run irregularities</a></p></div>
+<a href="irregularities.html">Irregularities</a></p></div>
 <h2>H57 &mdash; the current run, end to end</h2>
 <div class=card>
 <p><b>Lane.</b> Corrections: measure how far the catalogue sits from the evidence, then emit
-where the evidence says the fault is. The H57 run card records three experiments; this PR #9
-audit ran none. <b>Scientific verdict:</b> <span class=bad>crest steering refuted; offsets below
-threshold. The band file is audit-only and NOT CLEARED.</span></p>
-<p>The historical run emitted an unsteered band-coverage raster. That file has no evidence-defined corrected trace, no holdout against real corrections truth, and it fails the current literal uniqueness gate; it remains audit-only and NOT CLEARED.</p>
-<p><b>Receipt reconciliation.</b> The historical run-card verdict describes the raster as
-"unique", but the final-dot literal gate receipt at <code>evidence/h57_uniqueness.json</code>
-returns <b>DUPLICATE/STOP</b> (maximum 3-px near fraction 1.0). The current audit follows the
-literal rule and does not treat rank/Jaccard diagnostics as a waiver.</p>
+where the evidence says the fault is. <b>Budget used:</b> 3 experiments.
+<b>Verdict:</b> <span class=bad>NEGATIVE / STOP</span>.</p>
+<p>The crest-steering hypothesis is refuted by the reported offset and neighbour-strand holdout. The emitted all-finite cover is not promoted: the final-dot registry receipt reports 100% within 3 px (above the literal 70% stop), and strict replay finds 7,111,787 finite cells outside the pinned sample mask with no matching NaN nodata tag. Preserve the TIFF only as a technical-inspection archive. No experiment or slot was used in this review.</p>
 </div>
 
 <h3>E1 &mdash; the offset histogram (MEASURED on the pinned official rasters)</h3>
@@ -89,11 +84,10 @@ Pearson r 0.022 &mdash; the two families do not agree on a direction.</li>
 
 <h3>E3 &mdash; hide-and-recover on REAL withheld faults (neighbour-strand folds)</h3>
 <div class=card>
-<p>HOLDOUT-DTI evaluator <code>h57-hide-and-recover-v1</code>; 41,742
-withheld positives; 95% CIs are shown in the table. This is a local hide-and-recover evaluation on
-mapped faults, not an organizer score and not a test of real corrections truth. Whole catalogue
-components with a neighbour within 400 m are withheld; features use only the visible catalogue,
-and visible faults are masked pixel-exactly. Reference arm:
+<p>Whole catalogue components that have another component within 400 m are withheld; every
+feature the emitter uses is derived from the visible catalogue only; visible faults are masked
+pixel-exactly on both sides of the metric. Truth = 41,742 withheld
+mapped-fault pixels. Reference arm for the paired contrast:
 <code>B1_corridor</code> (same dot budget, no evidence consulted).</p>
 <table><tr><th>arm</th><th>pooled HOLDOUT-DTI</th><th>95% CI</th>
 <th>paired contrast vs B1</th><th>P(beats B1)</th><th>dots</th></tr>
@@ -105,9 +99,6 @@ the crest is worse than not steering at all.</p>
 
 <h3>E2 &mdash; the same holdout with spatial folds, and why it cannot answer this question</h3>
 <div class=card>
-<p>HOLDOUT-DTI evaluator <code>h57-hide-and-recover-v1</code>;
-60,894 withheld positives; 95% CIs are shown below.
-This local mapped-fault holdout is not an organizer score or a test of real corrections truth.</p>
 <table><tr><th>arm</th><th>pooled HOLDOUT-DTI</th><th>95% CI</th>
 <th>paired contrast vs B1</th><th>P(beats B1)</th><th>dots</th></tr>
 <tr><td><code>B0_chance</code></td><td>0.01758</td><td>[0.016205, 0.019036]</td><td>[0.015943, 0.018811]</td><td>1.0</td><td>39,737</td></tr><tr><td><code>B1_corridor</code></td><td>0.00023</td><td>[4.1e-05, 0.000518]</td><td>[0.0, 0.0]</td><td>None</td><td>40,103</td></tr><tr><td><code>B2_evidence</code></td><td>0.00004</td><td>[0.0, 9.2e-05]</td><td>[-0.000459, -2.6e-05]</td><td>0.003</td><td>40,103</td></tr><tr><td><code>B3_corroborated</code></td><td>0.00000</td><td>[0.0, 0.0]</td><td>[-0.000518, -4.1e-05]</td><td>0.0</td><td>6,539</td></tr><tr><td><code>B4_catalogue</code></td><td>0.00000</td><td>[0.0, 0.0]</td><td>[-0.000518, -4.1e-05]</td><td>0.0</td><td>182,625</td></tr></table>
@@ -128,15 +119,17 @@ covers, so its absolute level means nothing; it is used only to rank geometries.
 2 &rarr; 54,919 dots.</p>
 </div>
 
-<h3>Ranked research backlog (not authorized or started)</h3>
+<h3>Limitations and possible future work — not authorized in this run</h3>
 <div class=card>
+<p><b>Stop rule:</b> the three-experiment / two-hour budget is exhausted. The ideas below are
+unexecuted research questions, not a plan to continue this run. Do not launch another experiment,
+holdout, registry screen, or emitter without fresh explicit authorization and a separately logged
+budget.</p>
 <ol>
 <li><b>Budget-and-spacing optimisation of a whole-footprint dot field</b> (rank 1, cost: low).
-This run's own chance arm is the loudest measured signal on the page: E3 HOLDOUT-DTI evaluator
-<code>h57-hide-and-recover-v1</code> (41,742 withheld positives)
-scored uniform dots 0.020303
-[0.018431, 0.022125]
-against mapped faults, an order of magnitude above every corridor arm. The open question nobody in the sibling corpus has answered
+This run's own chance arm is the loudest measured signal on the page: uniform dots at a matched
+budget scored 0.02030 against real withheld faults, an order of
+magnitude above every corridor arm. The open question nobody in the sibling corpus has answered
 with a measurement is the <i>optimal</i> (density, spacing, budget) triple for the DTI algebra
 &mdash; TP saturates with coverage while FP grows linearly at &alpha;&nbsp;=&nbsp;0.2, so an
 interior optimum exists and can be solved for directly on the kernel. Deliverable: the
@@ -154,15 +147,10 @@ cost: medium; needs only bands already in the official stack). The crest/ridge f
 as <i>registration</i> evidence here; that says nothing about them as <i>detection</i> evidence
 away from the catalogue, which this lane never tested.</li>
 </ol>
-<p class=mut>These are 4 ranked hypotheses, not experiment authorizations. H57 already records E1/E2/E3 against the three-experiment/two-hour stop-loss; reconcile that count and obtain a separate budget reset before any new run. The H57 review added no experiment or holdout.</p>
+<p class=mut>Each needs its own lane session and its own holdout; none is claimed here.</p>
 </div>
 
-<h3>Historical run card (verbatim; status caveat)</h3>
-<p class=mut>The original receipt is preserved below, including its local format and within-run wording.
-Its <code>ok_to_submit</code> field asserts that the form would accept the raster, but that claim has
-no organizer receipt or tested upload behind it and is not current clearance. The all-finite exterior
-also differs from the official sample's NaN mask. Use <code>evidence/submission_status.json</code>:
-H57 is audit-only, and its literal final-dot result is DUPLICATE/STOP.</p>
+<h3>Run card (verbatim)</h3>
 <div class=card><pre>{
  "session": {
   "date_utc": "2026-10-09",
@@ -285,11 +273,23 @@ H57 is audit-only, and its literal final-dot result is DUPLICATE/STOP.</p>
   "literal_verdict": "DUPLICATE/STOP",
   "max_exact_jaccard_vs_submissions": 0.1517,
   "discriminators": "evidence/h57_uniqueness_discriminators.json",
-  "reading": "rank-uniqueness passes with room to spare (max rho 0.286 vs the 0.90 bar) and the largest exact-pixel Jaccard against any earlier submission is 0.152 against a 6.6x larger raster. The literal 3 px containment clause fires, as it does for every emission near the catalogue, because 100% of dots 2 px off a trace are within 3 px of the catalogue raster itself and of every habitat-sized prior. IR-57-003."
+  "reading": "Final-dot gate: max near-3-px fraction 1.0 on its 40 worst-overlap submission priors, exceeding the independent 0.70 stop threshold. The run card Spearman value (0.286) and exact-pixel Jaccard (0.152) are descriptive only and do not waive DUPLICATE/STOP. The earlier full-corpus screen was for a timestamped candidate; do not claim it is a final-file pre-placement surface check.",
+  "post_review_decision": {
+   "rule": "Stop when rank correlation &gt; 0.90 OR &gt;70% of final dots are within 3 px of a registry raster.",
+   "final_dots_phase": "evidence/h57_uniqueness.json (phase=dots; 40 worst-overlap submission priors)",
+   "max_near_3px_fraction": 1.0,
+   "threshold": 0.7,
+   "literal_action": "DUPLICATE/STOP",
+   "preplacement_surface_clearance": "Not established by the final H57 receipts; final-dot trigger is independently decisive.",
+   "note": "Low Spearman (0.286 in the run card; 0.299 in the 40-prior dot gate) does not cancel the proximity rule."
+  }
  },
  "raster_sha256": "fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced",
  "validator_output": {
-  "ok": true,
+  "validator": "scripts/validate_submission.py (strict sample-mask and nodata validator)",
+  "validator_source_commit": "d623a00a6e9bc8ae04f92dabfa8f2358bb47834c",
+  "validator_sha256": "90bdadf28f112c0b8683fa501786ae7be6b0a00f08fbd4c3ca5d48350f6bd602",
+  "ok": false,
   "n_nan": 0,
   "min": 0.0,
   "max": 1.0,
@@ -307,9 +307,21 @@ H57 is audit-only, and its literal final-dot result is DUPLICATE/STOP.</p>
    -100.0,
    4508550.0
   ],
-  "problems": [],
-  "all_finite": true,
-  "mass_outside_sample_footprint": 0
+  "sample_sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+  "training_features_sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+  "training_grid_matches": true,
+  "template_valid_px": 5167373,
+  "nan_inside_px": 0,
+  "non_nan_outside_px": 7111787,
+  "mask_matches_template": false,
+  "candidate_nodata": null,
+  "template_nodata": "nan",
+  "nodata_matches_template": false,
+  "problems": [
+   "7111787 pixels outside the sample footprint are not NaN",
+   "nodata tag None != template tag nan"
+  ],
+  "validation_class": "strict local format validation only; not organizer acceptance"
  },
  "submission": {
   "name": "h57-corr-band2px-cover-20261009T191337Z",
@@ -339,23 +351,72 @@ H57 is audit-only, and its literal final-dot result is DUPLICATE/STOP.</p>
   },
   "approved_for_weekly_slot": false,
   "ok_to_download": true,
-  "ok_to_submit": "ACCEPTED BY THE FORM: yes - all-finite, every value in [0,1], CRS/shape/transform match the sample. SCIENTIFICALLY: this is a coverage bet on the organizers' stated corrections family, NOT an evidence-ranked discovery; the crest-steering hypothesis it started from is refuted above and no holdout exists for the real corrections truth family (we have no corrections labels). Promotion to a weekly slot is a separate selector decision."
+  "ok_to_submit": "NO \u2014 DUPLICATE/STOP and strict template validation fail",
+  "post_review_status": "Archive / technical inspection only; do not submit or promote.",
+  "safe_to_submit": false
  },
- "verdict": "negative (hypothesis) / deliverable shipped (format-valid unique raster)",
- "verdict_detail": "The crest-steering corrections hypothesis is REFUTED by E1 (offsets cluster under 2 px and match the null) and E3 (crest-steered dots score below an evidence-free corridor at matched budget, paired CI strictly below 0). Per the brief, the lane emits nothing steered by crests. What ships instead is the unsteered, kernel-optimal cover of the 100-400 m band the organizers themselves describe as containing corrections - sized by an explicit metric calculation, unique by rank (rho 0.286) and by exact overlap (Jaccard 0.152), and labelled as a bet rather than a validated discovery.",
+ "verdict": "NEGATIVE / STOP",
+ "verdict_detail": "The crest-steering hypothesis is refuted by the reported offset and neighbour-strand holdout. The emitted all-finite cover is not promoted: the final-dot registry receipt reports 100% within 3 px (above the literal 70% stop), and strict replay finds 7,111,787 finite cells outside the pinned sample mask with no matching NaN nodata tag. Preserve the TIFF only as a technical-inspection archive. No experiment or slot was used in this review.",
  "irregularities": [
   "IR-57-001",
   "IR-57-002",
   "IR-57-003",
   "IR-57-004",
   "IR-57-005",
-  "IR-57-006"
- ]
+  "IR-57-006",
+  "IR-57-007",
+  "IR-57-008",
+  "IR-57-009"
+ ],
+ "pre_review_record": {
+  "source_run_card_sha256": "c45a3764d4e30e594b44ed3e591059af6ca8d00175e82c68100c70d9ac8cd149",
+  "original_builder_validator_output": {
+   "ok": true,
+   "n_nan": 0,
+   "min": 0.0,
+   "max": 1.0,
+   "n_nonzero": 54914,
+   "crs": "EPSG:32611",
+   "shape": [
+    3730,
+    3292
+   ],
+   "transform": [
+    100.0,
+    0.0,
+    243350.0,
+    0.0,
+    -100.0,
+    4508550.0
+   ],
+   "problems": [],
+   "all_finite": true,
+   "mass_outside_sample_footprint": 0
+  },
+  "original_submission_claim": "ACCEPTED BY THE FORM: yes - all-finite, every value in [0,1], CRS/shape/transform match the sample. SCIENTIFICALLY: this is a coverage bet on the organizers' stated corrections family, NOT an evidence-ranked discovery; the crest-steering hypothesis it started from is refuted above and no holdout exists for the real corrections truth family (we have no corrections labels). Promotion to a weekly slot is a separate selector decision.",
+  "note": "Preserved verbatim from the merged H57 run card before this independent fail-closed review."
+ },
+ "post_review": {
+  "review_date": "2026-10-09",
+  "scope": "Independent, fail-closed review of the merged H57 corrections deliverable; no holdout/DTI was rerun.",
+  "authoritative_status": "NEGATIVE / STOP",
+  "experiment_budget_used": 3,
+  "experiments_added_by_review": 0,
+  "submission_slots_used_by_review": 0,
+  "strict_validation_result": "FAIL",
+  "registry_result": "DUPLICATE/STOP",
+  "holdout_scope_note": "The E3 HOLDOUT-DTI values compare crest steering with an evidence-free corridor. The emitted 54,914-dot cover itself was not scored; the geometry sweep is a design calculation, not a score.",
+  "preplacement_surface_gate": "Not evidenced for the final geometry; the earlier full-corpus screen names a different timestamped raster.",
+  "final_dot_registry_fraction_within_3px": 1.0,
+  "literal_registry_threshold": 0.7
+ }
 }</pre></div>
 </main>
-<footer><div class=wrap>56GEMSDOE · run receipts are preserved by lane and date ·
-generated 2026-10-10 19:48 UTC by
-<code>scripts/build_site.py</code> from committed evidence ·
-local format and HOLDOUT-DTI results are not organizer acceptance ·
-<a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">project site</a></div></footer>
+<footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
+round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
+generated 2026-10-10 07:23 UTC by
+<code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
+and <code>evidence/*.json</code> (run B) ·
+site served from <code>main</code> at
+<a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
 </body></html>

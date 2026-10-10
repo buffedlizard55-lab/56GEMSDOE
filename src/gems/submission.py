@@ -1,14 +1,12 @@
-"""Write and validate GEMS Prize submission GeoTIFFs.
+"""Legacy local writer/validator for the DOE GEMS Prize format.
 
-Format requirements (official, verified 2026-10-09 from the competition page
-https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/):
-  * projected CRS EPSG:32611 (UTM zone 11N), 100 m resolution
-  * same bounds as the training data (reference grid below, verified from the
-    GeoDAWN-derived rasters in the sibling repositories; the official training file itself
-    could NOT be opened from this sandbox - see docs/irregularities.md)
-  * single band, float32, values in [0, 1]; data outside the bounds is null or NaN
-  * the validator also rejects nodata sentinels (e.g. -3.4028234663852886e+38), which
-    would otherwise appear as out-of-range values to the portal.
+The public format page (https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/)
+requires EPSG:32611, 100 m, matching bounds, one float32 band, values in [0, 1], and null/NaN
+outside the data bounds.  The reference affine below is measured from the pinned bridge copies
+in this checkout, not independently authenticated by the organizer.  The sample file in that
+mirror contains catalogue values despite the public page describing a total-fault-absence sample;
+use only its finite mask as a locally tested footprint and see IR-56-001.  Passing this helper
+is a local format check, not proof of uniqueness or organizer acceptance.
 """
 
 from __future__ import annotations
@@ -60,15 +58,34 @@ def sha256_file(path: str) -> str:
     return h.hexdigest()
 
 
-def write_submission(path: str, values: np.ndarray) -> None:
-    """Write a float32 single-band GeoTIFF on the reference grid. NaN is never written here."""
-    if values.shape != (REF_HEIGHT, REF_WIDTH):
-        raise ValueError(f"shape must be {(REF_HEIGHT, REF_WIDTH)}, got {values.shape}")
-    arr = np.asarray(values, dtype=np.float32)
-    if not np.isfinite(arr).all():
-        raise ValueError("refusing to write non-finite values; the reference writer keeps every cell finite")
-    if arr.min() < 0.0 or arr.max() > 1.0:
-        raise ValueError("values must lie in [0, 1]")
+def write_submission(path: str, values: np.ndarray,
+                     reference_valid_mask: np.ndarray | None = None) -> None:
+    """Write a float32 GeoTIFF; require the caller to supply an exact mask if using NaN.
+
+    Without a reference mask this legacy helper accepts only all-finite arrays and does
+    not claim template conformance.  With one, values must already be finite inside and
+    NaN outside; it never repairs, clips, or fills candidate values silently.
+    """
+    raw = np.asarray(values)
+    if raw.shape != (REF_HEIGHT, REF_WIDTH):
+        raise ValueError(f"shape must be {(REF_HEIGHT, REF_WIDTH)}, got {raw.shape}")
+    if np.isinf(raw).any():
+        raise ValueError("submission must not contain infinity")
+    finite = np.isfinite(raw)
+    if finite.any() and ((raw[finite] < 0.0).any() or (raw[finite] > 1.0).any()):
+        raise ValueError("finite values must lie strictly in [0, 1]")
+    if reference_valid_mask is None:
+        if not finite.all():
+            raise ValueError("non-finite values require the organizer template valid mask")
+        nodata = None
+    else:
+        reference_valid_mask = np.asarray(reference_valid_mask, dtype=bool)
+        if reference_valid_mask.shape != raw.shape or not reference_valid_mask.any():
+            raise ValueError("reference_valid_mask must be nonempty and match the reference grid")
+        if not finite[reference_valid_mask].all() or not np.isnan(raw[~reference_valid_mask]).all():
+            raise ValueError("finite/NaN mask does not match reference_valid_mask")
+        nodata = float("nan")
+    arr = raw.astype(np.float32, copy=False)
     os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
     profile = dict(
         driver="GTiff",
@@ -78,7 +95,7 @@ def write_submission(path: str, values: np.ndarray) -> None:
         dtype="float32",
         crs=REF_CRS,
         transform=REF_TRANSFORM,
-        nodata=None,
+        nodata=nodata,
         compress="deflate",
         predictor=3,
         tiled=False,
@@ -88,12 +105,14 @@ def write_submission(path: str, values: np.ndarray) -> None:
         dst.set_band_description(1, "fault_probability")
 
 
-def validate_submission(path: str, reference_nan_mask: np.ndarray | None = None) -> ValidationReport:
-    """Re-open the file from disk and check every rule the portal enforces.
+def validate_submission(path: str, reference_nan_mask: np.ndarray | None = None,
+                         reference_nodata: float | None = None) -> ValidationReport:
+    """Re-open the file and perform a local format check against the pinned grid.
 
-    reference_nan_mask: optional boolean array (H, W) of cells that the organizer template
-    marks as outside the bounds. If given, NaN must occur exactly there. If None, the file
-    must contain no NaN at all (the safe default).
+    ``reference_nan_mask`` is a boolean mask of pixels outside the sample's valid area.
+    When supplied, NaN must occur exactly there and the nodata tag must match
+    ``reference_nodata`` (NaN by default).  Without a template mask, only all-finite
+    predictions can be assessed.  Passing this local validator is not organizer acceptance.
     """
     problems, warnings = [], []
     with rasterio.open(path) as ds:
@@ -121,10 +140,19 @@ def validate_submission(path: str, reference_nan_mask: np.ndarray | None = None)
     if n_nonfinite:
         problems.append(f"{n_nonfinite} infinite cells")
     if reference_nan_mask is not None:
+        reference_nan_mask = np.asarray(reference_nan_mask, dtype=bool)
         if reference_nan_mask.shape != a.shape:
             problems.append("reference NaN mask has the wrong shape")
         elif not np.array_equal(nan, reference_nan_mask):
-            problems.append("NaN cells do not match the organizer footprint")
+            problems.append("NaN cells do not match the supplied template footprint")
+        expected_nodata = float("nan") if reference_nodata is None else reference_nodata
+        nodata_matches = (
+            nodata is not None and np.isnan(nodata) and np.isnan(expected_nodata)
+            if isinstance(nodata, (float, np.floating))
+            else nodata == expected_nodata
+        )
+        if not nodata_matches:
+            problems.append(f"nodata tag {nodata!r} does not match template {expected_nodata!r}")
     elif n_nan:
         problems.append(f"{n_nan} NaN cells but no reference footprint was supplied (write all-finite files)")
     vals = a[finite]

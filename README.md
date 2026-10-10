@@ -1,27 +1,59 @@
 # 56GEMSDOE — corrections lane for the DOE GEMS Prize
 
-DrivenData competition 306 (GeoDAWN / NW Nevada): evaluate **geothermal-indicative fault candidates
-missing from the USGS/INGENIOUS catalogue** and publish GeoTIFF artifacts with their evidence and clearance status.
+> **CURRENT CORRECTIONS STATUS: NEGATIVE / STOP — do not submit any file in the corrections lane.**
+> The H57 artifact's final-dot registry receipt reports a 1.0 within-3-px fraction (>0.70), and a
+> strict replay finds 7,111,787 finite cells outside the pinned sample mask plus a missing NaN
+> nodata tag. The original H57 `OK to submit` wording is superseded by
+> [`evidence/h57_run_card.json`](evidence/h57_run_card.json)'s post-review verdict. No experiment
+> or slot was used in this review. See the three-pass review in `docs/review/2026-10-09.md`.
+
+DrivenData competition 306 (GeoDAWN / NW Nevada): find **geothermal-indicative faults missing
+from the USGS/INGENIOUS catalogue** and ship them as a legal GeoTIFF.
 Site: **https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html**
-(one-click audit downloads at the top; the *H56 audit details* page separates local checks from clearance).
+(one-click archive download at the very top; the page states clearly that it is NOT safe to submit).
 
-> **Current corrections-lane decision: NOT CLEARED.** H57 remains downloadable for audit, but no supported positive correction was established: offsets cluster below the two-pixel threshold, the holdout refutes crest steering, and the literal 3-px registry gate returns **DUPLICATE/STOP**. The unsteered band file is a coverage bet, not an evidence-defined corrected trace; it is not cleared for a competition upload or weekly slot. This audit ran no new experiment/holdout and selected no slot. See [`evidence/submission_status.json`](evidence/submission_status.json). The separate H56 field/physics and PR #7 discovery receipts remain distinct runs; their results are not reattributed here.
+## Preserved main-side Round-3 twin-family record — research only, NEGATIVE / STOP
 
-> ## H56 field/physics round 2 (receipts stamped 16:29Z → 17:26Z): audit artifacts and the measurement that says what they are worth
+This run was already present on the updated `main` base (PR #14); this merge preserves its receipts
+and makes no new experiment or registry scan. Its pre-registered H-C1 conjunction was **NEGATIVE**:
+MAPSCALE could not discriminate because 120/125 records were mapped at 1:250k (Spearman
+ρ=0.059, p=0.257), while a secondary FTYPE comparison passed but did not satisfy the conjunction.
+The pre-registered fallback emitted `gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif`
+(2,139 dots; SHA-256 `a614a594e179fa2af24a3d9c311bbab45f3c39ca868023da23b43ece16a32b75`).
+
+The run's **HOLDOUT-DTI** is a machinery check on simulated corrections truth—not a competition
+score or geological validation—using `src/metrics.py`, α=0.2, β=0.8, a 300 m triangular kernel,
+and 26,813 withheld positives: 0.10788 [0.089756, 0.126814] versus matched-mass chance
+0.00414 [0.002937, 0.005405]. The existing 1,034-raster registry receipt (485 unique pixel
+contents) contains **12 literal >0.70 directed-proximity flags** (maximum containment 1.0);
+maximum Spearman is 0.5732 for dots and 0.3335 for the surface. Under the standing rule those
+flags mean **DUPLICATE / STOP**;
+the older “UNIQUE” / zero-duplicate classification is superseded, and density, Jaccard, reverse
+containment, and “superset” explanations do not waive the trigger. This status correction applies
+the existing receipt only; no scan was rerun. The TIFF remains a research archive, not a candidate
+for submission or promotion; the run spent no slot. See
+[`evidence/corrections/run_card_round3.json`](evidence/corrections/run_card_round3.json),
+[`evidence/corrections/registry_check_round3.json`](evidence/corrections/registry_check_round3.json),
+[`evidence/corrections/registry_check_round3_post_review.json`](evidence/corrections/registry_check_round3_post_review.json),
+and [`docs/research/hypotheses-20261009-round3.md`](docs/research/hypotheses-20261009-round3.md).
+
+PR #11's dotted-ridge output is a separate artifact and remains unadjudicated by the H57 review.
+
+> ## Historical Round-2 discovery artifacts (receipts stamped 16:29Z → 17:26Z; not current status)
 >
-> **Two locally format-validated GeoTIFF candidates are published for audit** — one-click download is available, but no weekly slot was selected by this audit.
-> [`h56-magpack-37k-20261009.tif`](docs/downloads/h56-magpack-37k-20261009.tif)
-> (37,654 dots, `mag_ridge|packed`, min 2.24 px off the catalogue,
-> sha256 `62824bcab55d…`) and
+> This is an archived run record, not a submission desk. The two GeoTIFFs remain available for
+> technical inspection — [`h56-magpack-37k-20261009.tif`](docs/downloads/h56-magpack-37k-20261009.tif)
+> (37,654 dots, `mag_ridge|packed`, min 2.24 px off the catalogue, sha256 `62824bcab55d…`) and
 > [`h56-quota-37k-20261009.tif`](docs/downloads/h56-quota-37k-20261009.tif) (30,800 dots,
-> `QUOTA|packed|weighted`). Both are single band float32, EPSG:32611, 100 m, 3730×3292, values in [0, 1],
-> zero NaN, no nodata tag — re-read from disk after writing
-> ([receipts](docs/downloads/checks-h56-magpack-37k-20261009.json)), so the portal error
-> `Predicted values must be in range [0, 1]` was not reproduced by the local checks. These are available for inspection; that does not establish organizer acceptance or clear a slot.
+> `QUOTA|packed|weighted`). Their old receipts report single-band float32, EPSG:32611, 100 m,
+> 3730×3292, values in [0, 1], zero NaN, and no nodata tag
+> ([receipts](docs/downloads/checks-h56-magpack-37k-20261009.json)). These local format facts do
+> not establish strict template conformance, registry clearance, organizer acceptance, or permission
+> to submit; do not treat this historical block as a current download recommendation.
 >
-> **No slot is selected by this audit.** On the shared blocked HOLDOUT-DTI
+> **Submitting is a different question, and the answer is no this round.** On the shared blocked holdout
 > (`gems52-pooled-hide-v1`, 4 folds, 36,335 withheld
-> positives; per-score 95% CIs below), our best arm reaches **0.0387**
+> positive pixels) our best arm reaches **0.0387**
 > [0.0348, 0.0424] where the group's filed sibling surface reaches
 > **0.0900** [0.0811, 0.0988] at the same budget on the same folds (our arm read from `evidence/quota_union_v1.json`, the incumbent from `evidence/field_holdout_v1.json`; both receipts print 0.0387 for our arm).
 > Verdict on the run card: **negative**, `promote: false`, no weekly slot claimed. Six hypotheses were tested;
@@ -43,14 +75,15 @@ Site: **https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html**
 > twin at 0.0038 — the opposite sign — because the withheld truth *is* the
 > catalogue. So no near-catalogue policy was chosen from hide-DTI here (IR-56-004, IR-56-011).
 >
-> **Unique.** 868 sibling rasters from the whole account mirror were screened at
-> ≤3 px dot proximity in both directions: **0** exceed the 0.70 duplicate rule. The
-> shared lane gate on the disclosed top-40 adversarial subset returns
-> ok=true / duplicate=false for both files
-> ([`evidence/lane_uniqueness2_summary.json`](evidence/lane_uniqueness2_summary.json)). 56
-> files trip the *one-way* criterion and all of them are dense artefacts — the largest is a 5-pixel lattice
-> probe (IR-56-025 after the PR #7 merge; drafted as 015 before ids were reconciled), which is why the
-> reciprocal direction is the criterion.
+> **Historical registry result: DUPLICATE / STOP for both H56 artifacts.** The 868-row
+> directed screen (`evidence/registry_screen_h56b.json`; 31 unreadable rows) records 56 priors
+> with >0.70 candidate-dot proximity for `h56-magpack-37k` and 54 for `h56-quota-37k` in its
+> row data. The corresponding 40-prior subset receipt maxes at 0.527 and 0.475, respectively;
+> that subset did not cover the triggering priors. Reciprocal containment is descriptive only and
+> cannot waive the stated one-way rule. Lower rank correlations (0.0117 / 0.0169) do not cancel
+> these proximity stops. The old “Unique” interpretation and reciprocal-only rationale are
+> superseded; the files are historical archives, not submit-ready candidates. See
+> [`evidence/irregularities.json`](evidence/irregularities.json), IR-56-036.
 >
 > **Run card:** [`docs/research/run-card-round2.json`](docs/research/run-card-round2.json)
 > (= [`evidence/run_card_round2.json`](evidence/run_card_round2.json)) · site generator:
@@ -70,13 +103,15 @@ Site: **https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html**
 > the standing brief (lane, protocol, product requirements, official sources) and this README
 > links it first on purpose.
 
-## H57 run — 2026-10-09 (current)
+## H57 run — 2026-10-09 (latest corrections run; NEGATIVE / STOP)
 
-**Deliverable file:** `docs/downloads/h57-corr-band2px-cover-20261009T191337Z.tif`
-(+ `.zip`, + `.json` receipt) — 54,914 dots, single band, float32, **0 NaN cells**, every value
-in [0, 1], EPSG:32611, 3292×3730, geotransform identical to `sample_submission.tif`,
-sha256 `fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced`.
-**OK to download for audit: yes. Cleared to submit: no.** The local validator is not an organizer upload receipt; the literal 3-px uniqueness gate returns **DUPLICATE/STOP**, and the file is not cleared for a weekly slot. The repository has submitted nothing.
+**Archived file:** [`docs/downloads/h57-corr-band2px-cover-20261009T191337Z.tif`](docs/downloads/h57-corr-band2px-cover-20261009T191337Z.tif)
+(+ `.zip`, + original build receipt) — 54,914 dots, single band, float32, 0 NaN cells, values
+in [0, 1], EPSG:32611, 3292×3730, transform matching the local sample; SHA-256
+`fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced`.
+**Download for technical inspection only. NOT SAFE TO SUBMIT.** Its original run card's
+"OK to submit" claim is preserved as historical input and explicitly superseded by the strict
+post-review result below. No experiment or slot was used in this review.
 
 **Hypothesis verdict: NEGATIVE — crest steering is refuted, by our own measurements.**
 
@@ -90,29 +125,32 @@ All numbers are **HOLDOUT-DTI** (evaluator `h57-hide-and-recover-v1`: `src/metri
 β 0.8, 300 m triangular kernel, visible faults masked pixel-exactly, 20×20 px block bootstrap,
 2,000 draws). None is a competition score; no ORGANIZER-CONFIRMED number exists for this repo.
 
-**What is published for audit, and why it is not a correction claim.** The brief's stop rule applies to crest steering, and the H57 receipt records a negative: the offsets do not clear the two-pixel threshold and the evidence-steered holdout arm loses to the evidence-free corridor. The downloadable H57 file is an *unsteered* band-coverage bet (dots 200 m either side of every catalogue trace, every 200 m along strike, 0 dots on the masked catalogue), not a trace located by positive correction evidence. The geometry was chosen by a circular design calculation over nine candidate geometries (`evidence/h57_geometry_sweep.json`), not by a holdout score. The final dots also return **DUPLICATE/STOP** under the literal registry rule (`evidence/h57_uniqueness.json`); rank/Jaccard diagnostics do not waive that rule. It is available for audit only, not cleared for upload or slot selection.
+**What the H57 output represents.** It is an unsteered 200 m either-side cover proposed after
+crest steering was refuted. The geometry sweep is a design calculation against a circular simulated
+target, not a score; the emitted cover itself has no HOLDOUT-DTI result. It remains an archive only.
 
-**Uniqueness.** Full-corpus and shared-template diagnostics are recorded in
-`evidence/registry_screen_v1.json`, `evidence/h57_uniqueness_submissions.json`, and
-`evidence/h57_uniqueness.json`. The literal 3-px rule returns **DUPLICATE/STOP** (maximum
-near fraction 1.0; 39 near-offenders), including the competition's own `existing_faults.tif`.
-The lower rank-correlation/exact-overlap diagnostics do not waive that pre-registered stop
-condition; see IR-57-003 and `evidence/h57_uniqueness_discriminators.json`.
+**Why H57 is stopped.** The final-dot shared gate (`evidence/h57_uniqueness.json`) reports
+**max near-3-px fraction 1.0** on its 40 worst-overlap prior rasters, above the explicit 0.70
+threshold, and records **DUPLICATE/STOP**. Its full-run card reports max Spearman 0.286; low
+correlation does not waive the separate proximity trigger. The registry trigger is not exempt just
+because the overlap includes the catalogue.
 
-**Historical reproduction commands (not authorization to rerun):** the existing H57 receipts already include E1/E2/E3, and the H56 round-2 run card records four experiments against its original three-experiment stop-loss. Reconcile those receipts before considering any new work; no new experiment or holdout is authorized by this README. Do not execute the commands below as part of this audit.
+A strict template replay of the actual final TIFF against the pinned sample and training grid also
+fails: **7,111,787** finite cells lie outside the sample's finite footprint, while the TIFF has
+`nodata=None` and the sample declares NaN. The current H57 card's earlier `validator_output.ok=true`
+was from the permissive all-finite compatibility gate; the post-review strict result is recorded in
+`validator_output`/`post_review` in `evidence/h57_run_card.json`. No repair, re-emission, DTI rerun,
+or promotion was attempted.
 
-```bash
-python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-bash scripts/download_competition_data.sh                       # hash-pinned inputs
-.venv/bin/python scripts/h57_corridor_holdout.py --mode spatial   --out evidence/h57_holdout.json
-.venv/bin/python scripts/h57_corridor_holdout.py --mode neighbour --out evidence/h57_holdout_neighbour.json
-.venv/bin/python scripts/h57_build_corridor_submission.py --sweep
-.venv/bin/python scripts/h57_build_corridor_submission.py --build --offsets 2,-2 --step 2 --name h57-corr-band2px-cover
-.venv/bin/python scripts/mirror_registry_corpus.py /home/user/_reg /home/user/_regsrc
-.venv/bin/python scripts/screen_registry.py /home/user/_reg docs/downloads/h57-corr-*.tif
-.venv/bin/python scripts/h57_uniqueness.py --candidate docs/downloads/h57-corr-*.tif --registry /home/user/_reg_sub40
-.venv/bin/python scripts/build_site.py && .venv/bin/python -m pytest -q
-```
+The exact holdout values above are method-level **HOLDOUT-DTI** for the crest-steering comparison
+(41,742 withheld positives), not an evaluation of the 54,914-dot cover. The last 40-prior final-dot
+gate triggers even though its max Spearman is below 0.90. `IR-57-003` records the original literal
+trigger; the final card now records the required stop action.
+
+**Reproduction status:** the evidence receipts are preserved, but do not rerun holdout, geometry
+sweeps, emitters, or experiments under the exhausted 3-experiment/2-hour budget. A future session
+would need fresh authorization, official input/template verification, complete stage-specific
+registry checks, and strict validation before any new candidate is considered.
 
 **New irregularities from this run:** IR-57-001 (the spatial-fold holdout cannot test this lane),
 IR-57-002 (crest steering refuted), IR-57-003 (the literal containment clause is unpassable for
@@ -266,17 +304,12 @@ GDAL_NODATA=`nan`.
 **sha256 `08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7`** (351,093 B).
 Validator `scripts/validate_submission.py` exit 0; template conformance
 (`python -m src.submission_io validate-conformant`) exit 0.
-Uniqueness: checked against every earlier raster from the 48 sibling repositories
+Uniqueness: the historical screen covered earlier rasters from 48 sibling repositories
 (976 rasters, 412 unique pixel contents) — see `evidence/corrections/registry_check.json`.
-**UNIQUE**: worst Spearman 0.043 (dots) / 0.109 (surface) vs all 412 unique rasters
-(threshold 0.90); worst 3-px Jaccard 0.091 and worst reverse containment 0.046 vs every
-sparse prior. The protocol's literal 70%-containment test fires on 8 habitat rasters
-(up to 99.9% containment), all 12–38× larger superset emissions (lattices/fields) with
-Jaccard ≤ 0.056 and reverse containment ≤ 0.023 among themselves; against every prior
-submission of comparable construction (the 37,654–44,090-dot h33 family, incl. the
-0.2778-attributed file) containment is ≤ 33% and Jaccard ≤ 5%. Logged and investigated
-as IR-56-07 (`docs/irregularities.html`); determination: not a re-issue of any prior.
-Run card: `evidence/corrections/run_card.json`.
+Its literal 70%-containment test fires on 8 rasters. Lower Spearman (0.043 dots / 0.109 surface),
+Jaccard, and reverse-containment values characterize the overlaps but do **not** waive the
+explicit duplicate-and-stop rule. The protocol verdict is **DUPLICATE / STOP**; this file is
+historical research output only. Run card: `evidence/corrections/run_card.json`.
 
 **Historical interpretation (superseded): PROMOTE** — the lane's emission beats its controls on the holdout, the
 crest is LiDAR-calibrated and the format is validated. The final run card instead records
@@ -403,12 +436,10 @@ The registry check needs the harvested sibling rasters (outside this repo; see
    exercise only the vendored tools and pass (see `tests/README.md`); 35 tests pass.
 8. **Budget:** 3 experiments used (E1, E2, E3). No submission slot was spent; promotion is the
    separate selector step.
-9. **Uniqueness caveat (IR-56-07):** the literal 70%-containment test flags 8 habitat
-   rasters (12–38× supersets). The discriminating statistics (Jaccard ≤ 0.091, reverse
-   containment ≤ 0.046, Spearman ≤ 0.043, comparable-prior containment ≤ 0.334) show the
-   file is unique; the flags are logged with full numbers in
-   `evidence/corrections/registry_check.json` and on `docs/irregularities.html` so the
-   selector can veto with the complete record.
+9. **Uniqueness stop (IR-56-07):** the literal 70%-containment test flags 8 rasters.
+   The discriminating statistics are diagnostic only; they cannot waive the user's duplicate-and-stop
+   rule. The protocol verdict is **DUPLICATE / STOP**. Full numbers remain in
+   `evidence/corrections/registry_check.json` and `docs/irregularities.html`.
 
 ### Concurrent integration (PR #6)
 

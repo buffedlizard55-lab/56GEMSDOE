@@ -76,7 +76,26 @@
     "file": null,
     "why_not_issued": "The only lane in this session emits nothing when the offset proxy clusters below two pixels (protocol item 1 and the brief's corrections-lane rule). Producing a file from another lane would be drift (protocol item 1). The user must choose the route; see the README decision section."
   },
-  "irregularities": ["IR-01", "IR-02", "IR-03", "IR-04", "IR-05", "IR-06", "IR-07", "IR-08", "IR-09", "IR-10", "IR-11", "IR-12", "IR-13", "IR-14", "IR-15"],
+  "irregularities": [
+    "IR-01",
+    "IR-02",
+    "IR-03",
+    "IR-04",
+    "IR-05",
+    "IR-06",
+    "IR-07",
+    "IR-08",
+    "IR-09",
+    "IR-10",
+    "IR-11",
+    "IR-12",
+    "IR-13",
+    "IR-14",
+    "IR-15"
+  ],
   "verdict": "negative",
-  "verdict_detail": "Corrections lane, proxy: NEGATIVE, so emit nothing. The DEM-crest test is BLOCKED and must be run before this lane is closed. Submission: not promoted."
+  "verdict_detail": "Corrections lane, proxy: NEGATIVE, so emit nothing. The DEM-crest test is BLOCKED and must be run before this lane is closed. Submission: not promoted.",
+  "record_status": "HISTORICAL / SUPERSEDED for current corrections-lane status",
+  "superseded_by": "evidence/run_card.json (authoritative active corrections run, 2026-10-09T16:49:44Z)",
+  "interpretation": "This earlier card records a prior review state when inputs/candidate validation were unavailable. Do not use its NOT RUN fields as current facts; use the superseding card and review."
 }
