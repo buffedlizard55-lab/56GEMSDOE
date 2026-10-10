@@ -1,0 +1,297 @@
+{
+ "evidence_class": "MEASURED instrument characterisation on synthetic scarps; not a score",
+ "surface": "erf scarp, amplitude 25 m, crest of -d2z/dn2 at the stated column",
+ "cells": {
+  "sig0.75_k-4.0": {
+   "n_detected": 0,
+   "n_total": 161,
+   "frac_detected": 0.0
+  },
+  "sig0.75_k-3.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": -2.538,
+   "bias_px": 0.462,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig0.75_k-2.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": -1.5379,
+   "bias_px": 0.4621,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig0.75_k-1.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": -0.5379,
+   "bias_px": 0.4621,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig0.75_k+0.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": 0.4621,
+   "bias_px": 0.4621,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig0.75_k+1.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": 1.4621,
+   "bias_px": 0.4621,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig0.75_k+2.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": 2.4622,
+   "bias_px": 0.4622,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig0.75_k+3.0": {
+   "n_detected": 0,
+   "n_total": 161,
+   "frac_detected": 0.0
+  },
+  "sig0.75_k+4.0": {
+   "n_detected": 0,
+   "n_total": 161,
+   "frac_detected": 0.0
+  },
+  "sig1.0_k-4.0": {
+   "n_detected": 0,
+   "n_total": 161,
+   "frac_detected": 0.0
+  },
+  "sig1.0_k-3.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": -2.6216,
+   "bias_px": 0.3784,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig1.0_k-2.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": -1.6212,
+   "bias_px": 0.3788,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig1.0_k-1.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": -0.6212,
+   "bias_px": 0.3788,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig1.0_k+0.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": 0.3788,
+   "bias_px": 0.3788,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig1.0_k+1.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": 1.3788,
+   "bias_px": 0.3788,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig1.0_k+2.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": 2.3788,
+   "bias_px": 0.3788,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig1.0_k+3.0": {
+   "n_detected": 0,
+   "n_total": 161,
+   "frac_detected": 0.0
+  },
+  "sig1.0_k+4.0": {
+   "n_detected": 0,
+   "n_total": 161,
+   "frac_detected": 0.0
+  },
+  "sig1.5_k-4.0": {
+   "n_detected": 0,
+   "n_total": 161,
+   "frac_detected": 0.0
+  },
+  "sig1.5_k-3.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": -2.723,
+   "bias_px": 0.277,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig1.5_k-2.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": -1.7218,
+   "bias_px": 0.2782,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig1.5_k-1.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": -0.7218,
+   "bias_px": 0.2782,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig1.5_k+0.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": 0.2782,
+   "bias_px": 0.2782,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig1.5_k+1.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": 1.2782,
+   "bias_px": 0.2782,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig1.5_k+2.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": 2.2782,
+   "bias_px": 0.2782,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig1.5_k+3.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": 3.2842,
+   "bias_px": 0.2842,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig1.5_k+4.0": {
+   "n_detected": 0,
+   "n_total": 161,
+   "frac_detected": 0.0
+  },
+  "sig2.0_k-4.0": {
+   "n_detected": 0,
+   "n_total": 161,
+   "frac_detected": 0.0
+  },
+  "sig2.0_k-3.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": -2.7861,
+   "bias_px": 0.2139,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig2.0_k-2.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": -1.7841,
+   "bias_px": 0.2159,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig2.0_k-1.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": -0.7841,
+   "bias_px": 0.2159,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig2.0_k+0.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": 0.2159,
+   "bias_px": 0.2159,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig2.0_k+1.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": 1.2159,
+   "bias_px": 0.2159,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig2.0_k+2.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": 2.2159,
+   "bias_px": 0.2159,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig2.0_k+3.0": {
+   "n_detected": 161,
+   "n_total": 161,
+   "frac_detected": 1.0,
+   "median_offset_px": 3.2221,
+   "bias_px": 0.2221,
+   "mad_px": 0.0,
+   "spread_px": 0.0
+  },
+  "sig2.0_k+4.0": {
+   "n_detected": 0,
+   "n_total": 161,
+   "frac_detected": 0.0
+  }
+ },
+ "summary": {
+  "detection_complete_within_2px": true,
+  "max_abs_bias_px_within_2px": 0.4622,
+  "median_abs_bias_px_within_2px": 0.3285,
+  "note": "bias is nearly constant in k for a given scarp width (the 0.75 px gaussian on a curvature lobe whose trough sits one cell away displaces the smoothed peak), so it is a per-shape calibration, not scatter; it is bounded by ~0.4 px, which is why the lane quotes corridors and null-relative distributions rather than any single absolute offset",
+  "cells_beyond_crediting_window": "|true offset| = 4 px is at the +-400 m window edge; those rows are reported as reduced detection, and a missed far crest can only understate displacement, never invent it"
+ }
+}

@@ -82,3 +82,52 @@ What is implemented in **this** repository today: the metric (pinned from the te
 2. **INGENIOUS regional compilation** (GDR 1391), for H1–H3, H5. Free, CC BY 4.0, public. The zips are listed on the page we fetched; the sandbox cannot download them.
 3. **USGS 3DEP 1 m DEM tiles** (for H4). Free, official. Listed by the competition; not reachable from the sandbox.
 4. **SGMC 2026 update** (DOI 10.5066/P1A3DQZK), to replace the superseded 2017 raster (IR-08).
+
+---
+
+## Session 2026-10-09 update — gating by the official-metric ceiling (DERIVED)
+
+This section supersedes the ranking above for *emission design*. The ceiling in
+[leader-analysis-2026-10-09.md](leader-analysis-2026-10-09.md) §3 applies to every hypothesis:
+a file with total mass S can earn at most `T_max = min(|G|, S·K)` with `K = 9.3803`. A hypothesis that
+emits a few dozen or a few hundred pixels cannot exceed 0.2777 unless the hidden positive set is smaller
+than about 558 pixels. So the ranking now depends on *how much recall mass* a method can emit, not only on
+how precise its dots are.
+
+Status key as above. No hypothesis below has a score. Nothing below was validated this session.
+
+| id | layers | physical signature | why it could find a *missing* fault | named mimic | status | cost |
+|---|---|---|---|---|---|---|
+| **H6** | DEM detrended elevation (crest of −d²z/dn²), per qualifying corridor | a ±2 px band of the evidence crest along each corridor, emitted at p = 1 instead of single dots | a band carries ~29 cells of kernel credit per cell, so recall scales with length | scarp degradation | **BLOCKED by its own gate**: 0 of 21 corridors qualify under the decision gate, so the band is empty. Only the ungated arm (2 of 1,273) would emit, and it is unvalidated | low |
+| **H7** | magnetic gradient `tmi_hg` ridge (|∇TMI| local maxima), catalogue pixels excluded | a continuous ridge field thresholded at a fixed top-k%, emitted as p = normalised ridge strength over the footprint | magnetic lineaments on unmapped structure; the mass is what β = 0.8 rewards | lithologic contacts, dikes and intrusion margins that have no fault | **UNTESTED**. Data present (training_features.tif, band described as `tmi_hg`). Holdout can only test recovery of catalogue faults (IR-56-004), so it is a proxy, not a discovery test | low–medium |
+| **H8** | fusion of H6 and H7 as a rank average, emitted at the matched mass of the best catalogue-free arm | two independent families agreeing on a line | agreement reduces mimics from either family alone | any shared illumination or gridding artefact | **UNTESTED**, and a fused field is a *different lane* from corrections | medium |
+
+**Scope note (parallel-run protocol).** H6 stays inside the corrections lane but is blocked by its own gate. H7 and
+H8 change the method paragraph (they emit dense, detector-driven mass rather than evidence-placed corrections), so
+they belong to another lane and must not be run from this session. Recorded here so that the lane that owns them can
+start from a measured ceiling rather than from intuition.
+
+**Free official sources needed:** none beyond the three pinned competition inputs and the 1 m tile receipts already
+used. The 1 m DEM links are listed in the competition's own `1m_DEM_links.csv` (login-gated; mirrored copy at
+https://github.com/buffedlizard55-lab/GEMSDOE/blob/main/data/dem_links.json, a third-party mirror).
+
+## Round 2 (2026-10-09, 17:00-19:20 UTC) - the six hypotheses that were actually tested, and what killed them
+
+The ranking above is round 1's, written before any emitter existed; it is kept unchanged. Round 2 tested a
+different set - label-free physical channels as *emitters*, plus the combination rules - on the shared blocked
+holdout, and every one of them was decided by measurement. That file is generated from the receipts so the
+numbers cannot drift: **[hypotheses-round2.md](hypotheses-round2.md)**.
+
+Headline: **5 of 6 rejected, 1 not resolvable on this instrument, no promotion.** These are local
+HOLDOUT-DTI results (evaluator `gems52-pooled-hide-v1`, 36,335 withheld positives, 4 folds; not organizer
+scores). Best own arm `mag_ridge|packed` 0.0387 [95% CI 0.0348, 0.0424] against 0.0900
+[95% CI 0.0811, 0.0988] for the group's filed sibling surface on identical folds (receipts
+`evidence/field_holdout_v1.json` / `evidence/quota_union_v1.json`). Two findings matter more than the ranking:
+
+- **H2-6 rejected the instrument, not the arm.** On this local HOLDOUT-DTI (evaluator `gems52-pooled-hide-v1`,
+  36,335 withheld positives), the withheld truth *is* the catalogue: the sibling surface scores 0.0900
+  [95% CI 0.0811, 0.0988] and its pruned twin 0.0038 [95% CI 0.0033, 0.0043]. Their separate live
+  figures (0.2600 and 0.2778) are USER-REPORTED, not organizer-confirmed. Any near-catalogue pruning decision
+  taken from hide-DTI would have been backwards (IR-56-011).
+- **H2-5 is reported as a null, not a win.** Exact 2.8 px packing moved `mag_ridge` by +0.00045 with CI
+  (-0.00125, 0.00036). We ship packing because it is free and mechanically sound, not because we measured a gain.

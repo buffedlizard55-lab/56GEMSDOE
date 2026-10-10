@@ -1,0 +1,101 @@
+{
+ "name": "h56-magpack-37k-20261009",
+ "file": "docs/downloads/h56-magpack-37k-20261009.tif",
+ "bytes": 154019,
+ "sha256": "62824bcab55d97427b035a004d90c2aaf088acb30c66aeb2a355f5022cc6efb2",
+ "dots": 37654,
+ "values_present": [
+  0.0,
+  1.0
+ ],
+ "mass": 37654.0,
+ "min_d_catalogue_px": 2.23606797749979,
+ "frac_d_gt_2px": 1.0,
+ "arm": "mag_ridge|packed",
+ "pack_stats": {
+  "emitted": 37654,
+  "considered": 44000,
+  "pool": 4860040,
+  "radius_px": 2.8
+ },
+ "format_report": {
+  "path": "/home/user/56GEMSDOE/docs/downloads/h56-magpack-37k-20261009.tif",
+  "bytes": 154019,
+  "sha256": "62824bcab55d97427b035a004d90c2aaf088acb30c66aeb2a355f5022cc6efb2",
+  "bands": 1,
+  "dtype": "float32",
+  "crs": "EPSG:32611",
+  "width": 3292,
+  "height": 3730,
+  "bounds": [
+   243350.0,
+   4135550.0,
+   572550.0,
+   4508550.0
+  ],
+  "ref_bounds": [
+   243350.0,
+   4135550.0,
+   572550.0,
+   4508550.0
+  ],
+  "transform": [
+   100.0,
+   0.0,
+   243350.0,
+   0.0,
+   -100.0,
+   4508550.0
+  ],
+  "nodata": null,
+  "blocksize": [
+   256,
+   256
+  ],
+  "fixture_grid": false,
+  "has_validity_mask": false,
+  "nan_pixels": 0,
+  "infinity_pixels": 0,
+  "n_nan": 0,
+  "min": 0.0,
+  "max": 1.0,
+  "mean": 0.0030664964579045773,
+  "n_nonzero": 37654,
+  "mass": 37654.0,
+  "mass_outside_footprint": 0,
+  "problems": [],
+  "ok": true,
+  "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+ },
+ "geotiff": {
+  "path": "/home/user/56GEMSDOE/docs/downloads/h56-magpack-37k-20261009.tif",
+  "bytes": 154019,
+  "sha256": "62824bcab55d97427b035a004d90c2aaf088acb30c66aeb2a355f5022cc6efb2",
+  "bands": 1,
+  "dtype": "float32",
+  "height": 3730,
+  "width": 3292,
+  "crs": "EPSG:32611",
+  "transform": [
+   100.0,
+   0.0,
+   243350.0,
+   0.0,
+   -100.0,
+   4508550.0
+  ],
+  "res": [
+   100.0,
+   100.0
+  ],
+  "nodata": null,
+  "nodata_repr": "None",
+  "finite_pixels": 12279160,
+  "min": 0.0,
+  "max": 1.0,
+  "positive_pixels": 37654,
+  "nonzero_in_footprint": 37654,
+  "unique_values": 2
+ },
+ "seconds": 3.3
+}

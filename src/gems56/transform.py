@@ -41,31 +41,43 @@ def rank01(a: np.ndarray, valid: np.ndarray, nbins: int = 4096) -> np.ndarray:
 
     Quantile-bin approximation of the rank, not exact argsort: exact ranks over 5.17M valid pixels
     are unnecessary (the metric resolves 100 m, not 1e-7 of a quantile) and cost 10x the memory.
+
+    NaN *inside* the footprint (a transform that legitimately returns NaN, e.g. an unsupported
+    edge window) is excluded from the ranking and stays NaN on output.  Before this rule a
+    NaN-within-valid cell was pushed into the top histogram bin and came out rank ~1.0, which
+    silently turned every edge-masked cell into a top-ranked emission candidate (IR-56-020).
     """
-    v = a[valid]
+    good = np.asarray(valid, bool) & np.isfinite(a)
+    v = a[good]
     if v.size == 0:
         return np.full_like(a, np.nan, dtype=np.float32)
     lo, hi = float(np.nanmin(v)), float(np.nanmax(v))
     if not hi > lo:
         r = np.zeros_like(a, dtype=np.float32)
-        r[valid] = 0.5
-        return r
+        r[good] = 0.5
+        return np.where(good, r, np.nan).astype(np.float32)
     edges = np.linspace(lo, hi, nbins + 1)
     hist, _ = np.histogram(v, bins=edges)
     cdf = np.cumsum(hist).astype(np.float64)
     cdf /= cdf[-1]
     idx = np.clip(np.searchsorted(edges, a, side="right") - 1, 0, nbins - 1)
-    out = np.where(valid, cdf[idx], np.nan).astype(np.float32)
+    out = np.where(good, cdf[idx], np.nan).astype(np.float32)
     return out
 
 
 def gradient_magnitude(a: np.ndarray, valid: np.ndarray) -> np.ndarray:
-    """|grad| in units per metre (central differences, sentinel-safe)."""
+    """|grad| in units per metre (central differences, sentinel-safe).
+
+    Cells within 2 px of the footprint edge return NaN: the exterior is zero-filled, so a
+    central difference there measures the data edge, not the field (IR-56-020 defect class).
+    """
     f = fill_outside(a, valid)
     gy, gx = np.gradient(f.astype(np.float32), PIXEL_M, PIXEL_M, edge_order=2)
     gy[~valid] = np.nan
     gx[~valid] = np.nan
-    return np.sqrt(gy * gy + gx * gx).astype(np.float32)
+    out = np.sqrt(gy * gy + gx * gx).astype(np.float32)
+    out[_edge_band(valid, 2.0)] = np.nan
+    return out
 
 
 def box_mean(a: np.ndarray, valid: np.ndarray, radius_m: float) -> np.ndarray:
@@ -89,6 +101,17 @@ def _shift(a: np.ndarray, dy: int, dx: int) -> np.ndarray:
     xs0, xs1 = max(0, dx), min(w, w + dx)
     out[ys0:ys1, xs0:xs1] = a[ys0 - dy:ys1 - dy, xs0 - dx:xs1 - dx]
     return out
+
+
+def _edge_band(valid: np.ndarray, radius_px: float) -> np.ndarray:
+    """Cells whose distance to the footprint's complement is < radius_px (invalid cells included)."""
+    v = np.asarray(valid, bool)
+    if v.all():
+        return np.zeros(v.shape, bool)
+    if not v.any():
+        return np.ones(v.shape, bool)
+    dist = ndimage.distance_transform_edt(v)
+    return dist < radius_px
 
 
 def scarp_step(a: np.ndarray, valid: np.ndarray, half_width_m: float,
@@ -118,16 +141,31 @@ def scarp_step(a: np.ndarray, valid: np.ndarray, half_width_m: float,
         lv = PIXEL_M * (2 ** 0.5 if (v[0] and v[1]) else 1.0)
         lu = PIXEL_M * (2 ** 0.5 if (u[0] and u[1]) else 1.0)
         rv = max(1, int(half_width_m / lv))
+        # Support mask: the two-sided window must lie *inside* the footprint for every k, and the
+        # persistence window only reads supported acc.  Without this the zero-fill outside the data
+        # extent is differenced against real data and the footprint rim becomes a fake step ~10x
+        # the interior response (measured IR-56-020: 56 % of an emission's top cells landed on a
+        # 2 px rim band of the competition footprint).
+        sup = np.asarray(valid, bool).copy()
+        for k in range(1, rv + 1):
+            dy, dx = int(round(k * v[0])), int(round(k * v[1]))
+            sup &= _shift(np.asarray(valid, bool), dy, dx)
+            sup &= _shift(np.asarray(valid, bool), -dy, -dx)
         acc = np.zeros(a.shape, dtype=np.float32)
         for k in range(1, rv + 1):
             dy, dx = int(round(k * v[0])), int(round(k * v[1]))
             acc += _shift(fa, dy, dx) - _shift(fa, -dy, -dx)
         acc /= rv                                  # two-sided mean difference, uniform weights
         mj = max(1, int(persist_m / (2.0 * lu)))    # half-length of the along-strike window
+        sup_p = sup.copy()
+        for j in range(-mj, mj + 1):
+            uy, ux = int(round(j * u[0])), int(round(j * u[1]))
+            sup_p &= _shift(sup, uy, ux)
         per = np.zeros(a.shape, dtype=np.float32)
         for j in range(-mj, mj + 1):
             per += np.abs(_shift(acc, int(round(j * u[0])), int(round(j * u[1]))))
         per /= (2 * mj + 1)
+        per[~sup_p] = np.nan                        # edge-unsupported cells never respond
         per[~valid] = np.nan
         better = np.isfinite(per) & (per > best)
         best = np.where(better, per, best)
@@ -138,7 +176,12 @@ def scarp_step(a: np.ndarray, valid: np.ndarray, half_width_m: float,
 
 
 def hessian_line(a: np.ndarray, valid: np.ndarray, sigma_m: float = 300.0) -> np.ndarray:
-    """Bright/dark ridge response: -|lambda_2| of the (scaled) Hessian of a Gaussian-smoothed field."""
+    """Bright/dark ridge response: -|lambda_2| of the (scaled) Hessian of a Gaussian-smoothed field.
+
+    Cells within ~3 sigma of the footprint edge return NaN: the exterior is zero-filled, so the
+    smoothed field (and its second derivatives) are contaminated out to 3 sigma there
+    (IR-56-020 defect class).
+    """
     sig = max(0.5, sigma_m / PIXEL_M)
     f = ndimage.gaussian_filter(fill_outside(a, valid).astype(np.float64), sig)
     f /= max(PIXEL_M, 1.0)
@@ -148,4 +191,5 @@ def hessian_line(a: np.ndarray, valid: np.ndarray, sigma_m: float = 300.0) -> np
     lam2 = 0.5 * ((yyy + yxx) - np.sqrt(np.maximum((yyy - yxx) ** 2 + 4 * yxy ** 2, 0.0)))
     out = np.abs(lam2).astype(np.float32)
     out[~valid] = np.nan
+    out[_edge_band(valid, 3.0 * sig + 1.0)] = np.nan
     return out

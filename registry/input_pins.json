@@ -1,15 +1,15 @@
 {
   "purpose": "Hash-pinned inventory of every input this repository reads. A pin is an integrity statement about the bytes on this machine, not an authentication of organizer provenance.",
   "retrieved_utc": "2026-10-09T04:30:00Z",
-  "retrieval_route": "api.github.com Git blobs API (host in the sandbox allowlist) from buffedlizard55-lab/GEMSDOE@main commit dcbbb19-adjacent tree fetched 2026-10-09; the GEMSDOE repo mirrors the DrivenData data tab via data/bridge shards, assembled by scripts/assemble_data_bridge.py",
-  "why_not_direct": "The DrivenData data tab is login-gated and the sandbox egress allowlist is github.com, codeload.github.com, api.github.com, registry.npmjs.org, pypi.org, files.pythonhosted.org. Neither drivendata.org nor dropbox.com norprd-tnm.s3.amazonaws.com is reachable from this sandbox, so the rasters are carried in through the owner's hash-pinned mirror.",
+  "retrieval_route": "GitHub Git Blobs API from the immutable public owner-maintained mirror commit buffedlizard55-lab/GEMSDOE@dcbbb192e56b2b32c0a131eba791dc363305d4a3; exact blob and SHA-256 pins, plus the sibling-derived LiDAR cache pins, are in registry/bridge_sources.json. Fetch/assemble/verify with bash scripts/download_competition_data.sh.",
+  "why_not_direct": "The DrivenData competition data page requires participant login. This sandbox cannot download the login-gated files directly through the shell, so the competition bytes are restored from the public owner-maintained mirror and hash-checked. A matching mirror hash is byte identity only; it is not direct organizer authentication, licensing advice, or permission to redistribute.",
   "files": {
     "catalogue": {
       "path": "data/grid/existing_faults.tif",
       "role": "the competition fault catalogue (USGS quaternary faults + INGENIOUS), rasterised on the 100 m grid; 60,988 positive cells; int8; nodata -1. THIS is the object the corrections lane measures.",
       "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
       "bytes": 425830,
-      "provenance": "owner mirror of https://www.drivendata.org/competitions/306/competition-doe-gems/data/ existing_faults.tif; committed in this repo, verified at build time by scripts/prepare_data.py",
+      "provenance": "public owner-maintained mirror copy of the login-gated DrivenData data-tab file, at the immutable source commit recorded in registry/bridge_sources.json; byte hash verified, but not direct organizer authentication",
       "not_authenticated_by": "no organizer signature; no DrivenData account in this sandbox"
     },
     "sample": {
@@ -17,8 +17,7 @@
       "role": "the organizer's sample submission, used by the format gate as the CRS/shape/transform reference",
       "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
       "bytes": 1599597,
-      "provenance": "owner mirror of example_submission.tif from the same data tab (dropbox mirror URL recorded in GEMSDOE data/bridge/manifest.json)",
-      "measured_surprise": "documented on the problem page as 'a sample submission that predicts total fault absence', but cell-for-cell equal to the catalogue mask; see evidence/grid.json sample_submission_forensics and IR-56-001"
+      "provenance": "public owner-maintained mirror of the sample submission listed on the DrivenData data page, at the immutable source commit recorded in registry/bridge_sources.json; byte hash verified, but not direct organizer authentication"
     },
     "features": {
       "path": "data/training_features.tif",
@@ -26,18 +25,18 @@
       "sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
       "bytes": 418912844,
       "held_outside_git": true,
-      "rebuild": "concatenate data/bridge/gems-geodawn-numerical-features.tif.part-000..004 from buffedlizard55-lab/GEMSDOE@main (five blobs, each pinned in that repo's data/bridge/manifest.json) and verify the assembled sha256 above; scripts/fetch_inputs.sh does this end to end",
-      "provenance": "assembled from shards on 2026-10-09T04:24Z; every shard hash matched the owner manifest before assembly",
+      "rebuild": "bash scripts/download_competition_data.sh fetches five pinned feature shards from the immutable owner mirror commit, verifies each shard's byte count and SHA-256, assembles data/training_features.tif, and verifies the assembled bytes.",
+      "provenance": "public owner-maintained mirror of the competition data tab; all shard and assembled hashes are recorded in registry/bridge_sources.json; direct organizer authentication was not possible here",
       "not_authenticated_by": "the manifest is owner-maintained; the original download was not witnessed by this session"
     },
     "lidar_scarp": {
       "path": "data/external/h52_scarp3m_100m.tif",
       "role": "LiDAR calibration layer: int16, 7 bands, value/SCALE encodings (h_all m, strike_at deg, facing_at, cover fraction), built by GEMSDOE48 from 700 USGS 3DEP 1 m tiles (NV WestCentral EarthMRI 2020) resampled to 3 m and aggregated to the competition grid",
-      "sha256": null,
+      "sha256": "b5e53d67c3a7d3d1ca44ae04ae1e84d8574857da3fcd5e34ba47276d6c04b923",
       "bytes": 43839078,
       "held_outside_git": true,
-      "provenance": "buffedlizard55-lab/GEMSDOE48@main data/external/h52_scarp3m_100m.tif, fetched through api.github.com blobs on 2026-10-09T04:27Z",
-      "caveat": "a sibling lane's derived product, not an organizer file. Its merge receipt (h52_scarp3m_100m.json: 697 npz shards, 700 tiles ok, 5,900,588 cells with cover, workflow run 37565284104) is owner-recorded and was not re-run here. Used only to calibrate the 100 m crest estimator, never as a scoring target."
+      "provenance": "sibling-derived 100 m summary from buffedlizard55-lab/GEMSDOE48 at pinned commit 268ec599f51c517cc3485da077c24d83af5be81d; not an organizer file or a direct USGS 1 m DEM",
+      "caveat": "A derived 3 m LiDAR analysis aggregated to a 100 m scarp summary. The original 1 m USGS rasters and the regional source tile list were not obtained in this review. It is used only as an optional calibration cache, not as the competition scoring target."
     }
   },
   "verification_command": "python scripts/prepare_data.py",

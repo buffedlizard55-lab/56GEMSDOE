@@ -1,0 +1,76 @@
+{
+  "file": "h57-corr-band2px-cover-20261009T191337Z.tif",
+  "sha256": "fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced",
+  "bytes": 153148,
+  "submission_name": "h57-corr-band2px-cover-20261009T191337Z",
+  "note": "corrections-band cover: dots 2px either side of every catalogue trace, 2px along strike; crest steering refuted on holdout",
+  "note_chars": 122,
+  "validator": {
+    "path": "docs/downloads/h57-corr-band2px-cover-20261009T191337Z.tif",
+    "bytes": 153148,
+    "sha256": "fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced",
+    "bands": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "ref_bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "nodata": null,
+    "blocksize": [
+      256,
+      256
+    ],
+    "fixture_grid": false,
+    "has_validity_mask": false,
+    "nan_pixels": 0,
+    "infinity_pixels": 0,
+    "n_nan": 0,
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.004472129978239536,
+    "n_nonzero": 54914,
+    "mass": 54914.0,
+    "mass_outside_footprint": 0,
+    "problems": [],
+    "ok": true,
+    "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+  },
+  "zip_file": "h57-corr-band2px-cover-20261009T191337Z.zip",
+  "zip_sha256": "f1ed40dba62210c70f481f2d889aa7ab41cb2f5780aeb093fbaf08cd62745acc",
+  "approved_for_weekly_slot": false,
+  "promoted": false,
+  "submission_slots_used": 0,
+  "status": "research-only; local format validation is not organizer acceptance",
+  "metadata": {
+    "lane": "corrections",
+    "dots": 54914,
+    "offsets": [
+      2.0,
+      -2.0
+    ],
+    "step_px": 2,
+    "holdout_label": "HOLDOUT-DTI (h57-hide-and-recover-v1): crest-steered arm 0.00087 [0.00049,0.00133] vs evidence-free corridor 0.00177 [0.00130,0.00232]; crest steering REFUTED",
+    "emission_rule": "uniform cover of the 100-400 m band stated by the organizers (forum 11516) - no crest steering, because E1/E3 refuted it",
+    "all_finite": true,
+    "nan_cells": 0
+  }
+}

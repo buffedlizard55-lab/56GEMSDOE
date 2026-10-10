@@ -1,0 +1,107 @@
+<!doctype html><html lang=en><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Audit status · 56GEMSDOE</title><style>
+:root{--bg:#0f1420;--fg:#e8eaf0;--mut:#9aa3b5;--acc:#4da3ff;--ok:#3fd68f;--warn:#ffb454;--bad:#ff6b6b;--card:#171d2e;--line:#28304a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+header.top{background:linear-gradient(180deg,#131a2c,#0f1420);border-bottom:1px solid var(--line);padding:22px 0 18px}
+h1{font-size:24px;margin:0 0 4px}
+h2{font-size:19px;margin:28px 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px}
+h3{font-size:16px;margin:20px 0 6px}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+nav a{color:var(--mut);text-decoration:none;padding:5px 10px;border:1px solid var(--line);border-radius:16px;font-size:13px}
+nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
+.dlbtn{margin:14px 0}
+.btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:8px}
+.btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn:hover{filter:brightness(1.1)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.mut{color:var(--mut)}
+.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+code{background:#0a0e18;border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:13px}
+pre{background:#0a0e18;border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;font-size:12.5px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:#131a2c}
+img{max-width:100%;border:1px solid var(--line);border-radius:8px}
+.values{background:#10182b;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;font-size:13.5px;color:var(--mut)}
+footer{border-top:1px solid var(--line);margin-top:34px;padding:18px 0 30px;color:var(--mut);font-size:13px}
+.tag{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:10px;padding:1px 8px;color:var(--mut);margin-right:5px}
+ul{margin:6px 0 6px 20px}li{margin:3px 0}
+</style></head><body><div style='border:1px solid #d29922;background:rgba(210,153,34,.09);padding:10px 14px;border-radius:10px;margin:14px 0'><b>Archived page from the parallel discovery round-2 run (PR&nbsp;#7), preserved so the historical verdict remains readable.</b> The repository's current front page is <a href='index.html'>index.html</a>; it carries audit downloads and current status links, not submission clearance. Original file name at merge time: <code>docs/executive-summary.html</code>. Earlier preservation edits are logged as IR-56-029 (archive banner) and IR-56-030 (sibling-repo link); PR #9 review also refreshed historical score disclosures and no-upload wording.</div>
+<header class=top><div class=wrap>
+<h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
+<div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
+faults missing from the USGS/INGENIOUS catalogue</div>
+<nav><a href="index.html">Home</a><a href="executive-summary.html" class=active>Audit status</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download the historical correction raster for audit</a> <a class="btn alt" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">.tif (343 KB)</a></div>
+</div></header>
+<div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
+submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
+on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
+<span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
+data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
+<main class=wrap><div class=card><h2 class=bad>STOP: not cleared for submission</h2>
+<p>The TIF is format-valid research output. Eight literal &gt;70% containment flags fail
+ the standing duplicate-and-stop rule. Historical UNIQUE/PROMOTE labels below describe
+ the earlier interpretation, not current authorization. Superset explanations do not waive
+ the rule. No competition submission has been made.</p>
+<p><a href="prior-run.html">Preserved prior run</a> ·
+<a href="prior-irregularities.html">Prior run irregularities</a></p></div>
+<h2>Audit summary &mdash; PR #7 discovery run (historical; no upload authorized)</h2>
+<div class=card>
+<p><b>Decision: NOT CLEARED for submission or a weekly slot.</b> The PR #7 discovery artifact
+is retained for audit only. Its pre-registered holdout was negative and its literal registry gate
+returned <b>DUPLICATE/STOP</b>. No organizer submission was made, no weekly slot was spent, and
+this page gives no upload instruction.</p>
+<p><a class="btn" href="downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif">Download PR #7 raster for audit only</a><br>
+sha256 <code>dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296</code> · 25,000 dots.
+The adjacent run-record name and note are historical metadata, not values to paste into a form.</p>
+<h3>HOLDOUT-DTI (local; not an organizer score)</h3>
+<p>Evaluator <code>gems52-pooled-hide-v1</code>; 48,080 withheld positives. The selected
+<code>multi@25,000</code> arm scored 0.01242 [0.00787, 0.01718] versus same-budget random
+0.03499 [0.03273, 0.03714]; paired difference -0.02257 [-0.02749, -0.01717] (95% CI).
+This is a local hide-and-recover result on mapped faults, not an organizer score or a prediction
+of performance on new corrections.</p>
+<p><b>Local format status:</b> the adjacent receipt reports format validation, but local checks do
+not establish organizer portal acceptance. No upload was tested. The literal 3-px gate is
+DUPLICATE/STOP and the pre-registered holdout is negative; do not infer clearance from the
+raster's availability.</p>
+<p><b>Historical run-record name (not a submission instruction):</b>
+<code>h56-disc-multi-b25000-20261009-20261009T165646Z</code><br>
+<b>Historical run-record note (reference only):</b>
+<code>h56 discovery multi k=25000: step-lineament dots &gt;200 m off catalogue; NEGATIVE holdout, research only, do not slot</code></p>
+<p>Full evidence: <code>evidence/build_discovery_v1.json</code>,
+<code>evidence/run_card_discovery_v1.json</code>, and
+<code>evidence/holdout_discovery_v1.json</code>. Keep PR #7 discovery separate from H57 corrections
+and the independent H56 field/physics run.</p>
+</div>
+
+<h2>PR #4 corrections run &mdash; a distinct historical record</h2>
+<div class=card>
+<p>The separate PR #4 run has its own negative scientific and registry receipts and is retained
+for audit only. It is not the PR #7 discovery result, the H57 corrections-band result, or the
+independent H56 field/physics run. No file from that run is cleared by this page for an upload or
+weekly slot. See <a href="prior-run.html">the PR #4 receipts and historical page</a>.</p>
+</div>
+
+<h2>Round-2 discovery candidate &mdash; also NOT for submission</h2>
+<div class=card>
+<p><b>OK to submit: <span class=bad>NO</span>.</b> The second download on the
+<a href="index.html">home page</a>
+(<code>h56-disc-multi-b25000-20261009-20261009T165646Z.tif</code>, 25,000 dots) is format-validated
+research output: single band, float32, values exactly {0.0, 1.0}, EPSG:32611, shape and
+transform equal to the submission format, sha256 <code>dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296</code>.
+Two independent verdicts block it: local HOLDOUT-DTI evaluator <code>gems52-pooled-hide-v1</code>,
+48,080 withheld positives, candidate 0.01242 [0.00787, 0.01718] vs same-budget random
+0.03499 [0.03273, 0.03714], paired difference -0.02257 [-0.02749, -0.01717] (95% CI);
+and the registry lane gate returned <b>DUPLICATE/STOP</b> (density-degenerate 3&nbsp;px trigger,
+IR-56-023). These are not organizer scores. Its run receipt says NEGATIVE; no slot was spent and
+no upload was made. Full walk-through of the numbers:
+<a href="hypotheses.html">hypotheses (round-2 section)</a> ·
+<code>evidence/run_card_discovery_v1.json</code>.</p>
+</div>
+</main>
+<footer><div class=wrap>56GEMSDOE · historical runs are retained with their own receipts · local measurements are not organizer confirmations · no upload or weekly-slot selection was made by this review · <a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">project site</a></div></footer>
+</body></html>

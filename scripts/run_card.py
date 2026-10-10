@@ -128,11 +128,15 @@ def main():
                 "duplicate": prim["lane"]["duplicate"], "ok": prim["lane"]["duplicate"] is not True,
                 "offender_count": prim["lane"]["offender_count"],
                 "sensitivity_arm_offender_count": sens["lane"]["offender_count"],
-                "reading": ("the shared gate FAILS the candidate on the proximity criterion, trivially: the "
-                            "primary raster has one dot, so 'all my dots are within 3 px of a prior' is true for "
-                            "105 of 485 priors, most of them whole-footprint density layers. Reciprocal overlap "
-                            "is 0 of 485 above 0.70 and the reverse fraction peaks at 0.0008, so nothing is "
-                            "duplicated. The protocol says a trigger is a logged duplicate and a stop, so the "
+                "reading": (f"the shared gate FAILS the primary on the proximity criterion. The primary has "
+                            f"{prim['dots']} dot(s); the criterion is met against {prim['lane']['offender_count']} of "
+                            f"{prim['lane']['priors_checked']} priors (the sensitivity raster: "
+                            f"{sens['lane']['offender_count']}). The primary's offenders carry 12,000 to 5,167,373 positive cells "
+                            f"(median 88,988; measured from the receipt), so the criterion is met by dense layers rather than by "
+                            f"a like-for-like duplicate. "
+                            f"{prim['lane'].get('error_count')} priors could not be read onto the grid and were not compared. "
+                            "The reciprocal figure below comes from the one-pass screen over the full 944-raster corpus "
+                            "(evidence/registry_screen_v1.json). The protocol says a trigger is a logged duplicate and a stop, so the "
                             "artefacts are published as research output and no slot is claimed.")},
             "corpus_files": scr["corpus"]["files"], "corpus_read_errors": scr["corpus"]["errors"],
             "rule_as_written_triggers": scr["over_070"],

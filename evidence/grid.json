@@ -6,7 +6,7 @@
    "bytes": 425830,
    "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
    "role": "the competition fault catalogue (USGS quaternary faults + INGENIOUS), rasterised on the 100 m grid; 60,988 positive cells; int8; nodata -1. THIS is the object the corrections lane measures.",
-   "provenance": "owner mirror of https://www.drivendata.org/competitions/306/competition-doe-gems/data/ existing_faults.tif; committed in this repo, verified at build time by scripts/prepare_data.py",
+   "provenance": "public owner-maintained mirror copy of the login-gated DrivenData data-tab file, at the immutable source commit recorded in registry/bridge_sources.json; byte hash verified, but not direct organizer authentication",
    "pin_match": true
   },
   "sample": {
@@ -14,7 +14,7 @@
    "bytes": 1599597,
    "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
    "role": "the organizer's sample submission, used by the format gate as the CRS/shape/transform reference",
-   "provenance": "owner mirror of example_submission.tif from the same data tab (dropbox mirror URL recorded in GEMSDOE data/bridge/manifest.json)",
+   "provenance": "public owner-maintained mirror of the sample submission listed on the DrivenData data page, at the immutable source commit recorded in registry/bridge_sources.json; byte hash verified, but not direct organizer authentication",
    "pin_match": true
   },
   "features": {
@@ -22,7 +22,7 @@
    "bytes": 418912844,
    "sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
    "role": "official 19-band GeoDAWN numerical feature stack, 100 m, EPSG:32611",
-   "provenance": "assembled from shards on 2026-10-09T04:24Z; every shard hash matched the owner manifest before assembly",
+   "provenance": "public owner-maintained mirror of the competition data tab; all shard and assembled hashes are recorded in registry/bridge_sources.json; direct organizer authentication was not possible here",
    "pin_match": true
   },
   "lidar_scarp": {
@@ -30,8 +30,8 @@
    "bytes": 43839078,
    "sha256": "b5e53d67c3a7d3d1ca44ae04ae1e84d8574857da3fcd5e34ba47276d6c04b923",
    "role": "LiDAR calibration layer: int16, 7 bands, value/SCALE encodings (h_all m, strike_at deg, facing_at, cover fraction), built by GEMSDOE48 from 700 USGS 3DEP 1 m tiles (NV WestCentral EarthMRI 2020) resampled to 3 m and aggregated to the competition grid",
-   "provenance": "buffedlizard55-lab/GEMSDOE48@main data/external/h52_scarp3m_100m.tif, fetched through api.github.com blobs on 2026-10-09T04:27Z",
-   "pin_match": "no pin (large stack: pinned via shard hashes)"
+   "provenance": "sibling-derived 100 m summary from buffedlizard55-lab/GEMSDOE48 at pinned commit 268ec599f51c517cc3485da077c24d83af5be81d; not an organizer file or a direct USGS 1 m DEM",
+   "pin_match": true
   }
  },
  "grid": {

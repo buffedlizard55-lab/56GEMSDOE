@@ -1,0 +1,141 @@
+{
+  "generated_utc": "20261009T185142Z",
+  "hypothesis": "Faults are concordant ridges across DEM scarp (det_elev_slope), magnetic gradient (tmi_hg), and isostatic-gravity gradient (iso_grav_anom_hg) at the 300 m scoring-kernel scale; off-catalogue cells within 2 px of the masked catalogue are excluded.",
+  "mechanism": "Hessian bright-ridge (sigma=300 m) on each of three fields; rank-transform to [0,1]; geometric-mean concordance; top-k=37654 after a 2 px dilation of the USGS/INGENIOUS catalogue mask; dots=1.0, background=0.0, NaN outside footprint.",
+  "named_non_fault_process": "Triple-concordant lithologic contacts (rhyolite dikes, basalt-flow edges, alluvial-fan escarpments) can produce a ridge in one family; requiring three independent families to co-locate within one cell reduces but does not eliminate basin-range range-front edges that are not faults.",
+  "holdout_dti": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "alpha": 0.2,
+    "beta": 0.8,
+    "triangular_radius_m": 300.0,
+    "pooled": true,
+    "scores": {
+      "triconcord@37654": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "dti": 0.014550708665619291,
+        "ci95": [
+          0.0108370398919939,
+          0.018469675768045733
+        ],
+        "withheld_positive_pixels": 48124,
+        "tpw": 996.2799679996867,
+        "fpw": 148855.2959798706,
+        "fnw": 47127.720032000296
+      },
+      "random@37654": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "dti": 0.04743245389938838,
+        "ci95": [
+          0.042568223814196594,
+          0.051569950667191486
+        ],
+        "withheld_positive_pixels": 48124,
+        "tpw": 3273.7279763216934,
+        "fpw": 149323.94810311758,
+        "fnw": 44850.27202367827
+      }
+    },
+    "best_comparable_control": "random@37654",
+    "paired_differences": {
+      "random@37654": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems52-pooled-hide-v1",
+        "delta": -0.03288174523376909,
+        "ci95": [
+          -0.03767502330868375,
+          -0.027141992718360625
+        ],
+        "withheld_positive_pixels": 48124
+      }
+    },
+    "bootstrap": {
+      "method": "paired physical spatial-cluster percentile",
+      "clusters": 639,
+      "draws": 1000,
+      "seed": 520810,
+      "confidence": 0.95,
+      "caveat": "Conditional on fitted folds, catalogue labels and fixed budgets; not a leaderboard interval."
+    },
+    "implementation_sha256": {
+      "evaluate_holdout.py": "ffb084fdf34bb30438485b89caeb1228a6680abfd9f9f0472f4355845da05cc6",
+      "holdout.py": "f6706d781de72092e59332074af26e1d58cf734f95bf947a0d7c3fea577e6145",
+      "metric.py": "3d454119edfcec3cc2a83278c2015d7e41d39d8c1142fca12311409a18ce7d1a",
+      "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+    }
+  },
+  "raster": {
+    "file": "h56-triconcord-r300-20261009-20261009T185142Z.tif",
+    "sha256": "d25a13caeb77dae4586d7283020e33bed341cc9bd11327f05f9b6e91e3ec3662",
+    "bytes": 382904,
+    "dots": 37654,
+    "dots_on_catalogue": 0,
+    "dots_within_200m": 0,
+    "sigma_m": 300.0,
+    "exclude_px": 2,
+    "k": 37654
+  },
+  "validator": {
+    "path": "/home/user/56GEMSDOE/docs/downloads/h56-triconcord-r300-20261009-20261009T185142Z.tif",
+    "bytes": 382904,
+    "sha256": "d25a13caeb77dae4586d7283020e33bed341cc9bd11327f05f9b6e91e3ec3662",
+    "bands": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "ref_bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "nodata": "nan",
+    "blocksize": [
+      256,
+      256
+    ],
+    "fixture_grid": false,
+    "has_validity_mask": true,
+    "nan_pixels": 7111787,
+    "infinity_pixels": 0,
+    "n_nan": 7111787,
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.0072868745774030685,
+    "n_nonzero": 37654,
+    "mass": 37654.0,
+    "mass_outside_footprint": 0,
+    "problems": [
+      "7111787 NaN/infinite pixels: fail our all-finite export policy (public spec permits outside-footprint NaN)",
+      "nodata tag outside all-finite [0,1] export policy"
+    ],
+    "ok": false,
+    "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+  },
+  "submission_name": "GEMSDOE56-TRI-CONCORD-R300",
+  "note": "h56 triconcord: 37654 unit dots on Hessian-ridge concordance of det_elev_slope/tmi_hg/iso_grav_anom_hg at 300 m, 0-on-catalogue w/ 200 m mas",
+  "zip_file": "h56-triconcord-r300-20261009-20261009T185142Z.zip",
+  "zip_sha256": "057192e508eb67b6973041737e41dd5bcb2e79bf73549db70549795e2d0d430d",
+  "verdict": {
+    "value": "invalid",
+    "rationale": "format-valid research emission; holdout DTI vs random is the bar for promotion",
+    "promote": false
+  }
+}

@@ -1,0 +1,117 @@
+{
+ "name": "h56-quota-37k-20261009",
+ "file": "docs/downloads/h56-quota-37k-20261009.tif",
+ "bytes": 138144,
+ "sha256": "62b309d93e9a3665520ff0f55c0683dc8458e9d60813fa7fc9a5f2fc995d0ee6",
+ "dots": 30800,
+ "values_present": [
+  0.0,
+  1.0
+ ],
+ "mass": 30800.0,
+ "min_d_catalogue_px": 2.23606797749979,
+ "frac_d_gt_2px": 1.0,
+ "arm": "QUOTA|packed|weighted",
+ "quota": {
+  "mag_ridge": 9552,
+  "scarp_slope": 9259,
+  "rtp_ridge": 8068,
+  "strain_2ndinv_ridge": 4905,
+  "grav_ridge": 3811,
+  "cond_edge": 2061
+ },
+ "pack_stats": {
+  "emitted": 30800,
+  "considered": 37454,
+  "pool": 37454,
+  "radius_px": 2.8
+ },
+ "channels": [
+  "mag_ridge",
+  "scarp_slope",
+  "rtp_ridge",
+  "strain_2ndinv_ridge",
+  "grav_ridge",
+  "cond_edge"
+ ],
+ "weights_from": "evidence/field_holdout_v1.json pooled hide DTI",
+ "format_report": {
+  "path": "/home/user/56GEMSDOE/docs/downloads/h56-quota-37k-20261009.tif",
+  "bytes": 138144,
+  "sha256": "62b309d93e9a3665520ff0f55c0683dc8458e9d60813fa7fc9a5f2fc995d0ee6",
+  "bands": 1,
+  "dtype": "float32",
+  "crs": "EPSG:32611",
+  "width": 3292,
+  "height": 3730,
+  "bounds": [
+   243350.0,
+   4135550.0,
+   572550.0,
+   4508550.0
+  ],
+  "ref_bounds": [
+   243350.0,
+   4135550.0,
+   572550.0,
+   4508550.0
+  ],
+  "transform": [
+   100.0,
+   0.0,
+   243350.0,
+   0.0,
+   -100.0,
+   4508550.0
+  ],
+  "nodata": null,
+  "blocksize": [
+   256,
+   256
+  ],
+  "fixture_grid": false,
+  "has_validity_mask": false,
+  "nan_pixels": 0,
+  "infinity_pixels": 0,
+  "n_nan": 0,
+  "min": 0.0,
+  "max": 1.0,
+  "mean": 0.0025083147920668125,
+  "n_nonzero": 30800,
+  "mass": 30800.0,
+  "mass_outside_footprint": 0,
+  "problems": [],
+  "ok": true,
+  "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+ },
+ "geotiff": {
+  "path": "/home/user/56GEMSDOE/docs/downloads/h56-quota-37k-20261009.tif",
+  "bytes": 138144,
+  "sha256": "62b309d93e9a3665520ff0f55c0683dc8458e9d60813fa7fc9a5f2fc995d0ee6",
+  "bands": 1,
+  "dtype": "float32",
+  "height": 3730,
+  "width": 3292,
+  "crs": "EPSG:32611",
+  "transform": [
+   100.0,
+   0.0,
+   243350.0,
+   0.0,
+   -100.0,
+   4508550.0
+  ],
+  "res": [
+   100.0,
+   100.0
+  ],
+  "nodata": null,
+  "nodata_repr": "None",
+  "finite_pixels": 12279160,
+  "min": 0.0,
+  "max": 1.0,
+  "positive_pixels": 30800,
+  "nonzero_in_footprint": 30800,
+  "unique_values": 2
+ }
+}
