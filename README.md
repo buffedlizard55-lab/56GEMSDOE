@@ -21,10 +21,11 @@ MAPSCALE could not discriminate because 120/125 records were mapped at 1:250k (S
 The pre-registered fallback emitted `gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif`
 (2,139 dots; SHA-256 `a614a594e179fa2af24a3d9c311bbab45f3c39ca868023da23b43ece16a32b75`).
 
-The run's **HOLDOUT-DTI** is a machinery check on simulated corrections truth—not a competition
-score or geological validation—using `src/metrics.py`, α=0.2, β=0.8, a 300 m triangular kernel,
-and 26,813 withheld positives: 0.10788 [0.089756, 0.126814] versus matched-mass chance
-0.00414 [0.002937, 0.005405]. The existing 1,034-raster registry receipt (485 unique pixel
+The run's local **HOLDOUT-DTI** is a machinery check on simulated corrections truth—not a
+competition score or geological validation—using `src/metrics.py` (evaluator version hash not
+recorded), α=0.2, β=0.8, a 300 m triangular kernel, and 26,813 withheld positives. A1b twin:
+0.10788 [95% CI 0.089756, 0.126814] versus matched-mass chance 0.00414
+[95% CI 0.002937, 0.005405]; no organizer score exists for this run. The existing 1,034-raster registry receipt (485 unique pixel
 contents) contains **12 literal >0.70 directed-proximity flags** (maximum containment 1.0);
 maximum Spearman is 0.5732 for dots and 0.3335 for the surface. Under the standing rule those
 flags mean **DUPLICATE / STOP**;
@@ -51,11 +52,11 @@ PR #11's dotted-ridge output is a separate artifact and remains unadjudicated by
 > not establish strict template conformance, registry clearance, organizer acceptance, or permission
 > to submit; do not treat this historical block as a current download recommendation.
 >
-> **Submitting is a different question, and the answer is no this round.** On the shared blocked holdout
-> (`gems52-pooled-hide-v1`, 4 folds, 36,335 withheld
-> positive pixels) our best arm reaches **0.0387**
-> [0.0348, 0.0424] where the group's filed sibling surface reaches
-> **0.0900** [0.0811, 0.0988] at the same budget on the same folds (our arm read from `evidence/quota_union_v1.json`, the incumbent from `evidence/field_holdout_v1.json`; both receipts print 0.0387 for our arm).
+> **Submitting is a different question, and the answer is no this round.** Local **HOLDOUT-DTI**
+> (`gems52-pooled-hide-v1`, 4 folds, 36,335 withheld positive pixels; not an organizer score): our
+> best arm reaches **0.03872 [95% CI 0.03483, 0.04241]** where the group's filed sibling surface
+> reaches **0.09003 [95% CI 0.08113, 0.09878]** at the same budget on the same folds (our arm is
+> from `evidence/quota_union_v1.json`, the incumbent from `evidence/field_holdout_v1.json`).
 > Verdict on the run card: **negative**, `promote: false`, no weekly slot claimed. Six hypotheses were tested;
 > five were rejected on measurement and one (packing vs top-K) is **not resolvable on this instrument** and is
 > reported as a null, not a win: [`docs/research/hypotheses-round2.md`](docs/research/hypotheses-round2.md).
@@ -70,10 +71,12 @@ PR #11's dotted-ridge output is a separate artifact and remains unadjudicated by
 > 0.139 per dot, and |G| ≈ 12,783–18,294
 > hidden pixels; perfect placement at that mass would score 0.825.
 >
-> **The instrument is inverted for that decision, and that is the round's most useful finding.** The same folds
-> score the *unpruned* sibling file at 0.0900 and its pruned, higher-scoring-live
-> twin at 0.0038 — the opposite sign — because the withheld truth *is* the
-> catalogue. So no near-catalogue policy was chosen from hide-DTI here (IR-56-004, IR-56-011).
+> **The instrument is inverted for that decision, and that is the round's most useful finding.** On
+> this local HOLDOUT-DTI (same evaluator and 36,335 withheld positives), the *unpruned* sibling file
+> scores 0.09003 [95% CI 0.08041, 0.09856] and its pruned, higher-scoring-live twin 0.00380
+> [95% CI 0.00328, 0.00429] — the opposite sign — because the withheld truth *is* the catalogue.
+> These remain local measurements, not organizer scores. So no near-catalogue policy was chosen from
+> hide-DTI here (IR-56-004, IR-56-011).
 >
 > **Historical registry result: DUPLICATE / STOP for both H56 artifacts.** The 868-row
 > directed screen (`evidence/registry_screen_h56b.json`; 31 unreadable rows) records 56 priors
@@ -118,8 +121,8 @@ post-review result below. No experiment or slot was used in this review.
 | experiment | what it measured | result |
 |---|---|---|
 | E1 (offset histogram, MEASURED) | catalogue → nearest DEM crest / magnetic ridge within ±400 m, 44,390 transects | median \|offset\| **1.48 px**, signed median −0.11 px, 0.326 beyond 2 px vs **0.273 for the random null**; DEM–magnetic r = 0.022; 2 of 1,273 corridors pass the consistency gate → *offsets cluster under two pixels* |
-| E2 (`--mode spatial`) | hide-and-recover with whole-component spatial folds, 60,894 withheld px | corridor arms ≈ 0; uniform-random 0.01758 — **the split itself cannot test a corrections lane** (IR-57-001), so a second mode was built |
-| E3 (`--mode neighbour`) | hide-and-recover withholding only components with another mapped component within 400 m; 41,742 withheld positives | crest-steered **0.00087** [0.00049, 0.00133] vs evidence-free corridor **0.00177** [0.00130, 0.00232] at an identical dot budget; paired contrast **[−0.00138, −0.00048]**, P(beats) = 0.0; `B4_catalogue` = 0.00000 exactly (masking control) |
+| E2 (`--mode spatial`) | local HOLDOUT-DTI, evaluator `h57-hide-and-recover-v1`, whole-component spatial folds, 60,894 withheld positives; not an organizer score | corridor arms ≈ 0; uniform-random **0.01758 [95% CI 0.016205, 0.019036]** — **the split itself cannot test a corrections lane** (IR-57-001), so a second mode was built |
+| E3 (`--mode neighbour`) | local HOLDOUT-DTI, evaluator `h57-hide-and-recover-v1`, withholding only components with another mapped component within 400 m; 41,742 withheld positives; not an organizer score | crest-steered **0.00087 [95% CI 0.000486, 0.001327]** vs evidence-free corridor **0.00177 [95% CI 0.001295, 0.002317]** at an identical dot budget; paired contrast **[paired 95% CI −0.001378, −0.000476]**, P(beats) = 0.0; `B4_catalogue` = 0.00000 exactly (masking control) |
 
 All numbers are **HOLDOUT-DTI** (evaluator `h57-hide-and-recover-v1`: `src/metrics.py`, α 0.2,
 β 0.8, 300 m triangular kernel, visible faults masked pixel-exactly, 20×20 px block bootstrap,
@@ -162,22 +165,25 @@ policies coexist in the template; the tests now assert the policy the file decla
 > ## Round 2 - discovery run (already on `main` via PR #7): **Bottom line:** five new hypotheses were
 > pre-registered (`docs/research/hypotheses-20261009.md`), the missing probe layer was obtained
 > (3,800 INGENOUS points), `scripts/download_competition_data.sh` now rebuilds every input from
-> the hash-pinned bridge, and the top-three hypotheses were validated on the shared 4-fold blocked
-> holdout (48,080 withheld positives). **Verdict: NEGATIVE, robustly.** The pre-registered pick,
-> `multi@25000`, scored **0.01242 [0.00787, 0.01718]** while *uniform-random emission scored
-> 0.03499 at the same budget* — the paired difference is **−0.02257 [−0.02749, −0.01717]**,
-> strictly below chance; all physics arms sat below the measured chance floor (tilt ≈ 0.0001),
-> with leakage canaries clean (≤ 0.567 vs the 0.90 bar), so this is not leakage — the fields
-> simply locate *mapped* structure, and excluding the catalogue (±200 m, the verified 0.2778
-> mechanism) leaves them nothing to find. An instrument defect found by the first run (the
+> the hash-pinned bridge, and the top-three hypotheses were assessed on the shared 4-fold blocked
+> holdout (local HOLDOUT-DTI, evaluator `gems52-pooled-hide-v1`, 4 folds, 48,080 withheld positives;
+> not an organizer score or geological validation). **Verdict: NEGATIVE.** The pre-registered pick,
+> `multi@25000`, scored **0.01242 [95% CI 0.00787, 0.01718]** while *uniform-random emission scored
+> 0.03499 [95% CI 0.03273, 0.03714] at the same budget* — the paired difference is
+> **−0.02257 [paired 95% CI −0.02749, −0.01717]**, strictly below chance; all physics arms sat below the measured chance floor (tilt ≈ 0.0001),
+> with leakage canaries clean (≤ 0.567 vs the 0.90 bar). These results say the tested fields did
+> not beat chance on this instrument; they do not prove no hidden faults exist. The 200 m
+> exclusion was motivated by sibling-reported raster construction, not a verified score mechanism:
+> GEMSDOE32 marks H33-2-B2 UNSCORED and the 0.2778 attribution is unsupported. An instrument defect found by the first run (the
 > zero-filled rim put 56.5 % of `iso_step`'s top-25,000 cells on the data edge — IR-56-020) was
 > fixed once in the template with six regression tests, and the negative survived re-run
 > unchanged. The registry gate returned literal **DUPLICATE/STOP** on the 3 px clause — logged
 > honestly as density-degenerate (IR-56-023: the trigger tracks grid coverage, while rank
-> agreement passes at max ρ 0.043 vs the 0.90 bar, reciprocal >0.70 = 0). A unique, format-valid
-> 25,000-dot GeoTIFF (`h56-disc-multi-b25000-20261009-…`, values {0.0, 1.0}, both validators ok)
-> is downloadable for review, and its name, note, receipt and the front-page banner all say
-> **NEGATIVE / do not submit** — nothing is promoted to a slot; no slot was spent.
+> agreement passes at max ρ 0.043 vs the 0.90 bar, reciprocal >0.70 = 0). The 25,000-dot GeoTIFF remains downloadable for audit only. The on-disk audit in
+> `evidence/submission_status.json` records finite zeros outside the sample's NaN mask, so it is
+> **not format-conformant or safe to submit**; legacy `ok` fields are not authoritative. Its name,
+> note, receipt and front-page banner say **NEGATIVE / do not submit** — nothing is promoted and no
+> slot was spent.
 
 ---
 
@@ -247,19 +253,12 @@ policies coexist in the template; the tests now assert the policy the file decla
 
 ---
 
-### Round-2 session brief (2026-10-09, also active)
+### Round-2 session brief and outcome (2026-10-09; request preserved)
 
-Recorded from this session's instruction; each item is executed in this run or explicitly deferred:
+The bullets retain the requested acceptance criteria; outcome notes state what the receipts actually support. A requested positive result is not implied.
 
-- **Study the top scores.** Why did `h33-h33-2-b2 … 0.2778` score highest among published sibling
-  artefacts, and can we beat it? Answer, with receipts: GEMSDOE54's raster-level check proves that
-  file = its 40,199-dot parent minus exactly the 2,545 dots within 200 m of a catalogue fault
-  (0.2708 → 0.2778) — the metric masks known-fault pixels, so catalogue-adjacent mass is pure
-  penalty under α = 0.2 while contributing no TP. 0.3195/0.3774 remain BOARD-UNVERIFIED here.
-- **3–5 new geological hypotheses** we have not tried, each with layers/signature/why-missing/
-  difference-from-attempts, ranked by expected DTI ÷ cost, top candidate validated on the
-  spatially-blocked holdout **before** any slot is touched: `docs/research/hypotheses-20261009.md`
-  (H6–H10; external sources named and checked live).
+- **Study the top scores (original question):** Why did `h33-h33-2-b2 … 0.2778` score highest among published sibling artefacts, and can we beat it? **Provenance outcome:** the premise is unverified. GEMSDOE32 labels H33-2-B2 UNSCORED and describes 0.2747 as a model projection; GEMSDOE54 reports a raster-construction difference (40,199-dot parent minus 2,545 dots within 200 m), not an organizer score. The staff statement about known-fault pixels does not make a 200 m neighborhood exempt. See `docs/research.html` §8 and `docs/irregularities.html`; 0.3195/0.3774 remain unverified here.
+- **3–5 new geological hypotheses:** specify layers/signature/why-missing/difference-from-attempts and rank by expected DTI ÷ cost; assess the top candidate with a spatial holdout **before** considering any slot. The five entries are H6–H10 in `docs/research/hypotheses-20261009.md`; the local run returned NEGATIVE, not geological confirmation, and no candidate was cleared.
 - **The data blocker**: `bash scripts/download_competition_data.sh` must exist and work end to end
   (created this run as IR-56-021's fix; route B verified against both hash sets).
 - **One-click TIF with an obvious OK/NOT-OK statement**, at the very top of the site, plus the
@@ -294,7 +293,7 @@ the 3-experiment budget:
 |---|---|---|
 | E1 | catalogue-to-evidence offset histogram (perpendicular transects ±400 m on every catalogue trace; DEM-scarp crest = `det_elev_slope` ridge; magnetic ridge = `tmi_hg`; both *strongest* and *nearest* crest definitions; calibrated on the cached 1 m USGS 3DEP LiDAR scarp product) | **MEASURED** (official data): 16,344 transects / 404 vector records / 60,988 catalogue px. Nearest-crest registration: catalogue sits within ~1 px of a crest almost everywhere. Strongest-crest offset: **28 of 125 well-sampled records (22.4%) have a consistent offset > 2 px** (200–340 m, sign agreement up to 1.00, per-transect MAD down to 0.11 px). LiDAR calibration: the 100 m DEM-slope ridge **is** the 1 m scarp crest (MAD 0.29 px, 72.5% within 1 px). |
 | E2 | leakage canary (per-feature AUC vs the holdout truth) | **HOLDOUT-DTI instrument**: max feature AUC 0.58 (< 0.90); catalogue-mask control AUC 0.494 ≈ 0.5 (masking worked); dist-to-catalogue control AUC 0.151 < 0.5 (truth displaced — simulation not degenerate). No leakage. |
-| E3 | hide-and-recover holdout with simulated corrections (4 spatial folds, pooled DTI, official metric `src/metrics.py` α=0.2 β=0.8 R=3 px, known-fault masking model, 20×20 px block-bootstrap 95% CI) | **HOLDOUT-DTI** (simulated-corrections truth, 26,813 withheld positives): A1 lane **0.31049 [0.282, 0.338]** vs A0 masked control **0.00000 [0, 0]** and A4 random **0.01174 [0.010, 0.014]**; A5 oracle 1.0. The masked control scoring exactly 0 proves the masking model; the lane arm beats both controls decisively. |
+| E3 | local hide-and-recover HOLDOUT-DTI on simulated corrections (evaluator `src/metrics.py`, version hash not recorded; 4 spatial folds, pooled metric α=0.2 β=0.8 R=3 px, known-fault masking, 20×20 px block-bootstrap 95% CIs); not an organizer score | 26,813 withheld positives: A1 lane **0.31049 [95% CI 0.282121, 0.337809]** vs A0 masked control **0.00000 [95% CI 0.000000, 0.000000]** and A4 random **0.01174 [95% CI 0.010007, 0.013591]**; A5 oracle 1.00000 [95% CI 1.000000, 1.000000]. The masked control scoring exactly 0 proves the masking model; the lane arm beats both controls decisively. |
 
 **Deliverable:** `docs/downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif`
 — 6,504 unit dots on the evidence-defined traces of the 28 consistent records, **0 dots on the
@@ -316,27 +315,11 @@ crest is LiDAR-calibrated and the format is validated. The final run card instea
 **NEGATIVE** because the literal containment gate failed. No organizer
 score exists for this file; spending a weekly slot is the separate selector step.
 
-### Why 0.2778 (and the irregularity around it)
+### The 0.2778 claim: reported construction, unsupported score
 
-The mechanism (measured by the GEMSDOE32 sibling against the official formula and its worked
-example): the distance-weighted Tversky index reduces exactly to
-`DTI = T/(α(T+F)+βK)`; adding one unit of mass raises the denominator by exactly α=0.2
-anywhere, so a dot pays iff its kernel credit exceeds α·DTI (≈0.052 at DTI 0.26, i.e. within
-~284 m of a hidden truth pixel); the live scorer masks known-fault pixels (forum thread
-11516), so catalogue dots are pure 0.2-cost false positives; `h33-h33-2-b2` is the group's
-best live-scored emission (40,199-dot "dotted d2.8" thinning of their H19-5 field) with every
-dot within 200 m of the catalogue deleted → 37,654 dots, 0 on-catalogue. The family shows the
-emission-side optimum (solid 121,131 px → 0.1922, d1.5 → 0.2477, d2.8 → 0.2600, all
-owner-reported), implying a hidden |G| ≈ 7,905 px. Beating the live leader needs ≈+25% mean
-credit at equal mass — a better *field* or genuinely novel faults; emission-side gains are
-nearly exhausted. **This lane is such a field mechanism.**
-**Irregularity (flagged):** the 0.2778 attached to `h33-h33-2-b2` is user-reported and
-unsupported — GEMSDOE32's own pages label that artifact UNSCORED (projected 0.2747, a model),
-and GEMSDOE51's audit calls the attribution "unsupported and contradicted". The stated
-"0.3195 is the highest score right now" is stale (verified 2026-10-04 snapshot: #1 nchuzhoy
-0.3262; GEMSDOE51's 2026-10-08 check also found 0.3195 was not the page high); the newer
-0.3774 figure is user-supplied and unverifiable from this sandbox (drivendata.org is not
-reachable). Full analysis: `docs/research.html` §8 and `docs/irregularities.html`.
+The mechanism hypothesis follows the [official scoring formula](https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/), not an observed score: the distance-weighted Tversky index reduces to `DTI = T/(α(T+F)+βK)`, and adding one unit of mass raises the denominator by α=0.2. At a hypothetical DTI of 0.26, a dot needs kernel credit above about 0.052 (roughly within 284 m of a hidden truth pixel) to be beneficial. Staff say known-fault pixels are excluded from evaluation penalty terms (forum thread 11516); this does not make a 200 m neighborhood exempt. GEMSDOE54 reports a 40,199-dot parent and a 37,654-dot H33-2-B2 child after removing 2,545 dots within 200 m, but that raster-construction report is not a score receipt. GEMSDOE32's manifest labels H33-2-B2 **UNSCORED** and describes 0.2747 as a model projection. Its owner-maintained score ledger labels the 0.1922, 0.2477, and 0.2600 rows as user-brief reports, not independently authenticated; the 0.2600 row notes an owner-page conflict, and the ledger contains no 0.2778 or H33-2-B2 row. Therefore the hidden-|G| estimate and any ≈+25% equal-mass comparison are conditional arithmetic on unverified values, not score evidence. The pruning idea is a mechanism hypothesis, not a demonstrated score gain or positive correction; current corrections status remains **NEGATIVE / STOP**.
+
+**Irregularity (flagged):** the 0.2778 attached to `h33-h33-2-b2` is user-reported and unsupported — GEMSDOE32's own pages label that artifact UNSCORED (projected 0.2747, a model), and GEMSDOE51's audit calls the attribution "unsupported and contradicted". The stated "0.3195 is the highest score right now" is stale (verified 2026-10-04 snapshot: #1 nchuzhoy 0.3262; GEMSDOE51's 2026-10-08 check also found 0.3195 was not the page high); the newer 0.3774 figure is user-supplied and unverifiable from this sandbox (drivendata.org is not reachable). Full analysis: `docs/research.html` §8 and `docs/irregularities.html`.
 
 ## Repository map
 

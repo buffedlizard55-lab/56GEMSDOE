@@ -31,7 +31,7 @@ img{max-width:100%;border:1px solid var(--line);border-radius:8px}
 footer{border-top:1px solid var(--line);margin-top:34px;padding:18px 0 30px;color:var(--mut);font-size:13px}
 .tag{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:10px;padding:1px 8px;color:var(--mut);margin-right:5px}
 ul{margin:6px 0 6px 20px}li{margin:3px 0}
-</style></head><body><div style='border:1px solid #d29922;background:rgba(210,153,34,.09);padding:10px 14px;border-radius:10px;margin:14px 0'><b>Archived page from the parallel discovery round-2 run (PR&nbsp;#7).</b> This is archived historical content, not current submission authorization. The present review applies the literal gate: the 6,504-dot H56 raster is <b>DUPLICATE / STOP</b> (see <a href='irregularities.html'>IR-56-07</a>). The separate dotted-ridge artifact from PR&nbsp;#11 remains outside this review and unadjudicated. The current landing page is <a href='index.html'>index.html</a>; the corrections-lane verdict is NEGATIVE / STOP. Original file name at merge time: <code>docs/irregularities.html</code>.</div>
+</style></head><body><div style='border:1px solid #d29922;background:rgba(210,153,34,.09);padding:10px 14px;border-radius:10px;margin:14px 0'><b>Archived page preserving two historical runs.</b> The first seven labels (<code>IR-56-01</code>–<code>IR-56-07</code>) are legacy run-local IDs; <code>IR-56-019</code>–<code>IR-56-023</code> are from the parallel discovery round-2 run (PR&nbsp;#7). Do not map them by number alone to the current merged log in <code>evidence/irregularities.json</code>; use titles and any <code>renumbered_from</code> field. This archive is not current submission authorization. The present review applies the literal gate: the 6,504-dot H56 raster is <b>DUPLICATE / STOP</b> (see <a href='irregularities.html'>current irregularities</a>). The separate dotted-ridge artifact from PR&nbsp;#11 remains outside the H57 review and unadjudicated. The current landing page is <a href='index.html'>index.html</a>; the corrections-lane verdict is NEGATIVE / STOP. Original file name at merge time: <code>docs/irregularities.html</code>.</div>
 <header class=top><div class=wrap>
 <h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
 <div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
@@ -52,15 +52,7 @@ data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</spa
 <a href="prior-irregularities.html">Prior run irregularities</a></p></div>
 <h2>Irregularities &mdash; flagged, and how each was checked</h2>
 <div class=card><h3>IR-56-01: the 0.2778 attached to <code>h33-h33-2-b2</code> is user-reported and unsupported</h3>
-<p>The brief asks why <code>h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros</code> &ldquo;got the
-highest score (0.2778)&rdquo;. Checked against the sibling's own pages: the GEMSDOE32 site and
-README label that artifact <b>UNSCORED</b>, give a <b>modelled projection of 0.2747</b>, and
-state that no organizer score exists for it; <code>docs/score-ledger.csv</code> marks all
-sibling scores user-reported; the GEMSDOE51 audit (that file lives in the <b>sibling</b> repository, not this one: <a href="https://github.com/buffedlizard55-lab/GEMSDOE51/blob/main/evidence/score_attribution_audit.json"><code>GEMSDOE51/evidence/score_attribution_audit.json</code></a>, 3,357 bytes at its main tip, checked 2026-10-09)
-calls the 0.2778 attribution &ldquo;unsupported and contradicted&rdquo;. <b>What is defensible:</b>
-the mechanism the file embodies (catalogue-pruned dotted emission at the metric's break-even
-bar &mdash; see <a href="research.html">research &sect;8</a>). <b>What is not:</b> any claim that
-this exact file scored 0.2778, or any causal geological story for a public score.</p></div>
+<p>The prior session's brief attributed 0.2778 to <code>h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros</code>; that attribution is <b>USER-REPORTED</b>, and this repository has no organizer score receipt for the file. GEMSDOE32's archived <a href="https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html">site</a> and <a href="https://github.com/buffedlizard55-lab/GEMSDOE32/blob/main/README.md">README</a> identify it as <b>UNSCORED</b> and give a <b>modelled projection of 0.2747</b>; its sibling-owned <a href="https://github.com/buffedlizard55-lab/GEMSDOE32/blob/339b32f61942e01066ced40fae6fd4d775f4ecad/docs/score-ledger.csv">score ledger</a> labels the relevant entries as <code>user brief</code> / <code>user-reported; not independently authenticated</code>; the file has no H33-2-B2 or 0.2778 row, and its 0.2600 row notes that the owner page says unscored/not slot-approved. GEMSDOE51's <a href="https://github.com/buffedlizard55-lab/GEMSDOE51/blob/main/evidence/score_attribution_audit.json">audit</a> (3,357 bytes at its main tip, checked 2026-10-09) calls the attribution &ldquo;unsupported and contradicted&rdquo;. These are owner-maintained sibling records, not organizer receipts. <b>What is defensible:</b> the mechanism the file embodies (catalogue-pruned dotted emission at the metric's break-even bar &mdash; see <a href="research.html">research &sect;8</a>). <b>What is not:</b> any claim that this exact file scored 0.2778, or any causal geological story for a public score.</p></div>
 <div class=card><h3>IR-56-02: &ldquo;0.3195 is the highest score right now&rdquo; is stale; 0.3774 is unverifiable here</h3>
 <p>The verified leaderboard snapshot stored by GEMSDOE32 (2026-10-04,
 <code>registry/leaderboard_snapshot_2026-10-04.json</code>) has #1 nchuzhoy <b>0.3262</b>,
@@ -71,17 +63,9 @@ as <b>user-supplied, unverified</b>. Check the
 <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">official leaderboard</a>
 directly; this site does not monitor it (DrivenData ToS).</p></div>
 <div class=card><h3>IR-56-03: the portal error <code>"Predicted values must be in range [0, 1]"</code></h3>
-<p>A previous attempt from this project was rejected with this message. Two mechanisms produce
-it (measured by the GEMSDOE32 sibling on the official rasters): (1) writing the feature stack's
-float32 nodata sentinel <code>-3.4028234663852886e+38</code> through unchanged &mdash;
-7,113,308 cells carry it, 3,061 inside the submission footprint; (2) NaN inside the footprint.
-This session's file: every template-valid pixel finite in [0,&nbsp;1], NaN only where the
-official sample is NaN, nodata tag <code>nan</code> &mdash; both the repository validator and
-the template-conformance gate pass (receipts in <code>evidence/corrections/run_card.json</code>).</p></div>
-<div class=card><h3>IR-56-04: sibling scores are unauthenticated</h3>
-<p>Every score in the sibling score ledger (0.1922&hellip;0.2778 family, and the 0.2708 base)
-is owner-reported; none carries an organizer receipt. They are used here only as
-<b>mechanism evidence</b> (the emission-side break-even), never as targets.</p></div>
+<p><b>USER-REPORTED; no organizer rejection receipt is preserved here:</b> an earlier attempt from this project was reported rejected with this message; this repository did not independently reproduce the portal response. The GEMSDOE32 sibling's archived diagnosis lists two possible mechanisms on its pinned input copy: (1) passing the feature stack's float32 nodata sentinel <code>-3.4028234663852886e+38</code> through unchanged (the sibling reports 7,113,308 sentinel cells, 3,061 inside the submission footprint); or (2) NaN inside the footprint. These are candidate mechanisms, not a confirmed cause of that reported rejection. For the exact 6,504-dot H56 archive, <code>evidence/corrections/run_card.json</code> records a strict local replay against the hash-pinned owner-bridge sample: mask and nodata match, <code>ok=true</code>; its validation class explicitly says this is not organizer acceptance. The separate literal registry result is <b>DUPLICATE / STOP</b> (IR-56-07), so the file remains an archive, not a submission candidate. See the sibling's <a href="https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html">archived portal-error diagnosis</a> and the <a href="irregularities.html">current review</a>.</p></div>
+<div class=card><h3>IR-56-04: the sibling score ledger is not score authentication</h3>
+<p>Read-only audit of the owner-maintained <a href="https://github.com/buffedlizard55-lab/GEMSDOE32/blob/339b32f61942e01066ced40fae6fd4d775f4ecad/docs/score-ledger.csv">ledger at commit <code>339b32f</code></a> (2026-10-10): its 0.1922 row is <code>user brief</code> / <code>user-reported; not independently authenticated</code>; its 0.2477 row says <code>user brief; owner page also reports anchor</code> but <code>attribution not authenticated</code>; and its 0.2600 row is <code>user brief</code> with a note that the owner page says <code>unscored/not slot-approved</code>. The ledger has no 0.2778, H33-2-B2, or 0.2708 score row. A separate leaderboard note's shorthand &ldquo;owner-reported&rdquo; does not override those row-level provenance fields. These figures are conditional user reports, not organizer-confirmed results or validated targets.</p></div>
 <div class=card><h3>IR-56-05: holdout truth is simulated, not the organizer's</h3>
 <p>The HOLDOUT-DTI numbers come from a simulated corrections truth (the measured crest lines
 of withheld records). They validate the emission machinery and the controls; they are not
@@ -121,13 +105,14 @@ screen, experiment, or holdout. The TIFF is retained for historical inspection o
 <p>On the round-2 dots-phase gate (evidence/lane_gate_discovery_v2.json) the literal brief rule '&gt;70% of my dots within 3 px of ONE registry raster's dots' fires against 22 informative (non-probe) priors, and the coverage-adjusted policy agrees (DUPLICATE/STOP both). The trigger is density-degenerate: for every one of the 22, near_frac is within +/-0.03 of that prior's own 3 px halo coverage of the eligible grid (e.g. 0.887 vs 0.861, 0.740 vs 0.759, 0.700 vs 0.735), i.e. the clause is satisfied by any dot set whatever, exactly as IR-56-006 showed the same clause is vacuous at 1-dot counts against near-universal priors. The agreement tests pass: max Spearman 0.043 on the dots and 0.193 on the surface vs the 0.90 bar, zero identical hashes, and the screen's reciprocal &gt;0.70 count is 0.</p>
 <p><b>Checked / why it matters:</b> Read literally, a raster whose 3 px halo covers &gt;=70% of the grid makes the '&gt;70% of my dots near it' clause unfailable for ANY candidate, so a STOP verdict carries no information about lane drift at that density; the mirror-image defect (IR-56-006) makes the same clause unfailable in the other direction at tiny dot counts.</p>
 <p class=mut>Done: Protocol executed as written: the verdict DUPLICATE/STOP is logged, nothing is promoted, and the candidate was already NEGATIVE on the holdout. The defect is reported rather than argued around; both directions are shown side by side in the receipt (surface PASS, dots STOP). No gate code was modified to change the outcome. · source: scripts/lane_gate_discovery.py (E3), first full 960-prior run</p></div>
-<p class=mut>Full machine-readable log (both runs, <code>evidence/irregularities.json</code>, 23 entries): IR-56-001&hellip;013 round 1, IR-56-014&hellip;018 the concurrent corrections session, IR-56-019&hellip;023 this round-2 discovery run.</p>
+<p class=mut><b>Archive note:</b> this page was initially generated with 23 run-local entries (IR-56-001&hellip;023) on 2026-10-09; it is not the current full log. The machine-readable <code>evidence/irregularities.json</code> now has 41 entries, including later H56/H57 reviews and IR-56-038. This archived page received provenance clarifications on 2026-10-10; use the <a href="irregularities.html">current combined review</a> for present status.</p>
 </main>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
 round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
-generated 2026-10-09 17:46 UTC by
+originally generated 2026-10-09 17:46 UTC by
 <code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
-and <code>evidence/*.json</code> (run B) ·
+and <code>evidence/*.json</code> (run B) · provenance clarifications added 2026-10-10;
+no builder or study-level experiment/competition holdout rerun (unit tests only) ·
 site served from <code>main</code> at
 <a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
 </body></html>

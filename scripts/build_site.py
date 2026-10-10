@@ -364,9 +364,12 @@ null-calibrated median offset {fmt(m_cal['dem_median'],3)}&nbsp;px (DEM) /
 corridors</b> reach a consistent &ge; 2&nbsp;px offset; 3&nbsp;m LiDAR: 0 of
 {m_lid['segments']} segments displaced by &ge; 200&nbsp;m. Their primary raster carries
 <b>{art_b['primary']['dots']} dot</b> &mdash; the emptiness is their finding. Their two
-files are format-valid and safe to download but <b>not cleared for a slot</b> (their
-uniqueness gate returned <code>ok:false</code> on the proximity criterion at 1-dot count,
-IR-56-006). Details: <a href="prior-run.html">Prior run</a>.</p></div>
+files are available as audit downloads only; <b>neither is cleared for upload or a weekly slot</b>.
+A local format pass is not organizer acceptance: their finite exterior conflicts with the
+official null-outside-footprint convention, and the shared writer/gate tension is documented
+in GEMSDOE52 issue #65 (not claimed fixed upstream). No portal upload or organizer score exists.
+Their uniqueness gate also returned <code>ok:false</code> on the proximity criterion at 1-dot count,
+IR-56-006. Details: <a href="prior-run.html">Prior run</a>.</p></div>
 <div class=card><h3>Run C &mdash; this PR #7 (branch <code>arena/858a492d-56gemsdoe</code>) &mdash; <span class=bad>discovery lane: NEGATIVE twice</span></h3>
 <p>Question: <em>do off-catalogue step/tilt lineaments recover catalogue-missing faults?</em>
 Five hypotheses pre-registered (H6&ndash;H10, <code>docs/research/hypotheses-20261009.md</code>);

@@ -64,11 +64,12 @@ retained for provenance only and must not be pasted into a form. Details: <a hre
 <h2>Prior run's files &mdash; do NOT submit these</h2>
 <div class=card>
 <p>The merged prior run (PR #4) on this repository reached a <b>NEGATIVE</b> verdict and
-ships two format-valid rasters <b>as research output only</b>: its own receipt says the
-expected gain is 0.00016 DTI with a 95% interval of
-[0.00000, 0.00045] &mdash; which
-contains the value for doing nothing (0.00000) and for jittering dots at random
-(0.00021). Its uniqueness gate also returned
+ships two format-valid rasters <b>as research output only</b>. Local <b>HOLDOUT-DTI</b>
+(evaluator <code>gems52-pooled-hide-v1</code>, 4 folds, 48,080 withheld positives; not an
+organizer score): the snap arm scored 0.00016 [95% CI 0.00000, 0.00045], versus doing
+nothing at 0.00000 [95% CI 0.00000, 0.00000] and random jitter at 0.00021
+[95% CI 0.000003, 0.00051]. The interval contains no improvement over the null, and the
+random control is statistically indistinguishable. Its uniqueness gate also returned
 <code>ok:false</code> on the proximity criterion at 1-dot count (IR-56-006), and its
 rasters write 0.0 (not NaN) outside the data footprint (IR-56-013). They are safe to
 download for inspection; they are <b>not cleared for a weekly slot</b>. Details and
@@ -82,9 +83,10 @@ downloads: <a href="prior-run.html">Prior run</a>.</p>
 (<code>h56-disc-multi-b25000-20261009-20261009T165646Z.tif</code>, 25,000 dots) is format-validated
 research output: single band, float32, values exactly {0.0, 1.0}, EPSG:32611, shape and
 transform equal to the submission format, sha256 <code>dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296</code>.
-Two independent verdicts block it: the pre-registered holdout rule failed (HOLDOUT-DTI
-0.01242 vs chance 0.03499, paired
--0.02257, CI strictly below zero), and the
+Two independent verdicts block it: the pre-registered local <b>HOLDOUT-DTI</b> rule failed
+(evaluator <code>gems52-pooled-hide-v1</code>, 4 folds, 48,080 withheld positives; not an organizer
+score): multi@25,000 0.01242 [95% CI 0.00787, 0.01718] vs same-budget random 0.03499
+[95% CI 0.03273, 0.03714], paired contrast -0.02257 [95% CI -0.02749, -0.01717]; and the
 registry lane gate returned <b>DUPLICATE/STOP</b>
 (density-degenerate 3&nbsp;px trigger, IR-56-023). Its name, note and receipt all say
 NEGATIVE; no slot was spent. Full walk-through of the numbers:

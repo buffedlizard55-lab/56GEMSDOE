@@ -123,13 +123,18 @@ different set - label-free physical channels as *emitters*, plus the combination
 holdout, and every one of them was decided by measurement. That file is generated from the receipts so the
 numbers cannot drift: **[hypotheses-round2.md](hypotheses-round2.md)**.
 
-Headline: **5 of 6 rejected, 1 not resolvable on this instrument, no promotion.** Best own arm
-`mag_ridge|packed` 0.0387 [0.0348, 0.0424] pooled HOLDOUT-DTI against 0.0900 [0.0811, 0.0988] for the group's
-filed sibling surface on identical folds (both from `evidence/field_holdout_v1.json` / `evidence/quota_union_v1.json`).
+Headline: **5 of 6 rejected, 1 not resolvable on this instrument, no promotion.** Local **HOLDOUT-DTI**
+(evaluator `gems52-pooled-hide-v1`, 4 folds, 36,335 withheld positives; not an organizer score): best own arm
+`mag_ridge|packed` 0.03872 [95% CI 0.03483, 0.04241] against 0.09003 [95% CI 0.08113, 0.09878] for the
+group's filed sibling surface on identical folds. The own-arm value is from
+`evidence/quota_union_v1.json`; the sibling-surface value is from `evidence/field_holdout_v1.json`.
 Two findings matter more than the ranking:
 
-- **H2-6 rejected the instrument, not the arm.** The holdout's withheld truth *is* the catalogue, so it scores
-  the sibling surface (USER-REPORTED live 0.2600) at 0.0900 and its pruned twin (USER-REPORTED live 0.2778) at
-  0.0038 - the opposite sign. Any near-catalogue pruning decision taken from hide-DTI would have been backwards (IR-56-011).
-- **H2-5 is reported as a null, not a win.** Exact 2.8 px packing moved `mag_ridge` by +0.00045 with CI
-  (-0.00125, 0.00036). We ship packing because it is free and mechanically sound, not because we measured a gain.
+- **H2-6 rejected the instrument, not the arm.** On the same local HOLDOUT-DTI (evaluator and withheld-positive
+  count above), the holdout's withheld truth *is* the catalogue, so it scores the sibling surface
+  (USER-REPORTED live 0.2600) at 0.09003 [95% CI 0.08113, 0.09878] and its pruned twin
+  (USER-REPORTED live 0.2778) at 0.00380 [95% CI 0.00330, 0.00429] - the opposite sign. Any near-catalogue
+  pruning decision taken from hide-DTI would have been backwards (IR-56-011).
+- **H2-5 is reported as a null, not a win.** Exact 2.8 px packing moved `mag_ridge` by +0.00045; the
+  paired 95% CI is [-0.00125, 0.00036]. We ship packing because it is free and mechanically sound, not
+  because we measured a gain.

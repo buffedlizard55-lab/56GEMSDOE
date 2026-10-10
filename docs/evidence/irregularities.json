@@ -354,6 +354,15 @@
     "verified_by": "read-only application of the explicit >0.70 threshold to the 12 flags already in the committed receipt; no rerun"
   },
   {
+    "id": "IR-56-038",
+    "title": "The sibling score ledger labels score rows as user reports, not authenticated owner scores",
+    "severity": "bad",
+    "finding": "The sibling-maintained GEMSDOE32 docs/score-ledger.csv at commit 339b32f61942e01066ced40fae6fd4d775f4ecad (blob SHA cf220a49da89ff88926019df303af5b8ea7b2b14; 12,897 bytes) lists 0.1922 as user brief / user-reported; not independently authenticated; 0.2477 as user brief; owner page also reports anchor / attribution not authenticated; and 0.2600 as user brief with a status note that the owner page says unscored/not slot-approved. It contains no score row for H33-2-B2, 0.2778, 0.2747, or 0.2708. A separate leaderboard note calls 0.2600/0.2477 owner-reported while declining attribution; that shorthand does not override the row-level provenance. No organizer score receipt for the 0.2778 artifact is present here.",
+    "action": "Corrected README.md, docs/research.html, docs/irregularities.html, and docs/discovery-irregularities.html to distinguish an owner-maintained ledger from the provenance of its score rows. Retain the figures only as user-reported, unauthenticated conditional arithmetic; do not treat them as organizer-confirmed targets or evidence of a score.",
+    "link": "https://github.com/buffedlizard55-lab/GEMSDOE32/blob/339b32f61942e01066ced40fae6fd4d775f4ecad/docs/score-ledger.csv; docs/research/leader-analysis-2026-10-09.md",
+    "verified_by": "GitHub Contents API read of current main at 2026-10-10; file commit 339b32f61942e01066ced40fae6fd4d775f4ecad, blob SHA cf220a49da89ff88926019df303af5b8ea7b2b14, size 12,897 bytes; score rows and provenance fields inspected read-only"
+  },
+  {
     "id": "IR-57-007",
     "title": "The H57 final-dot registry result requires DUPLICATE / STOP",
     "severity": "blocker",

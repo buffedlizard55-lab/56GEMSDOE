@@ -27,14 +27,23 @@ and its obtainability, and is (f) ranked by expected DTI improvement ÷ implemen
   gradient ridge C3 = 0.0148 [0.0118, 0.0180]; mag×gravity cross-gradient C5 = 0.0128
   [+0.0024 vs chance, CI touches 0]; basement-step gradient C6 = 0.0097 (chance); geodetic shear
   ridge C2 = 0.0098 (chance); SGMC complement C1 = 0.0483 (sibling-occupied); learned C4 = 0.0465.
-  **Those are HOLDOUT-DTI on their evaluator, not board scores.** Their instrument ≠ ours, so they
-  are *priors*, not predictions for our numbers.
+  **Those are sibling HOLDOUT-DTI values on `gemsdoe54-segment-cv` v2, not board scores.** The
+  fetched summary does not give a comparable withheld-positive count and omits a confidence interval
+  for some point estimates; retain only the intervals it actually reports. Its instrument differs
+  from ours, so these are *contextual priors*, not directly comparable results or predictions for our numbers.
 
-**Our own holdout bars (this repo's evaluator `gems52-pooled-hide-v1`, 4 folds, whole-component
-withholding, visible catalogue masked pixel-exactly):** previous best arm = `D_jitter`
-0.00021 [0.000003, 0.00051] (`evidence/holdout_corrections_v1.json`) — a corrections arm, i.e.
+**Our local HOLDOUT-DTI bars (evaluator `gems52-pooled-hide-v1`, 4 folds, 48,080 withheld positive
+pixels, whole-component withholding, visible catalogue masked pixel-exactly; not an organizer score):**
+previous best arm = `D_jitter` 0.00021 [95% CI 0.000003, 0.00051]
+(`evidence/holdout_corrections_v1.json`) — a corrections arm, i.e.
 essentially empty; a chance control for *discovery-sized* emissions did not exist in our receipts
 and is added in this round (E1).
+
+**Post-review caveat (IR-56-035):** this historical `D_jitter` baseline comes from a correction
+holdout whose snap-map inputs did not consume the shared buffered `fold["fit"]` set, and whose
+receipt leaves the prevalence field null. Preserve its recorded value and CI as provenance only;
+it is exploratory and **not admissible for promotion**. No DTI was recomputed, and the experiment
+budget is exhausted; see `docs/research/leader-analysis-2026-10-09.md`.
 
 ---
 
@@ -153,7 +162,7 @@ and is added in this round (E1).
 | source | link | status |
 |---|---|---|
 | INGENIOUS GDR 1391 (CC BY 4.0, DOI 10.15121/1881483) | https://gdr.openei.org/submissions/1391 | **fetched OK** (page + resource list); probe zip in `data/external/`, hash measured |
-| GEMSDOE54 RUN2-SUMMARY (sibling holdout priors, 0.2778 mechanism) | https://github.com/buffedlizard55-lab/GEMSDOE54/blob/main/RUN2-SUMMARY.md | **fetched OK** via api.github.com this session |
+| GEMSDOE54 RUN2-SUMMARY (sibling-reported 200 m construction; 0.2778 attribution unverified) | https://github.com/buffedlizard55-lab/GEMSDOE54/blob/main/RUN2-SUMMARY.md | **fetched OK** via api.github.com this session; report content is not an organizer score receipt |
 | DrivenData evaluation page (DTI formula, format) | https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/ | verified in `knowledge/sources.json` (fetch_page) |
 | Staff thread 11516 (known-fault masking) | https://community.drivendata.org/t/11516 | verified in `knowledge/sources.json` (fetch_page) |
 | Competition data tab | https://www.drivendata.org/competitions/306/competition-doe-gems/data/ | login-gated (HTTP 302 observed); bytes via pinned owner bridge, re-hashed this session |
@@ -166,10 +175,12 @@ and is added in this round (E1).
   520810). No private metric fork.
 - **Emission rule (one rule, holdout and shipped file identical):** top-k of the arm's ranked
   field inside `footprint ∧ region ∧ ¬dilate(known catalogue, 2 px)`; value 1.0; budgets
-  k ∈ {8,000, 15,000, 25,000, 37,654}. The 2 px (200 m) exclusion of *known* traces is adopted
-  from the verified 0.2778 mechanism (GEMSDOE54: parent 40,199 dots − 2,545 dots within 200 m
-  of catalogue = child 37,654 dots, 0.2708 → 0.2778 — their raster-level receipt) and from this
-  repo's own finding that the catalogue sits within ~2 px of the evidence everywhere.
+  k ∈ {8,000, 15,000, 25,000, 37,654}. The 2 px (200 m) exclusion of *known* traces was adopted
+  from a sibling-reported raster-construction recipe (GEMSDOE54: reported parent 40,199 dots −
+  2,545 dots within 200 m of catalogue = child 37,654 dots). The claimed 0.2708→0.2778 score
+  change is not verified: GEMSDOE32 labels H33-2-B2 UNSCORED, and the sibling score ledger has no
+  0.2778 row (see `docs/research/leader-analysis-2026-10-09.md`). The exclusion was also motivated
+  by this repo's own finding that the catalogue sits within ~2 px of the evidence everywhere.
 - **Arms:** `iso_step` (H6), `bc_step` (H7), `tilt_r` (H8), `multi` = mean of the three ranked
   fields, `mag_ref` = `hessian_line(tmi_hg)` (reference only — occupied family, for scale),
   `random` (seeded uniform — the chance floor).
@@ -178,7 +189,7 @@ and is added in this round (E1).
 - **Primary pick rule (deterministic, fixed now):** among {`iso_step`,`bc_step`,`tilt_r`,`multi`}
   at k = 25,000, take the highest pooled HOLDOUT-DTI. It **passes** iff its paired 95 % CI vs
   `random`@25,000 is strictly > 0, no new-field canary exceeds 0.90, and every arm stays above
-  the previous repo best 0.00021. Fail ⇒ verdict NEGATIVE, no slot, and the emitted research
+  the prior local `D_jitter` HOLDOUT-DTI baseline (evaluator and count are labelled above). Fail ⇒ verdict NEGATIVE, no slot, and the emitted research
   raster is labelled NEGATIVE — exactly the corrections-lane precedent.
 - **Budget:** experiments E1 (holdout) → E2 (build+validate) → E3 (uniqueness screen); stop after
   these three.

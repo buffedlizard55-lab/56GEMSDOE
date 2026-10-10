@@ -97,9 +97,10 @@ gate's 9-of-28 selection is only modestly above chance concordance (~4&ndash;7 e
 <tr><td><code>29</code></td><td>Benton Spring fault</td><td>-2.75</td><td>-3.04</td><td>16</td><td>5</td></tr><tr><td><code>606</code></td><td>Montezuma Range fault</td><td>2.55</td><td>2.24</td><td>8</td><td>9</td></tr><tr><td><code>856</code></td><td>Seven Troughs Range fault zone</td><td>-2.77</td><td>-1.10</td><td>8</td><td>7</td></tr><tr><td><code>1149</code></td><td>Unnamed fault zone between Kumiva and Sage Hen Valleys</td><td>-2.14</td><td>-1.09</td><td>8</td><td>5</td></tr><tr><td><code>1169</code></td><td>Unnamed fault zone in Desert Mountains</td><td>-2.16</td><td>-2.94</td><td>11</td><td>13</td></tr><tr><td><code>1307</code></td><td>Unnamed faults in Gabbs Valley Range</td><td>-2.02</td><td>-1.30</td><td>20</td><td>11</td></tr><tr><td><code>1514</code></td><td>Unnamed faults west of Cocoon Mountains</td><td>2.98</td><td>2.99</td><td>11</td><td>4</td></tr><tr><td><code>1577</code></td><td>Western Fairview Peak fault</td><td>-2.03</td><td>-2.97</td><td>11</td><td>3</td></tr><tr><td><code>2665</code></td><td>Sand Springs Range fault</td><td>2.99</td><td>1.76</td><td>8</td><td>3</td></tr>
 </table>
 <p class=mut>Emission on the DEM crest (LiDAR-calibrated, MAD 0.29&nbsp;px); the magnetic family
-is the corroboration gate, not the emitter. HOLDOUT-DTI (simulated truth, machinery only):
-A1b 0.10788 [0.08976, 0.12681] vs matched-mass
-chance 0.00414 &mdash; 26&times; chance with CI excluding 0; leakage canary
+is the corroboration gate, not the emitter. Local <b>HOLDOUT-DTI</b> (simulated-corrections truth;
+<code>src/metrics.py</code>, evaluator version hash not recorded; 26,813 withheld positives;
+not an organizer score): A1b 0.10788 [95% CI 0.08976, 0.12681] vs matched-mass chance
+0.00414 [95% CI 0.00294, 0.00541] &mdash; 26&times; chance with CI excluding 0; leakage canary
 &le; 0.58 (bar 0.90). Registry (existing post-merge receipt): 12 literal &gt;0.70 directed-proximity flags;
 maximum containment is 1.0. The older &ldquo;UNIQUE&rdquo; / zero-duplicate classification is
 superseded by <b>DUPLICATE / STOP</b>; density, Jaccard, and reverse containment do not waive
@@ -133,10 +134,10 @@ Findings: ['7111787 pixels outside the sample footprint are not NaN', 'nodata ta
 -0.11 px, 0.326 beyond 2 px vs
 0.273 for the random null) and crest-steered dots score
 <b>below</b> an evidence-free corridor at the identical budget
-(HOLDOUT-DTI 0.00087 vs 0.00177;
-paired contrast [-0.001378, -0.000476],
-P(beats)=0.0;
-41,742 withheld positives). So this file emits the
+(local HOLDOUT-DTI, evaluator <code>h57-hide-and-recover-v1</code> / <code>src/metrics.py</code>,
+41,742 withheld positives; not an organizer score: B2 0.00087 [95% CI 0.000486, 0.001327]
+vs B1 0.00177 [95% CI 0.001295, 0.002317], paired contrast
+[paired 95% CI -0.001378, -0.000476], P(beats)=0.0). So this file emits the
 <b>unsteered</b> cover instead: dots 200 m either side of every trace, which with the 300 m
 triangular kernel credits a refined trace anywhere out to about 500 m.</p>
 <p><b>Registry result: DUPLICATE / STOP.</b> Spearman remains below the 0.90 bar
@@ -170,9 +171,11 @@ exit 0 and <code>python -m src.submission_io validate-conformant</code> exit 0
 (no NaN inside the footprint, every value in [0,1], CRS/shape/transform match
 <code>sample_submission.tif</code>, template conformance, GDAL_NODATA=<code>nan</code>).</p>
 <p><b>Uniqueness status:</b> <span class=ok>DUPLICATE/STOP under the literal &gt;70%-within-3px rule</span> vs 412 unique earlier rasters (max Spearman 0.0429, max 3&nbsp;px Jaccard 0.091)</p>
-<p><b>Evidence status:</b> <span class=warn>HOLDOUT-DTI (simulated-corrections truth)</span>
-A1 lane 0.3105 [0.2821, 0.3378] vs masked control
-0.0000 and random control 0.0117 &mdash; see <a href="research.html">research</a>.</p>
+<p><b>Evidence status:</b> local <b>HOLDOUT-DTI</b> (simulated-corrections truth;
+<code>src/metrics.py</code>, evaluator version hash not recorded; 26,813 withheld positives;
+not an organizer score). A1 lane 0.31049 [95% CI 0.28212, 0.33781] vs masked control
+0.00000 [95% CI 0.00000, 0.00000] and random control 0.01174
+[95% CI 0.01001, 0.01359] &mdash; see <a href="research.html">research</a>.</p>
 <p class=mut>Is it OK to download and submit? The file is format-validated but fails the literal uniqueness gate; the
 holdout validates the mechanism on a simulated truth; no organizer score exists for it. The
 standing protocol requires a stop, not a submission &mdash; the full reasoning is on
@@ -191,15 +194,17 @@ The pre-registered holdout verdict is <b>NEGATIVE</b> and the registry lane gate
 <b>DUPLICATE/STOP</b> on the literal 3&nbsp;px clause (density-degenerate trigger, IR-56-023: it
 tracks grid coverage while the rank-agreement test passes at max &rho; 0.043 vs the 0.90 bar)
 &mdash; nothing is promoted and no slot was spent.</p>
-<p><b>HOLDOUT-DTI</b> of the shipped arm <code>multi@25,000</code>:
-<b>0.01242</b> [0.00787,
-0.01718] vs <b>uniform-random 0.03499</b> at the
-same budget; paired difference -0.02257
-[-0.02749, -0.01717] &mdash; strictly below chance; canaries
+<p>Local <b>HOLDOUT-DTI</b> (evaluator <code>gems52-pooled-hide-v1</code>, 4 folds,
+48,080 withheld positives; not an organizer score) of the shipped arm <code>multi@25,000</code>:
+<b>0.01242</b> [95% CI 0.00787, 0.01718] vs <b>uniform-random 0.03499</b>
+[95% CI 0.03273, 0.03714] at the same budget; paired difference -0.02257
+[95% CI -0.02749, -0.01717] &mdash; strictly below chance; canaries
 &le; 0.567 (limit 0.90). Receipts:
 <code>evidence/build_discovery_v1.json</code>, <code>evidence/run_card_discovery_v1.json</code>.</p>
-<p><b>submission name</b> <code>h56-disc-multi-b25000-20261009-20261009T165646Z</code><br>
-<b>note</b> (115/140): <code>h56 discovery multi k=25000: step-lineament dots &gt;200 m off catalogue; NEGATIVE holdout, research only, do not slot</code><br>
+<p><b>Audit-only historical identifier (not a submission name)</b>
+<code>h56-disc-multi-b25000-20261009-20261009T165646Z</code><br>
+<b>Historical note — do not paste into a form</b> (115/140):
+<code>h56 discovery multi k=25000: step-lineament dots &gt;200 m off catalogue; NEGATIVE holdout, research only, do not slot</code><br>
 <b>sha256</b> <code>dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296</code> · validator ok:
 True</p>
 </div>
@@ -210,14 +215,15 @@ Both runs measured the same catalogue against the same evidence; they gate diffe
 questions and reached opposite verdicts. Both are reported in full &mdash; the disagreement
 is the finding.</p>
 <div class=grid>
-<div class=card><h3>Run A &mdash; this run (branch <code>arena/b71ede8d-56gemsdoe</code>) &mdash; <span class=ok>strongest-crest finding; protocol verdict NEGATIVE</span></h3>
+<div class=card><h3>Historical Run A &mdash; separate corrections session (branch <code>arena/b71ede8d-56gemsdoe</code>; predates H57) &mdash; <span class=ok>strongest-crest finding; protocol verdict NEGATIVE</span></h3>
 <p>Question: <em>is the catalogue on the MAIN scarp?</em> For 28 of 125 well-sampled records
 (22.4%) the strongest, LiDAR-confirmed DEM-scarp crest sits consistently &gt; 2&nbsp;px
 (200&ndash;340&nbsp;m) from the catalogue line &rarr; <b>6,504 dots</b> emitted on the
-evidence-defined traces, 0 on the catalogue. HOLDOUT-DTI(sim) 0.3105
-[0.2821, 0.3378] vs masked control 0.0000 and
-random control 0.0117. Literal containment gate failed; no slot is cleared.
-<b>The one-click download above is this run's file.</b></p></div>
+evidence-defined traces, 0 on the catalogue. Local <b>HOLDOUT-DTI</b> (simulated-corrections
+truth; <code>src/metrics.py</code>, version hash not recorded; 26,813 withheld positives;
+not an organizer score): A1 0.31049 [95% CI 0.28212, 0.33781] vs masked control
+0.00000 [95% CI 0.00000, 0.00000] and random 0.01174 [95% CI 0.01001, 0.01359].
+Literal containment gate failed; no slot is cleared. This historical run is not promoted.</p></div>
 <div class=card><h3>Run B &mdash; merged PR #4 (branch <code>arena/1d3dbc39-56gemsdoe</code>) &mdash; <span class=warn>NEGATIVE, no slot recommended</span></h3>
 <p>Question: <em>is the catalogue displaced from A crest by &ge; 2&nbsp;px?</em> No:
 null-calibrated median offset -0.103&nbsp;px (DEM) /
@@ -225,18 +231,23 @@ null-calibrated median offset -0.103&nbsp;px (DEM) /
 (1.32&nbsp;px); <b>0 of 21
 corridors</b> reach a consistent &ge; 2&nbsp;px offset; 3&nbsp;m LiDAR: 0 of
 13 segments displaced by &ge; 200&nbsp;m. Their primary raster carries
-<b>1 dot</b> &mdash; the emptiness is their finding. Their two
-files are format-valid and safe to download but <b>not cleared for a slot</b> (their
-uniqueness gate returned <code>ok:false</code> on the proximity criterion at 1-dot count,
-IR-56-006). Details: <a href="prior-run.html">Prior run</a>.</p></div>
+<b>1 dot</b> &mdash; the emptiness is their finding. The two archived files are audit downloads only; <b>neither is cleared for upload or a weekly slot</b>.
+Their local HOLDOUT-DTI uses evaluator <code>gems52-pooled-hide-v1</code> with 48,080 withheld positives
+and four folds; it is not an organizer score. Post-review IR-56-035 found the snap-map inputs did
+not consume the buffered <code>fold["fit"]</code> set and the receipt omitted prevalence, so these
+values are exploratory and <b>not admissible for promotion</b>; no DTI was recomputed. A local format
+pass is not organizer acceptance: the finite exterior conflicts with the official
+null-outside-footprint convention, and the shared writer/gate tension is documented in GEMSDOE52
+issue #65 (not claimed fixed upstream). No portal upload or organizer score exists. Their
+uniqueness gate triggers literal <b>DUPLICATE / STOP</b> at 1-dot count (IR-56-006); density
+degeneracy does not waive it. Details: <a href="prior-run.html">Prior run</a>.</p></div>
 <div class=card><h3>Run C &mdash; this PR #7 (branch <code>arena/858a492d-56gemsdoe</code>) &mdash; <span class=bad>discovery lane: NEGATIVE twice</span></h3>
 <p>Question: <em>do off-catalogue step/tilt lineaments recover catalogue-missing faults?</em>
 Five hypotheses pre-registered (H6&ndash;H10, <code>docs/research/hypotheses-20261009.md</code>);
-the top three validated on the shared 4-fold blocked holdout (48,080 withheld positives):
-pick <code>multi@25000</code> 0.01242
-vs uniform-random 0.03499 &mdash; paired -0.02257
-[-0.02749, -0.01717],
-canaries clean. Registry gate: surface PASS, dots
+the top three used local <b>HOLDOUT-DTI</b> (evaluator <code>gems52-pooled-hide-v1</code>,
+4 folds, 48,080 withheld positives; not an organizer score): pick <code>multi@25000</code>
+0.01242 [95% CI 0.00787, 0.01718] vs uniform-random 0.03499 [95% CI 0.03273, 0.03714]
+&mdash; paired contrast -0.02257 [95% CI -0.02749, -0.01717], canaries clean. Registry gate: surface PASS, dots
 DUPLICATE/STOP (density-degenerate trigger, IR-56-023).
 Their unique TIF is the second download above &mdash; labelled NEGATIVE / do not submit in
 its name, note and receipt. 0 slots spent.</p></div>
@@ -271,10 +282,10 @@ records · 16,344 perpendicular transects (&plusmn;400&nbsp;m)</li>
 72.5% within 1&nbsp;px</li>
 <li>28 records with consistent offset &gt; 2&nbsp;px (of 125 well-sampled)</li>
 <li>6,504 dots emitted, 0 on the catalogue</li></ul></div>
-<div class=card><h3>Holdout (simulated truth, local)</h3><ul>
-<li>A1 lane 0.3105 [0.2821, 0.3378]</li>
-<li>A0 masked control 0.0000 · A4 random 0.0117</li>
-<li>A5 oracle 1.0000 (ceiling)</li>
+<div class=card><h3>Local HOLDOUT-DTI (simulated corrections truth; <code>src/metrics.py</code>, evaluator version hash not recorded; 26,813 withheld positives; not an organizer score; bracketed intervals are 95% CIs)</h3><ul>
+<li>A1 lane 0.31049 [95% CI 0.28212, 0.33781]</li>
+<li>A0 masked control 0.00000 [95% CI 0.00000, 0.00000] · A4 random 0.01174 [95% CI 0.01001, 0.01359]</li>
+<li>A5 oracle 1.00000 [95% CI 1.00000, 1.00000] (ceiling/control)</li>
 <li>leakage canary: max feature AUC 0.5785; controls read ~0.5</li></ul></div>
 <div class=card><h3>Not claimed</h3><ul>
 <li>no organizer score exists for this file (a projection is never written as a score);</li>
@@ -287,7 +298,7 @@ not the fault;</li>
 <h2>Site map</h2>
 <ul>
 <li><a href="executive-summary.html">Submission status</a> &mdash; exactly how to download and submit, and the honest caveats</li>
-<li><a href="research.html">Research</a> &mdash; method, offset histogram, LiDAR calibration, holdout, leakage canary, and the &ldquo;why 0.2778&rdquo; analysis</li>
+<li><a href="research.html">Research</a> &mdash; method, offset histogram, LiDAR calibration, holdout, leakage canary, and the unverified 0.2778 attribution review</li>
 <li><a href="hypotheses.html">Hypotheses</a> &mdash; the concurrent run's five ranked geological hypotheses, plus the round-2 discovery set H6&ndash;H10 and its NEGATIVE holdout verdict</li>
 <li><a href="sources.html">Sources</a> &mdash; official, verified links for manual review</li>
 <li><a href="irregularities.html">Irregularities</a> &mdash; flagged claims and how each was checked</li>
@@ -297,9 +308,10 @@ not the fault;</li>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
 round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
 round-3 twin-family branch <code>arena/e86c5610-56gemsdoe</code> ·
-generated 2026-10-09 19:50 UTC by
+base page generated 2026-10-09 19:50 UTC by
 <code>scripts/build_site.py</code> from <code>evidence/corrections/*.json</code> (run A)
-and <code>evidence/*.json</code> (run B) ·
+and <code>evidence/*.json</code> (run B) · post-review status/provenance wording checked
+2026-10-10; no study-level experiment, competition holdout, registry scan, or site builder rerun (unit tests only) ·
 site served from <code>main</code> at
 <a href="https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html">buffedlizard55-lab.github.io/56GEMSDOE/</a></div></footer>
 </body></html>

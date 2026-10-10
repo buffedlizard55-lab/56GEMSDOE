@@ -318,13 +318,13 @@ def test_credit_bar_is_the_published_algebra():
     k, so c = k and f = 1 - k) reduces to k > alpha*DTI; the ratio form alpha*DTI/(1-alpha*DTI) is the
     bar for a dot whose nearest truth sits a full unit of FP beyond the kernel. Asserting both, plus a
     brute-force check of the general lemma on random small grids, pins the algebra the emitter uses."""
-    s_live = 0.2778
+    scenario_dti = 0.25  # arbitrary algebra-test input, not an observed or organizer score
     k = 1.0 - 2 * np.sqrt(2) / 3                 # the (2,2) diagonal offset: k = 0.05719
     assert abs(k - 0.0571912) < 1e-6
-    assert abs(0.2 * s_live - 0.05556) < 1e-5     # special-case bar
-    assert k > 0.2 * s_live                       # so the diagonal emission IS admissible there
-    ratio = 0.2 * s_live / (1 - 0.2 * s_live)
-    assert (k > 0.2 * s_live) == (k > ratio * (1 - k))   # the two forms decide the same dot
+    assert abs(0.2 * scenario_dti - 0.05) < 1e-12  # special-case bar
+    assert k > 0.2 * scenario_dti                 # the diagonal exceeds this test threshold
+    ratio = 0.2 * scenario_dti / (1 - 0.2 * scenario_dti)
+    assert (k > 0.2 * scenario_dti) == (k > ratio * (1 - k))   # the two forms decide the same dot
     rng = np.random.default_rng(5)
     for _ in range(12):
         n = 13

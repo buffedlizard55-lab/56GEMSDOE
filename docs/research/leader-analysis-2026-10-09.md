@@ -19,6 +19,17 @@
 - **The artifact's status:** [GEMSDOE32 page](https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html). The page identifies the H33-2-B2 artifact as **UNSCORED**, calls 0.2747 a model projection, and says no organizer score exists for artifacts in that repository. This directly blocks treating 0.2778 as a confirmed score.
 - **Reported construction mechanism:** [GEMSDOE54 Run 2 summary](https://github.com/buffedlizard55-lab/GEMSDOE54/blob/main/RUN2-SUMMARY.md), section “The 0.2778 entry”. GEMSDOE54 reports that its child raster has 37,654 dots and equals a 40,199-dot parent minus the 2,545 parent dots within 2 px (200 m) of a USGS catalogue fault. It reports 5.8% of the child and 11.7% of the parent within 300 m of the catalogue. **That is a sibling's raster-level report, not an organizer score and not independently reproduced from the source rasters in this checkout.**
 
+## Sibling score-ledger audit (checked 2026-10-10)
+
+The owner-maintained [GEMSDOE32 `docs/score-ledger.csv`](https://github.com/buffedlizard55-lab/GEMSDOE32/blob/339b32f61942e01066ced40fae6fd4d775f4ecad/docs/score-ledger.csv) was read through the GitHub Contents API at commit `339b32f61942e01066ced40fae6fd4d775f4ecad` (file blob SHA `cf220a49da89ff88926019df303af5b8ea7b2b14`, 12,897 bytes). The score rows say:
+
+- `0.1922`: provenance `user brief`; status `user-reported; not independently authenticated`.
+- `0.2477`: provenance `user brief; owner page also reports anchor`; status `attribution not authenticated`.
+- `0.2600`: provenance `user brief`; status says the owner page conflicts, reporting `unscored/not slot-approved`.
+- No row exists for `0.2778`, `0.2747`, `0.2708`, or the H33-2-B2 artifact. The ledger does have a separate public-leaderboard snapshot row whose note calls 0.2600/0.2477 “owner-reported” while expressly declining file attribution; that shorthand does not override the score rows' user-brief / unauthenticated provenance.
+
+This is a sibling-maintained ledger, not an organizer receipt. The defensible wording is **user-reported / unauthenticated**, not owner-confirmed. Use those values only in clearly conditional mechanism arithmetic; do not treat them as targets, benchmark truth, or evidence that H33-2-B2 scored 0.2778.
+
 ## A defensible mechanism hypothesis—not a score explanation
 
 For unit-valued dots, let `N` be the number of predicted dots, `G` the number of positive truth pixels, `T=TP_w`, and `M` the sum of the best triangular-kernel proximity weight over predicted dots. The official definitions imply `FN_w=G-T` and `FP_w=N-M`, so:
