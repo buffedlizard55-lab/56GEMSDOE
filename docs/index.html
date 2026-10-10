@@ -15,6 +15,7 @@ nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
 .dlbtn{margin:14px 0}
 .btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:8px}
 .btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn.stop{background:var(--bad);color:#1c0808}
 .btn:hover{filter:brightness(1.1)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
@@ -35,41 +36,42 @@ ul{margin:6px 0 6px 20px}li{margin:3px 0}
 <h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
 <div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
 faults missing from the USGS/INGENIOUS catalogue</div>
-<nav><a href="index.html" class=active>Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="h57.html">H57 run (current)</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">&#11015; Download the submission GeoTIFF (150 KB)</a> <a class="btn alt" href="executive-summary.html">How to submit it &rarr;</a></div>
+<nav><a href="index.html" class=active>Home</a><a href="executive-summary.html">Submission status</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="h57.html">H57 run (current)</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn stop" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">&#11015; Archived H57 TIFF — NOT SAFE TO SUBMIT (150 KB)</a> <a class="btn alt" href="h57.html">Why this is blocked &rarr;</a></div>
 </div></header>
 <div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
 submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
 on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
 <span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
 data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
-<main class=wrap><div class=card><h2 class=ok>Current file: OK to download and OK to submit</h2>
-<p>The download button above gives you <code>h57-corr-band2px-cover-20261009T191337Z.tif</code>. It is
-<b>format-valid for the DrivenData form</b>: single band, float32, every value in [0,&nbsp;1],
-<b>zero NaN cells anywhere</b> (the earlier "Predicted values must be in range [0, 1]" rejection
-was caused by NaN padding, which this file does not contain), EPSG:32611, 3292&times;3730, and a
-geotransform identical to <code>sample_submission.tif</code>. Paste the submission name and note
-printed on the home page into the form.</p>
-<p><b>What it is not:</b> it is not a validated discovery. This run's crest-steering hypothesis is
-<b>REFUTED</b> by its own holdout (see <a href="h57.html">H57 run</a>); what ships is the
-unsteered, kernel-optimal cover of the 100&ndash;400&nbsp;m band the organizers describe as
-containing "corrections or modifications to existing fault traces". Spending one of your weekly
-slots on it is a judgement call that stays with you &mdash; the full evidence is one click away.</p>
-<p><a href="h57.html">H57 run card and holdout</a> ·
-<a href="executive-summary.html">Step-by-step submission guide</a> ·
+<main class=wrap><div class=card><h2 class=bad>Corrections lane: NEGATIVE / STOP — do not submit</h2>
+<p>The H57 TIFF linked above is retained for audit only. Its final-dot registry receipt reports
+<b>1.0</b> of dots within 3 px of prior rasters, exceeding the explicit 0.70 duplicate-and-stop
+threshold. A strict replay against the pinned sample also finds <b>7,111,787 finite cells outside
+the template footprint</b> and a missing NaN nodata tag. Its original "OK to submit" wording is
+superseded by this fail-closed review.</p>
+<p>The H57 crest-steering hypothesis was refuted by its own method-level HOLDOUT-DTI; the emitted
+54,914-dot cover itself was not scored. The review used no extra experiment or submission slot.
+No corrections-lane artifact is selected, promoted, or cleared to submit. Download only for
+technical inspection, not as a workaround or candidate upload.</p>
+<p><a href="h57.html">H57 run card, holdout and stop review</a> ·
+<a href="executive-summary.html">Current submission status and future checklist</a> ·
 <a href="prior-run.html">Preserved prior runs</a> ·
-<a href="prior-irregularities.html">Prior run irregularities</a></p></div>
+<a href="irregularities.html">Irregularities</a></p></div>
 
-<h2>&#11015;&nbsp;ROUND-3 TWIN-FAMILY CANDIDATE (this PR, newest corrections run) &mdash; download for review only</h2>
+<h2>&#11015;&nbsp;ROUND-3 TWIN-FAMILY RESEARCH ARCHIVE — DUPLICATE / STOP — NOT FOR SUBMISSION</h2>
 <div class=card>
-<p><a class="btn" href="downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif">Download gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif</a>
+<p><a class="btn stop" href="downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif">Download for technical inspection only — NOT SAFE TO SUBMIT</a>
 <span class=mut>333 KB · 2,139 dots on the
 DEM-scarp crest lines of the 9 records whose displacement is
 corroborated by BOTH evidence families (DEM + magnetic, sign-concordant medians &ge; 1&nbsp;px
 on one shared perpendicular reference) · values {0.0, 1.0}</span></p>
-<p><b>OK to download: yes.</b> <b>OK to submit: <span class=bad>NO</span>.</b>
+<p><b>Research archive only.</b> <b>Submit clearance: <span class=bad>NO</span>.</b>
 Round verdict <b>NEGATIVE</b>: H-C1 failed its pre-registered conjunction; the holdout is
-construction-biased by design; the literal containment clause fires (own round-1 superset).
-Receipts: <code>evidence/corrections/run_card_round3.json</code>.</p>
+construction-biased by design; existing registry evidence has 12 literal &gt;0.70 directed-proximity
+flags (max containment 1.0), so the required action is <b>DUPLICATE / STOP</b>. No registry scan
+was rerun. Receipts: <code>evidence/corrections/run_card_round3.json</code>,
+<code>evidence/corrections/registry_check_round3.json</code>, and
+<code>evidence/corrections/registry_check_round3_post_review.json</code>.</p>
 <h3>The round's scientific test &mdash; H-C1: does the offset respect the catalogue's own map quality?</h3>
 <p>Joining the official QFaults/INGENIOUS attribute table (GDR 1391; positional join verified
 1,126/1,126 on SLIPSENSE) to the round-1 per-record offsets &mdash; never done in any sibling
@@ -98,28 +100,32 @@ gate's 9-of-28 selection is only modestly above chance concordance (~4&ndash;7 e
 is the corroboration gate, not the emitter. HOLDOUT-DTI (simulated truth, machinery only):
 A1b 0.10788 [0.08976, 0.12681] vs matched-mass
 chance 0.00414 &mdash; 26&times; chance with CI excluding 0; leakage canary
-&le; 0.58 (bar 0.90). Registry (re-screened post-merge over the updated corpus): documented
-UNIQUE; the literal clause fires on degenerate supersets + the own round-1 superset &mdash;
-numbers in the run card. Map-tolerance sensitivity and the H57 cross-caveat are in
+&le; 0.58 (bar 0.90). Registry (existing post-merge receipt): 12 literal &gt;0.70 directed-proximity flags;
+maximum containment is 1.0. The older &ldquo;UNIQUE&rdquo; / zero-duplicate classification is
+superseded by <b>DUPLICATE / STOP</b>; density, Jaccard, and reverse containment do not waive
+the rule. No scan was rerun. Map-tolerance sensitivity and the H57 cross-caveat are in
 <code>evidence/corrections/build_round3.json</code> and the run card.</p>
-<p><b>submission name</b> <code>gems56-corr-twinfam9-20261009T190155Z-0279ca86</code><br>
-<b>note</b> (136/140): <code>h56 round-3 corrections: twin-family gate (DEM+mag concordant offsets, 9 records); H-C1 map-quality NEGATIVE; research only, do not slot</code><br>
-<b>sha256</b> <code>a614a594e179fa2af24a3d9c311bbab45f3c39ca868023da23b43ece16a32b75</code> · validator exit
-0</p>
+<p><b>Audit-only artifact identifier (not a submission name)</b>
+<code>gems56-corr-twinfam9-20261009T190155Z-0279ca86</code><br>
+<b>Archive-only note — do not paste into a form</b> (136/140):
+<code>h56 round-3 corrections: twin-family gate (DEM+mag concordant offsets, 9 records); H-C1 map-quality NEGATIVE; research only, do not slot</code><br>
+<b>sha256</b> <code>a614a594e179fa2af24a3d9c311bbab45f3c39ca868023da23b43ece16a32b75</code> · original format-validator exit
+0 (not a registry clearance)</p>
 </div>
 
 
-<h2>&#11015;&nbsp;CURRENT SUBMISSION FILE (H57, this run)</h2>
+<h2>&#11015;&nbsp;H57 ARCHIVE — NEGATIVE / STOP — NOT SAFE TO SUBMIT</h2>
 <div class=card>
-<p><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">Download h57-corr-band2px-cover-20261009T191337Z.tif</a>
+<p><a class="btn stop" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">Download for technical inspection only — NOT SAFE TO SUBMIT</a>
 <span class=mut>150 KB · single band · float32 ·
 EPSG:32611 · 100 m · 3292&times;3730 · 54,914 dots · values {0.0, 1.0} ·
 <b>0 NaN cells</b></span></p>
-<p><b>OK to download: <span class=ok>YES</span>. OK to submit (the form will accept it):
-<span class=ok>YES</span>.</b> Validator: ok=True, NaN cells 0,
-min 0.0, max 1.0, problems [].</p>
-<p><b>Submission name</b> <code>h57-corr-band2px-cover-20261009T191337Z</code><br>
-<b>Note</b> (122/140): <code>corrections-band cover: dots 2px either side of every catalogue trace, 2px along strike; crest steering refuted on holdout</code><br>
+<p><b>Submit clearance: <span class=bad>NO</span>.</b> Strict template validation: ok=False,
+7,111,787 non-NaN cells outside the sample mask, matching nodata tag=False.
+Findings: ['7111787 pixels outside the sample footprint are not NaN', 'nodata tag None != template tag nan'].</p>
+<p><b>Audit-only name</b> <code>h57-corr-band2px-cover-20261009T191337Z</code><br>
+<b>Audit-only note — do not paste into a submission form</b> (122/140):
+<code>corrections-band cover: dots 2px either side of every catalogue trace, 2px along strike; crest steering refuted on holdout</code><br>
 <b>sha256</b> <code>fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced</code></p>
 <p><b>What the evidence says, in one line:</b> the crest-steering hypothesis is
 <span class=bad>REFUTED</span> &mdash; measured offsets cluster under two pixels
@@ -133,12 +139,15 @@ P(beats)=0.0;
 41,742 withheld positives). So this file emits the
 <b>unsteered</b> cover instead: dots 200 m either side of every trace, which with the 300 m
 triangular kernel credits a refined trace anywhere out to about 500 m.</p>
-<p><b>Uniqueness:</b> max Spearman 0.286 against the 40 worst-overlap
-earlier submission rasters (bar 0.90); largest exact-pixel Jaccard
-0.152 against a 6.6&times; larger raster. The
-literal 3&nbsp;px containment clause fires &mdash; it does so for the competition's own
-<code>existing_faults.tif</code> too, because every dot 2&nbsp;px off a trace is within 3&nbsp;px
-of that trace &mdash; and is logged as <a href="irregularities.html">IR-57-003</a>.</p>
+<p><b>Registry result: DUPLICATE / STOP.</b> Spearman remains below the 0.90 bar
+(max 0.286 in the full-run card); that does not waive the independent
+proximity test. On the final-dot 40-prior gate, <b>1.000</b>
+of dots fall within 3 px of a registry raster, exceeding the strict &gt;0.70 threshold.
+The fact that this overlaps the catalogue does not create an exception. See
+<a href="irregularities.html">IR-57-003 and the post-review resolution</a>.</p>
+<p><b>Strict template gate also fails.</b> The current file contains 7,111,787 finite cells
+outside the pinned sample mask and has no nodata tag where the template declares NaN. Its
+all-finite compatibility-gate pass is not strict template conformance or organizer acceptance.</p>
 <p class=mut>Receipts: <code>evidence/h57_run_card.json</code>,
 <code>evidence/h57_holdout_neighbour.json</code>, <code>evidence/h57_holdout.json</code>,
 <code>evidence/h57_geometry_sweep.json</code>,
@@ -146,28 +155,28 @@ of that trace &mdash; and is logged as <a href="irregularities.html">IR-57-003</
 <a href="h57.html">H57 run page</a>.</p>
 </div>
 
-<h2>&#11015;&nbsp;EARLIER RUN FILE (run A, superseded)</h2>
+<h2>Earlier H56 corrections archive — NOT safe to submit</h2>
 <div class=card>
-<p><a class="btn" href="downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif">Download gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif</a>
-<span class=mut>333 KB · single band · float32 · EPSG:32611 · 100 m ·
+<p><a class="btn stop" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">Download historical TIFF for inspection only — NOT SAFE TO SUBMIT</a>
+<span class=mut>343 KB · single band · float32 · EPSG:32611 · 100 m ·
 3292&times;3730 · 6,504 predicted pixels · every value in [0, 1] · NaN only outside the
 scored footprint · nodata tag <code>nan</code> (the official sample's own format)</span></p>
 <p><b>sha256:</b> <code>08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7</code></p>
-<p><b>Unique submission name to use:</b> <code>GEMSDOE56-CORR-CRESTGT2PX</code><br>
-<b>Note to paste into the submit form's <em>Note (optional)</em> field</b>
-(137/140 characters):<br><code>GEMSDOE56 corrections: 6504 dots on LiDAR-calibrated DEM-scarp crest where catalogue offset &gt;2px; 0 on-catalogue; HOLDOUT-DTI(sim) 0.3105</code></p>
+<p><b>Audit-only historical name:</b> <code>GEMSDOE56-CORR-CRESTGT2PX</code><br>
+<b>Audit-only note — do not paste into a submission form</b>
+(98/140 characters):<br><code>Historical 6,504-dot corrections raster; DUPLICATE/STOP; research archive only; NOT SAFE TO SUBMIT</code></p>
 <p><b>Format status:</b> <span class=ok>PASS</span> &mdash; <code>scripts/validate_submission.py</code>
 exit 0 and <code>python -m src.submission_io validate-conformant</code> exit 0
 (no NaN inside the footprint, every value in [0,1], CRS/shape/transform match
 <code>sample_submission.tif</code>, template conformance, GDAL_NODATA=<code>nan</code>).</p>
-<p><b>Uniqueness status:</b> <span class=ok>UNIQUE - no prior re-issued (literal containment flags logged and investigated below)</span> vs 412 unique earlier rasters (max Spearman 0.0429, max 3&nbsp;px Jaccard 0.091)</p>
+<p><b>Uniqueness status:</b> <span class=ok>DUPLICATE/STOP under the literal &gt;70%-within-3px rule</span> vs 412 unique earlier rasters (max Spearman 0.0429, max 3&nbsp;px Jaccard 0.091)</p>
 <p><b>Evidence status:</b> <span class=warn>HOLDOUT-DTI (simulated-corrections truth)</span>
 A1 lane 0.3105 [0.2821, 0.3378] vs masked control
 0.0000 and random control 0.0117 &mdash; see <a href="research.html">research</a>.</p>
 <p class=mut>Is it OK to download and submit? The file is format-validated but fails the literal uniqueness gate; the
 holdout validates the mechanism on a simulated truth; no organizer score exists for it. The
 standing protocol requires a stop, not a submission &mdash; the full reasoning is on
-<a href="executive-summary.html">Make a submission</a>.</p>
+<a href="executive-summary.html">Current submission status</a>.</p>
 </div>
 
 
@@ -277,7 +286,7 @@ not the fault;</li>
 </div>
 <h2>Site map</h2>
 <ul>
-<li><a href="executive-summary.html">Make a submission</a> &mdash; exactly how to download and submit, and the honest caveats</li>
+<li><a href="executive-summary.html">Submission status</a> &mdash; exactly how to download and submit, and the honest caveats</li>
 <li><a href="research.html">Research</a> &mdash; method, offset histogram, LiDAR calibration, holdout, leakage canary, and the &ldquo;why 0.2778&rdquo; analysis</li>
 <li><a href="hypotheses.html">Hypotheses</a> &mdash; the concurrent run's five ranked geological hypotheses, plus the round-2 discovery set H6&ndash;H10 and its NEGATIVE holdout verdict</li>
 <li><a href="sources.html">Sources</a> &mdash; official, verified links for manual review</li>

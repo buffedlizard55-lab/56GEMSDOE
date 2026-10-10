@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Round-2 site + run card, rendered from the receipts. No number on the page is typed by hand.
+"""ARCHIVE-ONLY Round-2 site generator, retained for historical provenance.
+
+This pre-H57 builder emits a submission desk whose old reciprocal-only registry
+interpretation conflicts with the current literal duplicate-and-stop rule. It
+refuses to write once the authoritative H57 post-review card exists; use
+`scripts/build_site.py` for the current negative-status site.
 
 Reads:  evidence/field_holdout_v1.json          (E1 channel screen, both instruments, AUC canaries)
         evidence/quota_union_v1.json            (E4 combination-rule arms)
@@ -123,6 +128,14 @@ def fmt_cell(fr):
 
 
 def main() -> int:
+    current = EV / "h57_run_card.json"
+    if current.exists():
+        card = j(current)
+        if card.get("verdict") == "NEGATIVE / STOP":
+            print("REFUSING: build_round2.py is an archival pre-H57 generator and would overwrite "
+                  "the current fail-closed site. Use scripts/build_site.py instead.", file=sys.stderr)
+            return 2
+
     ev1 = j(EV / "field_holdout_v1.json")
     e4 = j(EV / "quota_union_v1.json")
     e3 = j(sorted(EV.glob("emission_holdout_h56-mpp-*.json"))[0]) if list(EV.glob("emission_holdout_h56-mpp-*.json")) else {}

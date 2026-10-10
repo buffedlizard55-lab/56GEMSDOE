@@ -22,8 +22,11 @@
    "bytes": 55772,
    "zip": "h56-corr-snap200cm-20261009.zip",
    "zip_sha256": "6a391551f1c581e8ebd4a2a548fc9f56ceffa89696ae858551ecba9682b96f7f",
-   "validator_ok": true,
-   "validator_problems": [],
+   "validator_ok": false,
+   "validator_problems": [
+    "7111787 pixels outside the sample footprint are not NaN",
+    "nodata tag None != template tag nan"
+   ],
    "validator_min": 0.0,
    "validator_max": 1.0,
    "unique_values": [
@@ -105,7 +108,67 @@
     "13GEMSDOE__docs__downloads__13gems_20261001_r11-greedy-mp_v2_zerofill.tif",
     "13GEMSDOE__docs__downloads__13gems_20261001_r13-lattice-s5_v2_nan-outside.tif",
     "13GEMSDOE__docs__downloads__13gems_20261001_r13-lattice-s5_v2_zerofill.tif"
-   ]
+   ],
+   "legacy_validator_ok": true,
+   "strict_template_validation": {
+    "path": "docs/downloads/h56-corr-snap200cm-20261009.tif",
+    "bytes": 55772,
+    "sha256": "65635a536d5195532691dbe02c04f796ea6b9e7123cd4c9cf5a8f930b351d20b",
+    "bands": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "bounds": [
+     243350.0,
+     4135550.0,
+     572550.0,
+     4508550.0
+    ],
+    "ref_bounds": [
+     243350.0,
+     4135550.0,
+     572550.0,
+     4508550.0
+    ],
+    "transform": [
+     100.0,
+     0.0,
+     243350.0,
+     0.0,
+     -100.0,
+     4508550.0
+    ],
+    "nodata": null,
+    "ref_nodata": "nan",
+    "blocksize": [
+     256,
+     256
+    ],
+    "fixture_grid": false,
+    "has_validity_mask": false,
+    "nan_pixels": 0,
+    "infinity_pixels": 0,
+    "n_nan": 0,
+    "template_valid_px": 5167373,
+    "nan_inside_px": 0,
+    "non_nan_outside_px": 7111787,
+    "mask_matches_template": false,
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 8.143879881572502e-08,
+    "n_nonzero": 1,
+    "mass": 1.0,
+    "nodata_matches_template": false,
+    "problems": [
+     "7111787 pixels outside the sample footprint are not NaN",
+     "nodata tag None != template tag nan"
+    ],
+    "ok": false,
+    "validation_class": "strict local template-mask/metadata/range check; not organizer acceptance",
+    "training_grid_matches": true,
+    "source_template": "data/sample_submission.tif (hash-pinned owner bridge copy; organizer authenticity not independently verified)"
+   }
   },
   "sensitivity": {
    "name": "h56-corr-snap100cm-20261009",
@@ -119,8 +182,11 @@
    "bytes": 55844,
    "zip": "h56-corr-snap100cm-20261009.zip",
    "zip_sha256": "1483e2c19c553d27e4742731e68da1d971b9f113fc3ace0b40d0c2cd2a7e114d",
-   "validator_ok": true,
-   "validator_problems": [],
+   "validator_ok": false,
+   "validator_problems": [
+    "7111787 pixels outside the sample footprint are not NaN",
+    "nodata tag None != template tag nan"
+   ],
    "validator_min": 0.0,
    "validator_max": 1.0,
    "unique_values": [
@@ -286,9 +352,71 @@
     "13GEMSDOE__docs__downloads__13gems_20261001_r11-greedy-mp_v2_zerofill.tif",
     "13GEMSDOE__docs__downloads__13gems_20261001_r13-lattice-s5_v2_nan-outside.tif",
     "13GEMSDOE__docs__downloads__13gems_20261001_r13-lattice-s5_v2_zerofill.tif"
-   ]
+   ],
+   "legacy_validator_ok": true,
+   "strict_template_validation": {
+    "path": "docs/downloads/h56-corr-snap100cm-20261009.tif",
+    "bytes": 55844,
+    "sha256": "e3285854e73ae4ba3fce8faea64940fdc4bee3b702eb52d2530a67fb60195196",
+    "bands": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "bounds": [
+     243350.0,
+     4135550.0,
+     572550.0,
+     4508550.0
+    ],
+    "ref_bounds": [
+     243350.0,
+     4135550.0,
+     572550.0,
+     4508550.0
+    ],
+    "transform": [
+     100.0,
+     0.0,
+     243350.0,
+     0.0,
+     -100.0,
+     4508550.0
+    ],
+    "nodata": null,
+    "ref_nodata": "nan",
+    "blocksize": [
+     256,
+     256
+    ],
+    "fixture_grid": false,
+    "has_validity_mask": false,
+    "nan_pixels": 0,
+    "infinity_pixels": 0,
+    "n_nan": 0,
+    "template_valid_px": 5167373,
+    "nan_inside_px": 0,
+    "non_nan_outside_px": 7111787,
+    "mask_matches_template": false,
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 1.1401431265767314e-06,
+    "n_nonzero": 14,
+    "mass": 14.0,
+    "nodata_matches_template": false,
+    "problems": [
+     "7111787 pixels outside the sample footprint are not NaN",
+     "nodata tag None != template tag nan"
+    ],
+    "ok": false,
+    "validation_class": "strict local template-mask/metadata/range check; not organizer acceptance",
+    "training_grid_matches": true,
+    "source_template": "data/sample_submission.tif (hash-pinned owner bridge copy; organizer authenticity not independently verified)"
+   }
   }
  },
  "priors_in_registry": 944,
- "built_utc": "2026-10-09 16:28 UTC"
+ "built_utc": "2026-10-09 16:28 UTC",
+ "validation_note": "The original builder validator did not compare candidate NaN footprint or nodata against the sample. Strict independent review fails both correction rasters: 7,111,787 finite outside-template cells and nodata=None.",
+ "safe_to_submit": false
 }

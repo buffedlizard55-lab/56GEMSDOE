@@ -15,6 +15,7 @@ nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
 .dlbtn{margin:14px 0}
 .btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:8px}
 .btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn.stop{background:var(--bad);color:#1c0808}
 .btn:hover{filter:brightness(1.1)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
@@ -30,12 +31,12 @@ img{max-width:100%;border:1px solid var(--line);border-radius:8px}
 footer{border-top:1px solid var(--line);margin-top:34px;padding:18px 0 30px;color:var(--mut);font-size:13px}
 .tag{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:10px;padding:1px 8px;color:var(--mut);margin-right:5px}
 ul{margin:6px 0 6px 20px}li{margin:3px 0}
-</style></head><body><div style='border:1px solid #d29922;background:rgba(210,153,34,.09);padding:10px 14px;border-radius:10px;margin:14px 0'><b>Archived page from the parallel discovery round-2 run (PR&nbsp;#7), preserved here so both round-2 records stay readable.</b> The repository's current front page is <a href='index.html'>index.html</a>, which carries this lane's submission-ready rasters and cross-links the discovery run's verdicts. Original file name at merge time: <code>docs/irregularities.html</code>. Content is otherwise byte-as-merged; the two edits we did make are logged as IR-56-029 (this banner) and IR-56-030 (one sibling-repo link made unambiguous).</div>
+</style></head><body><div style='border:1px solid #d29922;background:rgba(210,153,34,.09);padding:10px 14px;border-radius:10px;margin:14px 0'><b>Archived page from the parallel discovery round-2 run (PR&nbsp;#7).</b> This is archived historical content, not current submission authorization. The present review applies the literal gate: the 6,504-dot H56 raster is <b>DUPLICATE / STOP</b> (see <a href='irregularities.html'>IR-56-07</a>). The separate dotted-ridge artifact from PR&nbsp;#11 remains outside this review and unadjudicated. The current landing page is <a href='index.html'>index.html</a>; the corrections-lane verdict is NEGATIVE / STOP. Original file name at merge time: <code>docs/irregularities.html</code>.</div>
 <header class=top><div class=wrap>
 <h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
 <div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
 faults missing from the USGS/INGENIOUS catalogue</div>
-<nav><a href="index.html">Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html" class=active>Irregularities</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download the submission GeoTIFF</a> <a class="btn alt" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">.tif (343 KB)</a></div>
+<nav><a href="index.html">Home</a><a href="executive-summary.html">Submission status</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html" class=active>Irregularities</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn stop" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Historical archive — NOT SAFE TO SUBMIT</a> <a class="btn alt" href="prior-irregularities.html">Why this is stopped &rarr;</a></div>
 </div></header>
 <div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
 submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
@@ -89,29 +90,15 @@ organizer scores and are labelled as such everywhere they appear.</p></div>
 <p>The 1 m calibration product (706 of 716 official 3DEP tiles) covers 3,892,964 grid cells
 (75% of the 5,167,373-px footprint); 10 edge tiles failed in the sibling's CI. Calibration
 statistics are computed on covered transects only and labelled with n.</p></div>
-<div class=card><h3>IR-56-07: the literal 70%-containment uniqueness test fires on 8 habitat
-rasters; the investigation shows they are supersets, not re-issues</h3>
-<p>The lane protocol's literal test (&ldquo;more than 70% of your dots fall within 3 px of one
-registry raster's dots &rarr; log it as a duplicate and stop&rdquo;) fires on
-8 sparse registry rasters (containment up to
-0.9989). Investigated with the discriminating statistics
-(the sibling GEMSDOE51 gate's own): every one of them is a <b>habitat/superset emission
-12&ndash;38&times; larger</b> than this lane's 6,504 dots (13GEMSDOE lattice / toporef /
-union-tips, 5GEMSDOE pindrop-v4 discovery/nodes, GEMSDOE50 topo-lineament-scatter,
-GEMSDOE23 arrangement-matched-habitat, GEMSDOE37 h6-physics-dotted-80k), and for every one of
-them the 3&nbsp;px Jaccard is &le; 0.0908 and the reverse
-containment is &le; 0.0462 (globally; &le; 0.023 among the
-flagged eight) &mdash; this lane's dot set is a small subset of their habitat, not a re-issue. Against every prior <b>submission of comparable
-construction</b> (the 37,654&ndash;44,090-dot h33 family, incl. the 0.2778-attributed file),
-containment is &le; 0.334 and Jaccard &le; 0.052. Spearman rank correlation is at most
-0.0429 (dots) / 0.1086
-(surface) against all 412 unique registry rasters &mdash; far below the
-0.90 threshold. <b>Determination: UNIQUE &mdash; no prior is re-issued and this raster is not
-a re-issue of any prior.</b> The flags are logged with full numbers in
-<code>evidence/corrections/registry_check.json</code>; the protocol requires a stop on those flags.
-A literal reading that treats &ldquo;inside a big habitat lattice&rdquo; as duplication would
-condemn every small precise emission (including the prior best itself) &mdash; the
-mass-ratio/Jaccard analysis is diagnostic only and does not override the rule.</p></div>
+<div class=card><h3 class=bad>IR-56-07: literal 70%-containment trigger on eight habitat rasters — DUPLICATE / STOP</h3>
+<p>The existing registry receipt for the 6,504-dot H56 raster records eight directed
+&gt;0.70-within-3-px flags (maximum 0.9989). Under the standing literal one-way rule,
+those flags require <b>DUPLICATE / STOP</b>. The measured Spearman maxima (0.0429 for dots,
+0.1086 for the surface), low reverse containment, small Jaccard, and the habitat/superset
+explanation are diagnostic only and do not waive the trigger. The unchanged receipt remains at
+<code>evidence/corrections/registry_check.json</code>; this review did not rerun a registry
+screen, experiment, or holdout. The TIFF is retained for historical inspection only and is
+<b>not for submission</b>.</p></div>
 
 <h2>Round-2 discovery run (PR #7) &mdash; its five entries</h2>
 <div class=card><h3>IR-56-019: Band 6 'tc' description is ambiguous and the data are magnitude-like</h3>

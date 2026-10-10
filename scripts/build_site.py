@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
 """Build the GitHub Pages site (docs/) from the lane evidence JSONs.
 
-Pages: index (one-click download + status + the two runs on this repo),
-executive-summary (how to submit), research (method, offset histogram, LiDAR
-calibration, holdout, canary, the "why 0.2778" analysis, the sibling run's
-reconciliation), hypotheses (ranked candidates), sources (official verified
-links), irregularities (flagged claims from both runs), prior-run (the merged
-sibling corrections run: negative verdict, its downloads and receipts).
-All numbers are read from evidence/corrections/*.json (run A) and
-evidence/*.json (run B) so the site cannot drift from the evidence.
+This archival H57/H56 builder predates the PR #14 round-3 twin-family record.
+It exits before writing when that run card is present: it cannot render the merged
+round-3 research record or reproduce the current fail-closed site. All numbers in
+its historical output are read from evidence JSON receipts.
 
 Run:  python scripts/build_site.py
 """
@@ -19,6 +15,7 @@ import argparse
 import datetime as dt
 import hashlib
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -41,6 +38,7 @@ nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
 .dlbtn{margin:14px 0}
 .btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:8px}
 .btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn.stop{background:var(--bad);color:#1c0808}
 .btn:hover{filter:brightness(1.1)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
@@ -74,12 +72,12 @@ def page(title, active, body, dl=True):
     rel = tif.name if tif else ""
     dlbtn = ""
     if dl and tif:
-        dlbtn = (f'<div class="dlbtn"><a class="btn" href="downloads/{esc(rel)}">'
-                 f'&#11015; Download the submission GeoTIFF ({tif.stat().st_size / 1024:.0f} KB)</a> '
-                 f'<a class="btn alt" href="executive-summary.html">How to submit it &rarr;</a></div>')
+        dlbtn = (f'<div class="dlbtn"><a class="btn stop" href="downloads/{esc(rel)}">'
+                 f'&#11015; Download archived H57 TIFF — NOT SAFE TO SUBMIT ({tif.stat().st_size / 1024:.0f} KB)</a> '
+                 f'<a class="btn alt" href="h57.html">Why this is blocked &rarr;</a></div>')
     nav = "".join(
         f'<a href="{h}"{" class=active" if h == active else ""}>{t}</a>'
-        for h, t in (("index.html", "Home"), ("executive-summary.html", "Make a submission"),
+        for h, t in (("index.html", "Home"), ("executive-summary.html", "Submission status"),
                      ("research.html", "Research"), ("hypotheses.html", "Hypotheses"),
                      ("sources.html", "Sources"), ("irregularities.html", "Irregularities"),
                      ("h57.html", "H57 run (current)"), ("prior-run.html", "Prior run")))
@@ -97,22 +95,20 @@ submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; 
 on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
 <span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
 data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
-<main class=wrap><div class=card><h2 class=ok>Current file: OK to download and OK to submit</h2>
-<p>The download button above gives you <code>{rel}</code>. It is
-<b>format-valid for the DrivenData form</b>: single band, float32, every value in [0,&nbsp;1],
-<b>zero NaN cells anywhere</b> (the earlier "Predicted values must be in range [0, 1]" rejection
-was caused by NaN padding, which this file does not contain), EPSG:32611, 3292&times;3730, and a
-geotransform identical to <code>sample_submission.tif</code>. Paste the submission name and note
-printed on the home page into the form.</p>
-<p><b>What it is not:</b> it is not a validated discovery. This run's crest-steering hypothesis is
-<b>REFUTED</b> by its own holdout (see <a href="h57.html">H57 run</a>); what ships is the
-unsteered, kernel-optimal cover of the 100&ndash;400&nbsp;m band the organizers describe as
-containing "corrections or modifications to existing fault traces". Spending one of your weekly
-slots on it is a judgement call that stays with you &mdash; the full evidence is one click away.</p>
-<p><a href="h57.html">H57 run card and holdout</a> ·
-<a href="executive-summary.html">Step-by-step submission guide</a> ·
+<main class=wrap><div class=card><h2 class=bad>Corrections lane: NEGATIVE / STOP — do not submit</h2>
+<p>The H57 TIFF linked above is retained for audit only. Its final-dot registry receipt reports
+<b>1.0</b> of dots within 3 px of prior rasters, exceeding the explicit 0.70 duplicate-and-stop
+threshold. A strict replay against the pinned sample also finds <b>7,111,787 finite cells outside
+the template footprint</b> and a missing NaN nodata tag. Its original "OK to submit" wording is
+superseded by this fail-closed review.</p>
+<p>The H57 crest-steering hypothesis was refuted by its own method-level HOLDOUT-DTI; the emitted
+54,914-dot cover itself was not scored. The review used no extra experiment or submission slot.
+No corrections-lane artifact is selected, promoted, or cleared to submit. Download only for
+technical inspection, not as a workaround or candidate upload.</p>
+<p><a href="h57.html">H57 run card, holdout and stop review</a> ·
+<a href="executive-summary.html">Current submission status and future checklist</a> ·
 <a href="prior-run.html">Preserved prior runs</a> ·
-<a href="prior-irregularities.html">Prior run irregularities</a></p></div>{body}</main>
+<a href="irregularities.html">Irregularities</a></p></div>{body}</main>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
 round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
 generated {dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} by
@@ -132,6 +128,17 @@ def fmt(x, n=4):
 
 
 def main():
+    round3_card = EV / "run_card_round3.json"
+    if round3_card.exists():
+        print(
+            "REFUSING: build_site.py predates the PR #14 twin-family record and cannot render "
+            "the merged round-3 research record. No site output was written; keep the current "
+            "fail-closed pages intact until a renderer combines the PR #14 receipts with the "
+            "H57/H56 stop review.",
+            file=sys.stderr,
+        )
+        return 2
+
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", default=str(DOCS))
     args = ap.parse_args()
@@ -179,6 +186,26 @@ def main():
     gate2 = opt("lane_gate_discovery_v2.json")
     scr2 = opt("registry_screen_v2.json")
     rcard2 = opt("run_card_discovery_v1.json")
+    screen_h56b = opt("registry_screen_h56b.json")
+    lane_gate_h56b = opt("lane_uniqueness2_summary.json")
+    h56b_flag_counts = {"h56-magpack-37k-20261009": 0, "h56-quota-37k-20261009": 0}
+    h56b_rows_path = EVB / "registry_screen_h56brows.jsonl"
+    if h56b_rows_path.exists():
+        for line in h56b_rows_path.read_text().splitlines():
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            for candidate in h56b_flag_counts:
+                value = row.get(f"{candidate}_frac")
+                if isinstance(value, (int, float)) and value > 0.70:
+                    h56b_flag_counts[candidate] += 1
+    h56b_subset_max = {}
+    h56b_surface_max = {}
+    if lane_gate_h56b:
+        for candidate, report in lane_gate_h56b.get("candidates", {}).items():
+            phases = report.get("phases", {})
+            h56b_subset_max[candidate] = phases.get("dots", {}).get("max_near_3px_fraction")
+            h56b_surface_max[candidate] = phases.get("surface", {}).get("max_spearman")
 
     tifs = sorted((out / "downloads").glob("gems56-corr-*-nan.tif"))
     tif = tifs[-1] if tifs else None
@@ -246,17 +273,18 @@ same budget; paired difference {fmt(vs2['delta'],5)}
         e1, e3 = h57["result_E1_MEASURED"], h57["holdout_dti"]["E3_neighbour_strand_folds"]
         reg57 = h57["correlation_overlap_vs_registry"]
         h57_html = f"""
-<h2>&#11015;&nbsp;CURRENT SUBMISSION FILE (H57, this run)</h2>
+<h2>&#11015;&nbsp;H57 ARCHIVE — NEGATIVE / STOP — NOT SAFE TO SUBMIT</h2>
 <div class=card>
-<p><a class="btn" href="downloads/{esc(t57.name if t57 else '')}">Download {esc(t57.name if t57 else '')}</a>
+<p><a class="btn stop" href="downloads/{esc(t57.name if t57 else '')}">Download for technical inspection only — NOT SAFE TO SUBMIT</a>
 <span class=mut>{(t57.stat().st_size/1024 if t57 else 0):.0f} KB · single band · float32 ·
 EPSG:32611 · 100 m · 3292&times;3730 · {sub57['dots']:,} dots · values {{0.0, 1.0}} ·
 <b>0 NaN cells</b></span></p>
-<p><b>OK to download: <span class=ok>YES</span>. OK to submit (the form will accept it):
-<span class=ok>YES</span>.</b> Validator: ok={esc(val57['ok'])}, NaN cells {val57['n_nan']},
-min {fmt(val57['min'],1)}, max {fmt(val57['max'],1)}, problems {esc(val57['problems'])}.</p>
-<p><b>Submission name</b> <code>{esc(sub57['name'])}</code><br>
-<b>Note</b> ({sub57['note_chars']}/140): <code>{esc(sub57['note'])}</code><br>
+<p><b>Submit clearance: <span class=bad>NO</span>.</b> Strict template validation: ok={esc(val57['ok'])},
+{val57['non_nan_outside_px']:,} non-NaN cells outside the sample mask, matching nodata tag={esc(val57['nodata_matches_template'])}.
+Findings: {esc(val57['problems'])}.</p>
+<p><b>Audit-only name</b> <code>{esc(sub57['name'])}</code><br>
+<b>Audit-only note — do not paste into a submission form</b> ({sub57['note_chars']}/140):
+<code>{esc(sub57['note'])}</code><br>
 <b>sha256</b> <code>{esc(h57['raster_sha256'])}</code></p>
 <p><b>What the evidence says, in one line:</b> the crest-steering hypothesis is
 <span class=bad>REFUTED</span> &mdash; measured offsets cluster under two pixels
@@ -270,12 +298,15 @@ P(beats)={esc(e3['paired_contrast_vs_evidence_free_corridor']['prob_evidence_bea
 {e3['withheld_positives']:,} withheld positives). So this file emits the
 <b>unsteered</b> cover instead: dots 200 m either side of every trace, which with the 300 m
 triangular kernel credits a refined trace anywhere out to about 500 m.</p>
-<p><b>Uniqueness:</b> max Spearman {fmt(reg57['max_spearman'],3)} against the 40 worst-overlap
-earlier submission rasters (bar 0.90); largest exact-pixel Jaccard
-{fmt(reg57['max_exact_jaccard_vs_submissions'],3)} against a 6.6&times; larger raster. The
-literal 3&nbsp;px containment clause fires &mdash; it does so for the competition's own
-<code>existing_faults.tif</code> too, because every dot 2&nbsp;px off a trace is within 3&nbsp;px
-of that trace &mdash; and is logged as <a href="irregularities.html">IR-57-003</a>.</p>
+<p><b>Registry result: DUPLICATE / STOP.</b> Spearman remains below the 0.90 bar
+(max {fmt(reg57['max_spearman'],3)} in the full-run card); that does not waive the independent
+proximity test. On the final-dot 40-prior gate, <b>{fmt(reg57['max_near_3px_fraction'],3)}</b>
+of dots fall within 3 px of a registry raster, exceeding the strict &gt;0.70 threshold.
+The fact that this overlaps the catalogue does not create an exception. See
+<a href="irregularities.html">IR-57-003 and the post-review resolution</a>.</p>
+<p><b>Strict template gate also fails.</b> The current file contains 7,111,787 finite cells
+outside the pinned sample mask and has no nodata tag where the template declares NaN. Its
+all-finite compatibility-gate pass is not strict template conformance or organizer acceptance.</p>
 <p class=mut>Receipts: <code>evidence/h57_run_card.json</code>,
 <code>evidence/h57_holdout_neighbour.json</code>, <code>evidence/h57_holdout.json</code>,
 <code>evidence/h57_geometry_sweep.json</code>,
@@ -286,15 +317,15 @@ of that trace &mdash; and is logged as <a href="irregularities.html">IR-57-003</
 
     idx = f"""
 {h57_html}
-<h2>&#11015;&nbsp;EARLIER RUN FILE (run A, superseded)</h2>
+<h2>Earlier H56 corrections archive — NOT safe to submit</h2>
 <div class=card>
-<p><a class="btn" href="downloads/{esc(tif.name if tif else '')}">Download {esc(tif.name if tif else '')}</a>
+<p><a class="btn stop" href="downloads/{esc(tif.name if tif else '')}">Download historical TIFF for inspection only — NOT SAFE TO SUBMIT</a>
 <span class=mut>{tif.stat().st_size/1024:.0f} KB · single band · float32 · EPSG:32611 · 100 m ·
 3292&times;3730 · {dots:,} predicted pixels · every value in [0, 1] · NaN only outside the
 scored footprint · nodata tag <code>nan</code> (the official sample's own format)</span></p>
 <p><b>sha256:</b> <code>{sha}</code></p>
-<p><b>Unique submission name to use:</b> <code>{esc(card['submission_name'])}</code><br>
-<b>Note to paste into the submit form's <em>Note (optional)</em> field</b>
+<p><b>Audit-only historical name:</b> <code>{esc(card['submission_name'])}</code><br>
+<b>Audit-only note — do not paste into a submission form</b>
 ({len(card['note'])}/140 characters):<br><code>{esc(card['note'])}</code></p>
 <p><b>Format status:</b> <span class=ok>PASS</span> &mdash; <code>scripts/validate_submission.py</code>
 exit 0 and <code>python -m src.submission_io validate-conformant</code> exit 0
@@ -307,7 +338,7 @@ A1 lane {fmt(a1['dti'])} [{fmt(a1['ci95'][0])}, {fmt(a1['ci95'][1])}] vs masked 
 <p class=mut>Is it OK to download and submit? The file is format-validated but fails the literal uniqueness gate; the
 holdout validates the mechanism on a simulated truth; no organizer score exists for it. The
 standing protocol requires a stop, not a submission &mdash; the full reasoning is on
-<a href="executive-summary.html">Make a submission</a>.</p>
+<a href="executive-summary.html">Current submission status</a>.</p>
 </div>
 
 {disc_html}
@@ -324,7 +355,7 @@ is the finding.</p>
 evidence-defined traces, 0 on the catalogue. HOLDOUT-DTI(sim) {fmt(a1['dti'])}
 [{fmt(a1['ci95'][0])}, {fmt(a1['ci95'][1])}] vs masked control {fmt(a0['dti'])} and
 random control {fmt(a4['dti'])}. Literal containment gate failed; no slot is cleared.
-<b>The one-click download above is this run's file.</b></p></div>
+The historical H56 raster below is preserved for audit only; it is not cleared by the registry gate.</p></div>
 <div class=card><h3>Run B &mdash; merged PR #4 (branch <code>arena/1d3dbc39-56gemsdoe</code>) &mdash; <span class=warn>NEGATIVE, no slot recommended</span></h3>
 <p>Question: <em>is the catalogue displaced from A crest by &ge; 2&nbsp;px?</em> No:
 null-calibrated median offset {fmt(m_cal['dem_median'],3)}&nbsp;px (DEM) /
@@ -393,7 +424,7 @@ not the fault;</li>
 </div>
 <h2>Site map</h2>
 <ul>
-<li><a href="executive-summary.html">Make a submission</a> &mdash; exactly how to download and submit, and the honest caveats</li>
+<li><a href="executive-summary.html">Submission status</a> &mdash; why current candidates are blocked and what a future authorized review needs</li>
 <li><a href="research.html">Research</a> &mdash; method, offset histogram, LiDAR calibration, holdout, leakage canary, and the &ldquo;why 0.2778&rdquo; analysis</li>
 <li><a href="hypotheses.html">Hypotheses</a> &mdash; the concurrent run's five ranked geological hypotheses, plus the round-2 discovery set H6&ndash;H10 and its NEGATIVE holdout verdict</li>
 <li><a href="sources.html">Sources</a> &mdash; official, verified links for manual review</li>
@@ -410,86 +441,40 @@ not the fault;</li>
     reg57 = h57["correlation_overlap_vs_registry"] if h57 else None
     e3e = h57["holdout_dti"]["E3_neighbour_strand_folds"] if h57 else None
     exe = f"""
-<h2>Executive summary &mdash; how to submit, in five steps</h2>
+<h2>Current corrections submission status: NEGATIVE / STOP</h2>
 <div class=card>
-<h3>1. Download the file</h3>
-<p><a class="btn" href="downloads/{esc(t57e.name if t57e else '')}">&#11015; Download {esc(t57e.name if t57e else '')}</a></p>
-<p class=mut>sha256 <code>{esc(h57['raster_sha256']) if h57 else ''}</code> ·
-{(t57e.stat().st_size/1024 if t57e else 0):.0f} KB · a
-<code>.zip</code> containing only this GeoTIFF is published next to it if you prefer to upload
-a zip.</p>
-<h3>2. Open the submission form</h3>
-<ul>
-<li>Open <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">the competition page</a>
-and sign in (the data and submission pages are login-gated; this project cannot submit for you).</li>
-<li><em>My Submissions</em> &rarr; <em>New submission</em> &rarr; <em>File to submit</em>.</li>
-<li>Upload the <code>.tif</code> directly &mdash; the form accepts a single-band GeoTIFF or a
-<code>.zip</code> containing exactly one GeoTIFF.</li>
-</ul>
-<h3>3. Paste these two strings</h3>
-<ul>
-<li><b>Submission name (unique):</b> <code>{esc(sub57['name']) if sub57 else ''}</code></li>
-<li><b>Note</b> ({sub57['note_chars'] if sub57 else 0}/140 characters, the form's
-&ldquo;short comment to help you tell submissions apart&rdquo;):<br>
-<code>{esc(sub57['note']) if sub57 else ''}</code></li>
-<li>Submit, then <b>copy the returned public score</b> into the repo &mdash; that receipt is the
-only ORGANIZER-CONFIRMED number this project will ever have.</li>
-</ul>
-<h3>4. Why this file will not be rejected</h3>
-<p>The earlier rejection message <code>"Predicted values must be in range [0, 1]"</code> is
-produced by non-finite or out-of-range cells. Measured on <i>this</i> file by
-<code>gems56.gates.format_report</code> (receipt
-<code>docs/downloads/{esc(t57e.stem) if t57e else ''}.json</code>):
-NaN cells <b>{val57['n_nan'] if val57 else ''}</b>, infinite cells <b>0</b>, min
-<b>{fmt(val57['min'],1) if val57 else ''}</b>, max <b>{fmt(val57['max'],1) if val57 else ''}</b>,
-bands 1, dtype float32, CRS <code>{esc(val57['crs']) if val57 else ''}</code>, shape
-{esc(val57['shape']) if val57 else ''}, transform
-<code>{esc(val57['transform']) if val57 else ''}</code> &mdash; identical to
-<code>sample_submission.tif</code>. Problems list: <code>{esc(val57['problems']) if val57 else ''}</code>.
-Unlike earlier files on this site, this one is <b>all-finite</b>: zeros, not NaN, outside the
-emission, so no reader can interpret a pad value as out of range.</p>
-<h3>5. What you are submitting, and what it is worth</h3>
-<p><b>{sub57['dots']:,} unit dots</b> ({sub57['geometry']['offsets_px']} px perpendicular
-offsets, every {sub57['geometry']['step_px']} px along strike) placed 200 m either side of
-every catalogue trace &mdash; with the 300 m triangular kernel that credits a refined trace
-anywhere from the catalogue line out to about 500 m, strongest at 200 m &mdash; 0 dots on the catalogue itself (those pixels are masked by the
-scorer, so mass there is pure cost).</p>
-<ul>
-<li><b>This is a coverage bet, not a validated discovery.</b> The lane's crest-steering
-hypothesis was <span class=bad>refuted</span> by this run's own holdout: crest-steered dots
-scored {fmt(e3e['pooled']['B2_evidence'],5) if e3e else ''} vs
-{fmt(e3e['pooled']['B1_corridor'],5) if e3e else ''} for identical dots placed without looking
-at the evidence (paired contrast
-{esc(e3e['paired_contrast_vs_evidence_free_corridor']['B2_evidence']) if e3e else ''}).</li>
-<li><b>No holdout can score the thing this file bets on.</b> The bet is the organizers'
-statement that part of the hidden truth is corrections within 300 m of known traces; we have no
-corrections labels, so that family cannot be scored locally. Stated plainly rather than papered
-over with a proxy number.</li>
-<li><b>Named non-fault process that could mimic it:</b> map generalisation and 100 m
-rasterisation displace a trace by 1&ndash;3 px with no fault involved; erosional terraces give
-the same break-in-slope. Both are why the crest arm was tested against nulls and lost.</li>
-<li><b>Uniqueness:</b> max Spearman {fmt(reg57['max_spearman'],3) if reg57 else ''} and max
-exact Jaccard {fmt(reg57['max_exact_jaccard_vs_submissions'],3) if reg57 else ''} against the
-worst-overlapping earlier submissions; the literal 3 px containment clause fires and is logged
-as IR-57-003.</li>
-<li><b>Weekly cap:</b> promotion to a real slot is a separate selector decision. Nothing here
-has been submitted on your behalf.</li>
-</ul>
+<p><b class=bad>Do not upload the H57 file or any earlier corrections TIFF.</b> The H57
+archive is available for audit only; no corrections artifact is cleared, selected, or promoted.</p>
+<p>H57 file <code>{esc(sub57['file']) if sub57 else ''}</code> (SHA-256
+<code>{esc(h57['raster_sha256']) if h57 else ''}</code>) fails two independent stop conditions:
+(1) final-dot registry proximity is {fmt(reg57['max_near_3px_fraction'],3) if reg57 else ''},
+above the literal 0.70 threshold (DUPLICATE/STOP); (2) strict template replay finds
+{val57['non_nan_outside_px']:,} finite cells outside the sample footprint and a missing NaN
+nodata tag. The permissive all-finite compatibility check is not strict template conformance
+or organizer acceptance.</p>
+<p><b>Audit-only submission name:</b> <code>{esc(sub57['name']) if sub57 else ''}</code><br>
+<b>Audit-only note ({sub57['note_chars'] if sub57 else 0}/140; do not paste):</b>
+<code>{esc(sub57['note']) if sub57 else ''}</code><br>
+<a class="btn stop" href="downloads/{esc(t57e.name if t57e else '')}">Download for technical inspection only — NOT SAFE TO SUBMIT</a></p>
+<p>H57's E3 results are method-level <b>HOLDOUT-DTI</b> (evaluator
+<code>{esc(h57['holdout_dti']['evaluator_version']) if h57 else ''}</code>,
+{e3e['withheld_positives'] if e3e else 0:,} withheld positives): crest-steered
+{fmt(e3e['pooled']['B2_evidence'],5) if e3e else ''}
+{esc(e3e['ci95']['B2_evidence']) if e3e else ''} versus the evidence-free
+corridor {fmt(e3e['pooled']['B1_corridor'],5) if e3e else ''}
+{esc(e3e['ci95']['B1_corridor']) if e3e else ''}; paired contrast
+{esc(e3e['paired_contrast_vs_evidence_free_corridor']['B2_evidence']) if e3e else ''}.
+This evaluates crest steering on withheld catalogue faults, not the emitted cover itself.</p>
+<p>No ORGANIZER-CONFIRMED score or submission receipt exists. No extra experiment or slot was
+used in this review. The next action is not another experiment: preserve the negative card and
+resolve input/protocol/gate issues before any separately authorized run.</p>
 </div>
-
-<h2>Prior run's files &mdash; do NOT submit these</h2>
-<div class=card>
-<p>The merged prior run (PR #4) on this repository reached a <b>NEGATIVE</b> verdict and
-ships two format-valid rasters <b>as research output only</b>: its own receipt says the
-expected gain is {fmt(hab['B_snap']['dti'],5)} DTI with a 95% interval of
-[{fmt(hab['B_snap']['ci95'][0],5)}, {fmt(hab['B_snap']['ci95'][1],5)}] &mdash; which
-contains the value for doing nothing (0.00000) and for jittering dots at random
-({fmt(hab['D_jitter']['dti'],5)}). Its uniqueness gate also returned
-<code>ok:false</code> on the proximity criterion at 1-dot count (IR-56-006), and its
-rasters write 0.0 (not NaN) outside the data footprint (IR-56-013). They are safe to
-download for inspection; they are <b>not cleared for a weekly slot</b>. Details and
-downloads: <a href="prior-run.html">Prior run</a>.</p>
-</div>
+<h2>Historical files and separate lanes</h2>
+<p>The earlier 6,504-dot, 1-dot and 14-dot corrections TIFFs remain research archives with their
+own negative receipts. The 25,000-dot discovery file also remains negative. The PR #11 dotted-ridge
+artifact is separately documented and not cleared by this H57 review. See
+<a href="prior-run.html">prior runs</a>, <a href="irregularities.html">the irregularity log</a>,
+and the run cards in <code>evidence/</code>.</p>
 """
     if bld2 and hold2:
         rec2 = bld2["receipt"]
@@ -511,7 +496,7 @@ NEGATIVE; no slot was spent. Full walk-through of the numbers:
 <code>evidence/run_card_discovery_v1.json</code>.</p>
 </div>
 """
-    (out / "executive-summary.html").write_text(page("Make a submission", "executive-summary.html", exe))
+    (out / "executive-summary.html").write_text(page("Submission status", "executive-summary.html", exe))
 
     # ------------------------------------------------------------ research --
     b = stats["bands"]
@@ -714,12 +699,12 @@ This run's holdout (different truth construction: simulated corrections,
 {hold['n_withheld_positives']:,} withheld positives, official <code>src/metrics.py</code>)
 gives the lane arm {fmt(a1['dti'],5)}. The two holdouts validate different machinery on
 different simulated truths; neither is an organizer score.</li>
-<li><b>Its uniqueness gate failed on a technicality:</b> the shared gate's proximity
-criterion fires trivially at 1-dot count ({gate_b['directed_near3px_fraction']*100:.0f}% of
-its dots within 3&nbsp;px of {gate_b['offender_count']} of {gate_b['priors_checked']} priors;
-reciprocal overlap 0 above 0.70) &mdash; the same class of false positive this run hit at
-6,504 dots and resolved with Jaccard/reverse-containment/mass-ratio (IR-56-07). Run B
-chose to publish the artefacts as research output and claim no slot.</li>
+<li><b>Its literal uniqueness gate triggers DUPLICATE / STOP:</b> the shared gate reports
+{gate_b['directed_near3px_fraction']*100:.0f}% of its dots within 3&nbsp;px of
+{gate_b['offender_count']} of {gate_b['priors_checked']} priors, above the 0.70 threshold.
+The reciprocal overlap and Jaccard/reverse-containment/mass-ratio diagnostics are descriptive
+only; they cannot waive the user rule (IR-56-006/IR-56-07). Run B's raster remains an audit
+archive and is not cleared to submit.</li>
 </ul>
 <p><b>Reconciliation:</b> both runs agree the catalogue sits within ~1&nbsp;px of
 <em>some</em> crest. Run B's gate asks whether the catalogue is displaced from
@@ -889,14 +874,31 @@ same spread (0.326 vs 0.273 of transects beyond 2 px); DEM&ndash;magnetic agreem
 [0.00049, 0.00133] vs evidence-free corridor dots 0.00177 [0.00130, 0.00232] at an identical
 budget, paired contrast [-0.00138, -0.00048], P(beats) = 0.0. The lane therefore emits nothing
 steered by crests, exactly as the brief instructs.</p></div>
-<div class=card><h3 class=warn>IR-57-003: the literal 3 px containment clause cannot be passed by any corrections emission</h3>
-<p>Every dot placed 2 px off a catalogue trace is, by arithmetic, within 3 px of that trace. The
-gate therefore reports 100 % containment against the competition's own
-<code>existing_faults.tif</code> and against habitat-sized priors 4&ndash;13&times; larger. The
-discriminating statistics are published instead:
-max Spearman <b>0.286</b> (bar 0.90) and max exact-pixel Jaccard <b>0.152</b> against any earlier
-submission (<code>evidence/h57_uniqueness_discriminators.json</code>). Logged as a duplicate flag
-per the protocol; the file is not promoted to a slot by this repository.</p></div>
+<div class=card><h3 class=bad>IR-57-003: final-dot proximity triggers DUPLICATE / STOP</h3>
+<p>The final-dot shared gate reports a maximum <b>1.0 within-3-px fraction</b> on its 40
+worst-overlap submission priors, above the literal 0.70 threshold. The full-run card reports
+max Spearman <b>0.286</b> and max exact-pixel Jaccard <b>0.152</b>; neither statistic overrides
+the independent proximity rule. The fact that the overlap includes the catalogue is not an
+exception. The original H57 card called the trigger unavoidable but left <code>ok_to_submit</code>
+positive; this review corrects the action to <b>DUPLICATE / STOP</b>, retains the raster only as
+an archive, and does not select or promote it. See the status-correction record IR-57-007.</p></div>
+<div class=card><h3 class=bad>IR-57-007: the positive submission claim is superseded by the final-dot stop</h3>
+<p>The pre-review card is retained in <code>pre_review_record</code> for provenance; its literal
+3 px trigger did not satisfy the final gate. The authoritative card now records
+<code>ok_to_submit = NO</code>, <code>safe_to_submit = false</code>, and verdict
+<b>NEGATIVE / STOP</b>. No experiment or slot was spent during the review.</p></div>
+<div class=card><h3 class=bad>IR-57-008: strict sample-mask and nodata replay rejects the H57 TIFF</h3>
+<p>The final file SHA-256 is <code>{esc(h57['raster_sha256'])}</code>. Strict replay against the
+pinned sample (SHA-256 <code>2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc</code>) finds 7,111,787 finite cells outside
+the template's finite footprint and <code>nodata=None</code> where the sample declares NaN. CRS,
+shape, transform, value range and training-grid geometry match; they do not cure the mask/nodata
+failure. This output is local format analysis only, not organizer acceptance.</p></div>
+<div class=card><h3 class=warn>IR-57-009: pre-placement surface-gate evidence is incomplete</h3>
+<p>The final H57 uniqueness receipt is explicitly a <code>dots</code>-phase check over 40 priors.
+The full-corpus screen points to an earlier timestamped H57 raster, not the final 19:13 artifact.
+No distinct pre-placement surface-phase receipt for the final geometry was identified here.
+The missing stage evidence is not replaced by the final-dot check; the final-dot rule already
+requires a stop. No registry screen or experiment was rerun.</p></div>
 <div class=card><h3 class=warn>IR-57-004: no holdout exists for the family this file bets on</h3>
 <p>The shipped raster bets on the organizers' statement that part of the hidden truth is
 "corrections or modifications to existing fault traces" within 300 m of a known trace. There are
@@ -941,8 +943,7 @@ organizer scores and are labelled as such everywhere they appear.</p></div>
 <p>The 1 m calibration product (706 of 716 official 3DEP tiles) covers 3,892,964 grid cells
 (75% of the 5,167,373-px footprint); 10 edge tiles failed in the sibling's CI. Calibration
 statistics are computed on covered transects only and labelled with n.</p></div>
-<div class=card><h3>IR-56-07: the literal 70%-containment uniqueness test fires on 8 habitat
-rasters; the investigation shows they are supersets, not re-issues</h3>
+<div class=card><h3 class=bad>IR-56-07: literal 70%-containment trigger on eight habitat rasters — DUPLICATE / STOP</h3>
 <p>The lane protocol's literal test (&ldquo;more than 70% of your dots fall within 3 px of one
 registry raster's dots &rarr; log it as a duplicate and stop&rdquo;) fires on
 {reg_n_flags if reg else '8'} sparse registry rasters (containment up to
@@ -958,12 +959,24 @@ construction</b> (the 37,654&ndash;44,090-dot h33 family, incl. the 0.2778-attri
 containment is &le; 0.334 and Jaccard &le; 0.052. Spearman rank correlation is at most
 {fmt(reg_worst_sp,4) if reg else '0.0429'} (dots) / {fmt(reg_worst_sps,4) if reg else '0.1086'}
 (surface) against all {reg_n if reg else '412'} unique registry rasters &mdash; far below the
-0.90 threshold. <b>Determination: UNIQUE &mdash; no prior is re-issued and this raster is not
-a re-issue of any prior.</b> The flags are logged with full numbers in
-<code>evidence/corrections/registry_check.json</code>; the protocol requires a stop on those flags.
-A literal reading that treats &ldquo;inside a big habitat lattice&rdquo; as duplication would
-condemn every small precise emission (including the prior best itself) &mdash; the
-mass-ratio/Jaccard analysis is diagnostic only and does not override the rule.</p></div>
+0.90 threshold. <b>Protocol determination: DUPLICATE / STOP.</b> The literal &gt;70% threshold is triggered
+on eight rasters, regardless of whether the overlap is an exact re-issue or a large superset.
+Spearman, Jaccard, reverse-containment, and mass-ratio figures are descriptive only and cannot
+waive that rule. The file remains historical research output and was not promoted. Full numbers
+are preserved in <code>evidence/corrections/registry_check.json</code>.</p></div>
+<div class=card><h3 class=bad>IR-56-036: the H56 magpack/quota directed flags require DUPLICATE / STOP</h3>
+<p>The existing {screen_h56b['corpus']['files'] if screen_h56b else 868}-row corpus screen has
+{screen_h56b['corpus']['errors'] if screen_h56b else 31} unreadable entries. Its directed
+within-3-px results exceed 0.70 for <b>{h56b_flag_counts['h56-magpack-37k-20261009']}</b>
+priors of the magpack raster and <b>{h56b_flag_counts['h56-quota-37k-20261009']}</b> priors of
+the quota raster. The 40-prior subset maxima were only
+{fmt(h56b_subset_max.get('h56-magpack-37k-20261009'),3)} and
+{fmt(h56b_subset_max.get('h56-quota-37k-20261009'),3)}, so that subset missed the full-screen
+triggers; surface Spearman maxima
+{fmt(h56b_surface_max.get('h56-magpack-37k-20261009'),4)} /
+{fmt(h56b_surface_max.get('h56-quota-37k-20261009'),4)} are below 0.90 but do not cancel them.
+Reciprocal flags being zero is not an exception to the one-way stop rule. Both files remain
+archives, not submission candidates. No registry scan was rerun.</p></div>
 """
     # round-2 (PR #7) entries from the machine-readable log -- both runs flag, neither hides
     if isinstance(irr_b, list) and bld2:
@@ -1064,8 +1077,12 @@ covers, so its absolute level means nothing; it is used only to rank geometries.
 {sw57['best']['step'] if sw57 else ''} &rarr; {sw57['best']['dots'] if sw57 else 0:,} dots.</p>
 </div>
 
-<h3>What this run says to try next (ranked, with the cost of each)</h3>
+<h3>Limitations and possible future work — not authorized in this run</h3>
 <div class=card>
+<p><b>Stop rule:</b> the three-experiment / two-hour budget is exhausted. The ideas below are
+unexecuted research questions, not a plan to continue this run. Do not launch another experiment,
+holdout, registry screen, or emitter without fresh explicit authorization and a separately logged
+budget.</p>
 <ol>
 <li><b>Budget-and-spacing optimisation of a whole-footprint dot field</b> (rank 1, cost: low).
 This run's own chance arm is the loudest measured signal on the page: uniform dots at a matched
@@ -1104,4 +1121,4 @@ away from the catalogue, which this lane never tested.</li>
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

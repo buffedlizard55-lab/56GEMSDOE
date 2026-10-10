@@ -130,9 +130,10 @@ verify catalogue  data/grid/existing_faults.tif
 verify sample     data/grid/sample_submission.tif
 [ -f data/external/h52_scarp3m_100m.tif ] && verify lidar_scarp data/external/h52_scarp3m_100m.tif || true
 
-# Compatibility copy: the vendored template tools and tests read data/sample_submission.tif,
-# while the bridge places the canonical copy at data/grid/sample_submission.tif (IR-57-005).
+# Compatibility aliases: shared template tools consume the root paths, while verified originals
+# remain under data/grid/ for provenance (IR-57-005 and IR-56-031).
 cp -f data/grid/sample_submission.tif data/sample_submission.tif
+cp -f data/grid/existing_faults.tif data/labels.tif
 
 echo "Re-deriving grid facts (scripts/prepare_data.py):"
 "$PY" scripts/prepare_data.py >/dev/null

@@ -1,36 +1,7 @@
-<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Submit, step by step (with the rules quoted)</title><style>
-:root{--bg:#0d1117;--panel:#161b22;--ink:#e6edf3;--mut:#9198a1;--line:#262c36;--ok:#2ea043;--warn:#d29922;--bad:#f85149;--acc:#58a6ff}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-main{max-width:1120px;margin:0 auto;padding:26px 20px 90px}h1{font-size:26px;margin:0 0 4px}h2{font-size:20px;margin:34px 0 10px;padding-top:14px;border-top:1px solid var(--line)}h3{font-size:16px;margin:18px 0 6px}
-a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}.sub{color:var(--mut);margin:0 0 16px}
-.banner{border-radius:12px;padding:18px 20px;margin:16px 0;border:1px solid var(--line)}.banner.bad{background:rgba(248,81,73,.10);border-color:rgba(248,81,73,.45)}.banner.ok{background:rgba(46,160,67,.10);border-color:rgba(46,160,67,.45)}.banner.warn{background:rgba(210,153,34,.10);border-color:rgba(210,153,34,.45)}
-.banner .big{font-size:19px;font-weight:700}.banner p{margin:8px 0 0}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
-.btn{display:inline-block;background:var(--ok);color:#04140a;font-weight:700;padding:11px 16px;border-radius:9px;margin:4px 8px 4px 0}
-.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--acc);font-weight:600}
-.badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.02em;padding:3px 9px;border-radius:999px;margin-left:8px}
-.badge.ok{background:rgba(46,160,67,.18);color:#3fb950;border:1px solid rgba(46,160,67,.5)}
-.badge.warn{background:rgba(210,153,34,.16);color:#e3b341;border:1px solid rgba(210,153,34,.5)}
-.badge.bad{background:rgba(248,81,73,.14);color:#ff7b72;border:1px solid rgba(248,81,73,.5)}
-table.data{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px}table.data th,table.data td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
-table.data th{background:#11161d;font-weight:700}code{background:#11161d;padding:1px 5px;border-radius:5px;font-size:13px}
-pre{background:#11161d;border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;font-size:12.5px}
-ul{margin:8px 0 8px 18px}li{margin:4px 0}.muted{color:var(--mut)}
-.kpi{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}.kpi div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:150px}
-.verdict{border-left:4px solid var(--warn);padding:9px 13px;margin:12px 0;background:rgba(210,153,34,.07);border-radius:0 8px 8px 0;font-size:14px}
-.kpi b{display:block;font-size:19px}.kpi span{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.03em}
-</style></head><body><main><h1>Submit, step by step (with the rules quoted)</h1><p class='sub'><a href='index.html'>&#8592; evidence page</a> · <a href='executive-summary.html'>executive summary</a></p><h3>What the portal accepts</h3>
-<p class="muted">Quoted from the competition's submission form, and consistent with the format section on the
-problem page: "You can submit a single-band GeoTIFF (.tif) file, or a .zip file containing a single GeoTIFF,
-with your predictions. It must match the submission format's CRS, shape, and geotransform." plus an optional
-note "A short comment to help you or your team tell submissions apart later".</p>
-<h3>Checks this repository runs on every raster before it is offered</h3>
-<pre>$ .venv/bin/python -c "from gems56 import gates; print(gates.format_report('docs/downloads/h56-magpack-37k-20261009.tif','data/grid/sample_submission.tif'))"</pre>
-<p>and again from disk at build time (<a href="downloads/checks-h56-magpack-37k-20261009.json">this file's receipt</a>,
-<a href="downloads/checks-h56-quota-37k-20261009.json">the secondary's</a>). The checks are: single band; float32;
-shape 3730&nbsp;&times;&nbsp;3292; CRS EPSG:32611; geotransform identical to the sample submission; min/max inside
-[0,1]; zero NaN inside the footprint; no nodata tag; and the dot count and the minimum distance to the catalogue.</p>
-<h3>After uploading</h3>
-<ul><li>Record the score against the sha256 on the card - that pairing is what turns a submission into data.</li>
-<li>Nothing in this repository is an organizer-confirmed score; label any number you copy onward as
-USER-REPORTED until the receipt page says otherwise.</li></ul><p class='muted'>Rendered by <code>scripts/build_round2.py</code> from the JSON receipts in <code>evidence/</code>. Every figure on this page is read from a receipt at build time: a required receipt that is missing fails the build; the two optional ones (the uniqueness screen, the round-1 card) print an explicit “still running - see this path” line instead of a fake number.</p></main></body></html>
+<!doctype html><html lang=en><head>
+<meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv="refresh" content="0; url=executive-summary.html">
+<title>Submission status — NEGATIVE / STOP</title></head><body>
+<h1>NEGATIVE / STOP — no corrections file cleared</h1><p>No corrections-lane TIFF in this review is cleared or safe to submit. Other lanes have separate receipts and are not adjudicated here.
+<a href="executive-summary.html">Current corrections-lane status and future-review checklist</a>.</p>
+</body></html>

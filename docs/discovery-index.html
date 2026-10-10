@@ -15,6 +15,7 @@ nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
 .dlbtn{margin:14px 0}
 .btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:8px}
 .btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn.stop{background:var(--bad);color:#1c0808}
 .btn:hover{filter:brightness(1.1)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
@@ -30,12 +31,12 @@ img{max-width:100%;border:1px solid var(--line);border-radius:8px}
 footer{border-top:1px solid var(--line);margin-top:34px;padding:18px 0 30px;color:var(--mut);font-size:13px}
 .tag{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:10px;padding:1px 8px;color:var(--mut);margin-right:5px}
 ul{margin:6px 0 6px 20px}li{margin:3px 0}
-</style></head><body><div style='border:1px solid #d29922;background:rgba(210,153,34,.09);padding:10px 14px;border-radius:10px;margin:14px 0'><b>Archived page from the parallel discovery round-2 run (PR&nbsp;#7), preserved here so both round-2 records stay readable.</b> The repository's current front page is <a href='index.html'>index.html</a>, which carries this lane's submission-ready rasters and cross-links the discovery run's verdicts. Original file name at merge time: <code>docs/index.html</code>. Content is otherwise byte-as-merged; the two edits we did make are logged as IR-56-029 (this banner) and IR-56-030 (one sibling-repo link made unambiguous).</div>
+</style></head><body><div style='border:1px solid #d29922;background:rgba(210,153,34,.09);padding:10px 14px;border-radius:10px;margin:14px 0'><b>Archived page from the parallel discovery round-2 run (PR&nbsp;#7).</b> This is archived historical content, not current submission authorization. The present review applies the literal gate: the 6,504-dot H56 raster is <b>DUPLICATE / STOP</b> (see <a href='irregularities.html'>IR-56-07</a>). The separate dotted-ridge artifact from PR&nbsp;#11 remains outside this review and unadjudicated. The current landing page is <a href='index.html'>index.html</a>; the corrections-lane verdict is NEGATIVE / STOP. Original file name at merge time: <code>docs/index.html</code>.</div>
 <header class=top><div class=wrap>
 <h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
 <div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
 faults missing from the USGS/INGENIOUS catalogue</div>
-<nav><a href="index.html" class=active>Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Download the submission GeoTIFF</a> <a class="btn alt" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">.tif (343 KB)</a></div>
+<nav><a href="index.html" class=active>Home</a><a href="executive-summary.html">Submission status</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn stop" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">&#11015; Historical archive — NOT SAFE TO SUBMIT</a> <a class="btn alt" href="prior-irregularities.html">Why this is stopped &rarr;</a></div>
 </div></header>
 <div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
 submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
@@ -49,38 +50,37 @@ data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</spa
  the rule. No competition submission has been made.</p>
 <p><a href="prior-run.html">Preserved prior run</a> ·
 <a href="prior-irregularities.html">Prior run irregularities</a></p></div>
-<h2>&#11015;&nbsp;ONE-CLICK SUBMISSION FILE</h2>
+<h2>&#11015;&nbsp;H56 ARCHIVE — DUPLICATE / STOP — NOT SAFE TO SUBMIT</h2>
 <div class=card>
 <p><a class="btn" href="downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif">Download gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif</a>
 <span class=mut>343 KB · single band · float32 · EPSG:32611 · 100 m ·
 3292&times;3730 · 6,504 predicted pixels · every value in [0, 1] · NaN only outside the
 scored footprint · nodata tag <code>nan</code> (the official sample's own format)</span></p>
 <p><b>sha256:</b> <code>08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7</code></p>
-<p><b>Unique submission name to use:</b> <code>GEMSDOE56-CORR-CRESTGT2PX</code><br>
-<b>Note to paste into the submit form's <em>Note (optional)</em> field</b>
+<p><b>Audit-only historical name (not a submission):</b> <code>GEMSDOE56-CORR-CRESTGT2PX</code><br>
+<b>Historical note — do not paste into a submission form</b>
 (137/140 characters):<br><code>GEMSDOE56 corrections: 6504 dots on LiDAR-calibrated DEM-scarp crest where catalogue offset &gt;2px; 0 on-catalogue; HOLDOUT-DTI(sim) 0.3105</code></p>
 <p><b>Format status:</b> <span class=ok>PASS</span> &mdash; <code>scripts/validate_submission.py</code>
 exit 0 and <code>python -m src.submission_io validate-conformant</code> exit 0
 (no NaN inside the footprint, every value in [0,1], CRS/shape/transform match
 <code>sample_submission.tif</code>, template conformance, GDAL_NODATA=<code>nan</code>).</p>
-<p><b>Uniqueness status:</b> <span class=ok>UNIQUE - no prior re-issued (literal containment flags logged and investigated below)</span> vs 412 unique earlier rasters (max Spearman 0.0429, max 3&nbsp;px Jaccard 0.091)</p>
+<p><b>Uniqueness status:</b> <span class=bad>DUPLICATE / STOP under the literal &gt;70%-within-3-px rule</span> vs 412 unique earlier rasters (max Spearman 0.0429, max 3&nbsp;px Jaccard 0.091)</p>
 <p><b>Evidence status:</b> <span class=warn>HOLDOUT-DTI (simulated-corrections truth)</span>
 A1 lane 0.3105 [0.2821, 0.3378] vs masked control
 0.0000 and random control 0.0117 &mdash; see <a href="research.html">research</a>.</p>
-<p class=mut>Is it OK to download and submit? The file is format-validated but fails the literal uniqueness gate; the
-holdout validates the mechanism on a simulated truth; no organizer score exists for it. The
-standing protocol requires a stop, not a submission &mdash; the full reasoning is on
-<a href="executive-summary.html">Make a submission</a>.</p>
+<p class=mut>Download only for technical inspection; do not submit. The format-valid file fails the
+literal duplicate-and-stop gate. Its holdout is simulated-mechanism evidence, not an organizer
+score, and the standing protocol requires a stop. See <a href="executive-summary.html">Submission status</a>.</p>
 </div>
 
 
-<h2>&#11015;&nbsp;ROUND-2 DISCOVERY CANDIDATE (PR #7) &mdash; download for review only</h2>
+<h2>&#11015;&nbsp;ROUND-2 DISCOVERY ARCHIVE (PR #7) &mdash; NEGATIVE / STOP &mdash; NOT FOR SUBMISSION</h2>
 <div class=card>
-<p><a class="btn" href="downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif">Download h56-disc-multi-b25000-20261009-20261009T165646Z.tif</a>
+<p><a class="btn stop" href="downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif">Download for technical inspection only &mdash; NOT SAFE TO SUBMIT</a>
 <span class=mut>66 KB · single band · float32 · EPSG:32611 ·
 100 m · 3292&times;3730 · 25,000 dots · measured distinct values {0.0, 1.0} ·
 0 NaN cells</span></p>
-<p><b>OK to download: yes.</b> <b>OK to submit: <span class=bad>NO</span>.</b>
+<p><b>Archive download for inspection: yes.</b> <b>OK to submit: <span class=bad>NO</span>.</b>
 The pre-registered holdout verdict is <b>NEGATIVE</b> and the registry lane gate returned
 <b>DUPLICATE/STOP</b> on the literal 3&nbsp;px clause (density-degenerate trigger, IR-56-023: it
 tracks grid coverage while the rank-agreement test passes at max &rho; 0.043 vs the 0.90 bar)
@@ -92,8 +92,8 @@ same budget; paired difference -0.02257
 [-0.02749, -0.01717] &mdash; strictly below chance; canaries
 &le; 0.567 (limit 0.90). Receipts:
 <code>evidence/build_discovery_v1.json</code>, <code>evidence/run_card_discovery_v1.json</code>.</p>
-<p><b>submission name</b> <code>h56-disc-multi-b25000-20261009-20261009T165646Z</code><br>
-<b>note</b> (115/140): <code>h56 discovery multi k=25000: step-lineament dots &gt;200 m off catalogue; NEGATIVE holdout, research only, do not slot</code><br>
+<p><b>Audit-only historical identifier (not a submission name)</b> <code>h56-disc-multi-b25000-20261009-20261009T165646Z</code><br>
+<b>Historical note (do not paste into a form)</b> (115/140): <code>h56 discovery multi k=25000: step-lineament dots &gt;200 m off catalogue; NEGATIVE holdout, research only, do not slot</code><br>
 <b>sha256</b> <code>dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296</code> · validator ok:
 True</p>
 </div>
@@ -132,7 +132,7 @@ vs uniform-random 0.03499 &mdash; paired -0.02257
 [-0.02749, -0.01717],
 canaries clean. Registry gate: surface PASS, dots
 DUPLICATE/STOP (density-degenerate trigger, IR-56-023).
-Their unique TIF is the second download above &mdash; labelled NEGATIVE / do not submit in
+Their archived TIF is the second download above &mdash; labelled NEGATIVE / do not submit in
 its name, note and receipt. 0 slots spent.</p></div>
 </div>
 <p class=mut>Reconciliation: the two runs agree on the measurement &mdash; the catalogue sits
@@ -141,9 +141,8 @@ negative). They differ on the decision rule: run B gates on null-calibrated corr
 consistency with a crest-strength gate and DEM+mag concordance (very conservative &rarr;
 0 corridors); run A gates on per-record strongest-crest consistency (median offset
 &gt; 2&nbsp;px, sign agreement &ge; 0.70, &ge; 8 transects) with the crest identity
-calibrated on 1&nbsp;m LiDAR (MAD 0.29&nbsp;px) &rarr; 28 records. Which gate matches the
-organizer's hidden labels is exactly what a submission slot would test; neither run has an
-organizer score.</p>
+calibrated on 1&nbsp;m LiDAR (MAD 0.29&nbsp;px) &rarr; 28 records. Which gate matches the organizer's hidden labels remains unknown; no slot is being
+spent and no candidate is promoted. Neither run has an organizer score.</p>
 
 <h2>What this repository is</h2>
 <p>56GEMSDOE runs one lane of a parallel multi-session effort on the DOE GEMS Prize: the
@@ -180,7 +179,7 @@ not the fault;</li>
 </div>
 <h2>Site map</h2>
 <ul>
-<li><a href="executive-summary.html">Make a submission</a> &mdash; exactly how to download and submit, and the honest caveats</li>
+<li><a href="executive-summary.html">Submission status</a> &mdash; archive-only status, the stop rule, and historical caveats</li>
 <li><a href="research.html">Research</a> &mdash; method, offset histogram, LiDAR calibration, holdout, leakage canary, and the &ldquo;why 0.2778&rdquo; analysis</li>
 <li><a href="hypotheses.html">Hypotheses</a> &mdash; the concurrent run's five ranked geological hypotheses, plus the round-2 discovery set H6&ndash;H10 and its NEGATIVE holdout verdict</li>
 <li><a href="sources.html">Sources</a> &mdash; official, verified links for manual review</li>

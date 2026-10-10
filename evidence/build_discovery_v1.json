@@ -20,7 +20,7 @@
   "note": "h56 discovery multi k=25000: step-lineament dots >200 m off catalogue; NEGATIVE holdout, research only, do not slot",
   "note_chars": 115,
   "validator": {
-   "path": "/home/user/56GEMSDOE/docs/downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif",
+   "path": "docs/downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif",
    "bytes": 68005,
    "sha256": "dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296",
    "bands": 1,
@@ -49,6 +49,7 @@
     4508550.0
    ],
    "nodata": null,
+   "ref_nodata": "nan",
    "blocksize": [
     256,
     256
@@ -58,22 +59,31 @@
    "nan_pixels": 0,
    "infinity_pixels": 0,
    "n_nan": 0,
+   "template_valid_px": 5167373,
+   "nan_inside_px": 0,
+   "non_nan_outside_px": 7111787,
+   "mask_matches_template": false,
    "min": 0.0,
    "max": 1.0,
    "mean": 0.0020359698683023453,
    "n_nonzero": 25000,
    "mass": 25000.0,
-   "mass_outside_footprint": 0,
-   "problems": [],
-   "ok": true,
-   "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+   "nodata_matches_template": false,
+   "problems": [
+    "7111787 pixels outside the sample footprint are not NaN",
+    "nodata tag None != template tag nan"
+   ],
+   "ok": false,
+   "validation_class": "strict local template-mask/metadata/range check; not organizer acceptance",
+   "training_grid_matches": true,
+   "source_template": "data/sample_submission.tif (hash-pinned owner bridge copy; organizer authenticity not independently verified)"
   },
   "zip_file": "h56-disc-multi-b25000-20261009-20261009T165646Z.zip",
   "zip_sha256": "0c27c4a53a048e51ec70bc61ccd6563feafa15cef5a2fb694463d51aabda7d54",
   "approved_for_weekly_slot": false,
   "promoted": false,
   "submission_slots_used": 0,
-  "status": "research-only; local format validation is not organizer acceptance",
+  "status": "research-only; strict local template conformance FAILED; do not submit",
   "metadata": {
    "lane": "discovery (round 2, corrections-lane repo)",
    "evidence_class": "MODEL output; local validation only; no ORGANIZER-CONFIRMED score",
@@ -90,7 +100,73 @@
    "dots": 25000,
    "budget_used": "E1 holdout + E2 build (2 of 3)",
    "cleared_for_weekly_slot": false
-  }
+  },
+  "validator_history": {
+   "previous_receipt_validator_ok": true,
+   "previous_validator_note": "The previous validator did not compare the exact sample finite mask or nodata tag."
+  },
+  "safe_to_submit": false
  },
- "elapsed_s": 73.1
+ "elapsed_s": 73.1,
+ "strict_template_validation": {
+  "path": "docs/downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif",
+  "bytes": 68005,
+  "sha256": "dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296",
+  "bands": 1,
+  "dtype": "float32",
+  "crs": "EPSG:32611",
+  "width": 3292,
+  "height": 3730,
+  "bounds": [
+   243350.0,
+   4135550.0,
+   572550.0,
+   4508550.0
+  ],
+  "ref_bounds": [
+   243350.0,
+   4135550.0,
+   572550.0,
+   4508550.0
+  ],
+  "transform": [
+   100.0,
+   0.0,
+   243350.0,
+   0.0,
+   -100.0,
+   4508550.0
+  ],
+  "nodata": null,
+  "ref_nodata": "nan",
+  "blocksize": [
+   256,
+   256
+  ],
+  "fixture_grid": false,
+  "has_validity_mask": false,
+  "nan_pixels": 0,
+  "infinity_pixels": 0,
+  "n_nan": 0,
+  "template_valid_px": 5167373,
+  "nan_inside_px": 0,
+  "non_nan_outside_px": 7111787,
+  "mask_matches_template": false,
+  "min": 0.0,
+  "max": 1.0,
+  "mean": 0.0020359698683023453,
+  "n_nonzero": 25000,
+  "mass": 25000.0,
+  "nodata_matches_template": false,
+  "problems": [
+   "7111787 pixels outside the sample footprint are not NaN",
+   "nodata tag None != template tag nan"
+  ],
+  "ok": false,
+  "validation_class": "strict local template-mask/metadata/range check; not organizer acceptance",
+  "training_grid_matches": true,
+  "source_template": "data/sample_submission.tif (hash-pinned owner bridge copy; organizer authenticity not independently verified)"
+ },
+ "validation_note": "Archived discovery raster: 7,111,787 finite cells outside the sample footprint and no nodata tag; invalid under the local template-mask gate.",
+ "safe_to_submit": false
 }

@@ -1,89 +1,158 @@
 {
- "run_utc": "2026-10-09T17:44:27Z",
- "lane": "discovery (round 2 of the corrections-lane repository)",
- "commit": "d3adf9a99021ffa13ab2f616ad5b825048f86a89",
- "hypothesis": "Faults that never reached the USGS/INGENIOUS catalogue are expressed in the GeoDAWN stack as laterally-persistent steps of the isostatic gravity anomaly (H6), of the basement-depth surface concordant with conductivity (H7), and as proximity to the magnetic tilt/curvature low (H8); ranking those signatures and emitting the top-k cells >200 m off known traces recovers structure the catalogue does not contain.",
- "mechanism": "scarp_step (two-sided, >=2 km along-strike persistent step, 150 m half-width) on bands 13/15/17, box-mean low of band 6; per-field rank01; concordance = min of ranks; emission = top-k inside footprint & ~dilate(catalogue, 2 px), value 1.0.",
- "named_non_fault_process": "topographic leakage through the isostatic correction (range-front-correlated error that mimics a density step); depositional onlap gradients that step basement depth without faulting; saline playa-margin conductivity contrasts; intrusive bodies that step gravity without any fault; lithologic contacts in the tilt/curvature field; and on the estimator side, the footprint-rim zero-fill artefact (IR-56-020, fixed and regression-tested before this run's verdict).",
- "measurements": {
-  "evidence_class": "HOLDOUT-DTI (catalogue recovery, hide-and-recover; NOT new-fault discovery)",
-  "evaluator_version": "gems52-pooled-hide-v1",
-  "folds": 4,
-  "withheld_positives": 48080,
-  "candidate_arm": "multi@25000",
-  "candidate_dti": 0.012423943839880595,
-  "candidate_ci95": [
-   0.007866270816658994,
-   0.01717588186522323
-  ],
-  "chance_dti": 0.034989005691207845,
-  "chance_ci95": [
-   0.03273101131879506,
-   0.03713809245860812
-  ],
-  "paired_vs_chance": {
-   "evidence_class": "HOLDOUT-DTI",
-   "evaluator_version": "gems52-pooled-hide-v1",
-   "delta": -0.02256506185132725,
-   "ci95": [
-    -0.027492898281269933,
-    -0.017173763746695627
-   ],
-   "withheld_positive_pixels": 48080
+  "run_utc": "2026-10-09T17:44:27Z",
+  "lane": "discovery (round 2 of the corrections-lane repository)",
+  "commit": "d3adf9a99021ffa13ab2f616ad5b825048f86a89",
+  "hypothesis": "Faults that never reached the USGS/INGENIOUS catalogue are expressed in the GeoDAWN stack as laterally-persistent steps of the isostatic gravity anomaly (H6), of the basement-depth surface concordant with conductivity (H7), and as proximity to the magnetic tilt/curvature low (H8); ranking those signatures and emitting the top-k cells >200 m off known traces recovers structure the catalogue does not contain.",
+  "mechanism": "scarp_step (two-sided, >=2 km along-strike persistent step, 150 m half-width) on bands 13/15/17, box-mean low of band 6; per-field rank01; concordance = min of ranks; emission = top-k inside footprint & ~dilate(catalogue, 2 px), value 1.0.",
+  "named_non_fault_process": "topographic leakage through the isostatic correction (range-front-correlated error that mimics a density step); depositional onlap gradients that step basement depth without faulting; saline playa-margin conductivity contrasts; intrusive bodies that step gravity without any fault; lithologic contacts in the tilt/curvature field; and on the estimator side, the footprint-rim zero-fill artefact (IR-56-020, fixed and regression-tested before this run's verdict).",
+  "measurements": {
+    "evidence_class": "HOLDOUT-DTI (catalogue recovery, hide-and-recover; NOT new-fault discovery)",
+    "evaluator_version": "gems52-pooled-hide-v1",
+    "folds": 4,
+    "withheld_positives": 48080,
+    "candidate_arm": "multi@25000",
+    "candidate_dti": 0.012423943839880595,
+    "candidate_ci95": [
+      0.007866270816658994,
+      0.01717588186522323
+    ],
+    "chance_dti": 0.034989005691207845,
+    "chance_ci95": [
+      0.03273101131879506,
+      0.03713809245860812
+    ],
+    "paired_vs_chance": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems52-pooled-hide-v1",
+      "delta": -0.02256506185132725,
+      "ci95": [
+        -0.027492898281269933,
+        -0.017173763746695627
+      ],
+      "withheld_positive_pixels": 48080
+    },
+    "canary": {
+      "iso_step": 0.535,
+      "basement": 0.5384,
+      "cond": 0.4989,
+      "tilt": 0.567,
+      "mag_ref": 0.5267
+    },
+    "canary_rule": "AUC > 0.90 means leakage until proven otherwise",
+    "canary_max_new_fields": 0.567,
+    "pre_fix_run": {
+      "note": "superseded by IR-56-020 (footprint-rim artefact); preserved for the record",
+      "candidate_dti": 0.011562415361321883,
+      "receipt": "evidence/holdout_discovery_v0_prefx.json"
+    },
+    "previous_repo_best_dti": 0.00020550105762550465
   },
-  "canary": {
-   "iso_step": 0.535,
-   "basement": 0.5384,
-   "cond": 0.4989,
-   "tilt": 0.567,
-   "mag_ref": 0.5267
+  "registry_comparison": {
+    "tool": "gems56.gates.lane_report (H61 shared-template repair): literal + coverage-adjusted policy, phase=surface and phase=dots",
+    "screen": {
+      "files": 996,
+      "max_directed_overlap": 1.0,
+      "reciprocal_over_070": 0
+    },
+    "literal_verdict": "DUPLICATE/STOP",
+    "policy_verdict": "DUPLICATE/STOP",
+    "max_spearman": 0.04281326757060727,
+    "max_near_3px_fraction": 1.0,
+    "max_near_source": "/home/user/_reg/GEMSDOE48/docs/downloads/diagnostics/gemsdoe48-h56b-plausibility-126ca59c2801.tif",
+    "duplicate": true,
+    "receipt": "evidence/lane_gate_discovery_v2.json"
   },
-  "canary_rule": "AUC > 0.90 means leakage until proven otherwise",
-  "canary_max_new_fields": 0.567,
-  "pre_fix_run": {
-   "note": "superseded by IR-56-020 (footprint-rim artefact); preserved for the record",
-   "candidate_dti": 0.011562415361321883,
-   "receipt": "evidence/holdout_discovery_v0_prefx.json"
+  "artefact": {
+    "name": "h56-disc-multi-b25000-20261009-20261009T165646Z",
+    "note": "h56 discovery multi k=25000: step-lineament dots >200 m off catalogue; NEGATIVE holdout, research only, do not slot",
+    "note_chars": 115,
+    "file": "h56-disc-multi-b25000-20261009-20261009T165646Z.tif",
+    "sha256": "dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296",
+    "bytes": 68005,
+    "dots": 25000,
+    "validator_ok": false,
+    "validator_problems": [
+      "7111787 pixels outside the sample footprint are not NaN",
+      "nodata tag None != template tag nan"
+    ],
+    "values_present": [
+      0.0,
+      1.0
+    ],
+    "zip_file": "h56-disc-multi-b25000-20261009-20261009T165646Z.zip",
+    "legacy_validator_ok": true,
+    "strict_template_validation": {
+      "path": "docs/downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif",
+      "bytes": 68005,
+      "sha256": "dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296",
+      "bands": 1,
+      "dtype": "float32",
+      "crs": "EPSG:32611",
+      "width": 3292,
+      "height": 3730,
+      "bounds": [
+        243350.0,
+        4135550.0,
+        572550.0,
+        4508550.0
+      ],
+      "ref_bounds": [
+        243350.0,
+        4135550.0,
+        572550.0,
+        4508550.0
+      ],
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "nodata": null,
+      "ref_nodata": "nan",
+      "blocksize": [
+        256,
+        256
+      ],
+      "fixture_grid": false,
+      "has_validity_mask": false,
+      "nan_pixels": 0,
+      "infinity_pixels": 0,
+      "n_nan": 0,
+      "template_valid_px": 5167373,
+      "nan_inside_px": 0,
+      "non_nan_outside_px": 7111787,
+      "mask_matches_template": false,
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.0020359698683023453,
+      "n_nonzero": 25000,
+      "mass": 25000.0,
+      "nodata_matches_template": false,
+      "problems": [
+        "7111787 pixels outside the sample footprint are not NaN",
+        "nodata tag None != template tag nan"
+      ],
+      "ok": false,
+      "validation_class": "strict local template-mask/metadata/range check; not organizer acceptance",
+      "training_grid_matches": true,
+      "source_template": "data/sample_submission.tif (hash-pinned owner bridge copy; organizer authenticity not independently verified)"
+    },
+    "safe_to_submit": false
   },
-  "previous_repo_best_dti": 0.00020550105762550465
- },
- "registry_comparison": {
-  "tool": "gems56.gates.lane_report (H61 shared-template repair): literal + coverage-adjusted policy, phase=surface and phase=dots",
-  "screen": {
-   "files": 996,
-   "max_directed_overlap": 1.0,
-   "reciprocal_over_070": 0
+  "budget": {
+    "experiments": 3,
+    "used": "E1 holdout (incl. one re-run after the IR-56-020 template fix), E2 build+validate, E3 uniqueness screen+gate",
+    "slots_used": 0,
+    "note": "promotion to a real weekly slot is a separate selector step; this card does not pick one"
   },
-  "literal_verdict": "DUPLICATE/STOP",
-  "policy_verdict": "DUPLICATE/STOP",
-  "max_spearman": 0.04281326757060727,
-  "max_near_3px_fraction": 1.0,
-  "max_near_source": "/home/user/_reg/GEMSDOE48/docs/downloads/diagnostics/gemsdoe48-h56b-plausibility-126ca59c2801.tif",
-  "duplicate": true,
-  "receipt": "evidence/lane_gate_discovery_v2.json"
- },
- "artefact": {
-  "name": "h56-disc-multi-b25000-20261009-20261009T165646Z",
-  "note": "h56 discovery multi k=25000: step-lineament dots >200 m off catalogue; NEGATIVE holdout, research only, do not slot",
-  "note_chars": 115,
-  "file": "h56-disc-multi-b25000-20261009-20261009T165646Z.tif",
-  "sha256": "dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296",
-  "bytes": 68005,
-  "dots": 25000,
-  "validator_ok": true,
-  "validator_problems": [],
-  "values_present": [
-   0.0,
-   1.0
-  ],
-  "zip_file": "h56-disc-multi-b25000-20261009-20261009T165646Z.zip"
- },
- "budget": {
-  "experiments": 3,
-  "used": "E1 holdout (incl. one re-run after the IR-56-020 template fix), E2 build+validate, E3 uniqueness screen+gate",
-  "slots_used": 0,
-  "note": "promotion to a real weekly slot is a separate selector step; this card does not pick one"
- },
- "verdict": "negative",
- "verdict_text": "NEGATIVE: holdout rule failed (paired CI vs chance [-0.027492898281269933, -0.017173763746695627]); lane gate literal=DUPLICATE/STOP, policy=DUPLICATE/STOP; the raster is published, format-validated and labelled; no slot is recommended."
+  "verdict": "negative",
+  "verdict_text": "Archived discovery-lane result, outside the active corrections lane. Its DTI evidence remains a local catalogue-recovery holdout only; the TIFF fails strict template-mask validation and the registry gate requires DUPLICATE/STOP. Do not submit.",
+  "authority": {
+    "authoritative_for_active_corrections_lane": false,
+    "reason": "This is the later discovery-lane run. The current task is corrections-only; use evidence/run_card.json for the active lane. Its prior local validator result was superseded by strict template-mask revalidation.",
+    "budget_exhausted": true
+  }
 }

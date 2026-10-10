@@ -137,8 +137,15 @@ def _fallback(o):
     return str(o)
 
 
-def write_geotiff(path: str | Path, arr: np.ndarray, *, nodata: float | None = None) -> dict:
+def write_geotiff(path: str | Path, arr: np.ndarray, *, nodata: float | None = None,
+                  valid_mask: np.ndarray | None = None) -> dict:
     """Write a single-band float32 GeoTIFF on the pinned competition grid, then re-read it.
+
+    When ``valid_mask`` is supplied it is the official sample's valid-data footprint:
+    values must be finite and in [0, 1] inside it, and NaN outside it.  The matching
+    GDAL nodata tag is written as NaN.  Without a mask, the generic writer retains its
+    all-finite contract.  This prevents a full-grid zero fill from being mistaken for a
+    conformant competition submission.
 
     The re-read is the contract: the writer returns what the *file* says, not what the array said.
     Tiled (256 px) with deflate + horizontal predictor is what this family has actually shipped:
@@ -157,10 +164,26 @@ def write_geotiff(path: str | Path, arr: np.ndarray, *, nodata: float | None = N
         raise TypeError(f"submission must be float32, got {arr.dtype}")
     if arr.shape != SHAPE:
         raise ValueError(f"submission must be {SHAPE}, got {arr.shape}")
-    if not np.isfinite(arr).all():
-        raise ValueError("submission contains NaN/inf; all-finite compatibility policy requires finite values")
-    if arr.min() < 0.0 or arr.max() > 1.0:
-        raise ValueError(f"submission out of range: min={arr.min()} max={arr.max()}")
+    if valid_mask is None:
+        if not np.isfinite(arr).all():
+            raise ValueError("unmasked output must be all-finite")
+        check_values = arr
+    else:
+        valid_mask = np.asarray(valid_mask, dtype=bool)
+        if valid_mask.shape != arr.shape or not valid_mask.any():
+            raise ValueError("valid_mask must be nonempty and match the submission shape")
+        if not np.isfinite(arr[valid_mask]).all():
+            raise ValueError("submission must be finite inside the official footprint")
+        if not np.isnan(arr[~valid_mask]).all():
+            raise ValueError("submission must be NaN outside the official footprint")
+        if nodata is not None and not np.isnan(nodata):
+            raise ValueError("template-conformant output requires a NaN nodata tag")
+        nodata = float("nan")
+        check_values = arr[valid_mask]
+    if check_values.size == 0:
+        raise ValueError("submission has no valid footprint pixels")
+    if float(check_values.min()) < 0.0 or float(check_values.max()) > 1.0:
+        raise ValueError(f"submission out of range: min={check_values.min()} max={check_values.max()}")
     from affine import Affine
     tr = Affine(*[float(v) for v in TRANSFORM])                 # Affine order: a, b, c, d, e, f
     west, north = tr.c, tr.f
