@@ -1,0 +1,24 @@
+{
+  "review_date": "2026-10-10",
+  "scope": "Fail-closed interpretation of the existing PR #14 registry receipt only; no registry screen, holdout, DTI, raster build, or experiment was rerun.",
+  "rule": "DUPLICATE / STOP if rank correlation > 0.90 OR more than 0.70 of final dots are within 3 px of any registry raster. A literal directed-proximity trigger is not waived by density, Jaccard, reverse containment, or a superset explanation.",
+  "source_receipt": "evidence/corrections/registry_check_round3.json",
+  "source_receipt_sha256": "b84253e6f95e57d908b2cfc48604824cd04a9c6bdf4dc40aee0b30ea79b47e57",
+  "source_run_card_sha256_before_review": "d2455114d1f427cc4772f4e6ed6a090fe0e53b4ea3bd9b1d5b53c63cf61cce70",
+  "raster": "gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif",
+  "raster_sha256": "a614a594e179fa2af24a3d9c311bbab45f3c39ca868023da23b43ece16a32b75",
+  "existing_metrics": {
+    "registry_rasters": 1034,
+    "unique_pixel_contents": 485,
+    "literal_directed_proximity_flags": 12,
+    "max_final_dot_proximity": 1.0,
+    "max_spearman_dots": 0.5732,
+    "max_spearman_surface": 0.3335,
+    "old_exact_reissue_count": 0
+  },
+  "pre_review_interpretation": "UNIQUE - no prior re-issued (literal containment flags logged and investigated below)",
+  "pre_review_exact_reissue_count": 0,
+  "verdict": "DUPLICATE / STOP",
+  "reason": "The existing receipt reports 12 literal directed-proximity flags; its maximum is 1.0, strictly greater than 0.70. The correlations are below 0.90 but do not cancel the independent trigger.",
+  "submission_status": "Research archive only; not submit-ready; no selection or promotion; zero slots spent."
+}

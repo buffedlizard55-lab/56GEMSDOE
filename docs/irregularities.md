@@ -1,13 +1,16 @@
 # Irregularities — flagged for manual review
 
-> **Historical log:** entries below describe earlier reviews and inputs. They are not the current
-> run card, format clearance, or submission authorization. The active corrections result is
-> **NEGATIVE / STOP**: the latest primary and sensitivity TIFFs fail strict template validation;
-> the format-valid historical corrections raster still triggers the registry duplicate-and-stop
-> rule. The corrections experiment budget is exhausted; no corrections TIFF is cleared to submit.
-> Findings IR-56-031 through IR-56-035 record the latest review in `evidence/irregularities.json`;
-> see `docs/review/2026-10-09.md` and the active `evidence/run_card.json`. A separate dotted-ridge
-> output from PR #11 is outside this corrections review and is not adjudicated by this log.
+> **Current corrections status: NEGATIVE / STOP.** The latest H57 run's final-dot gate reports
+> a 1.0 within-3-px fraction (>0.70), and strict replay fails on 7,111,787 finite cells outside
+> the template mask plus a missing NaN nodata tag. Its original "OK to submit" wording is
+> superseded by `evidence/h57_run_card.json`'s post-review card. No corrections TIFF is cleared.
+> H56's earlier negative review is retained in `evidence/run_card.json`; findings IR-56-031 through
+> IR-56-037 are in the machine-readable irregularity log. IR-56-036 corrects the archived H56
+> magpack/quota interpretation: the existing full-corpus directed screen flags 56 and 54 priors
+> above 0.70, respectively. IR-56-037 applies the same literal rule to 12 already-recorded
+> PR #14 flags; neither correction reran a registry screen. Reciprocal statistics and dense/superset
+> explanations do not waive either stop. A separate dotted-ridge
+> artifact from PR #11 is not adjudicated by this H57 review. See `docs/review/2026-10-09.md`.
 
 Each item states what was found, how it was checked, and what it means. Nothing here is resolved unless it says so.
 

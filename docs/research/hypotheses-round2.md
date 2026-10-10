@@ -9,6 +9,13 @@ Scope rule inherited from round 1: each hypothesis names the layer(s), the physi
 
 **Summary: 6 hypotheses, 5 rejected on measurement, 1 not resolvable and reported as a null. No promotion.**
 
+> **Post-review registry correction (IR-56-036):** the existing 868-row directed screen records
+> >0.70 final-dot proximity for 56 priors against `h56-magpack-37k` and 54 against
+> `h56-quota-37k`. Those are literal **DUPLICATE / STOP** triggers under the standing rule;
+> reciprocal containment and the smaller 40-prior subset do not waive them. The bottom-of-file
+> reciprocal-only explanation is historical reasoning, not current policy. Both H56 rasters are
+> archive-only; do not submit or promote. The screen has 31 unreadable rows and was not rerun.
+
 ---
 
 ### H2-1 (rank 1) - any single official geophysical band, used label-free as a ridge/crest field, can beat the filed surface at matched budget
@@ -89,7 +96,8 @@ Scope rule inherited from round 1: each hypothesis names the layer(s), the physi
   as IR-56-005, not a property of the method.
 - `PRIOR_base_44090` emits 44,074 of 44,090 dots on this instrument: 16 dots die
   on fold masks. Any per-dot arithmetic on this arm must use the emitted count, not the filed count.
-- The registry screen's rule-as-written (>70% of dots within 3 px) is tripped by 56 of
-  868 files, every one of them a dense diagnostic or mask layer, and 0
-  files trip it reciprocally. A one-way proximity rule on sparse-vs-dense pairs is meaningless without the
-  reciprocal direction, which is why both are computed and the reciprocal is the criterion.
+- The original 868-row registry screen reports 56 one-way >0.70 flags for `h56-magpack-37k`
+  and 54 for `h56-quota-37k`; 31 rows were unreadable. The earlier argument that dense priors or
+  zero reciprocal flags invalidate those one-way results is superseded by IR-56-036. Under the
+  standing rule, each directed >0.70 final-dot trigger means DUPLICATE / STOP. Reciprocal values
+  remain descriptive only; they do not define or waive the gate.

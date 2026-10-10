@@ -334,5 +334,50 @@
     "link": "evidence/holdout_corrections_v1.json; scripts/run_corrections_holdout.py; src/gems56/holdout.py",
     "verified_by": "source review of the make_folds invocation, snap_map call and fold builder; original receipt SHA-256 07465b0cee3dd191c4ed32342e9fd2c094cf24f37787483e74c4e7bbb8127a79",
     "renumbered_from": "IR-56-028"
+  },
+  {
+    "id": "IR-56-036",
+    "title": "H56 magpack/quota full-corpus proximity flags were incorrectly waived by reciprocal containment",
+    "severity": "bad",
+    "finding": "The archived 868-row directed screen (31 unreadable rows) records 56 registry rasters with >0.70 of h56-magpack-37k dots within 3 px and 54 with >0.70 of h56-quota-37k dots within 3 px. The 40-prior candidate gate sees maxima 0.527 and 0.475 and therefore misses the full-corpus triggers. Surface Spearman maxima are 0.0117 and 0.0169, but low correlation does not cancel directed proximity. The earlier reciprocal-only rationale (over_070_reciprocal=0) is not an exception to the stated one-way stop rule.",
+    "action": "Superseded the prior UNIQUE/reciprocal-only interpretation in README.md and docs/downloads/README.md. Mark both rasters and zips archive-only / DUPLICATE-STOP; do not submit or promote. Preserved the original registry receipts and did not rerun the screen.",
+    "link": "evidence/registry_screen_h56b.json; evidence/registry_screen_h56brows.jsonl; evidence/lane_uniqueness2_summary.json; docs/downloads/README.md",
+    "verified_by": "read-only row count over the existing 868-row JSONL: 56 magpack and 54 quota directed fractions >0.70; existing 40-prior candidate receipts and surface correlations; no new raster or registry screen"
+  },
+  {
+    "id": "IR-56-037",
+    "title": "PR #14 twin-family registry classification corrected to the literal DUPLICATE / STOP rule",
+    "severity": "blocker",
+    "finding": "The existing 1,034-raster PR #14 receipt records 12 literal directed-proximity flags above 0.70 and a maximum containment of 1.0. Its original documented verdict called the raster UNIQUE and counted zero duplicates because it treated dense/superset overlaps and the lane own-round-1 subset as non-reissues. Under the standing one-way rule, those explanations do not waive the literal trigger. Maximum Spearman values (0.5732 dots, 0.3335 surface) are below 0.90 but do not cancel proximity.",
+    "action": "Preserved the original screen receipt, recorded the fail-closed interpretation in evidence/corrections/registry_check_round3_post_review.json, and updated both mirrored round cards to DUPLICATE / STOP. Keep the 2,139-dot TIFF as a research archive only; do not submit or promote it. No experiment, registry screen, holdout, DTI, or slot was used. PR #11 dotted-ridge remains separate and unadjudicated by the H57 review.",
+    "link": "evidence/corrections/registry_check_round3.json; evidence/corrections/registry_check_round3_post_review.json; evidence/corrections/run_card_round3.json; docs/downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif",
+    "verified_by": "read-only application of the explicit >0.70 threshold to the 12 flags already in the committed receipt; no rerun"
+  },
+  {
+    "id": "IR-57-007",
+    "title": "The H57 final-dot registry result requires DUPLICATE / STOP",
+    "severity": "blocker",
+    "finding": "The final H57 dots-phase uniqueness receipt reports max_near_3px_fraction=1.0 on the 40 worst-overlap submission priors, above the explicit >0.70 stop threshold, and literal verdict DUPLICATE/STOP. The run card itself acknowledges the trigger but its original submission.ok_to_submit claim says yes; interpreting the overlap as unavoidable does not create an exception to the user rule.",
+    "action": "Superseded the positive submission claim with NEGATIVE / STOP in evidence/h57_run_card.json. Keep the 54,914-dot TIFF as an audit archive only; do not submit, repair, re-emit, or promote it under the exhausted budget.",
+    "link": "evidence/h57_uniqueness.json; evidence/h57_run_card.json; docs/downloads/h57-corr-band2px-cover-20261009T191337Z.tif",
+    "verified_by": "source review of the final H57 run card and dots-phase receipt; no registry screen was rerun"
+  },
+  {
+    "id": "IR-57-008",
+    "title": "Strict template-mask and nodata replay rejects the H57 TIFF",
+    "severity": "blocker",
+    "finding": "For final TIFF SHA-256 fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced, strict replay against the hash-pinned sample finds 7,111,787 finite cells outside its finite footprint and candidate nodata=None while the sample nodata is NaN. CRS, shape, transform, value range, and training-grid geometry match; the exact mask and nodata do not.",
+    "action": "Added the strict result and source pins to the H57 run card. Marked the TIFF archive-only/NOT SAFE TO SUBMIT; did not sanitize or regenerate it.",
+    "link": "evidence/h57_run_card.json; docs/downloads/h57-corr-band2px-cover-20261009T191337Z.tif; scripts/validate_submission.py",
+    "verified_by": "strict local replay with validator source hash 90bdadf28f112c0b8683fa501786ae7be6b0a00f08fbd4c3ca5d48350f6bd602, sample SHA-256 2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc, and training grid SHA-256 4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5"
+  },
+  {
+    "id": "IR-57-009",
+    "title": "A final-geometry pre-placement surface gate is not evidenced",
+    "severity": "warn",
+    "finding": "The h57_uniqueness.json receipt is explicitly phase=dots on the final artifact and checks 40 worst-overlap submission priors. The full-corpus registry_screen_v1.json names an earlier timestamped H57 candidate rather than the final 19:13 TIFF. No distinct pre-placement surface-phase receipt for the final geometry was identified in the H57 record.",
+    "action": "Recorded the stage-evidence gap. The final-dot gate independently triggers DUPLICATE/STOP, so this review did not rerun a surface screen or any experiment.",
+    "link": "evidence/h57_uniqueness.json; evidence/registry_screen_v1.json; evidence/h57_run_card.json",
+    "verified_by": "read-only source review of receipt phase, candidate filename/timestamps, and the H57 run card"
   }
 ]

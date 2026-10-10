@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
 """Build the GitHub Pages site (docs/) from the lane evidence JSONs.
 
-Pages: index (one-click download + status + the two runs on this repo),
-executive-summary (how to submit), research (method, offset histogram, LiDAR
-calibration, holdout, canary, the "why 0.2778" analysis, the sibling run's
-reconciliation), hypotheses (ranked candidates), sources (official verified
-links), irregularities (flagged claims from both runs), prior-run (the merged
-sibling corrections run: negative verdict, its downloads and receipts).
-All numbers are read from evidence/corrections/*.json (run A) and
-evidence/*.json (run B) so the site cannot drift from the evidence.
+This archival H57/H56 builder predates the PR #14 round-3 twin-family record.
+It exits before writing when that run card is present: it cannot render the merged
+round-3 research record or reproduce the current fail-closed site. All numbers in
+its historical output are read from evidence JSON receipts.
 
 Run:  python scripts/build_site.py
 """
@@ -19,6 +15,7 @@ import argparse
 import datetime as dt
 import hashlib
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -131,6 +128,17 @@ def fmt(x, n=4):
 
 
 def main():
+    round3_card = EV / "run_card_round3.json"
+    if round3_card.exists():
+        print(
+            "REFUSING: build_site.py predates the PR #14 twin-family record and cannot render "
+            "the merged round-3 research record. No site output was written; keep the current "
+            "fail-closed pages intact until a renderer combines the PR #14 receipts with the "
+            "H57/H56 stop review.",
+            file=sys.stderr,
+        )
+        return 2
+
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", default=str(DOCS))
     args = ap.parse_args()
@@ -1113,4 +1121,4 @@ away from the catalogue, which this lane never tested.</li>
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

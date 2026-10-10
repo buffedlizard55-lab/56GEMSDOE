@@ -12,29 +12,22 @@ harvested to /home/user/registry-rasters with a sha256 manifest).  Zips are
 unpacked (single-GeoTIFF-inside).  Rasters are deduplicated by pixel content
 (NaN-outside twins are pixel-identical) before comparison.
 
-Statistics per unique registry raster (all over the template's valid footprint):
+Statistics per unique registry raster (over the template's valid footprint):
   * Spearman rank correlation with THIS lane's final dots and with the lane's
     surface (the no-gate crest-line field before the candidate restriction).
-  * For SPARSE rasters (support <= 5% of the footprint, i.e. dot-emission-like):
-      - containment   : % of MY dots within 3 px (300 m, the kernel radius) of
-                        the registry raster's dots  (the protocol's literal test)
-      - rev-containment: % of the REGISTRY raster's dots within 3 px of MY dots
-      - Jaccard(3 px) : |mine ∩ theirs(3px)| / |mine ∪ theirs|  (the sibling
-                        GEMSDOE51 gate's statistic; 3-px tolerant)
-      - mass ratio    : registry dots / my dots
-  * DENSE rasters (continuous fields, plausibility maps, all-finite emissions)
-    are compared by Spearman only: "its dots" is not a dot set, so the 3-px
-    containment test is not meaningful for them (a raster with millions of
-    nonzero pixels trivially sits within 3 px of every dot).
+  * Directed proximity: fraction of MY final dots within 3 px of nonzero cells
+    in that registry raster. Apply this literal threshold to sparse and dense
+    rasters alike; Jaccard, reverse containment, support size, and mass ratio
+    are diagnostics only and cannot waive a stop.
+  * Jaccard and reverse containment are retained for audit, not used to redefine
+    the user's one-way duplicate rule.
 
-Verdict logic (documented, because the literal test alone is not decisive):
-  DUPLICATE - STOP  iff  Spearman > 0.90  OR  Jaccard(3px) > 0.50  OR
-                         (containment > 0.70 AND rev-containment > 0.50)
-  (a re-issue shares its dot set: high Jaccard and mutual containment).
-  Literal-test flags (containment > 70%) are ALWAYS logged; when they fire
-  against rasters 12-38x larger (habitat lattices / superset fields), the
-  flags are recorded as one-directional subset-of-habitat artifacts, with the
-  discriminating statistics, and do not by themselves stop the lane.
+Verdict logic:
+  DUPLICATE - STOP iff Spearman(dots) > 0.90 OR Spearman(surface) > 0.90 OR
+  directed final-dot proximity > 0.70 against any registry raster.
+  Every literal proximity flag is logged and stops the lane, including a flag
+  against a dense habitat/superset raster. No density, reciprocity, or
+  diagnostic-statistic exception is permitted.
 
 Run:  python scripts/check_registry.py --dots <tif|npz> --surface <tif|npz>
 """
@@ -59,7 +52,24 @@ CONTAINMENT_MAX = 0.70
 JACCARD_MAX = 0.50
 MUTUAL_CONTAINMENT_MAX = 0.50
 KERNEL_PX = 3
-SPARSE_SUPPORT_FRACTION = 0.05   # of the footprint
+SPARSE_SUPPORT_FRACTION = 0.05   # diagnostic classification only; never waives proximity stop
+
+
+def _decision_value(stats, name, default=float("-inf")):
+    """Use unrounded metrics for literal thresholds; rounded fields are display-only."""
+    return stats.get(f"_{name}_raw", stats.get(name, default))
+
+
+def stop_reasons(stats):
+    """Return the literal, fail-closed registry stop reasons for one prior."""
+    reasons = []
+    if _decision_value(stats, "spearman_dots") > SPEARMAN_MAX:
+        reasons.append("spearman_dots>0.90")
+    if _decision_value(stats, "spearman_surface") > SPEARMAN_MAX:
+        reasons.append("spearman_surface>0.90")
+    if _decision_value(stats, "containment", default=0.0) > CONTAINMENT_MAX:
+        reasons.append("directed_near3px>0.70")
+    return reasons
 
 
 def load_raster_values(path):
@@ -104,25 +114,34 @@ def _registry_worker(w):
 
     sp_d = corr(_MY_DOTS_RANKS, reg_ranks)
     sp_s = corr(_MY_SURF_RANKS, reg_ranks)
+    kind = "dense" if n_reg > _SPARSE_MAX else "sparse"
     if n_reg == 0:
-        return dict(path=rel, sha256=sha, spearman_dots=round(sp_d, 4),
-                    spearman_surface=round(sp_s, 4), kind="empty", n_reg=0)
-    if n_reg > _SPARSE_MAX:
-        return dict(path=rel, sha256=sha, spearman_dots=round(sp_d, 4),
-                    spearman_surface=round(sp_s, 4), kind="dense", n_reg=n_reg)
+        return dict(path=rel, sha256=sha,
+                    spearman_dots=round(sp_d, 4), _spearman_dots_raw=sp_d,
+                    spearman_surface=round(sp_s, 4), _spearman_surface_raw=sp_s,
+                    kind="empty", n_reg=0,
+                    containment=0.0, _containment_raw=0.0,
+                    rev_containment=0.0, jaccard_3px=0.0,
+                    surface_containment=0.0, mass_ratio=0.0)
+
+    # The literal gate applies to every raster's nonzero pixels, even if it is
+    # a dense field. Reverse containment/Jaccard are audit-only diagnostics.
     dist = ndimage.distance_transform_edt(~reg)
     inter = int((dist[_MY_DOT_R, _MY_DOT_C] <= KERNEL_PX).sum())
-    containment = inter / _N_MY_DOTS
+    containment = inter / _N_MY_DOTS if _N_MY_DOTS else 0.0
     reg_r, reg_c = np.nonzero(reg)
     rev = float((_DIST_MINE[reg_r, reg_c] <= KERNEL_PX).mean())
     union = int(_N_MY_DOTS + n_reg - inter)
     jac = inter / union if union else 1.0
-    cont_surf = float((dist[_SURF_R, _SURF_C] <= KERNEL_PX).mean())
-    return dict(path=rel, sha256=sha, spearman_dots=round(sp_d, 4),
-                spearman_surface=round(sp_s, 4), kind="sparse", n_reg=n_reg,
-                containment=round(containment, 4), rev_containment=round(rev, 4),
+    cont_surf = float((dist[_SURF_R, _SURF_C] <= KERNEL_PX).mean()) if _N_SURF else 0.0
+    return dict(path=rel, sha256=sha,
+                spearman_dots=round(sp_d, 4), _spearman_dots_raw=sp_d,
+                spearman_surface=round(sp_s, 4), _spearman_surface_raw=sp_s,
+                kind=kind, n_reg=n_reg,
+                containment=round(containment, 4), _containment_raw=containment,
+                rev_containment=round(rev, 4),
                 jaccard_3px=round(jac, 4), surface_containment=round(cont_surf, 4),
-                mass_ratio=round(n_reg / _N_MY_DOTS, 1))
+                mass_ratio=round(n_reg / _N_MY_DOTS, 1) if _N_MY_DOTS else None)
 
 
 def main():
@@ -211,31 +230,38 @@ def main():
     # ---- verdict --------------------------------------------------------------
     sparse = [r for r in results if r["kind"] == "sparse"]
     dense = [r for r in results if r["kind"] == "dense"]
+    comparable = [r for r in results if r["kind"] != "empty"]
     worst_sp_dots = max(results, key=lambda r: r["spearman_dots"])
     worst_sp_surf = max(results, key=lambda r: r["spearman_surface"])
     worst_jac = max(sparse, key=lambda r: r["jaccard_3px"]) if sparse else None
-    worst_cont = max(sparse, key=lambda r: r["containment"]) if sparse else None
+    worst_cont = max(comparable, key=lambda r: r["containment"]) if comparable else None
     worst_rev = max(sparse, key=lambda r: r["rev_containment"]) if sparse else None
 
-    literal_flags = [r for r in sparse if r["containment"] > CONTAINMENT_MAX]
+    literal_flags = [
+        r for r in comparable
+        if _decision_value(r, "containment", default=0.0) > CONTAINMENT_MAX
+    ]
     duplicates = []
     for r in results:
-        if r["spearman_dots"] > SPEARMAN_MAX or r["spearman_surface"] > SPEARMAN_MAX:
-            duplicates.append(dict(path=r["path"], reason="spearman>0.90", **{
-                k: r[k] for k in ("spearman_dots", "spearman_surface")}))
-        elif r["kind"] == "sparse" and r["jaccard_3px"] > JACCARD_MAX:
-            duplicates.append(dict(path=r["path"], reason="jaccard3px>0.50",
-                                   jaccard_3px=r["jaccard_3px"],
-                                   containment=r["containment"]))
-        elif (r["kind"] == "sparse" and r["containment"] > CONTAINMENT_MAX
-              and r["rev_containment"] > MUTUAL_CONTAINMENT_MAX):
-            duplicates.append(dict(path=r["path"], reason="mutual containment",
-                                   containment=r["containment"],
-                                   rev_containment=r["rev_containment"]))
+        reasons = stop_reasons(r)
+        if reasons:
+            duplicates.append(dict(
+                path=r["path"], reason=" OR ".join(reasons),
+                **{k: r.get(k) for k in (
+                    "spearman_dots", "spearman_surface", "containment",
+                    "rev_containment", "jaccard_3px", "kind", "n_reg")},
+                spearman_dots_raw=r.get("_spearman_dots_raw"),
+                spearman_surface_raw=r.get("_spearman_surface_raw"),
+                containment_raw=r.get("_containment_raw"),
+            ))
 
     verdict = ("DUPLICATE - STOP" if duplicates else
-               "UNIQUE - no prior re-issued (literal containment flags logged and "
-               "investigated below)")
+               "NO STOP TRIGGER in the readable registry; unreadable entries remain a limitation")
+
+    def public_result(row):
+        """Keep private unrounded decision fields out of the ranked summaries."""
+        return {key: value for key, value in row.items() if not key.startswith("_")}
+
     out = dict(
         thresholds=dict(spearman_max=SPEARMAN_MAX,
                         containment_max=CONTAINMENT_MAX,
@@ -251,32 +277,47 @@ def main():
         n_surface_dots=len(surf_r),
         worst=dict(
             spearman_dots=worst_sp_dots["spearman_dots"],
+            spearman_dots_raw=worst_sp_dots["_spearman_dots_raw"],
             spearman_dots_path=worst_sp_dots["path"],
             spearman_surface=worst_sp_surf["spearman_surface"],
+            spearman_surface_raw=worst_sp_surf["_spearman_surface_raw"],
             spearman_surface_path=worst_sp_surf["path"],
             jaccard_3px=worst_jac["jaccard_3px"] if worst_jac else None,
             jaccard_3px_path=worst_jac["path"] if worst_jac else None,
             containment=worst_cont["containment"] if worst_cont else None,
+            containment_raw=(worst_cont["_containment_raw"] if worst_cont else None),
             containment_path=worst_cont["path"] if worst_cont else None,
             rev_containment=worst_rev["rev_containment"] if worst_rev else None,
             rev_containment_path=worst_rev["path"] if worst_rev else None,
         ),
         literal_containment_flags=[
             dict(path=r["path"], containment=r["containment"],
+                 containment_raw=r["_containment_raw"],
                  rev_containment=r["rev_containment"], jaccard_3px=r["jaccard_3px"],
                  mass_ratio=r["mass_ratio"], registry_dots=r["n_reg"],
-                 note=("one-directional subset of a much larger habitat/superset "
-                       "emission - not a re-issue (Jaccard and reverse containment "
-                       "are small)" if r["jaccard_3px"] <= JACCARD_MAX
-                       and r["rev_containment"] <= MUTUAL_CONTAINMENT_MAX else
-                       "investigate"))
-            for r in sorted(literal_flags, key=lambda r: -r["containment"])],
+                 note="literal >0.70 directed-proximity trigger: DUPLICATE/STOP; "
+                      "density, Jaccard, and reverse-containment diagnostics do not waive it")
+            for r in sorted(
+                literal_flags,
+                key=lambda r: -_decision_value(r, "containment", default=0.0))],
         n_literal_flags=len(literal_flags),
         duplicates=duplicates,
         n_duplicates=len(duplicates),
-        top10_by_containment=sorted(sparse, key=lambda r: -r["containment"])[:10],
-        top10_by_correlation=sorted(
-            results, key=lambda r: -max(r["spearman_dots"], r["spearman_surface"]))[:10],
+        top10_by_containment=[
+            public_result(r) for r in sorted(
+                comparable,
+                key=lambda r: -_decision_value(r, "containment", default=0.0),
+            )[:10]
+        ],
+        top10_by_correlation=[
+            public_result(r) for r in sorted(
+                results,
+                key=lambda r: -max(
+                    _decision_value(r, "spearman_dots"),
+                    _decision_value(r, "spearman_surface"),
+                ),
+            )[:10]
+        ],
         verdict=verdict,
     )
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
@@ -285,7 +326,7 @@ def main():
         "n_registry_rasters", "n_unique_pixel_content", "n_sparse_dot_rasters",
         "n_dense_rasters", "n_lane_dots", "worst", "n_literal_flags",
         "n_duplicates", "verdict")}, indent=1))
-    return 0
+    return 1 if duplicates else 0
 
 
 if __name__ == "__main__":

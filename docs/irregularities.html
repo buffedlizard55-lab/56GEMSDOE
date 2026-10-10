@@ -15,6 +15,7 @@ nav a.active,nav a:hover{color:var(--fg);border-color:var(--acc)}
 .dlbtn{margin:14px 0}
 .btn{display:inline-block;background:var(--acc);color:#06121f;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:8px}
 .btn.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn.stop{background:var(--bad);color:#1c0808}
 .btn:hover{filter:brightness(1.1)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
@@ -35,29 +36,27 @@ ul{margin:6px 0 6px 20px}li{margin:3px 0}
 <h1>56GEMSDOE &mdash; corrections lane for the DOE GEMS Prize</h1>
 <div class=mut>DrivenData competition 306 · GeoDAWN / NW Nevada · find geothermal-indicative
 faults missing from the USGS/INGENIOUS catalogue</div>
-<nav><a href="index.html">Home</a><a href="executive-summary.html">Make a submission</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html" class=active>Irregularities</a><a href="h57.html">H57 run (current)</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">&#11015; Download the submission GeoTIFF (150 KB)</a> <a class="btn alt" href="executive-summary.html">How to submit it &rarr;</a></div>
+<nav><a href="index.html">Home</a><a href="executive-summary.html">Submission status</a><a href="research.html">Research</a><a href="hypotheses.html">Hypotheses</a><a href="sources.html">Sources</a><a href="irregularities.html" class=active>Irregularities</a><a href="h57.html">H57 run (current)</a><a href="prior-run.html">Prior run</a></nav><div class="dlbtn"><a class="btn stop" href="downloads/h57-corr-band2px-cover-20261009T191337Z.tif">&#11015; Archived H57 TIFF — NOT SAFE TO SUBMIT (150 KB)</a> <a class="btn alt" href="h57.html">Why this is blocked &rarr;</a></div>
 </div></header>
 <div class=values><div class=wrap><b>Core values.</b> Maximize P(Win) &mdash; every weekly
 submission slot is an experiment, not a lottery ticket. Own the Outcome &mdash; every number
 on this site is labelled by evidence class: <span class=ok>ORGANIZER-CONFIRMED</span>,
 <span class=warn>HOLDOUT-DTI (local, simulated truth)</span>, <span class=mut>MEASURED (official
 data, this repo)</span>, or <span class=bad>USER-REPORTED (unauthenticated)</span>.</div></div>
-<main class=wrap><div class=card><h2 class=ok>Current file: OK to download and OK to submit</h2>
-<p>The download button above gives you <code>h57-corr-band2px-cover-20261009T191337Z.tif</code>. It is
-<b>format-valid for the DrivenData form</b>: single band, float32, every value in [0,&nbsp;1],
-<b>zero NaN cells anywhere</b> (the earlier "Predicted values must be in range [0, 1]" rejection
-was caused by NaN padding, which this file does not contain), EPSG:32611, 3292&times;3730, and a
-geotransform identical to <code>sample_submission.tif</code>. Paste the submission name and note
-printed on the home page into the form.</p>
-<p><b>What it is not:</b> it is not a validated discovery. This run's crest-steering hypothesis is
-<b>REFUTED</b> by its own holdout (see <a href="h57.html">H57 run</a>); what ships is the
-unsteered, kernel-optimal cover of the 100&ndash;400&nbsp;m band the organizers describe as
-containing "corrections or modifications to existing fault traces". Spending one of your weekly
-slots on it is a judgement call that stays with you &mdash; the full evidence is one click away.</p>
-<p><a href="h57.html">H57 run card and holdout</a> ·
-<a href="executive-summary.html">Step-by-step submission guide</a> ·
+<main class=wrap><div class=card><h2 class=bad>Corrections lane: NEGATIVE / STOP — do not submit</h2>
+<p>The H57 TIFF linked above is retained for audit only. Its final-dot registry receipt reports
+<b>1.0</b> of dots within 3 px of prior rasters, exceeding the explicit 0.70 duplicate-and-stop
+threshold. A strict replay against the pinned sample also finds <b>7,111,787 finite cells outside
+the template footprint</b> and a missing NaN nodata tag. Its original "OK to submit" wording is
+superseded by this fail-closed review.</p>
+<p>The H57 crest-steering hypothesis was refuted by its own method-level HOLDOUT-DTI; the emitted
+54,914-dot cover itself was not scored. The review used no extra experiment or submission slot.
+No corrections-lane artifact is selected, promoted, or cleared to submit. Download only for
+technical inspection, not as a workaround or candidate upload.</p>
+<p><a href="h57.html">H57 run card, holdout and stop review</a> ·
+<a href="executive-summary.html">Current submission status and future checklist</a> ·
 <a href="prior-run.html">Preserved prior runs</a> ·
-<a href="prior-irregularities.html">Prior run irregularities</a></p></div>
+<a href="irregularities.html">Irregularities</a></p></div>
 <h2>Irregularities &mdash; flagged, and how each was checked</h2>
 <div class=card><h3 class=warn>IR-57-001: the spatial-fold holdout cannot test a corrections lane</h3>
 <p>Withholding whole catalogue components by spatial block (<code>evidence/h57_holdout.json</code>)
@@ -73,14 +72,31 @@ same spread (0.326 vs 0.273 of transects beyond 2 px); DEM&ndash;magnetic agreem
 [0.00049, 0.00133] vs evidence-free corridor dots 0.00177 [0.00130, 0.00232] at an identical
 budget, paired contrast [-0.00138, -0.00048], P(beats) = 0.0. The lane therefore emits nothing
 steered by crests, exactly as the brief instructs.</p></div>
-<div class=card><h3 class=warn>IR-57-003: the literal 3 px containment clause cannot be passed by any corrections emission</h3>
-<p>Every dot placed 2 px off a catalogue trace is, by arithmetic, within 3 px of that trace. The
-gate therefore reports 100 % containment against the competition's own
-<code>existing_faults.tif</code> and against habitat-sized priors 4&ndash;13&times; larger. The
-discriminating statistics are published instead:
-max Spearman <b>0.286</b> (bar 0.90) and max exact-pixel Jaccard <b>0.152</b> against any earlier
-submission (<code>evidence/h57_uniqueness_discriminators.json</code>). Logged as a duplicate flag
-per the protocol; the file is not promoted to a slot by this repository.</p></div>
+<div class=card><h3 class=bad>IR-57-003: final-dot proximity triggers DUPLICATE / STOP</h3>
+<p>The final-dot shared gate reports a maximum <b>1.0 within-3-px fraction</b> on its 40
+worst-overlap submission priors, above the literal 0.70 threshold. The full-run card reports
+max Spearman <b>0.286</b> and max exact-pixel Jaccard <b>0.152</b>; neither statistic overrides
+the independent proximity rule. The fact that the overlap includes the catalogue is not an
+exception. The original H57 card called the trigger unavoidable but left <code>ok_to_submit</code>
+positive; this review corrects the action to <b>DUPLICATE / STOP</b>, retains the raster only as
+an archive, and does not select or promote it. See the status-correction record IR-57-007.</p></div>
+<div class=card><h3 class=bad>IR-57-007: the positive submission claim is superseded by the final-dot stop</h3>
+<p>The pre-review card is retained in <code>pre_review_record</code> for provenance; its literal
+3 px trigger did not satisfy the final gate. The authoritative card now records
+<code>ok_to_submit = NO</code>, <code>safe_to_submit = false</code>, and verdict
+<b>NEGATIVE / STOP</b>. No experiment or slot was spent during the review.</p></div>
+<div class=card><h3 class=bad>IR-57-008: strict sample-mask and nodata replay rejects the H57 TIFF</h3>
+<p>The final file SHA-256 is <code>fbf6e8da4180f97f4f6f2eed01b4d673a2acce2b8ef6344a2889d8cb2be90ced</code>. Strict replay against the
+pinned sample (SHA-256 <code>2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc</code>) finds 7,111,787 finite cells outside
+the template's finite footprint and <code>nodata=None</code> where the sample declares NaN. CRS,
+shape, transform, value range and training-grid geometry match; they do not cure the mask/nodata
+failure. This output is local format analysis only, not organizer acceptance.</p></div>
+<div class=card><h3 class=warn>IR-57-009: pre-placement surface-gate evidence is incomplete</h3>
+<p>The final H57 uniqueness receipt is explicitly a <code>dots</code>-phase check over 40 priors.
+The full-corpus screen points to an earlier timestamped H57 raster, not the final 19:13 artifact.
+No distinct pre-placement surface-phase receipt for the final geometry was identified here.
+The missing stage evidence is not replaced by the final-dot check; the final-dot rule already
+requires a stop. No registry screen or experiment was rerun.</p></div>
 <div class=card><h3 class=warn>IR-57-004: no holdout exists for the family this file bets on</h3>
 <p>The shipped raster bets on the organizers' statement that part of the hidden truth is
 "corrections or modifications to existing fault traces" within 300 m of a known trace. There are
@@ -125,8 +141,7 @@ organizer scores and are labelled as such everywhere they appear.</p></div>
 <p>The 1 m calibration product (706 of 716 official 3DEP tiles) covers 3,892,964 grid cells
 (75% of the 5,167,373-px footprint); 10 edge tiles failed in the sibling's CI. Calibration
 statistics are computed on covered transects only and labelled with n.</p></div>
-<div class=card><h3>IR-56-07: the literal 70%-containment uniqueness test fires on 8 habitat
-rasters; the investigation shows they are supersets, not re-issues</h3>
+<div class=card><h3 class=bad>IR-56-07: literal 70%-containment trigger on eight habitat rasters — DUPLICATE / STOP</h3>
 <p>The lane protocol's literal test (&ldquo;more than 70% of your dots fall within 3 px of one
 registry raster's dots &rarr; log it as a duplicate and stop&rdquo;) fires on
 8 sparse registry rasters (containment up to
@@ -142,12 +157,25 @@ construction</b> (the 37,654&ndash;44,090-dot h33 family, incl. the 0.2778-attri
 containment is &le; 0.334 and Jaccard &le; 0.052. Spearman rank correlation is at most
 0.0429 (dots) / 0.1086
 (surface) against all 412 unique registry rasters &mdash; far below the
-0.90 threshold. <b>Determination: UNIQUE &mdash; no prior is re-issued and this raster is not
-a re-issue of any prior.</b> The flags are logged with full numbers in
-<code>evidence/corrections/registry_check.json</code>; the protocol requires a stop on those flags.
-A literal reading that treats &ldquo;inside a big habitat lattice&rdquo; as duplication would
-condemn every small precise emission (including the prior best itself) &mdash; the
-mass-ratio/Jaccard analysis is diagnostic only and does not override the rule.</p></div>
+0.90 threshold. <b>Protocol determination: DUPLICATE / STOP.</b> The literal &gt;70% threshold is triggered
+on eight rasters, regardless of whether the overlap is an exact re-issue or a large superset.
+Spearman, Jaccard, reverse-containment, and mass-ratio figures are descriptive only and cannot
+waive that rule. The file remains historical research output and was not promoted. Full numbers
+are preserved in <code>evidence/corrections/registry_check.json</code>.</p></div>
+
+<div class=card><h3 class=bad>IR-56-036: the H56 magpack/quota directed flags require DUPLICATE / STOP</h3>
+<p>The existing 868-row corpus screen has
+31 unreadable entries. Its directed
+within-3-px results exceed 0.70 for <b>56</b>
+priors of the magpack raster and <b>54</b> priors of
+the quota raster. The 40-prior subset maxima were only
+0.527 and
+0.475, so that subset missed the full-screen
+triggers; surface Spearman maxima
+0.0117 /
+0.0169 are below 0.90 but do not cancel them.
+Reciprocal flags being zero is not an exception to the one-way stop rule. Both files remain
+archives, not submission candidates. No registry scan was rerun.</p></div>
 
 <h2>Round-2 discovery run (PR #7) &mdash; its five entries</h2>
 <div class=card><h3>IR-56-019: Band 6 'tc' description is ambiguous and the data are magnitude-like</h3>
@@ -170,7 +198,7 @@ mass-ratio/Jaccard analysis is diagnostic only and does not override the rule.</
 <p>On the round-2 dots-phase gate (evidence/lane_gate_discovery_v2.json) the literal brief rule '&gt;70% of my dots within 3 px of ONE registry raster's dots' fires against 22 informative (non-probe) priors, and the coverage-adjusted policy agrees (DUPLICATE/STOP both). The trigger is density-degenerate: for every one of the 22, near_frac is within +/-0.03 of that prior's own 3 px halo coverage of the eligible grid (e.g. 0.887 vs 0.861, 0.740 vs 0.759, 0.700 vs 0.735), i.e. the clause is satisfied by any dot set whatever, exactly as IR-56-006 showed the same clause is vacuous at 1-dot counts against near-universal priors. The agreement tests pass: max Spearman 0.043 on the dots and 0.193 on the surface vs the 0.90 bar, zero identical hashes, and the screen's reciprocal &gt;0.70 count is 0.</p>
 <p><b>Checked / why it matters:</b> Read literally, a raster whose 3 px halo covers &gt;=70% of the grid makes the '&gt;70% of my dots near it' clause unfailable for ANY candidate, so a STOP verdict carries no information about lane drift at that density; the mirror-image defect (IR-56-006) makes the same clause unfailable in the other direction at tiny dot counts.</p>
 <p class=mut>Done: Protocol executed as written: the verdict DUPLICATE/STOP is logged, nothing is promoted, and the candidate was already NEGATIVE on the holdout. The defect is reported rather than argued around; both directions are shown side by side in the receipt (surface PASS, dots STOP). No gate code was modified to change the outcome. · source: scripts/lane_gate_discovery.py (E3), first full 960-prior run</p></div>
-<p class=mut>Full machine-readable log (both runs, <code>evidence/irregularities.json</code>, 23 entries): IR-56-001&hellip;013 round 1, IR-56-014&hellip;018 the concurrent corrections session, IR-56-019&hellip;023 this round-2 discovery run.</p>
+<p class=mut>Full machine-readable log: <code>evidence/irregularities.json</code> (40 entries), including the H56 historical directed-screen correction IR-56-036, the PR #14 literal-stop correction IR-56-037, and the H57 post-review records IR-57-001&hellip;009. The H57 review does not adjudicate PR #11's separate dotted-ridge artifact.</p>
 
 <h2>Round-3 entries (this PR, arena/e86c5610-56gemsdoe)</h2>
 <div class=card><h3>IR-56-030: the 0.5&nbsp;mm-at-map-scale tolerance convention is cited, not fetched</h3>
@@ -194,6 +222,13 @@ magpack/quota rasters) was opened 2026-10-09 18:40 UTC and reported
 <code>mergeable: CONFLICTING</code>. Its content reached <code>main</code> through PR
 #13's session instead; this round-3 session neither merged nor built on PR #8, and its
 rasters are in the uniqueness registry via the sibling mirror. The PR can be closed.</p></div>
+<div class=card><h3 class=bad>IR-56-037: PR #14 twin-family receipt requires DUPLICATE / STOP</h3>
+<p>The existing 1,034-raster receipt has 12 literal directed-proximity flags above 0.70, with
+maximum containment 1.0. Spearman maxima (0.5732 dots, 0.3335 surface) are below 0.90 but do
+not waive the independent one-way trigger. The old <code>UNIQUE</code> / zero-duplicate label
+and its dense-superset explanation are superseded; no registry scan, holdout, DTI, or experiment
+was rerun. The 2,139-dot TIFF remains a research archive, not a submission or promotion
+candidate. See <code>evidence/corrections/registry_check_round3_post_review.json</code>.</p></div>
 </main>
 <footer><div class=wrap>56GEMSDOE · run A branch <code>arena/b71ede8d-56gemsdoe</code> ·
 round-2 discovery run branch <code>arena/858a492d-56gemsdoe</code> (PR #7) ·
